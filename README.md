@@ -25,4 +25,4 @@ docker run -it --rm nihil:local ls -la
 ### Monter un volume pour le workspace
 
 ```bash
-docker run -it --rm -v $(pwd):/workspace nihil:local
+docker run -it --rm -v $(pwd):/workspace nihil:locals
