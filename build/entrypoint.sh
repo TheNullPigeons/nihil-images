@@ -4,7 +4,9 @@
 
 set -e
 
-source package_base.sh
+# Load common utilities and modules
+source lib/common.sh
+source modules/base.sh
 
 if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"
