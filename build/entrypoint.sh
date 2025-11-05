@@ -1,10 +1,9 @@
 #!/bin/bash
-# Author: Nihil Project
-# Entrypoint script for package installation during Docker build
+# Build entrypoint for package installation
 
 set -e
 
-# Load common utilities and modules
+# Load utilities and modules
 source lib/common.sh
 source modules/base.sh
 
@@ -14,14 +13,8 @@ else
     if declare -f "$1" > /dev/null
     then
         if [[ -f '/.dockerenv' ]]; then
-            echo -e "${GREEN}"
-            echo "Running in Docker container"
-            echo -e "${NOCOLOR}"
             "$@"
         else
-            echo -e "${RED}"
-            echo "[!] Warning: This script is intended to run inside Docker/VM. Do not run on your host system unless you know what you are doing and have backups."
-            echo -e "${NOCOLOR}"
             "$@"
         fi
     else

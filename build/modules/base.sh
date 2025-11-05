@@ -1,6 +1,5 @@
 #!/bin/bash
-# Author: Nihil Project
-# Base package installation script
+# Base package installation
 
 source common.sh
 

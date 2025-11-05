@@ -1,5 +1,4 @@
 #!/bin/bash
-# Author: Nihil Project
 # Runtime entrypoint: keep container alive or execute a command
 
 set -e
