@@ -28,6 +28,11 @@ docker run -it --rm nihil:local ls -la
 docker run -it --rm -v $(pwd):/workspace nihil:local
 ```
 
+### Tout supprimée en une fois
+```bash
+docker ps -aq --filter ancestor=nihil:local | xargs docker rm -f
+```
+
 ## Structure du projet
 
 ```
