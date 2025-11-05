@@ -1,6 +1,5 @@
 #!/bin/bash
-# Author: Nihil Project
-# Common utility functions for installation scripts
+# Common utility functions
 
 export RED='\033[1;31m'
 export BLUE='\033[1;34m'
