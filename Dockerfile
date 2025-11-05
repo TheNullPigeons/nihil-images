@@ -11,11 +11,16 @@ LABEL org.nihil.version="${VERSION}"
 LABEL org.nihil.build_date="${BUILD_DATE}"
 LABEL org.nihil.app="Nihil"
 
-COPY sources /root/nihil-sources/
+# Copy project files
+COPY build /opt/nihil/build/
+COPY runtime /opt/nihil/runtime/
 
-WORKDIR /root/nihil-sources/install
+# Build-time workdir
+WORKDIR /opt/nihil/build
 
-RUN chmod +x entrypoint.sh
-RUN ./entrypoint.sh package_base
+# Ensure scripts are executable and run base install
+RUN chmod +x entrypoint.sh lib/common.sh modules/base.sh && \
+    ./entrypoint.sh package_base
 
-ENTRYPOINT ["/root/nihil-sources/install/entrypoint.sh"]
+# Runtime entrypoint
+ENTRYPOINT ["/opt/nihil/runtime/entrypoint.sh"]
