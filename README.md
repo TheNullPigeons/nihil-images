@@ -25,4 +25,20 @@ docker run -it --rm nihil:local ls -la
 ### Monter un volume pour le workspace
 
 ```bash
-docker run -it --rm -v $(pwd):/workspace nihil:locals
+docker run -it --rm -v $(pwd):/workspace nihil:local
+```
+
+## Structure du projet
+
+```
+nihil-images/
+├── Dockerfile
+├── build/
+│   ├── entrypoint.sh
+│   ├── lib/
+│   │   └── common.sh
+│   └── modules/
+│       └── base.sh
+└── runtime/
+    └── entrypoint.sh
+```
