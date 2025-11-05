@@ -1,3 +1,8 @@
+### Installer les dépendances
+```bash
+sudo pacman -S --needed $(cat packages.txt)
+```
+
 ### Lancer le conteneur en mode interactif
 
 ```bash
@@ -28,10 +33,15 @@ docker run -it --rm nihil:local ls -la
 docker run -it --rm -v $(pwd):/workspace nihil:local
 ```
 
-### Tout supprimée en une fois
+## Dépendances (hôte Arch/Manjaro)
+
+Installez les dépendances nécessaires avec pacman :
+
 ```bash
-docker ps -aq --filter ancestor=nihil:local | xargs docker rm -f
+sudo pacman -Syu --needed $(grep -vE '^\s*#' packages.txt | grep -vE '^\s*$')
 ```
+
+Contenu dans `packages.txt` (éditable selon vos besoins).
 
 ## Structure du projet
 
@@ -44,6 +54,7 @@ nihil-images/
 │   │   └── common.sh
 │   └── modules/
 │       └── base.sh
-└── runtime/
-    └── entrypoint.sh
+├── runtime/
+│   └── entrypoint.sh
+└── packages.txt
 ```
