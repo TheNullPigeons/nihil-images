@@ -7,6 +7,8 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+  repository_dispatch:
+    types: [packages-updated]
 
 env:
   REGISTRY: ghcr.io
@@ -31,7 +33,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -55,6 +57,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          no-cache: true
           build-args: |
             TAG=${{ github.ref_name }}
             VERSION=${{ github.ref_name }}
