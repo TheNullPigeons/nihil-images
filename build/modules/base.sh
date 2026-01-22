@@ -27,16 +27,30 @@ function package_base() {
     # Synchroniser le dépôt nihil
     colorecho "Synchronizing Nihil repository"
     pacman -Sy --noconfirm
-    
-    # Installer les paquets depuis packages.txt
-    if [ -f "/opt/nihil/build/../packages.txt" ]; then
-        colorecho "Installing custom packages from packages.txt"
+
+    # Installer les paquets système depuis packages.txt
+    if [ -f "/opt/nihil/packages.txt" ]; then
+        colorecho "Installing system packages from packages.txt"
         while IFS= read -r package || [ -n "$package" ]; do
             # Ignorer les lignes vides et les commentaires
             [[ -z "$package" || "$package" =~ ^# ]] && continue
             colorecho "Installing $package"
             pacman -S --noconfirm --needed "$package" || colorecho "Warning: Failed to install $package"
-        done < "/opt/nihil/build/../packages.txt"
+        done < "/opt/nihil/packages.txt"
+    fi
+    
+    # Installer TOUS les paquets du dépôt nihil
+    colorecho "Listing all packages in Nihil repository"
+    # Récupère la liste des paquets du dépôt nihil
+    nihil_packages=$(pacman -Sl nihil | cut -d' ' -f2)
+    
+    if [ -n "$nihil_packages" ]; then
+        colorecho "Installing all Nihil packages: $nihil_packages"
+        # Convertir les nouvelles lignes en espaces pour la commande pacman
+        package_list=$(echo "$nihil_packages" | tr '\n' ' ')
+        pacman -S --noconfirm --needed $package_list || colorecho "Warning: Failed to install some packages"
+    else
+        colorecho "No packages found in Nihil repository"
     fi
     
     # Nettoyage final du cache pacman pour réduire la taille
