@@ -1,7 +1,17 @@
-### Installer les dépendances
+## Construction de l'image Docker
+
+### Construire l'image
+```bash
+cd nihil-images
+docker build -t nihil:local .
+```
+
+### Installer les dépendances (hôte)
 ```bash
 sudo pacman -S --needed $(cat packages.txt)
 ```
+
+## Utilisation
 
 ### Lancer le conteneur en mode interactif
 

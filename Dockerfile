@@ -1,6 +1,6 @@
 # Author: Nihil Project
 
-FROM debian:12-slim
+FROM archlinux:latest
 
 ARG TAG="local"
 ARG VERSION="local"
