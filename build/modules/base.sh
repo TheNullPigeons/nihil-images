@@ -7,13 +7,10 @@ source "${SCRIPT_DIR}/../lib/common.sh"
 
 function package_base() {
     colorecho "Updating system and installing base packages"
-    echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
-    apt-get -y update && \
-    apt-get -y install apt-utils dialog && \
-    apt-get -y upgrade && \
-    apt-get -y autoremove && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    pacman -Sy --noconfirm && \
+    pacman -S --noconfirm --needed base base-devel dialog && \
+    pacman -Syu --noconfirm && \
+    pacman -Sc --noconfirm
     colorecho "Base packages installed"
 }
 
