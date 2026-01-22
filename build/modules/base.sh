@@ -24,6 +24,21 @@ function package_base() {
         colorecho "Nihil repository already exists in pacman.conf"
     fi
     
+    # Synchroniser le dépôt nihil
+    colorecho "Synchronizing Nihil repository"
+    pacman -Sy --noconfirm
+    
+    # Installer les paquets depuis packages.txt
+    if [ -f "/opt/nihil/build/../packages.txt" ]; then
+        colorecho "Installing custom packages from packages.txt"
+        while IFS= read -r package || [ -n "$package" ]; do
+            # Ignorer les lignes vides et les commentaires
+            [[ -z "$package" || "$package" =~ ^# ]] && continue
+            colorecho "Installing $package"
+            pacman -S --noconfirm --needed "$package" || colorecho "Warning: Failed to install $package"
+        done < "/opt/nihil/build/../packages.txt"
+    fi
+    
     colorecho "Base packages installed"
 }
 
