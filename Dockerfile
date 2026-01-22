@@ -13,6 +13,7 @@ LABEL org.nihil.app="Nihil"
 
 COPY build /opt/nihil/build/
 COPY runtime /opt/nihil/runtime/
+COPY packages.txt /opt/nihil/
 
 WORKDIR /opt/nihil/build
 

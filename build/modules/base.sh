@@ -39,6 +39,10 @@ function package_base() {
         done < "/opt/nihil/build/../packages.txt"
     fi
     
+    # Nettoyage final du cache pacman pour réduire la taille
+    colorecho "Cleaning pacman cache"
+    pacman -Sc --noconfirm
+    
     colorecho "Base packages installed"
 }
 
