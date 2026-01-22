@@ -2,3 +2,5 @@ curl
 docker
 docker-compose
 wget
+forward-shell
+hex2sid
