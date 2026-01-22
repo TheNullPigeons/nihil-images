@@ -8,7 +8,7 @@ source "${SCRIPT_DIR}/../lib/common.sh"
 function package_base() {
     colorecho "Updating system and installing base packages"
     pacman -Sy --noconfirm && \
-    pacman -S --noconfirm --needed base base-devel dialog && \
+    pacman -S --noconfirm --needed base base-devel dialog python && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm
     colorecho "Base packages installed"
