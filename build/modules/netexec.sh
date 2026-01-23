@@ -28,6 +28,10 @@ function install_netexec() {
     
     # Installer netexec via pipx depuis GitHub
     colorecho "Installing netexec via pipx from GitHub"
+    
+    # Fix pour Arch Linux (Python 3.14+) et PyO3/aardwolf
+    export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
+    
     pipx install git+https://github.com/Pennyw0rth/NetExec || {
         criticalecho "Failed to install netexec via pipx"
         return 1
