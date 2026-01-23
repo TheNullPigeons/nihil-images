@@ -37,6 +37,35 @@ function package_base() {
         sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' /root/.zshrc 2>/dev/null || true
     fi
 
+    # Plugins oh-my-zsh utiles pour le pentest
+    if [ -d "$ZSH/custom" ]; then
+        # Autosuggestions
+        if [ ! -d "$ZSH/custom/plugins/zsh-autosuggestions" ]; then
+            git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH/custom/plugins/zsh-autosuggestions" || \
+                colorecho "Warning: Failed to clone zsh-autosuggestions"
+        fi
+
+        # Syntax highlighting
+        if [ ! -d "$ZSH/custom/plugins/zsh-syntax-highlighting" ]; then
+            git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH/custom/plugins/zsh-syntax-highlighting" || \
+                colorecho "Warning: Failed to clone zsh-syntax-highlighting"
+        fi
+
+        # Activer les plugins dans .zshrc si possible
+        if [ -f "/root/.zshrc" ]; then
+            # Si la ligne plugins=(...) existe déjà, on la remplace proprement
+            if grep -q "^plugins=" /root/.zshrc; then
+                sed -i 's/^plugins=.*/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' /root/.zshrc 2>/dev/null || true
+            else
+                # Sinon on ajoute une ligne plugins à la fin
+                {
+                    echo ""
+                    echo "plugins=(git zsh-autosuggestions zsh-syntax-highlighting)"
+                } >> /root/.zshrc
+            fi
+        fi
+    fi
+
     # Try to set zsh as default shell for root (non bloquant)
     if command -v chsh >/dev/null 2>&1; then
         chsh -s /usr/bin/zsh root || true
