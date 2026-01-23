@@ -123,6 +123,24 @@ function package_base() {
         fi
     fi
 
+    # Inject custom zsh history
+    if [ -f "/opt/nihil/build/config/zsh_history" ]; then
+        colorecho "Injecting custom zsh history"
+        while read -r line; do
+            # Skip empty lines and comments
+            [[ -z "$line" || "$line" =~ ^# ]] && continue
+            
+            # If line starts with ':', assume it's already formatted (EXTENDED_HISTORY)
+            if [[ "$line" == :* ]]; then
+                echo "$line" >> /root/.zsh_history
+            else
+                # Format for EXTENDED_HISTORY: : <timestamp>:0;<command>
+                # Using a fixed timestamp (Jan 1 2025)
+                echo ": 1735689600:0;$line" >> /root/.zsh_history
+            fi
+        done < "/opt/nihil/build/config/zsh_history"
+    fi
+
     # Try to set zsh as default shell for root (non bloquant)
     if command -v chsh >/dev/null 2>&1; then
         chsh -s /usr/bin/zsh root || true
