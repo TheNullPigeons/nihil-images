@@ -6,6 +6,7 @@ set -e
 # Load utilities and modules
 source lib/common.sh
 source modules/base.sh
+source modules/install_tools.sh
 source modules/netexec.sh
 
 if [[ $EUID -ne 0 ]]; then
