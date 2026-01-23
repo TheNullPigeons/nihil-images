@@ -29,7 +29,6 @@ function package_base() {
     if ! grep -q "^\[chaotic-aur\]" /etc/pacman.conf; then
         # Récupérer et signer la clé GPG principale (méthode officielle)
         pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com 2>/dev/null || \
-        pacman-key --recv-key 3056513887B78AEB --keyserver hkp://keyserver.ubuntu.com:80 2>/dev/null || true
         pacman-key --lsign-key 3056513887B78AEB 2>/dev/null || true
         
         # Installer chaotic-keyring et chaotic-mirrorlist depuis le CDN officiel
