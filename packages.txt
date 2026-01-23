@@ -2,3 +2,4 @@ curl
 docker
 docker-compose
 wget
+python-pipx
