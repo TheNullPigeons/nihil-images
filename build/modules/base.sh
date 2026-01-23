@@ -120,6 +120,9 @@ function package_base() {
                     echo "plugins=(git zsh-autosuggestions zsh-syntax-highlighting)"
                 } >> /root/.zshrc
             fi
+
+            # Configurer la couleur des autosuggestions en vert (comme demandé)
+            echo "ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=green'" >> /root/.zshrc
         fi
     fi
 
