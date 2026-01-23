@@ -19,3 +19,6 @@ nxc smb "$IP" -u "$USER" -p "$PASSWORD"  -M spider_plus -o DOWNLOAD_FLAG=true
 nxc smb "$IP" -u "$USER" -p "$PASSWORD"  -M spider_plus -o DOWNLOAD_FLAG=true OUTPUT_FOLDER "$USER"_spider_plus
 nxc smb "$IP" -u "$USER" -p "$PASSWORD" --users-export users.txt
 hex2sid --mssql 10.129.242.173 -u "$USER" -P "$PASSWORD"  -f sids.txt
+hex2sid --mssql 10.129.242.173 -u "$USER" -P "$PASSWORD"  -f sids.txt --rid-brute
+hex2sid --mssql 10.129.242.173 -u "$USER" -P "$PASSWORD"  -f sids.txt --rid-brute
+forward-shell  -u http://"$IP":"$PORT"/ --upgrade
