@@ -19,6 +19,7 @@ WORKDIR /opt/nihil/build
 
 RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh package_base && \
+    ./entrypoint.sh install_tools && \
     ./entrypoint.sh install_netexec
 
 WORKDIR /workspace
