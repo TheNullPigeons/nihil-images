@@ -37,6 +37,17 @@ function install_netexec() {
         return 1
     }
     
+    colorecho "Ensuring pipx path"
+    pipx ensurepath
+    
+    # Créer des liens symboliques dans /usr/bin pour être sûr que nxc soit dispo partout
+    # (pipx ensurepath ne modifie que le PATH utilisateur, pas le système global)
+    colorecho "Creating global symlinks in /usr/bin"
+    if [ -f "/root/.local/bin/nxc" ]; then
+        ln -sf /root/.local/bin/nxc /usr/bin/nxc
+        ln -sf /root/.local/bin/netexec /usr/bin/netexec
+    fi
+    
     # Créer des alias pour nxc (compatibilité)
     colorecho "Creating nxc alias for netexec"
     if [ -f "/root/.zshrc" ]; then
