@@ -36,21 +36,37 @@ function package_base() {
         keyring_ok=0
         mirrorlist_ok=0
         
-        if pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 2>/dev/null; then
-            keyring_ok=1
-            colorecho "chaotic-keyring installed successfully"
+        # Télécharger et installer chaotic-keyring
+        cd /tmp
+        if curl -L -o chaotic-keyring.pkg.tar.zst 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 2>/dev/null || \
+           wget -O chaotic-keyring.pkg.tar.zst 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 2>/dev/null; then
+            if pacman -U --noconfirm chaotic-keyring.pkg.tar.zst 2>/dev/null; then
+                keyring_ok=1
+                colorecho "chaotic-keyring installed successfully"
+            else
+                colorecho "Warning: Failed to install chaotic-keyring package"
+            fi
+            rm -f chaotic-keyring.pkg.tar.zst
         else
-            colorecho "Warning: Failed to install chaotic-keyring"
+            colorecho "Warning: Failed to download chaotic-keyring"
         fi
         
+        # Télécharger et installer chaotic-mirrorlist
         if [ "$keyring_ok" -eq 1 ]; then
-            if pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' 2>/dev/null; then
-                mirrorlist_ok=1
-                colorecho "chaotic-mirrorlist installed successfully"
+            if curl -L -o chaotic-mirrorlist.pkg.tar.zst 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' 2>/dev/null || \
+               wget -O chaotic-mirrorlist.pkg.tar.zst 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' 2>/dev/null; then
+                if pacman -U --noconfirm chaotic-mirrorlist.pkg.tar.zst 2>/dev/null; then
+                    mirrorlist_ok=1
+                    colorecho "chaotic-mirrorlist installed successfully"
+                else
+                    colorecho "Warning: Failed to install chaotic-mirrorlist package"
+                fi
+                rm -f chaotic-mirrorlist.pkg.tar.zst
             else
-                colorecho "Warning: Failed to install chaotic-mirrorlist"
+                colorecho "Warning: Failed to download chaotic-mirrorlist"
             fi
         fi
+        cd - > /dev/null
         
         # Ajouter le dépôt Chaotic-AUR dans pacman.conf UNIQUEMENT si le mirrorlist est installé
         if [ "$mirrorlist_ok" -eq 1 ] && [ -f "/etc/pacman.d/chaotic-mirrorlist" ]; then
