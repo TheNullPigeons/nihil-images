@@ -8,7 +8,7 @@ source "${SCRIPT_DIR}/../lib/common.sh"
 function package_base() {
     colorecho "Updating system and installing base packages"
     pacman -Sy --noconfirm && \
-    pacman -S --noconfirm --needed base base-devel dialog python python-pip python-wheel python-setuptools zsh git && \
+    pacman -S --noconfirm --needed base base-devel dialog python python-pip python-wheel python-setuptools zsh git go && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm
     
@@ -69,6 +69,31 @@ function package_base() {
     # Try to set zsh as default shell for root (non bloquant)
     if command -v chsh >/dev/null 2>&1; then
         chsh -s /usr/bin/zsh root || true
+    fi
+
+    # Installer yay (AUR helper)
+    colorecho "Installing yay AUR helper"
+    if ! command -v yay >/dev/null 2>&1; then
+        # Créer un utilisateur temporaire pour compiler yay (makepkg ne peut pas être exécuté en root)
+        useradd -m -s /bin/bash builder 2>/dev/null || true
+        cd /tmp
+        # Cloner et compiler yay
+        git clone https://aur.archlinux.org/yay.git yay-build || colorecho "Warning: Failed to clone yay"
+        if [ -d "yay-build" ]; then
+            cd yay-build
+            # Compiler en tant que builder, puis installer en root
+            su builder -c "makepkg -s --noconfirm" || colorecho "Warning: Failed to build yay"
+            # Installer le paquet compilé
+            if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
+                pacman -U --noconfirm *.pkg.tar.zst || colorecho "Warning: Failed to install yay"
+            fi
+            cd /
+            rm -rf /tmp/yay-build
+            # Supprimer l'utilisateur builder
+            userdel -r builder 2>/dev/null || true
+        fi
+    else
+        colorecho "yay is already installed"
     fi
     
     # Synchroniser le dépôt nihil
