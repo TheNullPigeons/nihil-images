@@ -22,4 +22,6 @@ RUN chmod +x entrypoint.sh && \
 
 WORKDIR /workspace
 
+SHELL ["/usr/bin/zsh", "-c"]
+
 ENTRYPOINT ["/opt/nihil/runtime/entrypoint.sh"]
