@@ -24,6 +24,31 @@ function package_base() {
         colorecho "Nihil repository already exists in pacman.conf"
     fi
 
+    # Ajouter Chaotic-AUR repository (méthode officielle)
+    colorecho "Adding Chaotic-AUR repository"
+    if ! grep -q "^\[chaotic-aur\]" /etc/pacman.conf; then
+        # Récupérer et signer la clé GPG principale (méthode officielle)
+        pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com 2>/dev/null || \
+        pacman-key --recv-key 3056513887B78AEB --keyserver hkp://keyserver.ubuntu.com:80 2>/dev/null || true
+        pacman-key --lsign-key 3056513887B78AEB 2>/dev/null || true
+        
+        # Installer chaotic-keyring et chaotic-mirrorlist depuis le CDN officiel
+        colorecho "Installing chaotic-keyring and chaotic-mirrorlist"
+        pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 2>/dev/null || \
+        colorecho "Warning: Failed to install chaotic-keyring"
+        pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' 2>/dev/null || \
+        colorecho "Warning: Failed to install chaotic-mirrorlist"
+        
+        # Ajouter le dépôt Chaotic-AUR dans pacman.conf
+        echo "" >> /etc/pacman.conf
+        echo "[chaotic-aur]" >> /etc/pacman.conf
+        echo "Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
+        
+        colorecho "Chaotic-AUR repository added to pacman.conf"
+    else
+        colorecho "Chaotic-AUR repository already exists in pacman.conf"
+    fi
+
     # Configure zsh + oh-my-zsh for a nicer shell experience
     colorecho "Installing and configuring zsh with oh-my-zsh"
     export ZSH="/root/.oh-my-zsh"
