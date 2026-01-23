@@ -74,22 +74,18 @@ function package_base() {
     # Installer yay (AUR helper)
     colorecho "Installing yay AUR helper"
     if ! command -v yay >/dev/null 2>&1; then
-        # Créer un utilisateur temporaire pour compiler yay (makepkg ne peut pas être exécuté en root)
         useradd -m -s /bin/bash builder 2>/dev/null || true
         cd /tmp
         # Cloner et compiler yay
         git clone https://aur.archlinux.org/yay.git yay-build || colorecho "Warning: Failed to clone yay"
         if [ -d "yay-build" ]; then
             cd yay-build
-            # Compiler en tant que builder, puis installer en root
             su builder -c "makepkg -s --noconfirm" || colorecho "Warning: Failed to build yay"
-            # Installer le paquet compilé
             if ls *.pkg.tar.zst 1> /dev/null 2>&1; then
                 pacman -U --noconfirm *.pkg.tar.zst || colorecho "Warning: Failed to install yay"
             fi
             cd /
             rm -rf /tmp/yay-build
-            # Supprimer l'utilisateur builder
             userdel -r builder 2>/dev/null || true
         fi
     else
