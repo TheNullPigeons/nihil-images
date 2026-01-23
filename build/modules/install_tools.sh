@@ -5,10 +5,12 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../lib/common.sh"
 
-function package_base() {
+function install_tools() {
     colorecho "Updating system and installing tools packages"
     pacman -Sy --noconfirm && \
     pacman -S --noconfirm --needed nmap && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm
+
+    colorecho "Tools packages installed"
 }
