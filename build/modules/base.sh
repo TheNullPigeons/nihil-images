@@ -8,7 +8,7 @@ source "${SCRIPT_DIR}/../lib/common.sh"
 function package_base() {
     colorecho "Updating system and installing base packages"
     pacman -Sy --noconfirm && \
-    pacman -S --noconfirm --needed base base-devel dialog python python-pip python-wheel python-setuptools zsh git go vim nano php rust fzf tmux neovim asciinema && \
+    pacman -S --noconfirm --needed base base-devel dialog python python-pip python-wheel python-setuptools zsh git go vim nano php rust fzf tmux neovim asciinema curl wget && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm
     
