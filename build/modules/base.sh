@@ -28,22 +28,39 @@ function package_base() {
     colorecho "Adding Chaotic-AUR repository"
     if ! grep -q "^\[chaotic-aur\]" /etc/pacman.conf; then
         # Récupérer et signer la clé GPG principale (méthode officielle)
-        pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com 2>/dev/null || \
+        pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com 2>/dev/null || true
         pacman-key --lsign-key 3056513887B78AEB 2>/dev/null || true
         
         # Installer chaotic-keyring et chaotic-mirrorlist depuis le CDN officiel
         colorecho "Installing chaotic-keyring and chaotic-mirrorlist"
-        pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 2>/dev/null || \
-        colorecho "Warning: Failed to install chaotic-keyring"
-        pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' 2>/dev/null || \
-        colorecho "Warning: Failed to install chaotic-mirrorlist"
+        keyring_ok=0
+        mirrorlist_ok=0
         
-        # Ajouter le dépôt Chaotic-AUR dans pacman.conf
-        echo "" >> /etc/pacman.conf
-        echo "[chaotic-aur]" >> /etc/pacman.conf
-        echo "Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
+        if pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 2>/dev/null; then
+            keyring_ok=1
+            colorecho "chaotic-keyring installed successfully"
+        else
+            colorecho "Warning: Failed to install chaotic-keyring"
+        fi
         
-        colorecho "Chaotic-AUR repository added to pacman.conf"
+        if [ "$keyring_ok" -eq 1 ]; then
+            if pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' 2>/dev/null; then
+                mirrorlist_ok=1
+                colorecho "chaotic-mirrorlist installed successfully"
+            else
+                colorecho "Warning: Failed to install chaotic-mirrorlist"
+            fi
+        fi
+        
+        # Ajouter le dépôt Chaotic-AUR dans pacman.conf UNIQUEMENT si le mirrorlist est installé
+        if [ "$mirrorlist_ok" -eq 1 ] && [ -f "/etc/pacman.d/chaotic-mirrorlist" ]; then
+            echo "" >> /etc/pacman.conf
+            echo "[chaotic-aur]" >> /etc/pacman.conf
+            echo "Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
+            colorecho "Chaotic-AUR repository added to pacman.conf"
+        else
+            colorecho "Warning: Chaotic-AUR mirrorlist not available, skipping repo activation"
+        fi
     else
         colorecho "Chaotic-AUR repository already exists in pacman.conf"
     fi
