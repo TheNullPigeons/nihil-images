@@ -6,8 +6,11 @@ set -e
 # Load utilities and modules
 source lib/common.sh
 source modules/base.sh
-source modules/install_tools.sh
-source modules/netexec.sh
+source modules/core_tools.sh
+source modules/install_tools.sh          # red-team tools via pacman
+source modules/netexec.sh                # NetExec via pipx
+source modules/redteam_python.sh         # red-team tools via pipx
+source modules/redteam_rust.sh           # red-team tools via cargo
 
 if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"
