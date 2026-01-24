@@ -19,8 +19,11 @@ WORKDIR /opt/nihil/build
 
 RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh package_base && \
-    ./entrypoint.sh install_tools && \
-    ./entrypoint.sh install_netexec
+    ./entrypoint.sh install_core_tools && \
+    ./entrypoint.sh install_redteam_tools && \
+    ./entrypoint.sh install_netexec && \
+    ./entrypoint.sh install_redteam_python_tools && \
+    ./entrypoint.sh install_redteam_rust_tools
 
 WORKDIR /workspace
 
