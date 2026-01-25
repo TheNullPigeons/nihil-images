@@ -7,7 +7,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../lib/common.sh"
 
-# Fonction pour s'assurer que cargo est installé
+# Fonction pour s'assurer que cargo est installé avec toutes les dépendances de build
 _ensure_cargo() {
     if ! command -v cargo >/dev/null 2>&1; then
         colorecho "cargo not found, installing rust toolchain via pacman"
@@ -17,6 +17,17 @@ _ensure_cargo() {
             return 1
         }
     fi
+
+    # Installer les dépendances système nécessaires pour compiler des outils Rust complexes
+    # (OpenSSL, pkg-config, etc. sont souvent requis par les crates)
+    colorecho "Ensuring build dependencies for Rust tools"
+    pacman -Sy --noconfirm && \
+    pacman -S --noconfirm --needed \
+        openssl \
+        pkg-config \
+        make \
+        gcc \
+        || colorecho "Warning: Some build dependencies may be missing"
 
     export CARGO_HOME="/root/.cargo"
     mkdir -p "$CARGO_HOME"
@@ -37,9 +48,16 @@ install_cargo_tool() {
     fi
 
     colorecho "  → Installing $tool_name via cargo"
-    cargo install "$tool_name" || {
+    # Utiliser --locked pour éviter les problèmes de versions
+    # et augmenter le timeout pour les gros projets
+    CARGO_NET_GIT_FETCH_WITH_CLI=true \
+    cargo install --locked "$tool_name" || {
         colorecho "  ✗ Warning: Failed to install $tool_name via cargo"
-        return 1
+        colorecho "  → Trying without --locked flag..."
+        cargo install "$tool_name" || {
+            colorecho "  ✗ Failed to install $tool_name (both methods failed)"
+            return 1
+        }
     }
 
     # Créer symlink global si nécessaire
