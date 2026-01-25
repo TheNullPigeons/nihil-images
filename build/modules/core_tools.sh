@@ -12,7 +12,17 @@ function install_core_tools() {
     colorecho "Installing core CLI tools (editors, tmux, fzf, etc.)"
 
     pacman -Sy --noconfirm && \
-    pacman -S --noconfirm --needed vim nano neovim tmux fzf curl wget asciinema whois gdb && \
+    pacman -S --noconfirm --needed \
+    vim \
+    nano \
+    neovim \
+    tmux \
+    fzf \
+    curl \
+    wget \
+    asciinema \
+    whois \
+    gdb && \
     pacman -Sc --noconfirm
 
     colorecho "Core tools installed"

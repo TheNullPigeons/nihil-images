@@ -7,10 +7,20 @@ set -e
 source lib/common.sh
 source modules/base.sh
 source modules/core_tools.sh
-source modules/install_tools.sh          # red-team tools via pacman
+
+# Registres d'installation (pipx/cargo/pacman)
+source modules/redteam_pipx.sh
+source modules/redteam_cargo.sh
+source modules/redteam_pacman.sh
+
+# Modules par domaine
+source modules/redteam_ad.sh
+source modules/redteam_web.sh
+source modules/redteam_network.sh
+source modules/redteam_credential.sh
+
+# Outils spéciaux
 source modules/netexec.sh                # NetExec via pipx
-source modules/redteam_python.sh         # red-team tools via pipx
-source modules/redteam_rust.sh           # red-team tools via cargo
 
 if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"
