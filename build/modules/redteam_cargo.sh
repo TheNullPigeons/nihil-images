@@ -19,14 +19,13 @@ _ensure_cargo() {
     fi
 
     # Installer les dépendances système nécessaires pour compiler des outils Rust complexes
-    # (OpenSSL, pkg-config, etc. sont souvent requis par les crates)
+    # (OpenSSL, pkg-config, clang/libclang pour bindgen, etc.)
     colorecho "Ensuring build dependencies for Rust tools"
     pacman -Sy --noconfirm && \
     pacman -S --noconfirm --needed \
         openssl \
         pkg-config \
-        make \
-        gcc \
+        clang \
         || colorecho "Warning: Some build dependencies may be missing"
 
     export CARGO_HOME="/root/.cargo"
