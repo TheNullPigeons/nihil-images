@@ -17,7 +17,13 @@ function package_base() {
     python-wheel \
     python-setuptools \
     zsh \
-    git \go php rust && \
+    git \
+    go \
+    php \
+    rust \
+    openssl \
+    pkg-config \
+    && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm
     
