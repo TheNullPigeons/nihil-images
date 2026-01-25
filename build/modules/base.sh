@@ -23,6 +23,7 @@ function package_base() {
     rust \
     openssl \
     pkg-config \
+    clang \
     && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm
