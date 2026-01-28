@@ -19,9 +19,6 @@ source modules/redteam_web.sh
 source modules/redteam_network.sh
 source modules/redteam_credential.sh
 
-# Outils spéciaux
-source modules/netexec.sh                # NetExec via pipx
-
 if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"
 else

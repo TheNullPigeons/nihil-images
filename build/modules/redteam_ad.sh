@@ -22,6 +22,7 @@ function install_redteam_ad() {
     install_pipx_tool "certipy" "certipy-ad"
     install_pipx_tool "bloodyad" "bloodyad"
     install_pipx_tool "evil-winrm-py" "evil-winrm-py"
+    install_netexec
 
     # Outils AD via cargo
     colorecho "  [cargo] AD tools:"

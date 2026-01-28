@@ -44,3 +44,65 @@ install_pipx_tool() {
         ln -sf "/root/.local/bin/$cmd_name" "/usr/bin/$cmd_name" || true
     fi
 }
+
+# Fonction pour installer un outil via pipx depuis Git
+# Usage: install_pipx_tool_git "cmd_name" "git_url" [env_vars]
+# Exemple: install_pipx_tool_git "netexec" "git+https://github.com/Pennyw0rth/NetExec" "PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1"
+install_pipx_tool_git() {
+    local cmd_name="$1"
+    local git_url="$2"
+    local env_vars="${3:-}"  # Variables d'environnement optionnelles
+
+    _ensure_pipx || return 1
+
+    if command -v "$cmd_name" >/dev/null 2>&1; then
+        colorecho "  ✓ $cmd_name already installed (pipx)"
+        return 0
+    fi
+
+    colorecho "  → Installing $cmd_name via pipx from Git ($git_url)"
+    
+    # Appliquer les variables d'environnement si fournies
+    if [ -n "$env_vars" ]; then
+        eval "export $env_vars"
+    fi
+    
+    pipx install "$git_url" || {
+        colorecho "  ✗ Warning: Failed to install $cmd_name via pipx from Git"
+        return 1
+    }
+
+    # Créer symlinks globaux si nécessaire
+    if [ -f "/root/.local/bin/$cmd_name" ] && [ ! -f "/usr/bin/$cmd_name" ]; then
+        ln -sf "/root/.local/bin/$cmd_name" "/usr/bin/$cmd_name" || true
+    fi
+}
+
+# Fonction spécialisée pour installer NetExec (gère Rust, env vars, alias)
+# Usage: install_netexec
+install_netexec() {
+    # Vérifier/installer Rust si nécessaire
+    if ! command -v rustc >/dev/null 2>&1; then
+        pacman -Sy --noconfirm && \
+        pacman -S --noconfirm --needed rust || {
+            colorecho "  ✗ Warning: Failed to install rust for NetExec"
+            return 1
+        }
+    fi
+
+    # Installer NetExec via pipx depuis GitHub
+    install_pipx_tool_git "netexec" "git+https://github.com/Pennyw0rth/NetExec" "PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1" || return 1
+    
+    # Créer symlink pour nxc (alias de netexec)
+    if [ -f "/root/.local/bin/netexec" ] && [ ! -f "/usr/bin/nxc" ]; then
+        ln -sf /root/.local/bin/netexec /usr/bin/nxc || true
+    fi
+    
+    # Créer des alias dans les shells (compatibilité)
+    if [ -f "/root/.zshrc" ] && ! grep -q "alias nxc=" /root/.zshrc; then
+        echo 'alias nxc="netexec"' >> /root/.zshrc || true
+    fi
+    if [ -f "/root/.bashrc" ] && ! grep -q "alias nxc=" /root/.bashrc; then
+        echo 'alias nxc="netexec"' >> /root/.bashrc || true
+    fi
+}
