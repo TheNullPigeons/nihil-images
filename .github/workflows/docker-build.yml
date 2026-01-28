@@ -26,9 +26,6 @@ jobs:
           - variant: base
             dockerfile: Dockerfile
             image_suffix: ""
-          - variant: active-directory
-            dockerfile: Dockerfile.ad
-            image_suffix: "-ad"
 
     steps:
       - name: Checkout repository
