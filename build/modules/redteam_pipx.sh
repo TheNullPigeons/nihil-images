@@ -80,7 +80,7 @@ install_pipx_tool_git() {
 
 # Fonction spécialisée pour installer NetExec (gère Rust, env vars, alias)
 # Usage: install_netexec
-install_netexec() {
+install_pipx_netexec() {
     # Vérifier/installer Rust si nécessaire
     if ! command -v rustc >/dev/null 2>&1; then
         pacman -Sy --noconfirm && \
