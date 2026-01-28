@@ -24,6 +24,11 @@ function package_base() {
     openssl \
     pkg-config \
     clang \
+    inetutils \
+    docker \
+    docker-compose \
+    python-pipx \
+    rust \
     && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm
@@ -195,16 +200,6 @@ function package_base() {
     colorecho "Synchronizing Nihil repository"
     pacman -Sy --noconfirm
 
-    # Installer les paquets système depuis packages.txt
-    if [ -f "/opt/nihil/packages.txt" ]; then
-        colorecho "Installing system packages from packages.txt"
-        while IFS= read -r package || [ -n "$package" ]; do
-            # Ignorer les lignes vides et les commentaires
-            [[ -z "$package" || "$package" =~ ^# ]] && continue
-            colorecho "Installing $package"
-            pacman -S --noconfirm --needed "$package" || colorecho "Warning: Failed to install $package"
-        done < "/opt/nihil/packages.txt"
-    fi
     
     # Installer TOUS les paquets du dépôt nihil
     colorecho "Listing all packages in Nihil repository"
