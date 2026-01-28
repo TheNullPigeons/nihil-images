@@ -23,8 +23,7 @@ RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh install_redteam_ad && \
     ./entrypoint.sh install_redteam_web && \
     ./entrypoint.sh install_redteam_network && \
-    ./entrypoint.sh install_redteam_credential && \
-    ./entrypoint.sh install_netexec
+    ./entrypoint.sh install_redteam_credential
 
 WORKDIR /workspace
 
