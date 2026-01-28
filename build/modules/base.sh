@@ -24,6 +24,8 @@ function package_base() {
     openssl \
     pkg-config \
     clang \
+    curl \
+    wget \
     inetutils \
     docker \
     docker-compose \
