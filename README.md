@@ -1,9 +1,44 @@
-## Construction de l'image Docker
+## Images Docker disponibles
 
-### Construire l'image
+Nihil fournit deux images Docker spécialisées :
+
+### Image de base (`base`)
+Image minimale avec les outils système de base :
+- Système Arch Linux configuré
+- zsh + oh-my-zsh
+- Outils CLI de base (vim, tmux, fzf, etc.)
+- Dépôts nihil et Chaotic-AUR configurés
+
+**Image GitHub Packages :** `ghcr.io/thenullpigeons/nihil-images:base` ou `ghcr.io/thenullpigeons/nihil-images:latest`
+
+### Image Active Directory (`active-directory`)
+Image spécialisée pour le pentest Active Directory :
+- Tout ce qui est dans l'image de base
+- Outils AD : bloodhound, certipy, ldapdomaindump, adidnsdump, netexec, rusthound-ce, etc.
+
+**Image GitHub Packages :** `ghcr.io/thenullpigeons/nihil-images-ad:active-directory` ou `ghcr.io/thenullpigeons/nihil-images-ad:latest`
+
+## Construction des images Docker
+
+### Construire l'image de base
 ```bash
 cd nihil-images
-docker build -t nihil:local .
+docker build -f Dockerfile -t nihil:base .
+```
+
+### Construire l'image Active Directory
+```bash
+cd nihil-images
+docker build -f Dockerfile.ad -t nihil:ad .
+```
+
+### Pull depuis GitHub Packages
+```bash
+# Image de base
+docker pull ghcr.io/thenullpigeons/nihil-images:base
+
+# Image Active Directory
+docker pull ghcr.io/thenullpigeons/nihil-images-ad:active-directory
 ```
 
 ### Installer les dépendances (hôte)
