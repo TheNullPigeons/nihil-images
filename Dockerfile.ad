@@ -15,9 +15,9 @@ LABEL org.nihil.variant="active-directory"
 
 COPY build /opt/nihil/build/
 COPY runtime /opt/nihil/runtime/
-COPY packages.txt /opt/nihil/
-
 WORKDIR /opt/nihil/build
+
+SHELL ["/bin/bash", "-c"]
 
 RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh package_base && \
