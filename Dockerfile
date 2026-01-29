@@ -16,6 +16,8 @@ COPY runtime /opt/nihil/runtime/
 
 WORKDIR /opt/nihil/build
 
+SHELL ["/bin/bash", "-c"]
+
 RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh package_base && \
     ./entrypoint.sh install_core_tools && \
