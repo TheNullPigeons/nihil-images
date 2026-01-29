@@ -90,19 +90,8 @@ install_pipx_netexec() {
         }
     fi
 
-    # Installer NetExec via pipx depuis GitHub
     install_pipx_tool_git "netexec" "git+https://github.com/Pennyw0rth/NetExec" "PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1" || return 1
-    
-    # Créer symlink pour nxc (alias de netexec)
-    if [ -f "/root/.local/bin/netexec" ] && [ ! -f "/usr/bin/nxc" ]; then
-        ln -sf /root/.local/bin/netexec /usr/bin/nxc || true
-    fi
-    
-    # Créer des alias dans les shells (compatibilité)
-    if [ -f "/root/.zshrc" ] && ! grep -q "alias nxc=" /root/.zshrc; then
-        echo 'alias nxc="netexec"' >> /root/.zshrc || true
-    fi
-    if [ -f "/root/.bashrc" ] && ! grep -q "alias nxc=" /root/.bashrc; then
-        echo 'alias nxc="netexec"' >> /root/.bashrc || true
-    fi
+    add-symlink "/root/.local/bin/netexec" "nxc"
+    add-aliases "netexec"
+    add-history "netexec"
 }
