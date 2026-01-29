@@ -146,6 +146,31 @@ function package_base() {
 
             # Configurer la couleur des autosuggestions en vert (comme demandé)
             echo "ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=green'" >> /root/.zshrc
+            
+            # Copier le thème custom Nihil
+            mkdir -p /root/.oh-my-zsh/custom/themes
+            if [ -f "/opt/nihil/build/config/zsh/themes/nihil.zsh-theme" ]; then
+                cp "/opt/nihil/build/config/zsh/themes/nihil.zsh-theme" /root/.oh-my-zsh/custom/themes/nihil.zsh-theme
+                # Changer le thème dans .zshrc
+                sed -i 's/^ZSH_THEME="robbyrussell"/ZSH_THEME="nihil"/' /root/.zshrc
+            fi
+
+            # Configurer les alias et l'historique
+            {
+                echo ""
+                echo "# Source custom aliases & history"
+                echo "[ -f /opt/nihil/config/aliases ] && source /opt/nihil/config/aliases"
+                echo "export HISTFILE=/root/.zsh_history"
+                echo "export HISTSIZE=10000"
+                echo "export SAVEHIST=10000"
+                echo "setopt SHARE_HISTORY"
+            } >> /root/.zshrc
+                echo "[ -f /opt/nihil/config/aliases ] && source /opt/nihil/config/aliases"
+                echo "export HISTFILE=/root/.zsh_history"
+                echo "export HISTSIZE=10000"
+                echo "export SAVEHIST=10000"
+                echo "setopt SHARE_HISTORY"
+            } >> /root/.zshrc
         fi
     fi
 
@@ -175,6 +200,9 @@ function package_base() {
     # Installer yay (AUR helper)
     colorecho "Installing yay AUR helper"
     if ! command -v yay >/dev/null 2>&1; then
+        # Configurer git pour accepter tous les répertoires (fix pour les volumes docker)
+        git config --global --add safe.directory '*'
+        
         # Utilisateur non-root pour makepkg
         useradd -m -s /bin/bash builder 2>/dev/null || true
         cd /tmp
