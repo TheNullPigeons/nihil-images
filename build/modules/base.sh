@@ -165,12 +165,6 @@ function package_base() {
                 echo "export SAVEHIST=10000"
                 echo "setopt SHARE_HISTORY"
             } >> /root/.zshrc
-                echo "[ -f /opt/nihil/config/aliases ] && source /opt/nihil/config/aliases"
-                echo "export HISTFILE=/root/.zsh_history"
-                echo "export HISTSIZE=10000"
-                echo "export SAVEHIST=10000"
-                echo "setopt SHARE_HISTORY"
-            } >> /root/.zshrc
         fi
     fi
 
