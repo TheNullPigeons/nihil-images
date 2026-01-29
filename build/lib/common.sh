@@ -46,6 +46,10 @@ function add-history() {
         # We append to /opt/nihil/config/history
         grep -vE "^\s*$" "$src_file" | tee -a /opt/nihil/config/history >/dev/null
         echo "" >> /opt/nihil/config/history
+    else
+        colorecho "Warning: History file $src_file not found"
+    fi
+}
 
 function add-symlink() {
     local target="$1"
