@@ -99,6 +99,14 @@ nihil-images/
 │   │   └── common.sh
 │   └── modules/
 │       └── base.sh
+│       └── core_tools.sh
+│       └── redteam_ad.sh
+│       └── redteam_cargo.sh
+│       └── redteam_credential.sh
+│       └── redteam_network.sh
+│       └── redteam_pacman.sh
+│       └── redteam_pipx.sh
+│       └── redteam_web.sh
 ├── runtime/
 │   └── entrypoint.sh
 └── packages.txt
