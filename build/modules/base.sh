@@ -113,8 +113,6 @@ function package_base() {
 
     if [ ! -f "/root/.zshrc" ] && [ -d "$ZSH" ]; then
         cp "$ZSH/templates/zshrc.zsh-template" /root/.zshrc || true
-        # Optionally set a nicer theme
-        sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/' /root/.zshrc 2>/dev/null || true
     fi
 
     # Plugins oh-my-zsh utiles pour le pentest
@@ -160,6 +158,8 @@ function package_base() {
                 echo ""
                 echo "# Source custom aliases & history"
                 echo "[ -f /opt/nihil/config/aliases ] && source /opt/nihil/config/aliases"
+                echo "# Source user custom resources"
+                echo "[ -f /opt/my-resources/setup/zsh/zshrc ] && source /opt/my-resources/setup/zsh/zshrc"
                 echo "export HISTFILE=/root/.zsh_history"
                 echo "export HISTSIZE=10000"
                 echo "export SAVEHIST=10000"
