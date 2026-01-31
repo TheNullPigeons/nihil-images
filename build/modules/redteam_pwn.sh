@@ -24,7 +24,6 @@ function install_redteam_pwn() {
     colorecho "  [pipx] Pwn / exploit tools:"
     install_pipx_tool "pwn" "pwntools"
     install_pipx_tool "ROPgadget" "ROPgadget"
-    install_pipx_tool "pwndbg" "pwndbg"
 
     colorecho "Pwn tools installation finished"
 }
