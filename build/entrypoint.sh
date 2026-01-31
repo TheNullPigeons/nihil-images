@@ -8,16 +8,17 @@ source lib/common.sh
 source modules/base.sh
 source modules/core_tools.sh
 
-# Registres d'installation (pipx/cargo/pacman)
+# Registres d'installation (pipx/cargo/pacman/aur)
 source modules/redteam_pipx.sh
 source modules/redteam_cargo.sh
 source modules/redteam_pacman.sh
+source modules/redteam_aur.sh
 
 # Modules par domaine
 source modules/redteam_ad.sh
 source modules/redteam_web.sh
 source modules/redteam_network.sh
-source modules/redteam_credential.sh
+source modules/redteam_pwn.sh
 
 if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"
