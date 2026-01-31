@@ -18,6 +18,7 @@ source modules/redteam_aur.sh
 source modules/redteam_ad.sh
 source modules/redteam_web.sh
 source modules/redteam_network.sh
+source modules/redteam_credential.sh
 source modules/redteam_pwn.sh
 
 if [[ $EUID -ne 0 ]]; then
