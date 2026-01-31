@@ -25,7 +25,7 @@ install_aur_tool() {
 
     colorecho "  → Installing $pkg_name via AUR (yay)"
     useradd -m -s /bin/bash builder 2>/dev/null || true
-    su builder -c "yay -S --noconfirm --answercode None $pkg_name" || {
+    su builder -c "yay -S --noconfirm $pkg_name" || {
         colorecho "  ✗ Warning: Failed to install $pkg_name via AUR"
         userdel -r builder 2>/dev/null || true
         return 1
