@@ -16,6 +16,7 @@ function install_redteam_pwn() {
     install_pacman_tool "radare2"
     install_pacman_tool "strace"
     install_pacman_tool "ltrace"
+    install_pacman_tool "cmake"
 
     colorecho "  [AUR] Pwn / reverse tools:"
     install_aur_tool "binaryninja-free" "binaryninja"
