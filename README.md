@@ -1,6 +1,6 @@
 ## Images Docker disponibles
 
-Nihil fournit deux images Docker spécialisées :
+Nihil fournit plusieurs images Docker spécialisées :
 
 ### Image de base (`base`)
 Image minimale avec les outils système de base :
@@ -18,6 +18,18 @@ Image spécialisée pour le pentest Active Directory :
 
 **Image GitHub Packages :** `ghcr.io/thenullpigeons/nihil-images-ad:active-directory` ou `ghcr.io/thenullpigeons/nihil-images-ad:latest`
 
+### Image Web (`web`)
+Image orientée tests Web / HTTP :
+- Base + outils web : sqlmap, gobuster, etc.
+
+**Image GitHub Packages :** `ghcr.io/thenullpigeons/nihil-images-web:web` ou `ghcr.io/thenullpigeons/nihil-images-web:latest`
+
+### Image Pwn (`pwn`)
+Image orientée exploitation binaire / reverse :
+- Base + radare2, strace, ltrace, pwntools, ROPgadget, pwndbg (gdb déjà dans core), etc.
+
+**Image GitHub Packages :** `ghcr.io/thenullpigeons/nihil-images-pwn:pwn` ou `ghcr.io/thenullpigeons/nihil-images-pwn:latest`
+
 ## Construction des images Docker
 
 ### Construire l'image de base
@@ -32,6 +44,18 @@ cd nihil-images
 docker build -f Dockerfile.ad -t nihil:ad .
 ```
 
+### Construire l'image Web
+```bash
+cd nihil-images
+docker build -f Dockerfile.web -t nihil:web .
+```
+
+### Construire l'image Pwn
+```bash
+cd nihil-images
+docker build -f Dockerfile.pwn -t nihil:pwn .
+```
+
 ### Pull depuis GitHub Packages
 ```bash
 # Image de base
@@ -39,6 +63,12 @@ docker pull ghcr.io/thenullpigeons/nihil-images:base
 
 # Image Active Directory
 docker pull ghcr.io/thenullpigeons/nihil-images-ad:active-directory
+
+# Image Web
+docker pull ghcr.io/thenullpigeons/nihil-images-web:web
+
+# Image Pwn
+docker pull ghcr.io/thenullpigeons/nihil-images-pwn:pwn
 ```
 
 ### Installer les dépendances (hôte)
@@ -106,7 +136,9 @@ nihil-images/
 │       └── redteam_network.sh
 │       └── redteam_pacman.sh
 │       └── redteam_pipx.sh
+│       └── redteam_aur.sh
 │       └── redteam_web.sh
+│       └── redteam_pwn.sh
 ├── runtime/
 │   └── entrypoint.sh
 └── packages.txt
