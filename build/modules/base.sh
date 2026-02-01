@@ -31,6 +31,8 @@ function package_base() {
     docker-compose \
     python-pipx \
     rust \
+    libxml2 \
+    libxslt \
     && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm
