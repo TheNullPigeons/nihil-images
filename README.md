@@ -137,6 +137,7 @@ nihil-images/
 │       └── redteam_pacman.sh
 │       └── redteam_pipx.sh
 │       └── redteam_aur.sh
+│       └── redteam_curl.sh
 │       └── redteam_web.sh
 │       └── redteam_pwn.sh
 ├── runtime/

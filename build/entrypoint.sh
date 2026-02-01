@@ -8,11 +8,12 @@ source lib/common.sh
 source modules/base.sh
 source modules/core_tools.sh
 
-# Registres d'installation (pipx/cargo/pacman/aur)
+# Registres d'installation (pipx/cargo/pacman/aur/curl)
 source modules/redteam_pipx.sh
 source modules/redteam_cargo.sh
 source modules/redteam_pacman.sh
 source modules/redteam_aur.sh
+source modules/redteam_curl.sh
 
 # Modules par domaine
 source modules/redteam_ad.sh
