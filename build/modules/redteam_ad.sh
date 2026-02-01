@@ -24,10 +24,10 @@ function install_redteam_ad() {
     install_pipx_tool "mitm6" "mitm6"
     install_pipx_tool "aclpwn" "aclpwn"
     install_pipx_tool "lsassy" "lsassy"
-    install_pipx_tool "donpapi" "donpapi"
+    install_pipx_tool_git "donpapi" "https://github.com/login-securite/DonPAPI.git"
     install_pipx_tool "coercer" "coercer"
     install_pipx_tool "pywhisker" "pywhisker"
-    install_pipx_tool "enum4linux-ng" "enum4linux-ng"
+    install_pipx_tool_git "enum4linux-ng" "https://github.com/cddmp/enum4linux-ng.git"
     install_pipx_tool "smbmap" "smbmap"
 
     colorecho "  [AUR] AD tools:"
