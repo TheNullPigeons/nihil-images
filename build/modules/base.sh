@@ -33,6 +33,8 @@ function package_base() {
     rust \
     libxml2 \
     libxslt \
+    python-lxml \
+    mariadb \
     && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm

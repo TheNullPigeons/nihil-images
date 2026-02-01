@@ -46,12 +46,15 @@ install_pipx_tool() {
 }
 
 # Fonction pour installer un outil via pipx depuis Git
-# Usage: install_pipx_tool_git "cmd_name" "git_url" [env_vars]
-# Exemple: install_pipx_tool_git "netexec" "git+https://github.com/Pennyw0rth/NetExec" "PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1"
+# Usage: install_pipx_tool_git "cmd_name" "url" [env_vars]
+# L'URL reçoit automatiquement le préfixe "git+" si absent (ex: https://... ou git@...)
+# Exemple: install_pipx_tool_git "netexec" "https://github.com/Pennyw0rth/NetExec" "PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1"
 install_pipx_tool_git() {
     local cmd_name="$1"
     local git_url="$2"
     local env_vars="${3:-}"  # Variables d'environnement optionnelles
+
+    [[ "$git_url" != git+* ]] && git_url="git+$git_url"
 
     _ensure_pipx || return 1
 
@@ -90,7 +93,7 @@ install_pipx_netexec() {
         }
     fi
 
-    install_pipx_tool_git "netexec" "git+https://github.com/Pennyw0rth/NetExec" "PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1" || return 1
+    install_pipx_tool_git "netexec" "https://github.com/Pennyw0rth/NetExec" "PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1" || return 1
     add-symlink "/root/.local/bin/netexec" "nxc"
     add-aliases "netexec"
     add-history "netexec"
