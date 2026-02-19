@@ -4,12 +4,13 @@
 # Inspiré Exegol : outils faciles à installer et impactants
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MODULE_DIR="$SCRIPT_DIR"
 source "${SCRIPT_DIR}/../lib/common.sh"
-source "${SCRIPT_DIR}/redteam_pipx.sh"
-source "${SCRIPT_DIR}/redteam_cargo.sh"
-source "${SCRIPT_DIR}/redteam_pacman.sh"
-source "${SCRIPT_DIR}/redteam_curl.sh"
-source "${SCRIPT_DIR}/redteam_git.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_pipx.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_cargo.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_pacman.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_curl.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_git.sh"
 
 function install_redteam_web() {
     colorecho "Installing Web red-team tools"

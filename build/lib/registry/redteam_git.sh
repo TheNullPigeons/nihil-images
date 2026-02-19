@@ -3,7 +3,7 @@
 # Supporte : pip requirements.txt, make, make install, ou toute commande shell.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../lib/common.sh"
+source "${SCRIPT_DIR}/../common.sh"
 
 GIT_INSTALL_DIR="${GIT_INSTALL_DIR:-/usr/local/share}"
 GIT_BIN_DIR="${GIT_BIN_DIR:-/root/.local/bin}"
@@ -193,6 +193,135 @@ EOF
     # Ajouter aliases et history si disponibles
     add-aliases "$tool_name"
     add-history "$tool_name"
+
+    colorecho "  ✓ $tool_name installed"
+    return 0
+}
+
+# Usage: install_git_tool_bundler "tool_name" "git_url" "entrypoints..." ["system_deps"] ["extra_gems"] ["bundle_args"] ["alias_name"]
+#
+#   tool_name     : nom de l'outil (pour le répertoire)
+#   git_url       : URL du dépôt Git
+#   entrypoints   : liste des scripts Ruby à wrapper (ex: "msfconsole msfvenom msfdb")
+#   system_deps   : (optionnel) dépendances système à installer via pacman, séparées par des espaces
+#   extra_gems    : (optionnel) gems supplémentaires à installer, séparées par des espaces
+#   bundle_args   : (optionnel) arguments supplémentaires pour bundle install (ex: "--without test development")
+#   alias_name    : (optionnel) nom à utiliser pour aliases/history (par défaut: tool_name)
+#
+# Exemple:
+#   install_git_tool_bundler "metasploit-framework" "https://github.com/rapid7/metasploit-framework.git" "msfconsole msfvenom msfdb" "ruby ruby-bundler postgresql libpcap" "rex rex-text timeout:0.4.1" "--without test development" "metasploit"
+install_git_tool_bundler() {
+    local tool_name="$1"
+    local git_url="$2"
+    local entrypoints="$3"
+    local system_deps="${4:-ruby ruby-bundler}"
+    local extra_gems="${5:-}"
+    local bundle_args="${6:-}"
+    local alias_name="${7:-$tool_name}"
+    local repo_dir="${GIT_INSTALL_DIR}/${tool_name}"
+
+    if [ -z "$entrypoints" ]; then
+        colorecho "  ✗ Error: install_git_tool_bundler requires at least one entrypoint"
+        return 1
+    fi
+
+    # Vérifier si déjà installé (vérifier le premier entrypoint)
+    local first_entrypoint=$(echo "$entrypoints" | awk '{print $1}')
+    if command -v "$first_entrypoint" >/dev/null 2>&1; then
+        colorecho "  ✓ $tool_name already installed (git+bundler)"
+        return 0
+    fi
+
+    colorecho "  → Installing $tool_name via Git with Bundler ($git_url)"
+
+    # Installer les dépendances système
+    if [ -n "$system_deps" ]; then
+        colorecho "  → Installing system dependencies"
+        pacman -Sy --noconfirm && \
+        pacman -S --noconfirm --needed $system_deps || {
+            colorecho "  ✗ Warning: Failed to install some system dependencies"
+            return 1
+        }
+    fi
+
+    # Cloner le repo
+    if [ ! -d "$repo_dir" ]; then
+        git clone --depth=1 "$git_url" "$repo_dir" || {
+            colorecho "  ✗ Warning: Failed to clone $tool_name"
+            return 1
+        }
+    fi
+
+    cd "$repo_dir" || return 1
+
+    # Configurer git pour les outils qui en ont besoin (ex: msfupdate)
+    git config user.name "nihil" || true
+    git config user.email "nihil@localhost" || true
+
+    # Installer bundler si pas déjà installé
+    if ! gem list -i bundler >/dev/null 2>&1; then
+        colorecho "  → Installing bundler"
+        gem install bundler --no-document || {
+            colorecho "  ✗ Warning: Failed to install bundler"
+            return 1
+        }
+    fi
+
+    # Installer les dépendances Ruby avec bundler
+    colorecho "  → Installing Ruby dependencies"
+    if [ -n "$bundle_args" ]; then
+        bundle install $bundle_args || {
+            colorecho "  ✗ Warning: Bundle install failed, trying without args"
+            bundle install || {
+                colorecho "  ✗ Warning: Failed to install Ruby dependencies"
+                return 1
+            }
+        }
+    else
+        bundle install || {
+            colorecho "  ✗ Warning: Failed to install Ruby dependencies"
+            return 1
+        }
+    fi
+
+    # Installer les gems supplémentaires si fournies
+    if [ -n "$extra_gems" ]; then
+        colorecho "  → Installing additional gems"
+        for gem_spec in $extra_gems; do
+            # Support pour "gem:version" (ex: "timeout:0.4.1")
+            if echo "$gem_spec" | grep -q ":"; then
+                local gem_name=$(echo "$gem_spec" | cut -d: -f1)
+                local gem_version=$(echo "$gem_spec" | cut -d: -f2)
+                gem install "$gem_name" --version "$gem_version" --no-document || true
+            else
+                gem install "$gem_spec" --no-document || true
+            fi
+        done
+    fi
+
+    # Configurer les permissions
+    chmod -R o+rx "$repo_dir" || true
+    chmod 444 "$repo_dir/.git/index" 2>/dev/null || true
+
+    # Créer les wrappers pour chaque entrypoint
+    mkdir -p "$GIT_BIN_DIR"
+    for entrypoint in $entrypoints; do
+        local cmd_name="$entrypoint"
+        local wrapper="${GIT_BIN_DIR}/${cmd_name}"
+        
+        # Créer le wrapper qui exécute bundle exec ruby depuis le repo
+        cat > "$wrapper" <<EOF
+#!/bin/sh
+cd "$repo_dir" || exit 1
+exec bundle exec ruby $entrypoint "\$@"
+EOF
+        chmod +x "$wrapper"
+        colorecho "  ✓ Created wrapper: $cmd_name"
+    done
+
+    # Ajouter aliases et history si disponibles (utiliser alias_name si fourni)
+    add-aliases "$alias_name"
+    add-history "$alias_name"
 
     colorecho "  ✓ $tool_name installed"
     return 0

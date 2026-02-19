@@ -4,13 +4,14 @@
 # Inspiré Exegol : outils faciles à installer (pipx) et impactants uniquement
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MODULE_DIR="$SCRIPT_DIR"
 source "${SCRIPT_DIR}/../lib/common.sh"
-source "${SCRIPT_DIR}/redteam_pipx.sh"
-source "${SCRIPT_DIR}/redteam_cargo.sh"
-source "${SCRIPT_DIR}/redteam_pacman.sh"
-source "${SCRIPT_DIR}/redteam_go.sh"
-source "${SCRIPT_DIR}/redteam_git.sh"
-source "${SCRIPT_DIR}/redteam_curl.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_pipx.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_cargo.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_pacman.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_go.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_git.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_curl.sh"
 
 function install_redteam_ad() {
     colorecho "Installing Active Directory red-team tools"
@@ -21,7 +22,7 @@ function install_redteam_ad() {
     install_pipx_tool "ldapdomaindump" "ldapdomaindump"
     install_pipx_tool "adidnsdump" "adidnsdump"
     install_pipx_tool "certipy" "certipy-ad"
-    install_pipx_tool "bloodyAD" "bloodyad"
+    install_pipx_tool "bloodyad" "bloodyad"
     install_pipx_tool "evil-winrm-py" "evil-winrm-py"
     install_pipx_netexec
     install_pipx_tool_git "impacket" "https://github.com/fortra/impacket.git"
@@ -49,11 +50,9 @@ function install_redteam_ad() {
     colorecho "  [go] AD tools:"
     install_go_tool "github.com/ropnop/kerbrute@latest"
 
-    colorecho "  [git+venv] AD tools:"
-    install_git_tool_venv "krbrelayx" "https://github.com/dirkjanm/krbrelayx.git" "krbrelayx.py addspn.py printerbug.py" "dnspython ldap3 impacket dsinternals" "yes"
-
     colorecho "  [git] AD tools:"
-    install_git_tool "gMSADumper.py" "https://github.com/micahvandeusen/gMSADumper.git" "gMSADumper.py"
+    install_git_tool_venv "krbrelayx" "https://github.com/dirkjanm/krbrelayx.git" "krbrelayx.py addspn.py printerbug.py" "dnspython ldap3 impacket dsinternals" "yes"
+    install_git_tool "gmsadumper" "https://github.com/micahvandeusen/gMSADumper.git" "gMSADumper.py"
 
     colorecho "  [download] AD tools:"
     install_tar_tool "powershell" \

@@ -4,12 +4,13 @@
 
 # Resolve path to lib/common.sh relative to this module file
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MODULE_DIR="$SCRIPT_DIR"
 source "${SCRIPT_DIR}/../lib/common.sh"
 
 # Sourcer les registres d'installation
-source "${SCRIPT_DIR}/redteam_pipx.sh"
-source "${SCRIPT_DIR}/redteam_cargo.sh"
-source "${SCRIPT_DIR}/redteam_pacman.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_pipx.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_cargo.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_pacman.sh"
 
 function install_redteam_network() {
     colorecho "Installing Network red-team tools"

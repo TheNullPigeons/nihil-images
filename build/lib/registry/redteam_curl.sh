@@ -4,7 +4,7 @@
 # - install_tar_tool : archive tar.gz/tar.xz avec support multi-architecture
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../lib/common.sh"
+source "${SCRIPT_DIR}/../common.sh"
 
 INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"
 
