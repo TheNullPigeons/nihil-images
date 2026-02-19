@@ -35,6 +35,7 @@ function package_base() {
     libxslt \
     python-lxml \
     mariadb \
+    libpcap \
     && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm
@@ -160,6 +161,8 @@ function package_base() {
             # Configurer les alias et l'historique
             {
                 echo ""
+                echo "# Add /root/.local/bin to PATH (pipx, user-installed tools)"
+                echo "export PATH=\"/root/.local/bin:\$PATH\""
                 echo "# Source custom aliases & history"
                 echo "[ -f /opt/nihil/config/aliases ] && source /opt/nihil/config/aliases"
                 echo "# Source user custom resources"
@@ -188,6 +191,25 @@ function package_base() {
                 echo ": 1735689600:0;$line" >> /root/.zsh_history
             fi
         done < "/opt/nihil/build/config/zsh_history"
+    fi
+
+    # Ajouter /root/.local/bin au PATH pour bash (via /etc/profile)
+    colorecho "Adding /root/.local/bin to system PATH"
+    if ! grep -q "/root/.local/bin" /etc/profile 2>/dev/null; then
+        {
+            echo ""
+            echo "# Add /root/.local/bin to PATH (pipx, user-installed tools)"
+            echo "export PATH=\"/root/.local/bin:\$PATH\""
+        } >> /etc/profile
+    fi
+
+    # Ajouter aussi dans /root/.bashrc pour bash interactif
+    if [ ! -f "/root/.bashrc" ] || ! grep -q "/root/.local/bin" /root/.bashrc 2>/dev/null; then
+        {
+            echo ""
+            echo "# Add /root/.local/bin to PATH (pipx, user-installed tools)"
+            echo "export PATH=\"/root/.local/bin:\$PATH\""
+        } >> /root/.bashrc
     fi
 
     # Try to set zsh as default shell for root (non bloquant)

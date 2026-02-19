@@ -43,6 +43,10 @@ install_pipx_tool() {
     if [ -f "/root/.local/bin/$cmd_name" ] && [ ! -f "/usr/bin/$cmd_name" ]; then
         ln -sf "/root/.local/bin/$cmd_name" "/usr/bin/$cmd_name" || true
     fi
+
+    # Ajouter aliases et history si disponibles
+    add-aliases "$cmd_name"
+    add-history "$cmd_name"
 }
 
 # Fonction pour installer un outil via pipx depuis Git
@@ -79,6 +83,10 @@ install_pipx_tool_git() {
     if [ -f "/root/.local/bin/$cmd_name" ] && [ ! -f "/usr/bin/$cmd_name" ]; then
         ln -sf "/root/.local/bin/$cmd_name" "/usr/bin/$cmd_name" || true
     fi
+
+    # Ajouter aliases et history si disponibles
+    add-aliases "$cmd_name"
+    add-history "$cmd_name"
 }
 
 # Fonction spécialisée pour installer NetExec (gère Rust, env vars, alias)
@@ -95,6 +103,5 @@ install_pipx_netexec() {
 
     install_pipx_tool_git "netexec" "https://github.com/Pennyw0rth/NetExec" "PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1" || return 1
     add-symlink "/root/.local/bin/netexec" "nxc"
-    add-aliases "netexec"
-    add-history "netexec"
+    # add-aliases et add-history sont déjà appelés par install_pipx_tool_git
 }

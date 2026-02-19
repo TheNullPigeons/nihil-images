@@ -18,9 +18,6 @@ function install_redteam_pwn() {
     install_pacman_tool "ltrace"
     install_pacman_tool "cmake"
 
-    colorecho "  [AUR] Pwn / reverse tools:"
-    install_aur_tool "binaryninja-free" "binaryninja"
-
     colorecho "  [pipx] Pwn / exploit tools:"
     install_pipx_tool "pwn" "pwntools"
     install_pipx_tool "ROPgadget" "ROPgadget"

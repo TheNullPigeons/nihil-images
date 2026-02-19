@@ -20,35 +20,48 @@ function criticalecho-noexit () {
 }
 
 function add-aliases() {
-    colorecho "Adding aliases for: $*"
     local src_file="/opt/nihil/build/config/aliases.d/$*"
     # Ensure destination directory exists
     mkdir -p /opt/nihil/config
     
     if [ -f "$src_file" ]; then
+        colorecho "Adding aliases for: $*"
         # Removing empty lines and trailing newline, adding one at the end
         # We append to a central aliases file in /opt/nihil/config/aliases
         grep -vE "^\s*$" "$src_file" | tee -a /opt/nihil/config/aliases >/dev/null
         # Ensure a newline at the end
         echo "" >> /opt/nihil/config/aliases
-    else
-        colorecho "Warning: Alias file $src_file not found"
     fi
+    # Silently skip if file doesn't exist (no warning needed)
 }
 
 function add-history() {
-    colorecho "Adding history commands for: $*"
     local src_file="/opt/nihil/build/config/history.d/$*"
     # Ensure destination directory exists
     mkdir -p /opt/nihil/config
 
     if [ -f "$src_file" ]; then
-        # We append to /opt/nihil/config/history
-        grep -vE "^\s*$" "$src_file" | tee -a /opt/nihil/config/history >/dev/null
-        echo "" >> /opt/nihil/config/history
-    else
-        colorecho "Warning: History file $src_file not found"
+        colorecho "Adding history commands for: $*"
+        # Injecter directement dans .zsh_history au format EXTENDED_HISTORY
+        # Format: : <timestamp>:0;<command>
+        # Utiliser un timestamp de base et incrémenter pour chaque commande
+        # Le compteur global permet d'éviter les collisions de timestamp
+        local base_timestamp="${ADD_HISTORY_BASE_TIMESTAMP:-1735689600}"
+        local counter_file="/opt/nihil/config/.history_counter"
+        local counter=$(cat "$counter_file" 2>/dev/null || echo "0")
+        
+        while IFS= read -r line; do
+            # Skip empty lines and comments
+            [[ -z "$line" || "$line" =~ ^# ]] && continue
+            # Format EXTENDED_HISTORY: : <timestamp>:<duration>;<command>
+            echo ": $((base_timestamp + counter)):0;$line" >> /root/.zsh_history
+            counter=$((counter + 1))
+        done < "$src_file"
+        
+        # Sauvegarder le compteur pour les prochains appels
+        echo "$counter" > "$counter_file"
     fi
+    # Silently skip if file doesn't exist (no warning needed)
 }
 
 function add-symlink() {
