@@ -17,6 +17,7 @@ function install_redteam_credential() {
     colorecho "  [pacman] Credential tools:"
     install_pacman_tool "binwalk"
     install_pacman_tool "john"
+    install_pacman_tool "hashcat"
 
     colorecho "  [AUR] Pwn / reverse tools:"
     install_aur_tool "seclists" "seclists"

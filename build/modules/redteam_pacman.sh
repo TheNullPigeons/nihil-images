@@ -24,6 +24,10 @@ install_pacman_tool() {
         colorecho "  ✗ Warning: Failed to install $pkg_name via pacman"
         return 1
     }
+
+    # Ajouter aliases et history si disponibles
+    add-aliases "$pkg_name"
+    add-history "$pkg_name"
 }
 
 # Fonction pour installer plusieurs outils pacman en une fois
