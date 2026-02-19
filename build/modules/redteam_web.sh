@@ -21,17 +21,17 @@ function install_redteam_web() {
 
     colorecho "  [pipx] Web fuzzers / scanners:"
     install_pipx_tool_git "wfuzz" "https://github.com/xmendez/wfuzz.git"
-    install_pipx_tool "arjun" "arjun"
-    install_pipx_tool "xsstrike" "xsstrike"
+    install_pipx_tool_git "arjun" "https://github.com/s0md3v/Arjun.git"
     install_pipx_tool "wafw00f" "wafw00f"
     install_pipx_tool_git "gopherus" "https://github.com/Esonhugh/Gopherus3.git"
-    install_pipx_tool "droopescan" "droopescan"
+    install_pipx_tool_git "droopescan" "https://github.com/SamJoan/droopescan.git"
     install_pipx_tool_git "cmsmap" "https://github.com/dionach/CMSmap.git"
     install_pipx_tool "patator" "patator"
 
     colorecho "  [git] Scripts (clone + requirements):"
     install_git_tool "ssrfmap" "https://github.com/swisskyrepo/SSRFmap.git" "ssrfmap.py"
     install_git_tool "jwt-tool" "https://github.com/ticarpi/jwt_tool.git" "jwt-tool.py"
+    install_git_tool "xsstrike" "https://github.com/s0md3v/XSStrike.git" "xsstrike.py"
 
     colorecho "  [cargo] Web fuzzer:"
     install_cargo_tool "feroxbuster"

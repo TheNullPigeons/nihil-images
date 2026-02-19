@@ -49,5 +49,10 @@ install_aur_tool() {
     rm -rf "$build_dir"
     rm -f "$SUDOERS_AUR"
     userdel -r builder 2>/dev/null || true
+
+    # Ajouter aliases et history si disponibles (utiliser check_cmd si différent de pkg_name)
+    add-aliases "$check_cmd"
+    add-history "$check_cmd"
+
     colorecho "  ✓ $pkg_name installed (AUR)"
 }

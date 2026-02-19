@@ -63,4 +63,8 @@ install_cargo_tool() {
     if [ -f "/root/.cargo/bin/$tool_name" ] && [ ! -f "/usr/bin/$tool_name" ]; then
         ln -sf "/root/.cargo/bin/$tool_name" "/usr/bin/$tool_name" || true
     fi
+
+    # Ajouter aliases et history si disponibles
+    add-aliases "$tool_name"
+    add-history "$tool_name"
 }

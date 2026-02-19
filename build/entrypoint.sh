@@ -14,6 +14,7 @@ source modules/redteam_cargo.sh
 source modules/redteam_pacman.sh
 source modules/redteam_aur.sh
 source modules/redteam_curl.sh
+source modules/redteam_go.sh
 
 # Modules par domaine
 source modules/redteam_ad.sh

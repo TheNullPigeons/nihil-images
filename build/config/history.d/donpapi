@@ -1,0 +1,1 @@
+DonPAPI collect -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -t "$TARGET"
