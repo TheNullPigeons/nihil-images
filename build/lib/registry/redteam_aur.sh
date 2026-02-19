@@ -3,7 +3,7 @@
 # builder exécute makepkg -s (qui appelle sudo pacman pour les deps) : sudoers NOPASSWD pour pacman
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../lib/common.sh"
+source "${SCRIPT_DIR}/../common.sh"
 
 AUR_BASE="https://aur.archlinux.org"
 SUDOERS_AUR="/etc/sudoers.d/builder-aur"

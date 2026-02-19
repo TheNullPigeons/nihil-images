@@ -3,7 +3,7 @@
 # Les fichiers par domaine (redteam_ad.sh, etc.) appellent install_go_tool
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../lib/common.sh"
+source "${SCRIPT_DIR}/../common.sh"
 
 GO_INSTALL_DIR="${GO_INSTALL_DIR:-/root/go}"
 GO_BIN_DIR="${GO_BIN_DIR:-$GO_INSTALL_DIR/bin}"

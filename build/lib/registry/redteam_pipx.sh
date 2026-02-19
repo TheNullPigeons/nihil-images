@@ -3,9 +3,9 @@
 # Ce fichier contient les fonctions génériques pour installer via pipx
 # Les fichiers par domaine (redteam_ad.sh, etc.) appellent ces fonctions
 
-# Resolve path to lib/common.sh relative to this module file
+# Resolve path to lib/common.sh relative to this registry file
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../lib/common.sh"
+source "${SCRIPT_DIR}/../common.sh"
 
 # Fonction pour s'assurer que pipx est installé
 _ensure_pipx() {

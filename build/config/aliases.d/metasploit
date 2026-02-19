@@ -1,0 +1,2 @@
+alias msf='msfconsole'
+alias msfv='msfvenom'

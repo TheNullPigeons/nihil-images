@@ -5,7 +5,7 @@
 
 # Resolve path to lib/common.sh relative to this module file
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../lib/common.sh"
+source "${SCRIPT_DIR}/../common.sh"
 
 # Fonction pour s'assurer que cargo est installé avec toutes les dépendances de build
 _ensure_cargo() {
