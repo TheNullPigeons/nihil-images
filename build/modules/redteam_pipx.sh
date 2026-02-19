@@ -20,16 +20,30 @@ _ensure_pipx() {
 }
 
 # Fonction générique pour installer un outil via pipx
-# Usage: install_pipx_tool "cmd_name" "package_name"
+# Usage: install_pipx_tool "cmd_name" "package_name" ["check_cmd"]
 # Exemple: install_pipx_tool "bloodhound" "bloodhound"
+# Exemple: install_pipx_tool "impacket" "impacket" "secretsdump"  # Pour impacket, vérifie secretsdump si le package n'est pas détectable
 install_pipx_tool() {
     local cmd_name="$1"
     local pkg_name="${2:-$cmd_name}"  # Si pkg_name non fourni, utilise cmd_name
+    local check_cmd="${3:-}"  # Commande optionnelle à vérifier si le package pipx n'est pas détectable
 
     _ensure_pipx || return 1
 
-    if command -v "$cmd_name" >/dev/null 2>&1; then
+    # Vérifier si le package est déjà installé via pipx
+    if pipx list 2>/dev/null | grep -q "^  $pkg_name "; then
         colorecho "  ✓ $cmd_name already installed (pipx)"
+        # Ajouter aliases et history même si déjà installé (au cas où les fichiers ont été ajoutés après)
+        add-aliases "$cmd_name"
+        add-history "$cmd_name"
+        return 0
+    fi
+
+    # Fallback: vérifier une commande spécifique si fournie (pour les packages qui créent plusieurs commandes)
+    if [ -n "$check_cmd" ] && command -v "$check_cmd" >/dev/null 2>&1; then
+        colorecho "  ✓ $cmd_name already installed (pipx, detected via $check_cmd)"
+        add-aliases "$cmd_name"
+        add-history "$cmd_name"
         return 0
     fi
 

@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../lib/common.sh"
 
 GIT_INSTALL_DIR="${GIT_INSTALL_DIR:-/usr/local/share}"
-GIT_BIN_DIR="${GIT_BIN_DIR:-/usr/local/bin}"
+GIT_BIN_DIR="${GIT_BIN_DIR:-/root/.local/bin}"
 
 # Usage: install_git_tool "cmd_name" "git_url" ["entrypoint"] ["install_cmd"] ["exclude_deps"]
 #
