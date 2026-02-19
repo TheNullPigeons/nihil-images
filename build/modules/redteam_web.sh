@@ -32,8 +32,6 @@ function install_redteam_web() {
     install_git_tool "jwt-tool" "https://github.com/ticarpi/jwt_tool.git" "jwt-tool.py"
     install_git_tool "xsstrike" "https://github.com/s0md3v/XSStrike.git" "xsstrike.py"
 
-    install_aur_tool "patator" "patator"
-
     colorecho "  [cargo] Web fuzzer:"
     install_cargo_tool "feroxbuster"
 
