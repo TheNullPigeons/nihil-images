@@ -8,7 +8,7 @@ source "${SCRIPT_DIR}/../lib/common.sh"
 GIT_INSTALL_DIR="${GIT_INSTALL_DIR:-/usr/local/share}"
 GIT_BIN_DIR="${GIT_BIN_DIR:-/usr/local/bin}"
 
-# Usage: install_git_tool "cmd_name" "git_url" ["entrypoint"] ["install_cmd"]
+# Usage: install_git_tool "cmd_name" "git_url" ["entrypoint"] ["install_cmd"] ["exclude_deps"]
 #
 #   cmd_name     : nom de la commande (dans PATH)
 #   git_url      : URL du dépôt Git
@@ -16,16 +16,19 @@ GIT_BIN_DIR="${GIT_BIN_DIR:-/usr/local/bin}"
 #                  Si vide et install_cmd fourni, on suppose que l'install met le binaire dans PATH.
 #   install_cmd  : (optionnel) commande à exécuter dans le repo après clone (ex: "make", "make install").
 #                  Si vide : pip install -r requirements.txt si le fichier existe.
+#   exclude_deps : (optionnel) pattern regex pour exclure des dépendances de requirements.txt
 #
 # Exemples:
 #   install_git_tool "ssrfmap" "https://github.com/swisskyrepo/SSRFmap.git" "ssrfmap.py"
 #   install_git_tool "outil_c" "https://github.com/..." "" "make && make install"
 #   install_git_tool "autre" "https://github.com/..." "bin/autre" "make"
+#   install_git_tool "patator" "https://github.com/..." "patator.py" "" "cx-oracle|cx_Oracle"
 install_git_tool() {
     local cmd_name="$1"
     local git_url="$2"
     local entrypoint="${3:-}"
     local install_cmd="${4:-}"
+    local exclude_deps="${5:-}"
     local repo_dir="${GIT_INSTALL_DIR}/${cmd_name}"
     local wrapper="${GIT_BIN_DIR}/${cmd_name}"
 
@@ -51,8 +54,15 @@ install_git_tool() {
     else
         # Comportement par défaut : pip -r requirements.txt si présent
         if [ -f "$repo_dir/requirements.txt" ]; then
-            python3 -m pip install --break-system-packages -r "$repo_dir/requirements.txt" --quiet 2>/dev/null || \
-                python3 -m pip install -r "$repo_dir/requirements.txt" --quiet 2>/dev/null || true
+            if [ -n "$exclude_deps" ]; then
+                # Exclure certaines dépendances (ex: cx-oracle pour patator)
+                grep -vE "$exclude_deps" "$repo_dir/requirements.txt" | \
+                    python3 -m pip install --break-system-packages -r /dev/stdin --quiet 2>/dev/null || \
+                    python3 -m pip install -r /dev/stdin --quiet 2>/dev/null || true
+            else
+                python3 -m pip install --break-system-packages -r "$repo_dir/requirements.txt" --quiet 2>/dev/null || \
+                    python3 -m pip install -r "$repo_dir/requirements.txt" --quiet 2>/dev/null || true
+            fi
         fi
     fi
 
