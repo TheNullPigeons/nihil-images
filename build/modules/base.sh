@@ -116,7 +116,12 @@ function package_base() {
         git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$ZSH" || colorecho "Failed to clone oh-my-zsh"
     fi
 
-    if [ ! -f "/root/.zshrc" ] && [ -d "$ZSH" ]; then
+    # Installer le fichier de configuration zsh par défaut
+    if [ -f "/opt/nihil/build/config/zsh/zshrc" ]; then
+        colorecho "Installing custom .zshrc from build config"
+        cp "/opt/nihil/build/config/zsh/zshrc" /root/.zshrc
+    elif [ ! -f "/root/.zshrc" ] && [ -d "$ZSH" ]; then
+        colorecho "Installing default oh-my-zsh .zshrc template"
         cp "$ZSH/templates/zshrc.zsh-template" /root/.zshrc || true
     fi
 
@@ -134,44 +139,13 @@ function package_base() {
                 colorecho "Warning: Failed to clone zsh-syntax-highlighting"
         fi
 
-        # Activer les plugins dans .zshrc si possible
-        if [ -f "/root/.zshrc" ]; then
-            # Si la ligne plugins=(...) existe déjà, on la remplace proprement
-            if grep -q "^plugins=" /root/.zshrc; then
-                sed -i 's/^plugins=.*/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' /root/.zshrc 2>/dev/null || true
-            else
-                # Sinon on ajoute une ligne plugins à la fin
-                {
-                    echo ""
-                    echo "plugins=(git zsh-autosuggestions zsh-syntax-highlighting)"
-                } >> /root/.zshrc
-            fi
-
-            # Configurer la couleur des autosuggestions en vert (comme demandé)
-            echo "ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=green'" >> /root/.zshrc
-            
-            # Copier le thème custom Nihil
-            mkdir -p /root/.oh-my-zsh/custom/themes
-            if [ -f "/opt/nihil/build/config/zsh/themes/nihil.zsh-theme" ]; then
-                cp "/opt/nihil/build/config/zsh/themes/nihil.zsh-theme" /root/.oh-my-zsh/custom/themes/nihil.zsh-theme
-                # Changer le thème dans .zshrc
-                sed -i 's/^ZSH_THEME="robbyrussell"/ZSH_THEME="nihil"/' /root/.zshrc
-            fi
-
-            # Configurer les alias et l'historique
-            {
-                echo ""
-                echo "# Add /root/.local/bin to PATH (pipx, user-installed tools)"
-                echo "export PATH=\"/root/.local/bin:\$PATH\""
-                echo "# Source custom aliases & history"
-                echo "[ -f /opt/nihil/config/aliases ] && source /opt/nihil/config/aliases"
-                echo "# Source user custom resources"
-                echo "[ -f /opt/my-resources/setup/zsh/zshrc ] && source /opt/my-resources/setup/zsh/zshrc"
-                echo "export HISTFILE=/root/.zsh_history"
-                echo "export HISTSIZE=10000"
-                echo "export SAVEHIST=10000"
-                echo "setopt SHARE_HISTORY"
-            } >> /root/.zshrc
+        # Copier le thème custom Nihil
+        mkdir -p /root/.oh-my-zsh/custom/themes
+        if [ -f "/opt/nihil/build/config/zsh/themes/nihil.zsh-theme" ]; then
+            colorecho "Installing custom Nihil theme"
+            cp "/opt/nihil/build/config/zsh/themes/nihil.zsh-theme" /root/.oh-my-zsh/custom/themes/nihil.zsh-theme
+        else
+            colorecho "Warning: Nihil theme not found"
         fi
     fi
 
