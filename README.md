@@ -14,7 +14,10 @@ Image minimale avec les outils système de base :
 ### Image Active Directory (`active-directory`)
 Image spécialisée pour le pentest Active Directory :
 - Tout ce qui est dans l'image de base
-- Outils AD : bloodhound, certipy, ldapdomaindump, adidnsdump, netexec, rusthound-ce, etc.
+- Outils AD : bloodhound, certipy, ldapdomaindump, adidnsdump, netexec, rusthound-ce, kerbrute, krbrelayx, PowerShell, etc.
+- Outils credentials : hashcat, john, pypykatz, donpapi
+- Outils réseau : responder, smbclient, openldap
+- Historique zsh pré-configuré avec commandes d'exemple pour tous les outils
 
 **Image GitHub Packages :** `ghcr.io/thenullpigeons/nihil-images-ad:active-directory` ou `ghcr.io/thenullpigeons/nihil-images-ad:latest`
 
@@ -118,27 +121,52 @@ sudo pacman -Syu --needed $(grep -vE '^\s*#' packages.txt | grep -vE '^\s*$')
 
 Contenu dans `packages.txt` (éditable selon vos besoins).
 
+## Fonctionnalités
+
+### Historique zsh pré-configuré
+Tous les outils installés ont leurs commandes d'exemple automatiquement ajoutées dans l'historique zsh. Utilisez `Ctrl+R` dans zsh pour rechercher et réutiliser les commandes.
+
+### Installation standardisée
+Les modules d'installation suivent un pattern standardisé :
+- `install_pipx_tool` : outils Python via pipx
+- `install_cargo_tool` : outils Rust via cargo
+- `install_go_tool` : outils Go via go install
+- `install_git_tool` : outils depuis Git
+- `install_git_tool_venv` : outils Git avec venv Python
+- `install_tar_tool` : outils depuis archives tar.gz (multi-arch)
+- `install_pacman_tool` : paquets Arch Linux
+- `install_aur_tool` : paquets AUR
+
+Toutes ces fonctions ajoutent automatiquement les aliases et l'historique si les fichiers existent dans `build/config/aliases.d/` et `build/config/history.d/`.
+
 ## Structure du projet
 
 ```
 nihil-images/
 ├── Dockerfile
+├── Dockerfile.ad
+├── Dockerfile.web
 ├── build/
 │   ├── entrypoint.sh
 │   ├── lib/
 │   │   └── common.sh
+│   ├── config/
+│   │   ├── aliases.d/
+│   │   └── history.d/
 │   └── modules/
-│       └── base.sh
-│       └── core_tools.sh
-│       └── redteam_ad.sh
-│       └── redteam_cargo.sh
-│       └── redteam_credential.sh
-│       └── redteam_network.sh
-│       └── redteam_pacman.sh
-│       └── redteam_pipx.sh
-│       └── redteam_aur.sh
-│       └── redteam_curl.sh
-│       └── redteam_web.sh
+│       ├── base.sh
+│       ├── core_tools.sh
+│       ├── redteam_ad.sh
+│       ├── redteam_cargo.sh
+│       ├── redteam_credential.sh
+│       ├── redteam_network.sh
+│       ├── redteam_pacman.sh
+│       ├── redteam_pipx.sh
+│       ├── redteam_aur.sh
+│       ├── redteam_curl.sh
+│       ├── redteam_git.sh
+│       ├── redteam_go.sh
+│       ├── redteam_web.sh
 │       └── redteam_pwn.sh
 ├── runtime/
 │   └── entrypoint.sh
