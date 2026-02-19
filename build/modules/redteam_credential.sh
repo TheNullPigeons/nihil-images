@@ -3,10 +3,11 @@
 # Ce module installe les outils credentials en appelant les registres (pipx/cargo/pacman)
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MODULE_DIR="$SCRIPT_DIR"
 source "${SCRIPT_DIR}/../lib/common.sh"
-source "${SCRIPT_DIR}/redteam_pipx.sh"
-source "${SCRIPT_DIR}/redteam_cargo.sh"
-source "${SCRIPT_DIR}/redteam_pacman.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_pipx.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_cargo.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_pacman.sh"
 
 function install_redteam_credential() {
     colorecho "Installing Credential red-team tools"

