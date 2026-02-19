@@ -160,4 +160,3 @@ jobs:
             TAG=${{ github.ref_name }}
             VERSION=${{ github.ref_name }}
             BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
-            

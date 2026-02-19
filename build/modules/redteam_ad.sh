@@ -17,13 +17,14 @@ function install_redteam_ad() {
 
     colorecho "  [pipx] AD tools:"
     install_pipx_tool "bloodhound" "bloodhound"
+    install_pipx_tool "bloodhound-ce-python" "bloodhound-ce"
     install_pipx_tool "ldapdomaindump" "ldapdomaindump"
     install_pipx_tool "adidnsdump" "adidnsdump"
     install_pipx_tool "certipy" "certipy-ad"
     install_pipx_tool "bloodyAD" "bloodyad"
     install_pipx_tool "evil-winrm-py" "evil-winrm-py"
     install_pipx_netexec
-    install_pipx_tool "impacket-secretsdump" "impacket"
+    install_pipx_tool_git "impacket" "https://github.com/fortra/impacket.git"
     install_pipx_tool "mitm6" "mitm6"
     install_pipx_tool "aclpwn" "aclpwn"
     install_pipx_tool "lsassy" "lsassy"
@@ -50,6 +51,9 @@ function install_redteam_ad() {
 
     colorecho "  [git+venv] AD tools:"
     install_git_tool_venv "krbrelayx" "https://github.com/dirkjanm/krbrelayx.git" "krbrelayx.py addspn.py printerbug.py" "dnspython ldap3 impacket dsinternals" "yes"
+
+    colorecho "  [git] AD tools:"
+    install_git_tool "gMSADumper.py" "https://github.com/micahvandeusen/gMSADumper.git" "gMSADumper.py"
 
     colorecho "  [download] AD tools:"
     install_tar_tool "powershell" \

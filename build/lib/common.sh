@@ -50,6 +50,9 @@ function add-history() {
         local counter_file="/opt/nihil/config/.history_counter"
         local counter=$(cat "$counter_file" 2>/dev/null || echo "0")
         
+        # S'assurer que .zsh_history existe
+        touch /root/.zsh_history
+        
         while IFS= read -r line; do
             # Skip empty lines and comments
             [[ -z "$line" || "$line" =~ ^# ]] && continue
@@ -60,8 +63,10 @@ function add-history() {
         
         # Sauvegarder le compteur pour les prochains appels
         echo "$counter" > "$counter_file"
+    else
+        # Debug: afficher si le fichier n'existe pas (pour diagnostiquer)
+        colorecho "History file not found: $src_file (skipping silently)"
     fi
-    # Silently skip if file doesn't exist (no warning needed)
 }
 
 function add-symlink() {
