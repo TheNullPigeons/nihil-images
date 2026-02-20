@@ -8,6 +8,54 @@ source "${SCRIPT_DIR}/../common.sh"
 GIT_INSTALL_DIR="${GIT_INSTALL_DIR:-/usr/local/share}"
 GIT_BIN_DIR="${GIT_BIN_DIR:-/root/.local/bin}"
 
+# Usage: install_git_tool_symlink "install_dir" "git_url" "script_name" ["cmd_name"] ["alias_name"]
+#
+#   install_dir  : chemin complet du clone (ex: /opt/tools/exploitdb)
+#   git_url      : URL du dépôt Git
+#   script_name  : nom du script exécutable à la racine du repo (ex: searchsploit)
+#   cmd_name     : (optionnel) nom dans le PATH, défaut = script_name
+#   alias_name   : (optionnel) nom pour aliases/history, défaut = cmd_name
+#
+# Pas de wrapper : symlink direct du script (pour outils qui utilisent des chemins relatifs au repo).
+# Exemple: install_git_tool_symlink "/opt/tools/exploitdb" "https://gitlab.com/exploit-database/exploitdb.git" "searchsploit"
+install_git_tool_symlink() {
+    local install_dir="$1"
+    local git_url="$2"
+    local script_name="$3"
+    local cmd_name="${4:-$script_name}"
+    local alias_name="${5:-$cmd_name}"
+    local script_path="$install_dir/$script_name"
+
+    if command -v "$cmd_name" >/dev/null 2>&1; then
+        colorecho "  ✓ $cmd_name already installed (git)"
+        add-aliases "$alias_name"
+        add-history "$alias_name"
+        return 0
+    fi
+
+    colorecho "  → Installing $cmd_name via Git ($git_url)"
+    mkdir -p "$(dirname "$install_dir")"
+    if [ ! -d "$install_dir" ]; then
+        git clone --depth 1 "$git_url" "$install_dir" || {
+            colorecho "  ✗ Failed to clone $(basename "$install_dir")"
+            return 1
+        }
+    fi
+
+    if [ ! -f "$script_path" ]; then
+        colorecho "  ✗ Script $script_name not found in $install_dir"
+        return 1
+    fi
+
+    mkdir -p "$GIT_BIN_DIR"
+    ln -sf "$script_path" "$GIT_BIN_DIR/$cmd_name"
+
+    add-aliases "$alias_name"
+    add-history "$alias_name"
+    colorecho "  ✓ $cmd_name installed"
+    return 0
+}
+
 # Usage: install_git_tool "cmd_name" "git_url" ["entrypoint"] ["install_cmd"] ["exclude_deps"]
 #
 #   cmd_name     : nom de la commande (dans PATH)
