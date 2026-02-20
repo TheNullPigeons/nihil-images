@@ -1,0 +1,5 @@
+searchsploit --help
+searchsploit apache
+searchsploit -t windows remote
+searchsploit -w CVE-2021-44228
+searchsploit -m 12345.py

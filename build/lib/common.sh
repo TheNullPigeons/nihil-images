@@ -53,11 +53,17 @@ function add-history() {
         # S'assurer que .zsh_history existe
         touch /root/.zsh_history
         
-        while IFS= read -r line; do
+        while IFS= read -r line || [[ -n "$line" ]]; do
+            # Supprimer \r (fins de ligne Windows) pour éviter décalage du curseur au rappel
+            line="${line//$'\r'/}"
+            # Nettoyer espaces en début et fin pour éviter commandes modifiées au rappel
+            line="${line#"${line%%[![:space:]]*}"}"
+            line="${line%"${line##*[![:space:]]}"}"
             # Skip empty lines and comments
             [[ -z "$line" || "$line" =~ ^# ]] && continue
             # Format EXTENDED_HISTORY: : <timestamp>:<duration>;<command>
-            echo ": $((base_timestamp + counter)):0;$line" >> /root/.zsh_history
+            # printf '%s\n' pour éviter interprétation de % ou \ dans la commande
+            printf '%s\n' ": $((base_timestamp + counter)):0;$line" >> /root/.zsh_history
             counter=$((counter + 1))
         done < "$src_file"
         
