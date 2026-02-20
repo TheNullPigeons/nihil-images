@@ -9,3 +9,4 @@ hex2sid --mssql 10.129.242.173 -u "$USER" -P "$PASSWORD"  -f sids.txt --rid-brut
 hex2sid --mssql 10.129.242.173 -u "$USER" -P "$PASSWORD"  -f sids.txt --rid-brute
 forward-shell -u http://"$IP":"$PORT"/ --upgrade
 asciinema play logs/
+export KRB5CCNAME=$PWD/$.ccache

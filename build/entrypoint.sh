@@ -24,6 +24,7 @@ source modules/redteam_network.sh
 source modules/redteam_credential.sh
 source modules/redteam_pwn.sh
 source modules/redteam_c2.sh
+source modules/redteam_misc.sh
 
 if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"
