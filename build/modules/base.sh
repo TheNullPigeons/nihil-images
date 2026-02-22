@@ -36,6 +36,7 @@ function package_base() {
     python-lxml \
     mariadb \
     libpcap \
+    libfaketime \
     && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm
@@ -245,4 +246,3 @@ function package_base() {
     
     colorecho "Base packages installed"
 }
-

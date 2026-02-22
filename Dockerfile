@@ -13,6 +13,8 @@ LABEL org.nihil.app="Nihil"
 
 COPY build /opt/nihil/build/
 COPY runtime /opt/nihil/runtime/
+RUN chmod +x /opt/nihil/runtime/entrypoint.sh /opt/nihil/runtime/load_my_resources.sh
+
 
 WORKDIR /opt/nihil/build
 
