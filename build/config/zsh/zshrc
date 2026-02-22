@@ -68,7 +68,7 @@ ZSH_THEME="nihil"
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 
 # Configurer la couleur des autosuggestions en vert
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=green'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=blue'
 
 source $ZSH/oh-my-zsh.sh
 

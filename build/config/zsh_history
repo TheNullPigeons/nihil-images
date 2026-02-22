@@ -10,3 +10,4 @@ hex2sid --mssql 10.129.242.173 -u "$USER" -P "$PASSWORD"  -f sids.txt --rid-brut
 forward-shell -u http://"$IP":"$PORT"/ --upgrade
 asciinema play logs/
 export KRB5CCNAME=$PWD/$.ccache
+faketime "$(rdate -n $IP -p | awk '{print $2, $3, $4}' | date -f - "+%Y-%m-%d %H:%M:%S")" zsh

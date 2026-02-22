@@ -83,6 +83,11 @@ function install_metasploit() {
     return 0
 }
 
+function install_silverc2() {
+    colorecho "  → Installing silverC2 (Sliver)"
+    curl https://sliver.sh/install | sudo bash
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -92,6 +97,7 @@ function install_redteam_c2() {
 
     colorecho "  [git] C2 tools:"
     install_metasploit
+    #install_silverc2
 
     colorecho "Command & Control tools installation finished"
 }
