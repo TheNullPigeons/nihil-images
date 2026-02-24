@@ -27,6 +27,7 @@ function package_base() {
     curl \
     wget \
     inetutils \
+    openvpn \
     docker \
     docker-compose \
     python-pipx \

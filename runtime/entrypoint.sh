@@ -18,6 +18,19 @@ deploy_my_resources() {
 
 run_default() {
     deploy_my_resources
+
+    # VPN: if NIHIL_VPN=1, config is at /opt/nihil/vpn/client.ovpn; start OpenVPN then shell; VPN stops when container exits
+    if [ "${NIHIL_VPN:-0}" = "1" ]; then
+        if [ -f /opt/nihil/vpn/client.ovpn ] && command -v openvpn > /dev/null 2>&1; then
+            echo "[nihil] Starting VPN (/opt/nihil/vpn/client.ovpn)..."
+            openvpn --config /opt/nihil/vpn/client.ovpn --daemon
+            sleep 2
+        else
+            [ ! -f /opt/nihil/vpn/client.ovpn ] && echo "[nihil] VPN requested but /opt/nihil/vpn/client.ovpn not found"
+            command -v openvpn > /dev/null 2>&1 || echo "[nihil] VPN requested but openvpn not installed"
+        fi
+    fi
+
     # Si zsh est disponible, on le lance directement
     if command -v zsh > /dev/null 2>&1; then
         exec zsh

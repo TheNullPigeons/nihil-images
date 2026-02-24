@@ -1,0 +1,3 @@
+smbmap -H "$TARGET"
+smbmap -H "$TARGET" -u guest
+smbmap -H "$TARGET" -u "$USER" -p "$PASSWORD"
