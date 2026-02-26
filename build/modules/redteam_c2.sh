@@ -84,8 +84,13 @@ function install_metasploit() {
 }
 
 function install_silverc2() {
-    colorecho "  → Installing silverC2 (Sliver)"
-    curl https://sliver.sh/install | sudo bash
+    colorecho "  → Installing Sliver C2 (server + client)"
+    local installer="${MODULE_DIR}/../lib/installers/sliver_install.sh"
+    if [ -x "$installer" ]; then
+        bash "$installer" || colorecho "  ✗ Warning: Sliver installation failed"
+    else
+        colorecho "  ✗ Warning: sliver_install.sh not found; skipping Sliver installation"
+    fi
 }
 
 # ---------------------------------------------------------------------------
@@ -97,7 +102,7 @@ function install_redteam_c2() {
 
     colorecho "  [git] C2 tools:"
     install_metasploit
-    #install_silverc2
+    install_silverc2
 
     colorecho "Command & Control tools installation finished"
 }
