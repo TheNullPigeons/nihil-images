@@ -12,12 +12,25 @@ LOAD_SCRIPT="/opt/nihil/runtime/load_my_resources.sh"
 deploy_my_resources() {
     if [[ -f "$LOAD_SCRIPT" && ! -f "$LOCKFILE" ]]; then
         bash "$LOAD_SCRIPT"
-        touch "$LOCKFILE"
+        # Create lockfile only if the parent directory exists, to avoid failures
+        # when my-resources volume is intentionally disabled.
+        if [[ -d "$(dirname "$LOCKFILE")" ]]; then
+            touch "$LOCKFILE"
+        fi
     fi
 }
 
 run_default() {
     deploy_my_resources
+
+    # Optional browser-based UI (VNC + noVNC) for this session only.
+    if [ "${NIHIL_BROWSER_UI:-0}" = "1" ]; then
+        if [ -x /opt/nihil/runtime/browser_ui.sh ]; then
+            /opt/nihil/runtime/browser_ui.sh >/tmp/nihil_browser_ui_boot.log 2>&1 &
+        else
+            echo "[NIHIL] browser-ui requested but /opt/nihil/runtime/browser_ui.sh is missing"
+        fi
+    fi
 
     # VPN: if NIHIL_VPN=1, config is at /opt/nihil/vpn/client.ovpn; start OpenVPN then shell; VPN stops when container exits
     if [ "${NIHIL_VPN:-0}" = "1" ]; then
