@@ -59,11 +59,6 @@ install_browser_ui_deps() {
         echo "[NIHIL] Fetching noVNC..."
         git clone --depth=1 https://github.com/novnc/noVNC.git "$NOVNC_DIR" >/tmp/nihil_novnc.log 2>&1 || true
     fi
-    if [[ -d "$NOVNC_DIR" && ! -f "$NOVNC_DIR/index.html" ]]; then
-        printf '%s\n' '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Nihil</title>' \
-          '<meta http-equiv="refresh" content="0; url=vnc_lite.html?autoconnect=1&resize=scale"></head>' \
-          '<body><p>Redirecting...</p></body></html>' > "$NOVNC_DIR/index.html"
-    fi
 
     # Panel XFCE: barre en haut (menu + horloge) + barre en bas (docklike uniquement)
     mkdir -p "$XFCE_CONF" "$XFCE_PANEL_CONF"
@@ -230,20 +225,63 @@ start_browser_ui() {
         [[ -f /usr/share/backgrounds/xfce/xfce-x.svg ]] && cp -f /opt/nihil/runtime/wallpaper.png /usr/share/backgrounds/xfce/xfce-x.svg
     fi
 
-    # XFCE4 (panel + docklike)
+    # Mot de passe de session (affiché sur la page de connexion HTML + récap wrapper)
+    VNC_PASSWORD_FILE="/tmp/nihil_vnc_password"
+    if ! pgrep -x x11vnc >/dev/null 2>&1; then
+        PASSWORD="${NIHIL_BROWSER_UI_PASSWORD:-$(openssl rand -base64 12)}"
+        echo "$PASSWORD" > "$VNC_PASSWORD_FILE"
+        echo "$PASSWORD" > /opt/nihil/.session_password
+        chmod 600 "$VNC_PASSWORD_FILE" /opt/nihil/.session_password
+        sync
+        x11vnc -display :1 -rfbport 5901 -nopw -forever -shared >/tmp/nihil_x11vnc.log 2>&1 &
+    fi
+
+    # Page de connexion HTML (comme Exegol) : affiche login:mdp + bouton vers le desktop (pas de tk)
+    if [[ -d "$NOVNC_DIR" ]] && [[ -f "$VNC_PASSWORD_FILE" ]]; then
+        PASSWORD=$(cat "$VNC_PASSWORD_FILE")
+        PASSWORD_HTML=$(printf '%s' "$PASSWORD" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g')
+        cat > "$NOVNC_DIR/index.html" << INDEXEOF
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nihil — Connexion</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #1a1a1a; color: #e0e0e0; font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; }
+    .card { background: #252525; padding: 2rem 2.5rem; border-radius: 8px; text-align: center; min-width: 320px; }
+    h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    .sub { color: #a0a0a0; margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: 0.75rem 0; padding: 0.5rem 0; border-bottom: 1px solid #333; }
+    .label { color: #a0a0a0; }
+    .value { font-family: monospace; font-size: 0.95rem; word-break: break-all; }
+    a.btn { display: inline-block; margin-top: 1.5rem; padding: 0.6rem 1.5rem; background: #3d6ba3; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 500; }
+    a.btn:hover { background: #4a7ab8; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Nihil</h1>
+    <p class="sub">Connexion à la session</p>
+    <div class="row"><span class="label">Utilisateur</span><span class="value">root</span></div>
+    <div class="row"><span class="label">Mot de passe</span><span class="value">${PASSWORD_HTML}</span></div>
+    <a href="vnc_lite.html?autoconnect=1&amp;resize=scale" class="btn">Ouvrir le bureau</a>
+  </div>
+</body>
+</html>
+INDEXEOF
+    fi
+
+    # XFCE4 (panel + docklike) — démarrage direct, pas de greeter tk
     if ! pgrep -x xfce4-session >/dev/null 2>&1; then
         startxfce4 >/tmp/nihil_xfce.log 2>&1 &
         sleep 5
     fi
 
-    # x11vnc → connexion stable (pas de "connection closed")
-    if ! pgrep -x x11vnc >/dev/null 2>&1; then
-        x11vnc -display :1 -rfbport 5901 -nopw -forever -shared >/tmp/nihil_x11vnc.log 2>&1 &
-    fi
-
     if command -v websockify >/dev/null 2>&1 && [[ -d "$NOVNC_DIR" ]]; then
         websockify --web "$NOVNC_DIR" "$PORT" localhost:5901 >/tmp/nihil_websockify_ui.log 2>&1 &
-        echo "[NIHIL] Browser UI (XFCE + dock) on port $PORT (noVNC)."
+        echo "[NIHIL] Browser UI on port $PORT (noVNC)."
     else
         echo "[NIHIL] browser-ui: websockify or noVNC missing."
     fi
