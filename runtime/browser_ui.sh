@@ -266,7 +266,7 @@ start_browser_ui() {
     <div class="row"><span class="label">Utilisateur</span><span class="value">root</span></div>
     <div class="row"><span class="label">Mot de passe</span><span class="value">— à saisir —</span></div>
     <p class="hint">Le mot de passe a été affiché dans le terminal au démarrage du conteneur (récap « Session (browser) »).</p>
-    <a href="vnc_lite.html?autoconnect=1&amp;resize=scale" class="btn">Ouvrir le bureau</a>
+    <a href="vnc.html?autoconnect=1&amp;resize=scale" class="btn">Ouvrir le bureau</a>
   </div>
 </body>
 </html>
