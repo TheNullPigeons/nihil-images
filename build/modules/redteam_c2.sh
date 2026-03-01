@@ -85,7 +85,7 @@ function install_metasploit() {
 
 function install_silverc2() {
     colorecho "  → Installing Sliver C2 (server + client)"
-    local installer="${MODULE_DIR}/../lib/installers/sliver_install.sh"
+    local installer="${MODULE_DIR}/../lib/installers/sliver/sliver_install.sh"
     if [ -x "$installer" ]; then
         bash "$installer" || colorecho "  ✗ Warning: Sliver installation failed"
     else
