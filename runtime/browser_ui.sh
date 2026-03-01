@@ -236,11 +236,9 @@ start_browser_ui() {
         x11vnc -display :1 -rfbport 5901 -nopw -forever -shared >/tmp/nihil_x11vnc.log 2>&1 &
     fi
 
-    # Page de connexion HTML (comme Exegol) : affiche login:mdp + bouton vers le desktop (pas de tk)
-    if [[ -d "$NOVNC_DIR" ]] && [[ -f "$VNC_PASSWORD_FILE" ]]; then
-        PASSWORD=$(cat "$VNC_PASSWORD_FILE")
-        PASSWORD_HTML=$(printf '%s' "$PASSWORD" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g')
-        cat > "$NOVNC_DIR/index.html" << INDEXEOF
+    # Page de connexion HTML : login affiché, mot de passe à saisir par l'utilisateur (voir récap CLI)
+    if [[ -d "$NOVNC_DIR" ]]; then
+        cat > "$NOVNC_DIR/index.html" << 'INDEXEOF'
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -255,7 +253,8 @@ start_browser_ui() {
     .sub { color: #a0a0a0; margin-bottom: 1.5rem; font-size: 0.95rem; }
     .row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: 0.75rem 0; padding: 0.5rem 0; border-bottom: 1px solid #333; }
     .label { color: #a0a0a0; }
-    .value { font-family: monospace; font-size: 0.95rem; word-break: break-all; }
+    .value { font-family: monospace; font-size: 0.95rem; }
+    .hint { color: #808080; font-size: 0.85rem; margin-top: 0.5rem; }
     a.btn { display: inline-block; margin-top: 1.5rem; padding: 0.6rem 1.5rem; background: #3d6ba3; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 500; }
     a.btn:hover { background: #4a7ab8; }
   </style>
@@ -265,7 +264,8 @@ start_browser_ui() {
     <h1>Nihil</h1>
     <p class="sub">Connexion à la session</p>
     <div class="row"><span class="label">Utilisateur</span><span class="value">root</span></div>
-    <div class="row"><span class="label">Mot de passe</span><span class="value">${PASSWORD_HTML}</span></div>
+    <div class="row"><span class="label">Mot de passe</span><span class="value">— à saisir —</span></div>
+    <p class="hint">Le mot de passe a été affiché dans le terminal au démarrage du conteneur (récap « Session (browser) »).</p>
     <a href="vnc_lite.html?autoconnect=1&amp;resize=scale" class="btn">Ouvrir le bureau</a>
   </div>
 </body>
