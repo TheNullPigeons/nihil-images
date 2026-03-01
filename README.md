@@ -38,7 +38,8 @@ Image orientée exploitation binaire / reverse :
 ### Construire l'image de base
 ```bash
 cd nihil-images
-docker build -f Dockerfile -t nihil:base .
+# Les deux tags permettent d'utiliser l'image avec le CLI nihil (ghcr.io/...) tout en garder nihil:base
+docker build -f Dockerfile -t nihil:base -t ghcr.io/thenullpigeons/nihil-images:latest .
 ```
 
 ### Construire l'image Active Directory
@@ -53,12 +54,6 @@ cd nihil-images
 docker build -f Dockerfile.web -t nihil:web .
 ```
 
-### Construire l'image Pwn
-```bash
-cd nihil-images
-docker build -f Dockerfile.pwn -t nihil:pwn .
-```
-
 ### Pull depuis GitHub Packages
 ```bash
 # Image de base
@@ -69,9 +64,6 @@ docker pull ghcr.io/thenullpigeons/nihil-images-ad:active-directory
 
 # Image Web
 docker pull ghcr.io/thenullpigeons/nihil-images-web:web
-
-# Image Pwn
-docker pull ghcr.io/thenullpigeons/nihil-images-pwn:pwn
 ```
 
 ### Installer les dépendances (hôte)
