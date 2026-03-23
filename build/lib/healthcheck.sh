@@ -45,7 +45,7 @@ for tool in module:
     cmd = tool.get('cmd') or ''
     check_path = tool.get('check_path') or ''
     name = tool['name']
-    print(f'{name}\t{cmd}\t{check_path}')
+    print(f'{name}|{cmd}|{check_path}')
 " 2>/dev/null)
 
         if [ -z "$tools_data" ]; then
@@ -54,7 +54,10 @@ for tool in module:
 
         colorecho "[$module]"
 
-        while IFS=$'\t' read -r name cmd check_path; do
+        # Add binary dirs to PATH for healthcheck since we're not running in a full login shell here
+        export PATH="/root/.local/bin:/root/.cargo/bin:/root/go/bin:${PATH}"
+
+        while IFS='|' read -r name cmd check_path; do
             total=$((total + 1))
 
             if [ -n "$check_path" ] && [ -z "$cmd" ]; then
