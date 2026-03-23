@@ -1,0 +1,5 @@
+# katana — Web crawler
+katana -u https://$TARGET -d 3 -jc
+katana -u https://$TARGET -d 5 -jc -o endpoints.txt
+katana -u https://$TARGET -f qurl -silent
+katana -list urls.txt -d 3 -jc -ef css,png,jpg,svg,woff

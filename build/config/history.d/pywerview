@@ -1,0 +1,11 @@
+# pywerview — Python PowerView port
+pywerview get-netuser -u $USER -p $PASSWORD -t $DC_IP --username $TARGET_USER
+pywerview get-netgroup -u $USER -p $PASSWORD -t $DC_IP --groupname "Domain Admins"
+pywerview get-netcomputer -u $USER -p $PASSWORD -t $DC_IP --full-data
+pywerview get-netgpo -u $USER -p $PASSWORD -t $DC_IP
+pywerview get-netou -u $USER -p $PASSWORD -t $DC_IP
+pywerview get-objectacl -u $USER -p $PASSWORD -t $DC_IP --sam-account-name $TARGET_USER
+pywerview get-netshare -u $USER -p $PASSWORD -t $TARGET_IP
+pywerview get-netlocalgroup -u $USER -p $PASSWORD -t $TARGET_IP
+pywerview get-netsession -u $USER -p $PASSWORD -t $TARGET_IP
+pywerview get-netloggedon -u $USER -p $PASSWORD -t $TARGET_IP

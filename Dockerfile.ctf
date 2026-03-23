@@ -1,4 +1,5 @@
 # Author: Nihil Project
+# Image Nihil spécialisée Active Directory (hérite de la base + outils AD)
 
 FROM archlinux:latest
 
@@ -10,27 +11,18 @@ LABEL org.nihil.tag="${TAG}"
 LABEL org.nihil.version="${VERSION}"
 LABEL org.nihil.build_date="${BUILD_DATE}"
 LABEL org.nihil.app="Nihil"
+LABEL org.nihil.variant="ctf"
 
 COPY build /opt/nihil/build/
 COPY runtime /opt/nihil/runtime/
 RUN chmod +x /opt/nihil/runtime/entrypoint.sh /opt/nihil/runtime/load_my_resources.sh /opt/nihil/runtime/browser_ui.sh
-
-
 WORKDIR /opt/nihil/build
 
 SHELL ["/bin/bash", "-c"]
 
 RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh package_base && \
-    ./entrypoint.sh install_core_tools && \
-    ./entrypoint.sh install_redteam_ad && \
-    ./entrypoint.sh install_redteam_c2 && \
-    ./entrypoint.sh install_redteam_web && \
-    ./entrypoint.sh install_redteam_pwn && \
-    ./entrypoint.sh install_redteam_network && \
-    ./entrypoint.sh install_redteam_credential && \
-    ./entrypoint.sh install_redteam_misc && \
-    ./entrypoint.sh healthcheck
+    ./entrypoint.sh install_core_tools
 
 WORKDIR /workspace
 

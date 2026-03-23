@@ -10,6 +10,7 @@ source "${MODULE_DIR}/../lib/registry/redteam_cargo.sh"
 source "${MODULE_DIR}/../lib/registry/redteam_pacman.sh"
 source "${MODULE_DIR}/../lib/registry/redteam_curl.sh"
 source "${MODULE_DIR}/../lib/registry/redteam_git.sh"
+source "${MODULE_DIR}/../lib/registry/redteam_go.sh"
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -72,6 +73,120 @@ function install_testssl() {
 }
 
 # ---------------------------------------------------------------------------
+# Scanners / Discovery (ProjectDiscovery suite + others)
+# ---------------------------------------------------------------------------
+
+function install_nuclei() {
+    install_go_tool "github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest"
+}
+
+function install_httpx_pd() {
+    install_go_tool "github.com/projectdiscovery/httpx/cmd/httpx@latest"
+}
+
+function install_subfinder() {
+    install_go_tool "github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"
+}
+
+function install_katana() {
+    install_go_tool "github.com/projectdiscovery/katana/cmd/katana@latest"
+}
+
+function install_ffuf() {
+    install_go_tool "github.com/ffuf/ffuf/v2@latest" "ffuf"
+}
+
+function install_dirsearch() {
+    install_pipx_tool "dirsearch" "dirsearch"
+}
+
+function install_whatweb() {
+    install_git_tool "whatweb" "https://github.com/urbanadventurer/WhatWeb.git" "whatweb"
+}
+
+function install_hakrawler() {
+    install_go_tool "github.com/hakluke/hakrawler@latest"
+}
+
+function install_gau() {
+    install_go_tool "github.com/lc/gau/v2/cmd/gau@latest"
+}
+
+function install_waybackurls() {
+    install_go_tool "github.com/tomnomnom/waybackurls@latest"
+}
+
+# ---------------------------------------------------------------------------
+# Exploitation
+# ---------------------------------------------------------------------------
+
+function install_commix() {
+    install_pipx_tool_git "commix" "https://github.com/commixproject/commix.git"
+}
+
+function install_tplmap() {
+    install_git_tool "tplmap" "https://github.com/epinna/tplmap" "tplmap.py"
+}
+
+function install_nosqlmap() {
+    install_git_tool_venv "nosqlmap" "https://github.com/codingo/NoSQLMap" "nosqlmap.py" "" "yes"
+}
+
+function install_graphqlmap() {
+    install_pipx_tool_git "graphqlmap" "https://github.com/swisskyrepo/GraphQLmap.git"
+}
+
+function install_corsy() {
+    install_git_tool "corsy" "https://github.com/s0md3v/Corsy" "corsy.py"
+}
+
+function install_crlfuzz() {
+    install_go_tool "github.com/dwisiswant0/crlfuzz/cmd/crlfuzz@latest"
+}
+
+# ---------------------------------------------------------------------------
+# Proxy / Interception
+# ---------------------------------------------------------------------------
+
+function install_mitmproxy() {
+    install_pacman_tool "mitmproxy"
+}
+
+# ---------------------------------------------------------------------------
+# API Testing / HTTP clients
+# ---------------------------------------------------------------------------
+
+function install_kiterunner() {
+    install_tar_tool "kiterunner" \
+        "https://github.com/assetnote/kiterunner/releases/download/v{version}/kiterunner_{version}_linux_amd64.tar.gz" \
+        "/usr/local/share/kiterunner/{version}" \
+        "kr" \
+        "kr kiterunner" \
+        "" \
+        "1.0.2"
+}
+
+function install_httpie() {
+    install_pacman_tool "httpie"
+}
+
+# ---------------------------------------------------------------------------
+# Offline resources
+# ---------------------------------------------------------------------------
+
+function install_payloadsallthethings() {
+    local install_dir="/opt/resources/PayloadsAllTheThings"
+    colorecho "  → Cloning PayloadsAllTheThings"
+    if [ ! -d "$install_dir" ]; then
+        git clone --depth 1 "https://github.com/swisskyrepo/PayloadsAllTheThings.git" "$install_dir" || {
+            colorecho "  ✗ Warning: Failed to clone PayloadsAllTheThings"
+            return 1
+        }
+    fi
+    colorecho "  ✓ PayloadsAllTheThings installed at $install_dir"
+}
+
+# ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
 
@@ -82,6 +197,8 @@ function install_redteam_web() {
     install_sqlmap
     install_gobuster
     install_nikto
+    install_mitmproxy
+    install_httpie
 
     colorecho "  [pipx] Web fuzzers / scanners:"
     install_wfuzz
@@ -90,17 +207,41 @@ function install_redteam_web() {
     install_gopherus
     install_droopescan
     install_cmsmap
+    install_dirsearch
+    install_commix
+
+    colorecho "  [pipx-git] Web scanners:"
+    install_graphqlmap
+
+    colorecho "  [go] Web scanners / discovery:"
+    install_nuclei
+    install_httpx_pd
+    install_subfinder
+    install_katana
+    install_ffuf
+    install_hakrawler
+    install_gau
+    install_waybackurls
+    install_crlfuzz
 
     colorecho "  [git] Scripts (clone + requirements):"
     install_ssrfmap
     install_jwt_tool
     install_xsstrike
+    install_tplmap
+    install_nosqlmap
+    install_corsy
+    install_whatweb
 
     colorecho "  [cargo] Web fuzzer:"
     install_feroxbuster
 
-    colorecho "  [curl] Web SSL / script:"
+    colorecho "  [curl/download] Web tools:"
     install_testssl
+    install_kiterunner
+
+    colorecho "  [resources] Offline payloads / cheat sheets:"
+    install_payloadsallthethings
 
     colorecho "Web tools installation finished"
 }
