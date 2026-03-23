@@ -12,7 +12,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  # On force le nom du package Github Container Registry à 'nihil'
+  IMAGE_NAME: thenullpigeons/nihil
 
 jobs:
   build-base:
@@ -46,7 +47,6 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
             type=raw,value=base,enable={{is_default_branch}}
 
       - name: Build and push Docker image (base)
@@ -87,18 +87,17 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-ad
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,value=active-directory,enable={{is_default_branch}}
+            type=semver,pattern={{version}}-ad
+            type=semver,pattern={{major}}.{{minor}}-ad
+            type=semver,pattern={{major}}-ad
+            type=sha,prefix={{branch}}-ad-
+            type=raw,value=ad,enable={{is_default_branch}}
 
-      - name: Build and push Docker image (active-directory)
+      - name: Build and push Docker image (ad)
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -136,15 +135,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-web
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{version}}-web
+            type=semver,pattern={{major}}.{{minor}}-web
+            type=semver,pattern={{major}}-web
+            type=sha,prefix={{branch}}-web-
             type=raw,value=web,enable={{is_default_branch}}
 
       - name: Build and push Docker image (web)
