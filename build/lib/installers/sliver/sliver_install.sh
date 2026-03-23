@@ -102,20 +102,18 @@ DxkLsLOBBZZRXOrgxit+tAqinGJ6N9hOvkUlwTLfJM1tpCEFb/Z786g=
 -----END PGP PUBLIC KEY BLOCK-----
 EOF
 
-echo "Fetching latest Sliver release URLs..."
-ARTIFACTS=$(curl -s "https://api.github.com/repos/BishopFox/sliver/releases" | grep 1.5.44 | awk -F '"' '/browser_download_url/{print $4}')
+SLIVER_VERSION="1.5.44"
+SLIVER_BASE_URL="https://github.com/BishopFox/sliver/releases/download/v${SLIVER_VERSION}"
 SLIVER_SERVER="sliver-server_linux"
 SLIVER_CLIENT="sliver-client_linux"
 
-for URL in $ARTIFACTS; do
-    if [[ "$URL" == *"$SLIVER_SERVER"* ]]; then
-        echo "Downloading $URL"
-        curl --silent -L "$URL" --output "$(basename "$URL")"
-    fi
-    if [[ "$URL" == *"$SLIVER_CLIENT"* ]]; then
-        echo "Downloading $URL"
-        curl --silent -L "$URL" --output "$(basename "$URL")"
-    fi
+echo "Downloading Sliver v${SLIVER_VERSION} binaries..."
+for FILE in "$SLIVER_SERVER" "$SLIVER_SERVER.sig" "$SLIVER_CLIENT" "$SLIVER_CLIENT.sig"; do
+    echo "  → Downloading $FILE"
+    curl --silent --fail -L "${SLIVER_BASE_URL}/${FILE}" --output "/tmp/${FILE}" || {
+        echo "  ✗ Failed to download $FILE"
+        exit 1
+    }
 done
 
 echo "Verifying signatures ..."
