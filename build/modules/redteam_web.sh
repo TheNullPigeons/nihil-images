@@ -149,7 +149,7 @@ function install_crlfuzz() {
 # ---------------------------------------------------------------------------
 
 function install_mitmproxy() {
-    install_pacman_tool "mitmproxy"
+    install_pipx_tool "mitmproxy" "mitmproxy" "mitmdump"
 }
 
 # ---------------------------------------------------------------------------
@@ -197,7 +197,6 @@ function install_redteam_web() {
     install_sqlmap
     install_gobuster
     install_nikto
-    install_mitmproxy
     install_httpie
 
     colorecho "  [pipx] Web fuzzers / scanners:"
@@ -209,6 +208,7 @@ function install_redteam_web() {
     install_cmsmap
     install_dirsearch
     install_commix
+    install_mitmproxy
 
     colorecho "  [pipx-git] Web scanners:"
     install_graphqlmap
