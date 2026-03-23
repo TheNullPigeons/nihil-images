@@ -11,7 +11,7 @@ LABEL org.nihil.tag="${TAG}"
 LABEL org.nihil.version="${VERSION}"
 LABEL org.nihil.build_date="${BUILD_DATE}"
 LABEL org.nihil.app="Nihil"
-LABEL org.nihil.variant="active-directory"
+LABEL org.nihil.variant="ad"
 
 COPY build /opt/nihil/build/
 COPY runtime /opt/nihil/runtime/
