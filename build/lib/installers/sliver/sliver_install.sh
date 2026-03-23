@@ -128,7 +128,9 @@ if test -f "/tmp/$SLIVER_SERVER"; then
     chmod 755 /usr/local/bin/sliver-server
 
     echo "Unpacking the Sliver server..."
-    /usr/local/bin/sliver-server unpack --force
+    /usr/local/bin/sliver-server unpack --force || {
+        echo "  ⚠ Warning: sliver-server unpack failed (can be done at runtime)"
+    }
 fi
 
 if test -f "/tmp/$SLIVER_CLIENT"; then
