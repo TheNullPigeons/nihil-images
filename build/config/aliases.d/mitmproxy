@@ -1,0 +1,3 @@
+alias mitm="mitmproxy"
+alias mitmw="mitmweb"
+alias mitmd="mitmdump"

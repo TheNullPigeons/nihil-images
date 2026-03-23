@@ -1,0 +1,7 @@
+# ffuf — Fast web fuzzer
+ffuf -u https://$TARGET/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt
+ffuf -u https://$TARGET/FUZZ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -mc 200,301,302
+ffuf -u https://$TARGET/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-large-files.txt -e .php,.html,.txt,.bak
+ffuf -u https://$TARGET -H "Host: FUZZ.$DOMAIN" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -fs 0
+ffuf -u https://$TARGET/api/FUZZ -w /usr/share/seclists/Discovery/Web-Content/api/api-endpoints.txt
+ffuf -u https://$TARGET/login -X POST -d "username=FUZZ&password=FUZZ2" -w users.txt:FUZZ -w passwords.txt:FUZZ2 -fc 401

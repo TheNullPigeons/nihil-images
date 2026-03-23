@@ -1,0 +1,6 @@
+# httpx — HTTP probe and technology fingerprinting
+httpx -l hosts.txt -status-code -title -tech-detect
+httpx -l hosts.txt -ports 80,443,8080,8443 -status-code
+httpx -u https://$TARGET -status-code -title -tech-detect -follow-redirects
+cat subdomains.txt | httpx -silent -status-code -title
+cat hosts.txt | httpx -silent -o alive.txt
