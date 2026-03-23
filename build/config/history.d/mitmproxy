@@ -1,0 +1,6 @@
+# mitmproxy — HTTP/HTTPS interception proxy
+mitmproxy -p 8080
+mitmweb -p 8080 --web-port 8081
+mitmdump -p 8080 -w traffic.flow
+mitmdump -p 8080 -s script.py
+mitmproxy -p 8080 --mode upstream:http://proxy:8888

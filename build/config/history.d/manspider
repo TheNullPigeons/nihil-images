@@ -1,0 +1,6 @@
+# manspider — Search sensitive files across SMB shares
+manspider $TARGET_IP -u $USER -p $PASSWORD -d $DOMAIN -e xlsx docx pdf
+manspider $TARGET_IP -u $USER -p $PASSWORD -d $DOMAIN -c password passwd cred
+manspider $TARGET_IP -u $USER -p $PASSWORD -d $DOMAIN -e conf cfg ini -c password
+manspider $SUBNET -u $USER -p $PASSWORD -d $DOMAIN -e kdbx
+manspider $TARGET_IP -u $USER -p $PASSWORD -d $DOMAIN --sharenames

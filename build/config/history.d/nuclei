@@ -1,0 +1,9 @@
+# nuclei — Template-based vulnerability scanner
+nuclei -u https://$TARGET -as
+nuclei -u https://$TARGET -t cves/
+nuclei -u https://$TARGET -t exposures/
+nuclei -u https://$TARGET -t misconfiguration/
+nuclei -u https://$TARGET -severity critical,high
+nuclei -l urls.txt -t cves/ -o results.txt
+nuclei -u https://$TARGET -t http/technologies/
+nuclei -update-templates

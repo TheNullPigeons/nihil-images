@@ -1,0 +1,8 @@
+# windapsearch — Go LDAP enumeration
+windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m users
+windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m computers
+windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m groups
+windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m privileged-users
+windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m unconstrained
+windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m gpos
+windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m members -g "Domain Admins"

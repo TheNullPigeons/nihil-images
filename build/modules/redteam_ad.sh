@@ -141,6 +141,62 @@ function install_powershell() {
         "7.3.4"
 }
 
+function install_ldapsearch_ad() {
+    install_pipx_tool "ldapsearch-ad" "ldapsearchad"
+}
+
+function install_windapsearch() {
+    install_go_tool "github.com/ropnop/go-windapsearch/cmd/windapsearch@latest" "windapsearch"
+}
+
+function install_pywerview() {
+    install_pipx_tool "pywerview" "pywerview"
+}
+
+function install_finduncommonshares() {
+    install_git_tool_venv "FindUncommonShares" "https://github.com/p0dalirius/pyFindUncommonShares.git" "FindUncommonShares.py" "" "yes"
+}
+
+function install_targetedkerberoast() {
+    install_git_tool_venv "targetedKerberoast" "https://github.com/ShutdownRepo/targetedKerberoast" "targetedKerberoast.py" "" "yes"
+}
+
+function install_pkinittools() {
+    install_git_tool_venv "PKINITtools" "https://github.com/dirkjanm/PKINITtools" "gettgtpkinit.py getnthash.py gets4uticket.py" "" "yes"
+}
+
+function install_nopac() {
+    install_git_tool_venv "noPac" "https://github.com/Ridter/noPac" "noPac.py scanner.py" "" "yes"
+}
+
+function install_petitpotam() {
+    install_git_tool_venv "PetitPotam" "https://github.com/topotam/PetitPotam" "PetitPotam.py" "impacket" "yes"
+}
+
+function install_zerologon() {
+    install_git_tool_venv "zerologon" "https://github.com/dirkjanm/CVE-2020-1472" "cve-2020-1472-exploit.py restorepassword.py" "impacket" "yes"
+}
+
+function install_masky() {
+    install_pipx_tool "masky" "masky"
+}
+
+function install_pre2k() {
+    install_pipx_tool_git "pre2k" "https://github.com/garrettfoster13/pre2k"
+}
+
+function install_shadowcoerce() {
+    install_git_tool "ShadowCoerce" "https://github.com/ShutdownRepo/ShadowCoerce" "shadowcoerce.py"
+}
+
+function install_dfscoerce() {
+    install_git_tool "DFSCoerce" "https://github.com/Wh04m1001/DFSCoerce" "dfscoerce.py"
+}
+
+function install_manspider() {
+    install_pipx_tool "manspider" "man-spider"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -167,6 +223,13 @@ function install_redteam_ad() {
     install_enum4linux_ng
     install_smbmap
     install_sprayhound
+    install_ldapsearch_ad
+    install_pywerview
+    install_masky
+    install_manspider
+
+    colorecho "  [pipx-git] AD tools:"
+    install_pre2k
 
     colorecho "  [pacman] AD tools:"
     install_openldap
@@ -181,10 +244,19 @@ function install_redteam_ad() {
 
     colorecho "  [go] AD tools:"
     install_kerbrute
+    install_windapsearch
 
     colorecho "  [git] AD tools:"
     install_krbrelayx
     install_gmsadumper
+    install_finduncommonshares
+    install_targetedkerberoast
+    install_pkinittools
+    install_nopac
+    install_petitpotam
+    install_zerologon
+    install_shadowcoerce
+    install_dfscoerce
 
     colorecho "  [download] AD tools:"
     install_powershell
