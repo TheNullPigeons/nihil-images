@@ -41,7 +41,8 @@ function install_wafw00f() {
 }
 
 function install_gopherus() {
-    install_pipx_tool_git "gopherus" "https://github.com/Esonhugh/Gopherus3.git"
+    install_pipx_tool_git "gopherus3" "https://github.com/Esonhugh/Gopherus3.git"
+    add-symlink "/root/.local/bin/gopherus3" "gopherus"
 }
 
 function install_droopescan() {

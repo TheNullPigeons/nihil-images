@@ -142,7 +142,8 @@ function install_powershell() {
 }
 
 function install_ldapsearch_ad() {
-    install_pipx_tool "ldapsearch-ad" "ldapsearchad"
+    install_pipx_tool "ldapsearch-ad.py" "ldapsearchad"
+    add-symlink "/root/.local/bin/ldapsearch-ad.py" "ldapsearch-ad"
 }
 
 function install_windapsearch() {
