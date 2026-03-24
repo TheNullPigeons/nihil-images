@@ -2,16 +2,17 @@
 
 Nihil fournit plusieurs images Docker spécialisées :
 
-### Image de base (`base`)
-Image minimale avec les outils système de base :
+### Full (`full`) — *The whole flock. Every tool, every module.*
+Image complète avec tous les outils :
 - Système Arch Linux configuré
 - zsh + oh-my-zsh
 - Outils CLI de base (vim, tmux, fzf, etc.)
+- Tous les modules red-team (AD, web, pwn, network, credential, c2, misc)
 - Dépôts nihil et Chaotic-AUR configurés
 
-**Image GitHub Packages :** `ghcr.io/thenullpigeons/nihil-images:base` ou `ghcr.io/thenullpigeons/nihil-images:latest`
+**Image GitHub Packages :** `ghcr.io/thenullpigeons/full:latest` ou `ghcr.io/thenullpigeons/full:flock`
 
-### Image Active Directory (`active-directory`)
+### Active Directory (`ad`) — *Nest in their Active Directory.*
 Image spécialisée pour le pentest Active Directory :
 - Tout ce qui est dans l'image de base
 - Outils AD : bloodhound, certipy, ldapdomaindump, adidnsdump, netexec, rusthound-ce, kerbrute, krbrelayx, PowerShell, etc.
@@ -19,51 +20,44 @@ Image spécialisée pour le pentest Active Directory :
 - Outils réseau : responder, smbclient, openldap
 - Historique zsh pré-configuré avec commandes d'exemple pour tous les outils
 
-**Image GitHub Packages :** `ghcr.io/thenullpigeons/nihil-images-ad:active-directory` ou `ghcr.io/thenullpigeons/nihil-images-ad:latest`
+**Image GitHub Packages :** `ghcr.io/thenullpigeons/ad:latest` ou `ghcr.io/thenullpigeons/ad:nest`
 
-### Image Web (`web`)
+### Web (`web`) — *Beak through their web apps.*
 Image orientée tests Web / HTTP :
-- Base + outils web : sqlmap, gobuster, etc.
+- Base + outils web : sqlmap, gobuster, nuclei, ffuf, etc.
 
-**Image GitHub Packages :** `ghcr.io/thenullpigeons/nihil-images-web:web` ou `ghcr.io/thenullpigeons/nihil-images-web:latest`
-
-### Image Pwn (`pwn`)
-Image orientée exploitation binaire / reverse :
-- Base + radare2, strace, ltrace, pwntools, ROPgadget, pwndbg (gdb déjà dans core), etc.
-
-**Image GitHub Packages :** `ghcr.io/thenullpigeons/nihil-images-pwn:pwn` ou `ghcr.io/thenullpigeons/nihil-images-pwn:latest`
+**Image GitHub Packages :** `ghcr.io/thenullpigeons/web:latest` ou `ghcr.io/thenullpigeons/web:beak`
 
 ## Construction des images Docker
 
-### Construire l'image de base
+### Construire l'image full
 ```bash
 cd nihil-images
-# Les deux tags permettent d'utiliser l'image avec le CLI nihil (ghcr.io/...) tout en garder nihil:base
-docker build -f Dockerfile -t nihil:base -t ghcr.io/thenullpigeons/nihil-images:latest .
+docker build --target full -t nihil:full .
 ```
 
 ### Construire l'image Active Directory
 ```bash
 cd nihil-images
-docker build -f Dockerfile.ad -t nihil:ad .
+docker build --target ad -t nihil:ad .
 ```
 
 ### Construire l'image Web
 ```bash
 cd nihil-images
-docker build -f Dockerfile.web -t nihil:web .
+docker build --target web -t nihil:web .
 ```
 
 ### Pull depuis GitHub Packages
 ```bash
-# Image de base
-docker pull ghcr.io/thenullpigeons/nihil-images:base
+# Image full
+docker pull ghcr.io/thenullpigeons/full:latest
 
 # Image Active Directory
-docker pull ghcr.io/thenullpigeons/nihil-images-ad:active-directory
+docker pull ghcr.io/thenullpigeons/ad:latest
 
 # Image Web
-docker pull ghcr.io/thenullpigeons/nihil-images-web:web
+docker pull ghcr.io/thenullpigeons/web:latest
 ```
 
 ### Installer les dépendances (hôte)
@@ -135,9 +129,7 @@ Toutes ces fonctions ajoutent automatiquement les aliases et l'historique si les
 
 ```
 nihil-images/
-├── Dockerfile
-├── Dockerfile.ad
-├── Dockerfile.web
+├── Dockerfile              # Multi-stage: base → full / ad / web
 ├── build/
 │   ├── entrypoint.sh
 │   ├── lib/
@@ -158,8 +150,7 @@ nihil-images/
 │       ├── redteam_curl.sh
 │       ├── redteam_git.sh
 │       ├── redteam_go.sh
-│       ├── redteam_web.sh
-│       └── redteam_pwn.sh
+│       └── redteam_web.sh
 ├── runtime/
 │   └── entrypoint.sh
 └── packages.txt
