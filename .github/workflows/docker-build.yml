@@ -12,11 +12,9 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # On force le nom du package Github Container Registry à 'nihil'
-  IMAGE_NAME: thenullpigeons/nihil
 
 jobs:
-  build-base:
+  build-full:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -39,7 +37,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/thenullpigeons/full
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -47,17 +45,20 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=sha,prefix={{branch}}-
-            type=raw,value=base,enable={{is_default_branch}}
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=flock,enable={{is_default_branch}}
 
-      - name: Build and push Docker image (base)
+      - name: Build and push Docker image (full)
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
+          target: full
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          no-cache: true
+          cache-from: type=gha,scope=nihil
+          cache-to: type=gha,mode=max,scope=nihil
           build-args: |
             TAG=${{ github.ref_name }}
             VERSION=${{ github.ref_name }}
@@ -65,7 +66,7 @@ jobs:
 
   build-ad:
     runs-on: ubuntu-latest
-    needs: build-base
+    needs: build-full
     permissions:
       contents: read
       packages: write
@@ -87,25 +88,28 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/thenullpigeons/ad
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}-ad
-            type=semver,pattern={{major}}.{{minor}}-ad
-            type=semver,pattern={{major}}-ad
-            type=sha,prefix={{branch}}-ad-
-            type=raw,value=ad,enable={{is_default_branch}}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=nest,enable={{is_default_branch}}
 
       - name: Build and push Docker image (ad)
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile.ad
+          file: ./Dockerfile
+          target: ad
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          no-cache: true
+          cache-from: type=gha,scope=nihil
+          cache-to: type=gha,mode=max,scope=nihil
           build-args: |
             TAG=${{ github.ref_name }}
             VERSION=${{ github.ref_name }}
@@ -113,7 +117,7 @@ jobs:
 
   build-web:
     runs-on: ubuntu-latest
-    needs: build-ad
+    needs: build-full
     permissions:
       contents: read
       packages: write
@@ -135,25 +139,28 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/thenullpigeons/web
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}-web
-            type=semver,pattern={{major}}.{{minor}}-web
-            type=semver,pattern={{major}}-web
-            type=sha,prefix={{branch}}-web-
-            type=raw,value=web,enable={{is_default_branch}}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=beak,enable={{is_default_branch}}
 
       - name: Build and push Docker image (web)
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile.web
+          file: ./Dockerfile
+          target: web
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          no-cache: true
+          cache-from: type=gha,scope=nihil
+          cache-to: type=gha,mode=max,scope=nihil
           build-args: |
             TAG=${{ github.ref_name }}
             VERSION=${{ github.ref_name }}
