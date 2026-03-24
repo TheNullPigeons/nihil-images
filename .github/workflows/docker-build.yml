@@ -53,12 +53,10 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          target: full
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=nihil
-          cache-to: type=gha,mode=max,scope=nihil
+          no-cache: true
           build-args: |
             TAG=${{ github.ref_name }}
             VERSION=${{ github.ref_name }}
@@ -66,7 +64,6 @@ jobs:
 
   build-ad:
     runs-on: ubuntu-latest
-    needs: build-full
     permissions:
       contents: read
       packages: write
@@ -103,13 +100,11 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
-          target: ad
+          file: ./Dockerfile.ad
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=nihil
-          cache-to: type=gha,mode=max,scope=nihil
+          no-cache: true
           build-args: |
             TAG=${{ github.ref_name }}
             VERSION=${{ github.ref_name }}
@@ -117,7 +112,6 @@ jobs:
 
   build-web:
     runs-on: ubuntu-latest
-    needs: build-full
     permissions:
       contents: read
       packages: write
@@ -154,13 +148,11 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
-          target: web
+          file: ./Dockerfile.web
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=nihil
-          cache-to: type=gha,mode=max,scope=nihil
+          no-cache: true
           build-args: |
             TAG=${{ github.ref_name }}
             VERSION=${{ github.ref_name }}

@@ -1,5 +1,5 @@
 # Author: Nihil Project
-# The whole flock. Every tool, every module.
+# Nest in their Active Directory.
 
 FROM archlinux:latest
 
@@ -11,7 +11,7 @@ LABEL org.nihil.tag="${TAG}"
 LABEL org.nihil.version="${VERSION}"
 LABEL org.nihil.build_date="${BUILD_DATE}"
 LABEL org.nihil.app="Nihil"
-LABEL org.nihil.variant="full"
+LABEL org.nihil.variant="ad"
 
 COPY build /opt/nihil/build/
 COPY runtime /opt/nihil/runtime/
@@ -25,12 +25,10 @@ RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh install_core_tools && \
     ./entrypoint.sh install_redteam_ad && \
     ./entrypoint.sh install_redteam_c2 && \
-    ./entrypoint.sh install_redteam_web && \
-    ./entrypoint.sh install_redteam_pwn && \
     ./entrypoint.sh install_redteam_network && \
     ./entrypoint.sh install_redteam_credential && \
     ./entrypoint.sh install_redteam_misc && \
-    ./entrypoint.sh healthcheck
+    ./entrypoint.sh healthcheck core_tools redteam_ad redteam_c2 redteam_network redteam_credential redteam_misc
 
 WORKDIR /workspace
 SHELL ["/usr/bin/zsh", "-c"]

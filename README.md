@@ -33,19 +33,19 @@ Image orientée tests Web / HTTP :
 ### Construire l'image full
 ```bash
 cd nihil-images
-docker build --target full -t nihil:full .
+docker build -f Dockerfile -t nihil:full .
 ```
 
 ### Construire l'image Active Directory
 ```bash
 cd nihil-images
-docker build --target ad -t nihil:ad .
+docker build -f Dockerfile.ad -t nihil:ad .
 ```
 
 ### Construire l'image Web
 ```bash
 cd nihil-images
-docker build --target web -t nihil:web .
+docker build -f Dockerfile.web -t nihil:web .
 ```
 
 ### Pull depuis GitHub Packages
@@ -129,7 +129,9 @@ Toutes ces fonctions ajoutent automatiquement les aliases et l'historique si les
 
 ```
 nihil-images/
-├── Dockerfile              # Multi-stage: base → full / ad / web
+├── Dockerfile
+├── Dockerfile.ad
+├── Dockerfile.web
 ├── build/
 │   ├── entrypoint.sh
 │   ├── lib/
