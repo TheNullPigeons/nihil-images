@@ -101,6 +101,9 @@ source $ZSH/oh-my-zsh.sh
 # Add /root/.local/bin to PATH (pipx, user-installed tools)
 export PATH="/root/.local/bin:$PATH"
 
+# Truecolor support (needed by Textual TUI and other modern CLI tools)
+export COLORTERM=truecolor
+
 # Source custom aliases & history
 [ -f /opt/nihil/config/aliases ] && source /opt/nihil/config/aliases
 
