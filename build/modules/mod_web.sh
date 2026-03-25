@@ -8,6 +8,7 @@ source "${SCRIPT_DIR}/../lib/common.sh"
 source "${MODULE_DIR}/../lib/registry/pipx.sh"
 source "${MODULE_DIR}/../lib/registry/cargo.sh"
 source "${MODULE_DIR}/../lib/registry/pacman.sh"
+source "${MODULE_DIR}/../lib/registry/aur.sh"
 source "${MODULE_DIR}/../lib/registry/curl.sh"
 source "${MODULE_DIR}/../lib/registry/git.sh"
 source "${MODULE_DIR}/../lib/registry/go.sh"
@@ -171,6 +172,21 @@ function install_httpie() {
     install_pacman_tool "httpie"
 }
 
+function install_caido() {
+    colorecho "  → Installing Caido (desktop + CLI) via AUR"
+    install_aur_tool "caido" "caido" || {
+        colorecho "  ✗ Warning: Failed to install caido from AUR"
+        return 0
+    }
+    install_aur_tool "caido-cli" "caido-cli" || {
+        colorecho "  ✗ Warning: Failed to install caido-cli from AUR"
+        return 0
+    }
+
+    add-aliases "caido"
+    add-history "caido"
+}
+
 # ---------------------------------------------------------------------------
 # Offline resources
 # ---------------------------------------------------------------------------
@@ -240,6 +256,7 @@ function install_mod_web() {
     colorecho "  [curl/download] Web tools:"
     install_testssl
     install_kiterunner
+    install_caido
 
     colorecho "  [resources] Offline payloads / cheat sheets:"
     install_payloadsallthethings

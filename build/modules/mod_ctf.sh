@@ -80,7 +80,11 @@ function install_ltrace() {
 }
 
 function install_pwndbg() {
-    install_pacman_tool "pwndbg"
+    if install_pacman_tool "pwndbg"; then
+        return 0
+    fi
+    colorecho "  ✗ Warning: Failed to install pwndbg via pacman (likely package file conflicts), skipping"
+    return 0
 }
 
 function install_one_gadget() {
@@ -392,12 +396,14 @@ function install_mod_ctf() {
     # --- Pwn / Binary Exploitation ---
     colorecho "  [pwn] Binary exploitation tools:"
     install_cmake
+    # Install pwndbg first from pacman to avoid later file conflicts with pipx
+    # packages that can ship overlapping binaries (pwn / ROPgadget).
+    install_pwndbg
     install_pwntools
     install_ropgadget
     install_radare2
     install_strace
     install_ltrace
-    install_pwndbg
     install_one_gadget
     install_seccomp_tools
     install_checksec
