@@ -44,8 +44,15 @@ install_aur_tool() {
     fi
 
     local pkg_files=()
+    local built_files=()
     if ls "$build_dir"/*.pkg.tar.zst 1>/dev/null 2>&1; then
-        mapfile -t pkg_files < <(ls "$build_dir"/*.pkg.tar.zst | rg -v -- '-debug-[0-9]')
+        mapfile -t built_files < <(ls "$build_dir"/*.pkg.tar.zst)
+        for f in "${built_files[@]}"; do
+            case "$f" in
+                *-debug-*.pkg.tar.zst) ;;
+                *) pkg_files+=("$f") ;;
+            esac
+        done
         if [ "${#pkg_files[@]}" -gt 0 ]; then
             if ! pacman -U --noconfirm "${pkg_files[@]}"; then
                 colorecho "  ✗ Warning: Failed to install $pkg_name (pacman -U)"

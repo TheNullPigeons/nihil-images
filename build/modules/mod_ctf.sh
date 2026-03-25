@@ -111,7 +111,6 @@ function install_uncompyle6() {
 function install_rsactftool() {
     local repo_dir="/opt/tools/RsaCtfTool"
     local venv_dir="${repo_dir}/venv"
-    local script_path="${repo_dir}/RsaCtfTool.py"
 
     if command -v RsaCtfTool > /dev/null 2>&1; then
         colorecho "  ✓ RsaCtfTool already installed"
@@ -126,26 +125,20 @@ function install_rsactftool() {
         return 1
     }
 
-    python3 -m venv --system-site-packages "${venv_dir}" || {
+    # Keep this venv isolated to avoid dependency clashes with pwndbg/pwntools stack.
+    python3 -m venv "${venv_dir}" || {
         colorecho "  ✗ Warning: Failed to create RsaCtfTool venv"
         return 1
     }
 
-    if [ -f "${repo_dir}/requirements.txt" ]; then
-        "${venv_dir}/bin/pip" install --quiet -r "${repo_dir}/requirements.txt" || {
-            colorecho "  ✗ Warning: Failed to install RsaCtfTool requirements"
-            return 1
-        }
-    fi
-
-    if [ ! -f "${script_path}" ]; then
-        colorecho "  ✗ Warning: RsaCtfTool.py not found after clone"
+    if ! (cd "${repo_dir}" && "${venv_dir}/bin/pip" install --quiet .); then
+        colorecho "  ✗ Warning: Failed to install RsaCtfTool package"
         return 1
     fi
 
     cat > /usr/local/bin/RsaCtfTool <<EOF
 #!/bin/sh
-exec "${venv_dir}/bin/python3" "${script_path}" "\$@"
+exec "${venv_dir}/bin/python3" -m RsaCtfTool.main "\$@"
 EOF
     chmod +x /usr/local/bin/RsaCtfTool
 
