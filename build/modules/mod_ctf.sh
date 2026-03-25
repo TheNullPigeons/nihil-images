@@ -98,11 +98,12 @@ function install_pwndbg() {
     colorecho "  → Installing pwndbg (GDB plugin)"
     git clone --depth 1 https://github.com/pwndbg/pwndbg.git "$install_dir" || {
         colorecho "  ✗ Warning: Failed to clone pwndbg"
-        return 1
+        return 0
     }
     cd "$install_dir" && ./setup.sh || {
         colorecho "  ✗ Warning: Failed to setup pwndbg"
-        return 1
+        cd - > /dev/null
+        return 0
     }
     cd - > /dev/null
 
