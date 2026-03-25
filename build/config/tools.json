@@ -85,7 +85,9 @@
     { "name": "crlfuzz", "cmd": "crlfuzz", "description": "CRLF injection testing" },
     { "name": "mitmproxy", "cmd": "mitmproxy", "description": "HTTP/HTTPS interception proxy" },
     { "name": "kiterunner", "cmd": "kr", "description": "API endpoint discovery" },
-    { "name": "httpie", "cmd": "http", "description": "User-friendly HTTP client" }
+    { "name": "httpie", "cmd": "http", "description": "User-friendly HTTP client" },
+    { "name": "caido", "cmd": null, "description": "Web security desktop toolkit", "check_path": "/usr/local/bin/caido" },
+    { "name": "caido-cli", "cmd": "caido-cli", "description": "Caido command-line interface" }
   ],
   "mod_network": [
     { "name": "nmap", "cmd": "nmap", "description": "Network scanner" },
