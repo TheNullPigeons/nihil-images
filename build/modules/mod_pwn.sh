@@ -40,18 +40,7 @@ function install_ropgadget() {
 }
 
 function install_pwndbg() {
-    if install_pacman_tool "pwndbg"; then
-        if ! command -v pwndbg > /dev/null 2>&1; then
-            cat > /usr/local/bin/pwndbg <<'EOF'
-#!/bin/sh
-exec gdb "$@"
-EOF
-            chmod +x /usr/local/bin/pwndbg
-        fi
-        return 0
-    fi
-    colorecho "  ✗ Warning: Failed to install pwndbg via pacman (likely package file conflicts), skipping"
-    return 0
+    install_pacman_tool "pwndbg"
 }
 
 function install_one_gadget() {
