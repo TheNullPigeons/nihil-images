@@ -59,6 +59,10 @@ function install_pwntools() {
     install_pipx_tool "pwn" "pwntools"
 }
 
+function install_cmake() {
+    install_pacman_tool "cmake"
+}
+
 function install_ropgadget() {
     install_pipx_tool "ROPgadget" "ROPgadget"
 }
@@ -407,6 +411,7 @@ function install_mod_ctf() {
 
     # --- Pwn / Binary Exploitation ---
     colorecho "  [pwn] Binary exploitation tools:"
+    install_cmake
     install_pwntools
     install_ropgadget
     install_radare2
