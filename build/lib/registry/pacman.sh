@@ -20,9 +20,12 @@ install_pacman_tool() {
 
     colorecho "  → Installing $pkg_name via pacman"
     pacman -Sy --noconfirm && \
-    pacman -S --noconfirm --needed "$pkg_name" || {
-        colorecho "  ✗ Warning: Failed to install $pkg_name via pacman"
-        return 1
+    pacman -S --noconfirm --needed "$pkg_name" 2>/dev/null || {
+        colorecho "  ⟳ Retrying $pkg_name with --overwrite (pip/pacman file conflicts)"
+        pacman -S --noconfirm --needed --overwrite '/usr/lib/python3.*/site-packages/*' "$pkg_name" || {
+            colorecho "  ✗ Warning: Failed to install $pkg_name via pacman"
+            return 1
+        }
     }
 
     # Ajouter aliases et history si disponibles
@@ -41,8 +44,11 @@ install_pacman_tools() {
 
     colorecho "Installing packages via pacman: ${packages[*]}"
     pacman -Sy --noconfirm && \
-    pacman -S --noconfirm --needed "${packages[@]}" || {
-        colorecho "Warning: Some packages failed to install"
-        return 1
+    pacman -S --noconfirm --needed "${packages[@]}" 2>/dev/null || {
+        colorecho "  ⟳ Retrying with --overwrite (pip/pacman file conflicts)"
+        pacman -S --noconfirm --needed --overwrite '/usr/lib/python3.*/site-packages/*' "${packages[@]}" || {
+            colorecho "Warning: Some packages failed to install"
+            return 1
+        }
     }
 }
