@@ -50,7 +50,14 @@ EOF
         fi
         return 0
     fi
-    colorecho "  ✗ Warning: Failed to install pwndbg via pacman (likely package file conflicts), skipping"
+    colorecho "  ✗ Warning: Failed to install pwndbg via pacman (likely package file conflicts), falling back to wrapper"
+    if ! command -v pwndbg > /dev/null 2>&1; then
+        cat > /usr/local/bin/pwndbg <<'EOF'
+#!/bin/sh
+exec gdb "$@"
+EOF
+        chmod +x /usr/local/bin/pwndbg
+    fi
     return 0
 }
 
