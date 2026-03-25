@@ -109,6 +109,10 @@ function install_uncompyle6() {
 # ===========================================================================
 
 function install_rsactftool() {
+    local repo_dir="/usr/local/share/RsaCtfTool"
+    local script_path=""
+    local py_bin="python3"
+
     install_git_tool_venv "RsaCtfTool" \
         "https://github.com/RsaCtfTool/RsaCtfTool.git" \
         "RsaCtfTool.py" \
@@ -118,11 +122,27 @@ function install_rsactftool() {
     # Normalize command path for healthcheck
     if [ -x "/root/.local/bin/RsaCtfTool" ]; then
         add-symlink "/root/.local/bin/RsaCtfTool" "RsaCtfTool"
-    elif [ -f "/usr/local/share/RsaCtfTool/RsaCtfTool.py" ]; then
+    fi
+
+    if [ -x "${repo_dir}/venv/bin/python3" ]; then
+        py_bin="${repo_dir}/venv/bin/python3"
+    fi
+
+    if [ -f "${repo_dir}/RsaCtfTool.py" ]; then
+        script_path="${repo_dir}/RsaCtfTool.py"
+    elif [ -f "/opt/tools/RsaCtfTool/RsaCtfTool.py" ]; then
+        script_path="/opt/tools/RsaCtfTool/RsaCtfTool.py"
+    fi
+
+    if ! command -v RsaCtfTool > /dev/null 2>&1 && [ -n "${script_path}" ]; then
         cat > /usr/local/bin/RsaCtfTool <<'EOF'
 #!/bin/sh
-exec python3 /usr/local/share/RsaCtfTool/RsaCtfTool.py "$@"
+PY_BIN="__PY_BIN__"
+SCRIPT_PATH="__SCRIPT_PATH__"
+exec "$PY_BIN" "$SCRIPT_PATH" "$@"
 EOF
+        sed -i "s|__PY_BIN__|${py_bin}|g" /usr/local/bin/RsaCtfTool
+        sed -i "s|__SCRIPT_PATH__|${script_path}|g" /usr/local/bin/RsaCtfTool
         chmod +x /usr/local/bin/RsaCtfTool
     fi
 }
