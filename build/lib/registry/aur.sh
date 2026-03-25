@@ -25,8 +25,6 @@ install_aur_tool() {
     echo 'builder ALL=(ALL) NOPASSWD: /usr/bin/pacman' > "$SUDOERS_AUR"
     chmod 440 "$SUDOERS_AUR"
     useradd -m -s /bin/bash builder 2>/dev/null || true
-    git config --global --add safe.directory '*' 2>/dev/null || true
-
     if ! git clone "${AUR_BASE}/${pkg_name}.git" "$build_dir"; then
         colorecho "  ✗ Warning: Failed to clone AUR $pkg_name"
         rm -f "$SUDOERS_AUR"
@@ -35,7 +33,9 @@ install_aur_tool() {
     fi
 
     chown -R builder:builder "$build_dir"
-    if ! su builder -c "cd $build_dir && makepkg -s --noconfirm"; then
+    # Disable debug split packages to avoid cross-package debug file conflicts
+    # (e.g. caido-desktop-debug vs caido-cli-debug in the same image).
+    if ! su builder -c "cd $build_dir && OPTIONS=(!debug) makepkg -s --noconfirm"; then
         colorecho "  ✗ Warning: Failed to build $pkg_name (makepkg)"
         rm -rf "$build_dir"
         rm -f "$SUDOERS_AUR"
@@ -43,8 +43,24 @@ install_aur_tool() {
         return 1
     fi
 
+    local pkg_files=()
     if ls "$build_dir"/*.pkg.tar.zst 1>/dev/null 2>&1; then
-        pacman -U --noconfirm "$build_dir"/*.pkg.tar.zst || colorecho "  ✗ Warning: Failed to install $pkg_name (pacman -U)"
+        mapfile -t pkg_files < <(ls "$build_dir"/*.pkg.tar.zst | rg -v -- '-debug-[0-9]')
+        if [ "${#pkg_files[@]}" -gt 0 ]; then
+            if ! pacman -U --noconfirm "${pkg_files[@]}"; then
+                colorecho "  ✗ Warning: Failed to install $pkg_name (pacman -U)"
+                rm -rf "$build_dir"
+                rm -f "$SUDOERS_AUR"
+                userdel -r builder 2>/dev/null || true
+                return 1
+            fi
+        else
+            colorecho "  ✗ Warning: No non-debug package produced for $pkg_name"
+            rm -rf "$build_dir"
+            rm -f "$SUDOERS_AUR"
+            userdel -r builder 2>/dev/null || true
+            return 1
+        fi
     fi
     rm -rf "$build_dir"
     rm -f "$SUDOERS_AUR"
