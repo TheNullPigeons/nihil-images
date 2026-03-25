@@ -183,8 +183,8 @@ function install_caido() {
     # Runtime deps for the desktop AppImage (best effort)
     install_pacman_tool "libxss" || true
 
-    # 1) Try AUR (fast path on Arch)
-    install_aur_tool "caido" "caido" || colorecho "  ✗ Warning: Failed to install caido from AUR"
+    # 1) Try AUR first on Arch
+    install_aur_tool "caido-desktop" "caido" || colorecho "  ✗ Warning: Failed to install caido-desktop from AUR"
     install_aur_tool "caido-cli" "caido-cli" || colorecho "  ✗ Warning: Failed to install caido-cli from AUR"
 
     # 2) Normalize paths for healthcheck expectations
