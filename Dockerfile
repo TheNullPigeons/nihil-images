@@ -33,7 +33,7 @@ RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh install_mod_reverse && \
     ./entrypoint.sh install_mod_crypto && \
     ./entrypoint.sh install_mod_forensics && \
-    ./entrypoint.sh healthcheck
+    ./entrypoint.sh healthcheck core_tools mod_ad mod_web mod_network mod_credential mod_pwn mod_c2 mod_misc mod_reverse mod_crypto mod_forensics resources
 
 WORKDIR /workspace
 SHELL ["/usr/bin/zsh", "-c"]
