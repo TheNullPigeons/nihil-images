@@ -1,0 +1,10 @@
+vol -f memory.dmp windows.info
+vol -f memory.dmp windows.pslist
+vol -f memory.dmp windows.pstree
+vol -f memory.dmp windows.netscan
+vol -f memory.dmp windows.filescan
+vol -f memory.dmp windows.dumpfiles --pid <PID>
+vol -f memory.dmp windows.hashdump
+vol -f memory.dmp windows.cmdline
+vol -f memory.dmp linux.bash
+vol -f memory.dmp linux.pslist

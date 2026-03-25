@@ -1,5 +1,5 @@
 # Author: Nihil Project
-# Nest in their Active Directory.
+# Capture the flag, no fluff.
 
 FROM archlinux:latest
 
@@ -11,7 +11,7 @@ LABEL org.nihil.tag="${TAG}"
 LABEL org.nihil.version="${VERSION}"
 LABEL org.nihil.build_date="${BUILD_DATE}"
 LABEL org.nihil.app="Nihil"
-LABEL org.nihil.variant="ad"
+LABEL org.nihil.variant="ctf"
 
 COPY build /opt/nihil/build/
 COPY runtime /opt/nihil/runtime/
@@ -23,12 +23,8 @@ SHELL ["/bin/bash", "-c"]
 RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh package_base && \
     ./entrypoint.sh install_core_tools && \
-    ./entrypoint.sh install_mod_ad && \
-    ./entrypoint.sh install_mod_c2 && \
-    ./entrypoint.sh install_mod_network && \
-    ./entrypoint.sh install_mod_credential && \
-    ./entrypoint.sh install_mod_misc && \
-    ./entrypoint.sh healthcheck core_tools mod_ad mod_c2 mod_network mod_credential mod_misc
+    ./entrypoint.sh install_mod_ctf && \
+    ./entrypoint.sh healthcheck core_tools mod_ctf resources
 
 WORKDIR /workspace
 SHELL ["/usr/bin/zsh", "-c"]

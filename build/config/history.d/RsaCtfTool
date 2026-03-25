@@ -1,0 +1,4 @@
+RsaCtfTool -n <modulus> -e <exponent> --uncipher <ciphertext>
+RsaCtfTool --publickey key.pub --uncipherfile flag.enc
+RsaCtfTool --publickey key.pub --private
+RsaCtfTool -n <modulus> -e <exponent> --attack all

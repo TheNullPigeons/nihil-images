@@ -10,7 +10,7 @@
     { "name": "whois", "cmd": "whois", "description": "WHOIS lookup" },
     { "name": "nihil-history", "cmd": "nhi", "description": "Pentest engagement knowledge manager" }
   ],
-  "redteam_ad": [
+  "mod_ad": [
     { "name": "bloodhound", "cmd": "bloodhound-python", "description": "AD attack path visualization (ingestor)" },
     { "name": "bloodhound-ce-python", "cmd": "bloodhound-ce-python", "description": "BloodHound CE Python ingestor" },
     { "name": "ldapdomaindump", "cmd": "ldapdomaindump", "description": "LDAP domain information dumper" },
@@ -52,7 +52,7 @@
     { "name": "smbclient", "cmd": "smbclient", "description": "SMB command-line client" },
     { "name": "powershell", "cmd": "pwsh", "description": "PowerShell 7" }
   ],
-  "redteam_web": [
+  "mod_web": [
     { "name": "sqlmap", "cmd": "sqlmap", "description": "SQL injection testing" },
     { "name": "gobuster", "cmd": "gobuster", "description": "Directory/subdomain brute-force" },
     { "name": "nikto", "cmd": "nikto", "description": "Web server vulnerability scanner" },
@@ -87,31 +87,102 @@
     { "name": "kiterunner", "cmd": "kr", "description": "API endpoint discovery" },
     { "name": "httpie", "cmd": "http", "description": "User-friendly HTTP client" }
   ],
-  "redteam_network": [
+  "mod_network": [
     { "name": "nmap", "cmd": "nmap", "description": "Network scanner" },
-    { "name": "netcat", "cmd": "nc", "description": "Network utility (OpenBSD)" }
+    { "name": "netcat", "cmd": "nc", "description": "Network utility (OpenBSD)" },
+    { "name": "socat", "cmd": "socat", "description": "Multipurpose network relay" },
+    { "name": "wireshark-cli", "cmd": "tshark", "description": "Network protocol analyzer (CLI)" }
   ],
-  "redteam_credential": [
+  "mod_credential": [
     { "name": "pypykatz", "cmd": "pypykatz", "description": "LSASS minidump parser (Python)" },
     { "name": "binwalk", "cmd": "binwalk", "description": "Binary analysis / extraction" },
     { "name": "john", "cmd": "john", "description": "Password cracker (John the Ripper)" },
     { "name": "hashcat", "cmd": "hashcat", "description": "GPU password cracker" },
     { "name": "seclists", "cmd": null, "description": "Security wordlists collection", "check_path": "/usr/share/seclists" }
   ],
-  "redteam_pwn": [
+  "mod_pwn": [
     { "name": "radare2", "cmd": "r2", "description": "Reverse engineering framework" },
     { "name": "strace", "cmd": "strace", "description": "System call tracer" },
     { "name": "ltrace", "cmd": "ltrace", "description": "Library call tracer" },
     { "name": "cmake", "cmd": "cmake", "description": "Build system generator" },
     { "name": "pwntools", "cmd": "pwn", "description": "CTF/exploit development library" },
-    { "name": "ROPgadget", "cmd": "ROPgadget", "description": "ROP gadget finder" }
+    { "name": "ROPgadget", "cmd": "ROPgadget", "description": "ROP gadget finder" },
+    { "name": "pwndbg", "cmd": null, "description": "GDB plugin for exploit dev", "check_path": "/opt/tools/pwndbg" },
+    { "name": "one_gadget", "cmd": "one_gadget", "description": "One-gadget RCE finder for libc" },
+    { "name": "seccomp-tools", "cmd": "seccomp-tools", "description": "Seccomp filter analyzer" },
+    { "name": "checksec", "cmd": "checksec", "description": "Binary security property checker" }
   ],
-  "redteam_c2": [
+  "mod_c2": [
     { "name": "metasploit", "cmd": "msfconsole", "description": "Exploitation framework" },
     { "name": "sliver", "cmd": "sliver-server", "description": "C2 framework" }
   ],
-  "redteam_misc": [
-    { "name": "searchsploit", "cmd": "searchsploit", "description": "Exploit database search" }
+  "mod_misc": [
+    { "name": "searchsploit", "cmd": "searchsploit", "description": "Exploit database search" },
+    { "name": "CyberChef", "cmd": null, "description": "Data transformation toolkit (offline)", "check_path": "/opt/tools/CyberChef" }
+  ],
+  "mod_reverse": [
+    { "name": "ghidra", "cmd": "ghidra", "description": "NSA reverse engineering suite" },
+    { "name": "angr", "cmd": "angr", "description": "Symbolic execution and binary analysis" },
+    { "name": "pycdc", "cmd": "pycdc", "description": "Python bytecode decompiler" },
+    { "name": "uncompyle6", "cmd": "uncompyle6", "description": "Python 2/3 bytecode decompiler" }
+  ],
+  "mod_crypto": [
+    { "name": "RsaCtfTool", "cmd": "RsaCtfTool", "description": "RSA attack automation" },
+    { "name": "xortool", "cmd": "xortool", "description": "XOR cipher analysis" },
+    { "name": "z3-solver", "cmd": null, "description": "SMT constraint solver", "check_path": "/usr/lib/python3.12/site-packages/z3" },
+    { "name": "pycryptodome", "cmd": null, "description": "Python crypto library", "check_path": "/usr/lib/python3.12/site-packages/Crypto" },
+    { "name": "hashid", "cmd": "hashid", "description": "Hash type identifier" }
+  ],
+  "mod_forensics": [
+    { "name": "volatility3", "cmd": "vol", "description": "Memory forensics framework" },
+    { "name": "foremost", "cmd": "foremost", "description": "File carving tool" },
+    { "name": "exiftool", "cmd": "exiftool", "description": "Metadata extraction" },
+    { "name": "steghide", "cmd": "steghide", "description": "JPEG/BMP steganography" },
+    { "name": "zsteg", "cmd": "zsteg", "description": "PNG/BMP steganography detector" },
+    { "name": "stegseek", "cmd": "stegseek", "description": "Steghide brute-forcer" },
+    { "name": "openstego", "cmd": "openstego", "description": "Steganography tool" }
+  ],
+  "mod_ctf": [
+    { "name": "pwntools", "cmd": "pwn", "description": "Exploit development toolkit" },
+    { "name": "ROPgadget", "cmd": "ROPgadget", "description": "ROP gadget finder" },
+    { "name": "radare2", "cmd": "r2", "description": "Reverse engineering framework" },
+    { "name": "strace", "cmd": "strace", "description": "System call tracer" },
+    { "name": "ltrace", "cmd": "ltrace", "description": "Library call tracer" },
+    { "name": "pwndbg", "cmd": null, "description": "GDB plugin for exploit dev", "check_path": "/opt/tools/pwndbg" },
+    { "name": "one_gadget", "cmd": "one_gadget", "description": "One-gadget RCE finder for libc" },
+    { "name": "seccomp-tools", "cmd": "seccomp-tools", "description": "Seccomp filter analyzer" },
+    { "name": "checksec", "cmd": "checksec", "description": "Binary security property checker" },
+    { "name": "ghidra", "cmd": "ghidra", "description": "NSA reverse engineering suite" },
+    { "name": "angr", "cmd": "angr", "description": "Symbolic execution and binary analysis" },
+    { "name": "pycdc", "cmd": "pycdc", "description": "Python bytecode decompiler" },
+    { "name": "uncompyle6", "cmd": "uncompyle6", "description": "Python 2/3 bytecode decompiler" },
+    { "name": "RsaCtfTool", "cmd": "RsaCtfTool", "description": "RSA attack automation" },
+    { "name": "xortool", "cmd": "xortool", "description": "XOR cipher analysis" },
+    { "name": "z3-solver", "cmd": null, "description": "SMT constraint solver", "check_path": "/usr/lib/python3.12/site-packages/z3" },
+    { "name": "hashid", "cmd": "hashid", "description": "Hash type identifier" },
+    { "name": "volatility3", "cmd": "vol", "description": "Memory forensics framework" },
+    { "name": "foremost", "cmd": "foremost", "description": "File carving tool" },
+    { "name": "binwalk", "cmd": "binwalk", "description": "Binary analysis and extraction" },
+    { "name": "exiftool", "cmd": "exiftool", "description": "Metadata extraction" },
+    { "name": "steghide", "cmd": "steghide", "description": "JPEG/BMP steganography" },
+    { "name": "zsteg", "cmd": "zsteg", "description": "PNG/BMP steganography detector" },
+    { "name": "stegseek", "cmd": "stegseek", "description": "Steghide brute-forcer" },
+    { "name": "sqlmap", "cmd": "sqlmap", "description": "SQL injection automation" },
+    { "name": "ffuf", "cmd": "ffuf", "description": "Fast web fuzzer" },
+    { "name": "gobuster", "cmd": "gobuster", "description": "Directory/subdomain brute-force" },
+    { "name": "feroxbuster", "cmd": "feroxbuster", "description": "Fast content discovery (Rust)" },
+    { "name": "nikto", "cmd": "nikto", "description": "Web server vulnerability scanner" },
+    { "name": "jwt-tool", "cmd": "jwt-tool", "description": "JWT manipulation and attacks" },
+    { "name": "nuclei", "cmd": "nuclei", "description": "Template-based vulnerability scanner" },
+    { "name": "nmap", "cmd": "nmap", "description": "Network scanner" },
+    { "name": "netcat", "cmd": "nc", "description": "Network utility (OpenBSD)" },
+    { "name": "socat", "cmd": "socat", "description": "Multipurpose network relay" },
+    { "name": "wireshark-cli", "cmd": "tshark", "description": "Network protocol analyzer (CLI)" },
+    { "name": "john", "cmd": "john", "description": "Password cracker (John the Ripper)" },
+    { "name": "hashcat", "cmd": "hashcat", "description": "Password cracker" },
+    { "name": "seclists", "cmd": null, "description": "Security wordlists collection", "check_path": "/usr/share/seclists" },
+    { "name": "searchsploit", "cmd": "searchsploit", "description": "Exploit database search" },
+    { "name": "CyberChef", "cmd": null, "description": "Data transformation toolkit (offline)", "check_path": "/opt/tools/CyberChef" }
   ],
   "resources": [
     { "name": "PayloadsAllTheThings", "cmd": null, "description": "Offline payloads and cheat sheets", "check_path": "/opt/resources/PayloadsAllTheThings" }

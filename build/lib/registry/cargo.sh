@@ -1,7 +1,7 @@
 #!/bin/bash
 # Registry pour installation d'outils via cargo
 # Ce fichier contient les fonctions génériques pour installer via cargo
-# Les fichiers par domaine (redteam_ad.sh, etc.) appellent ces fonctions
+# Les fichiers par domaine (mod_ad.sh, etc.) appellent ces fonctions
 
 # Resolve path to lib/common.sh relative to this module file
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

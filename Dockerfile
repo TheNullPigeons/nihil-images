@@ -23,13 +23,16 @@ SHELL ["/bin/bash", "-c"]
 RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh package_base && \
     ./entrypoint.sh install_core_tools && \
-    ./entrypoint.sh install_redteam_ad && \
-    ./entrypoint.sh install_redteam_c2 && \
-    ./entrypoint.sh install_redteam_web && \
-    ./entrypoint.sh install_redteam_pwn && \
-    ./entrypoint.sh install_redteam_network && \
-    ./entrypoint.sh install_redteam_credential && \
-    ./entrypoint.sh install_redteam_misc && \
+    ./entrypoint.sh install_mod_ad && \
+    ./entrypoint.sh install_mod_c2 && \
+    ./entrypoint.sh install_mod_web && \
+    ./entrypoint.sh install_mod_pwn && \
+    ./entrypoint.sh install_mod_network && \
+    ./entrypoint.sh install_mod_credential && \
+    ./entrypoint.sh install_mod_misc && \
+    ./entrypoint.sh install_mod_reverse && \
+    ./entrypoint.sh install_mod_crypto && \
+    ./entrypoint.sh install_mod_forensics && \
     ./entrypoint.sh healthcheck
 
 WORKDIR /workspace

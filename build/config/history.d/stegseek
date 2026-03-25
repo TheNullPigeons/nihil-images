@@ -1,0 +1,3 @@
+stegseek image.jpg /usr/share/seclists/Passwords/Leaked-Databases/rockyou.txt
+stegseek --seed image.jpg
+stegseek image.jpg wordlist.txt output.txt

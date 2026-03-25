@@ -1,0 +1,3 @@
+seccomp-tools dump ./binary
+seccomp-tools disasm bpf_filter.dat
+seccomp-tools emu bpf_filter.dat

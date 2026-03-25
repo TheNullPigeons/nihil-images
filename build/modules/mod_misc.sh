@@ -4,7 +4,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODULE_DIR="$SCRIPT_DIR"
 source "${SCRIPT_DIR}/../lib/common.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_git.sh"
+source "${MODULE_DIR}/../lib/registry/git.sh"
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -27,11 +27,43 @@ function install_searchsploit() {
 # Module entry point
 # ---------------------------------------------------------------------------
 
-function install_redteam_misc() {
+function install_cyberchef() {
+    local install_dir="/opt/tools/CyberChef"
+
+    if [ -d "$install_dir" ]; then
+        colorecho "  ✓ CyberChef already installed"
+        return 0
+    fi
+
+    colorecho "  → Installing CyberChef (offline)"
+    mkdir -p "$install_dir"
+    local latest_url
+    latest_url=$(curl -s https://api.github.com/repos/gchq/CyberChef/releases/latest | \
+        grep "browser_download_url.*CyberChef.*\.zip" | head -1 | cut -d'"' -f4)
+    if [ -n "$latest_url" ]; then
+        pacman -S --noconfirm --needed unzip 2>/dev/null || true
+        curl -sSL "$latest_url" -o /tmp/cyberchef.zip && \
+        unzip -o /tmp/cyberchef.zip -d "$install_dir" && \
+        rm -f /tmp/cyberchef.zip
+        colorecho "  ✓ CyberChef installed at $install_dir"
+    else
+        colorecho "  ✗ Warning: Failed to fetch CyberChef release URL"
+        return 1
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# Module entry point
+# ---------------------------------------------------------------------------
+
+function install_mod_misc() {
     colorecho "Installing misc red-team tools"
 
     colorecho "  [git] Misc tools:"
     install_searchsploit
+
+    colorecho "  [curl] Misc tools:"
+    install_cyberchef
 
     colorecho "Misc red-team tools installation finished"
 }
