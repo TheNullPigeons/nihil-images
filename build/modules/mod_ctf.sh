@@ -87,6 +87,14 @@ function install_pwndbg() {
         return 0
     fi
 
+    if ! command -v uv > /dev/null 2>&1; then
+        colorecho "  → Installing uv (required by pwndbg setup)"
+        install_pacman_tool "uv" || {
+            colorecho "  ✗ Warning: Failed to install uv"
+            return 1
+        }
+    fi
+
     colorecho "  → Installing pwndbg (GDB plugin)"
     git clone --depth 1 https://github.com/pwndbg/pwndbg.git "$install_dir" || {
         colorecho "  ✗ Warning: Failed to clone pwndbg"
