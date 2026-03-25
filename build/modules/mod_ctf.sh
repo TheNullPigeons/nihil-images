@@ -175,15 +175,18 @@ EOF
 
 function install_pycryptodome() {
     colorecho "  → Installing pycryptodome"
-    if python3 -c "import Crypto" 2>/dev/null; then
-        colorecho "  ✓ pycryptodome already installed"
-        return 0
+    if ! python3 -c "import Crypto" 2>/dev/null; then
+        python3 -m pip install --break-system-packages pycryptodome --quiet 2>/dev/null || \
+            python3 -m pip install pycryptodome --quiet 2>/dev/null || {
+            colorecho "  ✗ Warning: Failed to install pycryptodome"
+            return 1
+        }
     fi
-    python3 -m pip install --break-system-packages pycryptodome --quiet 2>/dev/null || \
-        python3 -m pip install pycryptodome --quiet 2>/dev/null || {
-        colorecho "  ✗ Warning: Failed to install pycryptodome"
-        return 1
-    }
+    cat > /usr/local/bin/pycryptodome <<'EOF'
+#!/bin/sh
+exec python3 -c "import Crypto,sys; print(Crypto.__name__)"
+EOF
+    chmod +x /usr/local/bin/pycryptodome
     colorecho "  ✓ pycryptodome installed"
 }
 
