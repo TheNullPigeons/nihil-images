@@ -1,0 +1,6 @@
+tshark -r capture.pcap
+tshark -r capture.pcap -Y "http"
+tshark -r capture.pcap -Y "tcp.port == 80" -T fields -e http.request.uri
+tshark -r capture.pcap -Y "dns" -T fields -e dns.qry.name
+tshark -r capture.pcap -qz io,stat,1
+tshark -r capture.pcap -Y "http" -T fields -e http.file_data | xxd -r -p

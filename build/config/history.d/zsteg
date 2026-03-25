@@ -1,0 +1,4 @@
+zsteg image.png
+zsteg -a image.png
+zsteg image.png -E b1,bgr,lsb,xy
+zsteg image.bmp

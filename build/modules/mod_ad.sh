@@ -5,12 +5,12 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODULE_DIR="$SCRIPT_DIR"
 source "${SCRIPT_DIR}/../lib/common.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_pipx.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_cargo.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_pacman.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_go.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_git.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_curl.sh"
+source "${MODULE_DIR}/../lib/registry/pipx.sh"
+source "${MODULE_DIR}/../lib/registry/cargo.sh"
+source "${MODULE_DIR}/../lib/registry/pacman.sh"
+source "${MODULE_DIR}/../lib/registry/go.sh"
+source "${MODULE_DIR}/../lib/registry/git.sh"
+source "${MODULE_DIR}/../lib/registry/curl.sh"
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -202,7 +202,7 @@ function install_manspider() {
 # Module entry point
 # ---------------------------------------------------------------------------
 
-function install_redteam_ad() {
+function install_mod_ad() {
     colorecho "Installing Active Directory red-team tools"
 
     colorecho "  [pipx] AD tools:"

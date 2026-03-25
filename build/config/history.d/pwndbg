@@ -1,0 +1,3 @@
+gdb ./binary
+gdb -q ./binary -ex "b main" -ex "r"
+gdb -q -p $(pidof binary)

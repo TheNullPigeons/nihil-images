@@ -1,6 +1,6 @@
 #!/bin/bash
 # Registry for pipx-based tool installation
-# Contains generic helper functions; domain modules (redteam_ad.sh, etc.) call these.
+# Contains generic helper functions; domain modules (mod_ad.sh, etc.) call these.
 
 # Resolve path to lib/common.sh relative to this registry file
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

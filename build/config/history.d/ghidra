@@ -1,0 +1,3 @@
+ghidra
+ghidra ./binary
+analyzeHeadless /tmp/ghidra_project project1 -import ./binary -postScript ExportDecompilation.java

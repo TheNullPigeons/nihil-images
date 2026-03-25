@@ -1,0 +1,8 @@
+pwn checksec ./binary
+pwn cyclic 200
+pwn cyclic -l 0x61616168
+pwn shellcraft -l amd64.linux
+pwn shellcraft amd64.linux.sh
+pwn template ./binary --host remote.ctf.com --port 1337
+python3 -c "from pwn import *; p = process('./binary'); p.interactive()"
+python3 -c "from pwn import *; p = remote('host', 1337); p.sendline(payload); p.interactive()"

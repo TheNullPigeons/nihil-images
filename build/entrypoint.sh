@@ -9,22 +9,27 @@ source modules/base.sh
 source modules/core_tools.sh
 
 # Registres d'installation (pipx/cargo/pacman/aur/curl)
-source lib/registry/redteam_pipx.sh
-source lib/registry/redteam_cargo.sh
-source lib/registry/redteam_pacman.sh
-source lib/registry/redteam_aur.sh
-source lib/registry/redteam_curl.sh
-source lib/registry/redteam_go.sh
-source lib/registry/redteam_git.sh
+source lib/registry/pipx.sh
+source lib/registry/cargo.sh
+source lib/registry/pacman.sh
+source lib/registry/aur.sh
+source lib/registry/curl.sh
+source lib/registry/go.sh
+source lib/registry/git.sh
+source lib/registry/gem.sh
 
 # Modules par domaine
-source modules/redteam_ad.sh
-source modules/redteam_web.sh
-source modules/redteam_network.sh
-source modules/redteam_credential.sh
-source modules/redteam_pwn.sh
-source modules/redteam_c2.sh
-source modules/redteam_misc.sh
+source modules/mod_ad.sh
+source modules/mod_web.sh
+source modules/mod_network.sh
+source modules/mod_credential.sh
+source modules/mod_pwn.sh
+source modules/mod_c2.sh
+source modules/mod_misc.sh
+source modules/mod_reverse.sh
+source modules/mod_crypto.sh
+source modules/mod_forensics.sh
+source modules/mod_ctf.sh
 source lib/healthcheck.sh
 
 if [[ $EUID -ne 0 ]]; then

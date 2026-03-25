@@ -1,6 +1,6 @@
 #!/bin/bash
 # Registry pour installation d'outils via go install
-# Les fichiers par domaine (redteam_ad.sh, etc.) appellent install_go_tool
+# Les fichiers par domaine (mod_ad.sh, etc.) appellent install_go_tool
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../common.sh"
