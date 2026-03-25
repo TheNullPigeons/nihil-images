@@ -8,6 +8,7 @@ source "${SCRIPT_DIR}/../lib/common.sh"
 source "${MODULE_DIR}/../lib/registry/pipx.sh"
 source "${MODULE_DIR}/../lib/registry/cargo.sh"
 source "${MODULE_DIR}/../lib/registry/pacman.sh"
+source "${MODULE_DIR}/../lib/registry/aur.sh"
 source "${MODULE_DIR}/../lib/registry/go.sh"
 source "${MODULE_DIR}/../lib/registry/git.sh"
 source "${MODULE_DIR}/../lib/registry/curl.sh"
@@ -22,6 +23,76 @@ function install_bloodhound() {
 
 function install_bloodhound_ce() {
     install_pipx_tool "bloodhound-ce-python" "bloodhound-ce"
+}
+
+function install_bloodhound_ce_desktop() {
+    local install_root="/opt/tools/BloodHound-CE"
+    local src_dir="${install_root}/src"
+    local api_bin="${install_root}/bloodhound"
+    local tmp_json
+    local tag_name
+
+    if command -v bloodhound-ce > /dev/null 2>&1; then
+        colorecho "  ✓ bloodhound-ce already installed"
+        add-aliases "bloodhound-ce"
+        add-history "bloodhound-ce"
+        return 0
+    fi
+
+    colorecho "  → Installing bloodhound-ce from upstream source (Exegol-like flow)"
+
+    # Exegol builds BloodHound CE from SpecterOps sources (not AUR).
+    install_pacman_tool "nodejs" || return 1
+    install_pacman_tool "npm" || true
+    install_pacman_tool "yarn" || return 1
+    install_pacman_tool "go" || return 1
+    install_pacman_tool "jq" || return 1
+
+    mkdir -p "${install_root}"
+    tmp_json="$(mktemp)"
+    if ! curl -fsSL "https://api.github.com/repos/SpecterOps/BloodHound/releases" -o "${tmp_json}"; then
+        colorecho "  ✗ Warning: Failed to fetch BloodHound releases"
+        rm -f "${tmp_json}"
+        return 1
+    fi
+
+    tag_name="$(jq -r 'first(.[] | select(.tag_name | contains("-rc") | not) | .tag_name)' "${tmp_json}")"
+    rm -f "${tmp_json}"
+    if [ -z "${tag_name}" ] || [ "${tag_name}" = "null" ]; then
+        colorecho "  ✗ Warning: Unable to resolve BloodHound release tag"
+        return 1
+    fi
+
+    rm -rf "${src_dir}"
+    if ! git clone --depth 1 --branch "${tag_name}" "https://github.com/SpecterOps/BloodHound.git" "${src_dir}"; then
+        colorecho "  ✗ Warning: Failed to clone BloodHound source"
+        return 1
+    fi
+
+    if ! (cd "${src_dir}" && yarn install && yarn build); then
+        colorecho "  ✗ Warning: Failed to build BloodHound UI"
+        return 1
+    fi
+
+    if ! (cd "${src_dir}" && mkdir -p ./cmd/api/src/api/static/assets && cp -r ./cmd/ui/dist/. ./cmd/api/src/api/static/assets); then
+        colorecho "  ✗ Warning: Failed to stage BloodHound UI assets"
+        return 1
+    fi
+
+    if ! go build -C "${src_dir}/cmd/api/src" -o "${api_bin}" github.com/specterops/bloodhound/cmd/api/src/cmd/bhapi; then
+        colorecho "  ✗ Warning: Failed to build BloodHound API binary"
+        return 1
+    fi
+
+    cat > /usr/local/bin/bloodhound-ce <<'EOF'
+#!/bin/sh
+exec /opt/tools/BloodHound-CE/bloodhound "$@"
+EOF
+    chmod +x /usr/local/bin/bloodhound-ce
+
+    add-aliases "bloodhound-ce"
+    add-history "bloodhound-ce"
+    colorecho "  ✓ bloodhound-ce installed"
 }
 
 function install_ldapdomaindump() {
@@ -236,6 +307,9 @@ function install_mod_ad() {
     install_openldap
     install_smbclient
     install_python_pcapy
+
+    colorecho "  [source-build] AD tools:"
+    install_bloodhound_ce_desktop
 
     colorecho "  [AUR] AD tools:"
     install_responder

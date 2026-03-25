@@ -13,6 +13,7 @@
   "mod_ad": [
     { "name": "bloodhound", "cmd": "bloodhound-python", "description": "AD attack path visualization (ingestor)" },
     { "name": "bloodhound-ce-python", "cmd": "bloodhound-ce-python", "description": "BloodHound CE Python ingestor" },
+    { "name": "bloodhound-ce", "cmd": "bloodhound-ce", "description": "BloodHound CE desktop client" },
     { "name": "ldapdomaindump", "cmd": "ldapdomaindump", "description": "LDAP domain information dumper" },
     { "name": "adidnsdump", "cmd": "adidnsdump", "description": "AD integrated DNS dumper" },
     { "name": "certipy", "cmd": "certipy", "description": "ADCS enumeration and exploitation" },
@@ -86,7 +87,7 @@
     { "name": "mitmproxy", "cmd": "mitmproxy", "description": "HTTP/HTTPS interception proxy" },
     { "name": "kiterunner", "cmd": "kr", "description": "API endpoint discovery" },
     { "name": "httpie", "cmd": "http", "description": "User-friendly HTTP client" },
-    { "name": "caido", "cmd": null, "description": "Web security desktop toolkit", "check_path": "/usr/local/bin/caido" },
+    { "name": "caido", "cmd": "caido", "description": "Web security desktop toolkit" },
     { "name": "caido-cli", "cmd": "caido-cli", "description": "Caido command-line interface" }
   ],
   "mod_network": [
@@ -109,7 +110,7 @@
     { "name": "cmake", "cmd": "cmake", "description": "Build system generator" },
     { "name": "pwntools", "cmd": "pwn", "description": "CTF/exploit development library" },
     { "name": "ROPgadget", "cmd": "ROPgadget", "description": "ROP gadget finder" },
-    { "name": "pwndbg", "cmd": null, "description": "GDB plugin for exploit dev", "check_path": "/opt/tools/pwndbg" },
+    { "name": "pwndbg", "cmd": "pwndbg", "description": "GDB plugin for exploit dev" },
     { "name": "one_gadget", "cmd": "one_gadget", "description": "One-gadget RCE finder for libc" },
     { "name": "seccomp-tools", "cmd": "seccomp-tools", "description": "Seccomp filter analyzer" },
     { "name": "checksec", "cmd": "checksec", "description": "Binary security property checker" }
@@ -150,7 +151,7 @@
     { "name": "radare2", "cmd": "r2", "description": "Reverse engineering framework" },
     { "name": "strace", "cmd": "strace", "description": "System call tracer" },
     { "name": "ltrace", "cmd": "ltrace", "description": "Library call tracer" },
-    { "name": "pwndbg", "cmd": null, "description": "GDB plugin for exploit dev", "check_path": "/opt/tools/pwndbg" },
+    { "name": "pwndbg", "cmd": "pwndbg", "description": "GDB plugin for exploit dev" },
     { "name": "one_gadget", "cmd": "one_gadget", "description": "One-gadget RCE finder for libc" },
     { "name": "seccomp-tools", "cmd": "seccomp-tools", "description": "Seccomp filter analyzer" },
     { "name": "checksec", "cmd": "checksec", "description": "Binary security property checker" },
