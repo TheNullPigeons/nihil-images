@@ -80,36 +80,7 @@ function install_ltrace() {
 }
 
 function install_pwndbg() {
-    local install_dir="/opt/tools/pwndbg"
-
-    if [ -d "$install_dir" ]; then
-        colorecho "  ✓ pwndbg already installed"
-        return 0
-    fi
-
-    if ! command -v uv > /dev/null 2>&1; then
-        colorecho "  → Installing uv (required by pwndbg setup)"
-        install_pacman_tool "uv" || {
-            colorecho "  ✗ Warning: Failed to install uv"
-            return 1
-        }
-    fi
-
-    colorecho "  → Installing pwndbg (GDB plugin)"
-    git clone --depth 1 https://github.com/pwndbg/pwndbg.git "$install_dir" || {
-        colorecho "  ✗ Warning: Failed to clone pwndbg"
-        return 0
-    }
-    cd "$install_dir" && ./setup.sh || {
-        colorecho "  ✗ Warning: Failed to setup pwndbg"
-        cd - > /dev/null
-        return 0
-    }
-    cd - > /dev/null
-
-    add-aliases "pwndbg"
-    add-history "pwndbg"
-    colorecho "  ✓ pwndbg installed"
+    install_pacman_tool "pwndbg"
 }
 
 function install_one_gadget() {
@@ -222,7 +193,7 @@ function install_volatility3() {
 }
 
 function install_foremost() {
-    install_aur_tool "foremost" "foremost"
+    install_pacman_tool "foremost"
 }
 
 function install_binwalk() {
@@ -430,7 +401,6 @@ function install_mod_ctf() {
     install_one_gadget
     install_seccomp_tools
     install_checksec
-
     # --- Reverse Engineering ---
     colorecho "  [reverse] Reverse engineering tools:"
     install_ghidra

@@ -19,7 +19,7 @@ function install_volatility3() {
 }
 
 function install_foremost() {
-    install_aur_tool "foremost" "foremost"
+    install_pacman_tool "foremost"
 }
 
 function install_exiftool() {
