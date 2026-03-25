@@ -40,27 +40,7 @@ function install_ropgadget() {
 }
 
 function install_pwndbg() {
-    local install_dir="/opt/tools/pwndbg"
-
-    if [ -d "$install_dir" ]; then
-        colorecho "  ✓ pwndbg already installed"
-        return 0
-    fi
-
-    colorecho "  → Installing pwndbg (GDB plugin)"
-    git clone --depth 1 https://github.com/pwndbg/pwndbg.git "$install_dir" || {
-        colorecho "  ✗ Warning: Failed to clone pwndbg"
-        return 1
-    }
-    cd "$install_dir" && ./setup.sh || {
-        colorecho "  ✗ Warning: Failed to setup pwndbg"
-        return 1
-    }
-    cd - > /dev/null
-
-    add-aliases "pwndbg"
-    add-history "pwndbg"
-    colorecho "  ✓ pwndbg installed"
+    install_pacman_tool "pwndbg"
 }
 
 function install_one_gadget() {
@@ -88,13 +68,11 @@ function install_mod_pwn() {
     install_ltrace
     install_cmake
     install_checksec
+    install_pwndbg
 
     colorecho "  [pipx] Pwn / exploit tools:"
     install_pwntools
     install_ropgadget
-
-    colorecho "  [git] Pwn tools:"
-    install_pwndbg
 
     colorecho "  [gem] Pwn tools:"
     install_one_gadget
