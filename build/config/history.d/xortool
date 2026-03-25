@@ -1,0 +1,4 @@
+xortool encrypted_file
+xortool -l 4 encrypted_file
+xortool -l 4 -c 20 encrypted_file
+xortool-xor -h "deadbeef" -f encrypted_file > decrypted

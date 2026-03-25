@@ -1,0 +1,4 @@
+steghide info image.jpg
+steghide extract -sf image.jpg
+steghide extract -sf image.jpg -p password
+steghide embed -cf cover.jpg -ef secret.txt -p password

@@ -1,0 +1,2 @@
+python3 -c "import angr; p = angr.Project('./binary', auto_load_libs=False); print(p.arch)"
+python3 -c "import angr; p = angr.Project('./binary'); sm = p.factory.simulation_manager(); sm.explore(find=0x401234, avoid=0x401200); print(sm.found[0].posix.dumps(0))"

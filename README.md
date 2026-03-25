@@ -28,6 +28,15 @@ Image orientée tests Web / HTTP :
 
 **Image GitHub Packages :** `ghcr.io/thenullpigeons/web:latest` ou `ghcr.io/thenullpigeons/web:beak`
 
+### CTF (`ctf`) — *Capture the flag, no fluff.*
+Image dédiée CTF (polyvalente) :
+- Base + outils pwn/reverse (pwntools, ROPgadget, radare2, etc.)
+- Outils web CTF (ffuf, nuclei, sqlmap, etc.)
+- Outils réseau/credential utiles en challenges
+- Bundle léger par rapport à `full` (pas de stack AD/C2 complète)
+
+**Image GitHub Packages :** `ghcr.io/thenullpigeons/ctf:latest` ou `ghcr.io/thenullpigeons/ctf:flag`
+
 ## Construction des images Docker
 
 ### Construire l'image full
@@ -48,6 +57,12 @@ cd nihil-images
 docker build -f Dockerfile.web -t nihil:web .
 ```
 
+### Construire l'image CTF
+```bash
+cd nihil-images
+docker build -f Dockerfile.ctf -t nihil:ctf .
+```
+
 ### Pull depuis GitHub Packages
 ```bash
 # Image full
@@ -58,6 +73,9 @@ docker pull ghcr.io/thenullpigeons/ad:latest
 
 # Image Web
 docker pull ghcr.io/thenullpigeons/web:latest
+
+# Image CTF
+docker pull ghcr.io/thenullpigeons/ctf:latest
 ```
 
 ### Installer les dépendances (hôte)

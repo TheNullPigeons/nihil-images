@@ -1,0 +1,5 @@
+exiftool image.jpg
+exiftool -all= image.jpg
+exiftool -Comment image.jpg
+exiftool -b -ThumbnailImage image.jpg > thumb.jpg
+exiftool *.png

@@ -5,8 +5,8 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODULE_DIR="$SCRIPT_DIR"
 source "${SCRIPT_DIR}/../lib/common.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_pacman.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_git.sh"
+source "${MODULE_DIR}/../lib/registry/pacman.sh"
+source "${MODULE_DIR}/../lib/registry/git.sh"
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -97,7 +97,7 @@ function install_silverc2() {
 # Module entry point
 # ---------------------------------------------------------------------------
 
-function install_redteam_c2() {
+function install_mod_c2() {
     colorecho "Installing Command & Control red-team tools"
 
     colorecho "  [git] C2 tools:"

@@ -5,10 +5,10 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODULE_DIR="$SCRIPT_DIR"
 source "${SCRIPT_DIR}/../lib/common.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_pipx.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_cargo.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_pacman.sh"
-source "${MODULE_DIR}/../lib/registry/redteam_aur.sh"
+source "${MODULE_DIR}/../lib/registry/pipx.sh"
+source "${MODULE_DIR}/../lib/registry/cargo.sh"
+source "${MODULE_DIR}/../lib/registry/pacman.sh"
+source "${MODULE_DIR}/../lib/registry/aur.sh"
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -38,7 +38,7 @@ function install_seclists() {
 # Module entry point
 # ---------------------------------------------------------------------------
 
-function install_redteam_credential() {
+function install_mod_credential() {
     colorecho "Installing Credential red-team tools"
 
     colorecho "  [pipx] Credential tools:"
