@@ -109,42 +109,52 @@ function install_uncompyle6() {
 # ===========================================================================
 
 function install_rsactftool() {
-    local repo_dir="/usr/local/share/RsaCtfTool"
-    local script_path=""
-    local py_bin="python3"
+    local repo_dir="/opt/tools/RsaCtfTool"
+    local venv_dir="${repo_dir}/venv"
+    local script_path="${repo_dir}/RsaCtfTool.py"
 
-    install_git_tool_venv "RsaCtfTool" \
-        "https://github.com/RsaCtfTool/RsaCtfTool.git" \
-        "RsaCtfTool.py" \
-        "" \
-        "yes"
-
-    # Normalize command path for healthcheck
-    if [ -x "/root/.local/bin/RsaCtfTool" ]; then
-        add-symlink "/root/.local/bin/RsaCtfTool" "RsaCtfTool"
+    if command -v RsaCtfTool > /dev/null 2>&1; then
+        colorecho "  ✓ RsaCtfTool already installed"
+        return 0
     fi
 
-    if [ -x "${repo_dir}/venv/bin/python3" ]; then
-        py_bin="${repo_dir}/venv/bin/python3"
+    colorecho "  → Installing RsaCtfTool (git + venv)"
+    mkdir -p /opt/tools
+    rm -rf "${repo_dir}"
+    git clone --depth 1 "https://github.com/RsaCtfTool/RsaCtfTool.git" "${repo_dir}" || {
+        colorecho "  ✗ Warning: Failed to clone RsaCtfTool"
+        return 1
+    }
+
+    python3 -m venv --system-site-packages "${venv_dir}" || {
+        colorecho "  ✗ Warning: Failed to create RsaCtfTool venv"
+        return 1
+    }
+
+    if [ -f "${repo_dir}/requirements.txt" ]; then
+        "${venv_dir}/bin/pip" install --quiet -r "${repo_dir}/requirements.txt" || {
+            colorecho "  ✗ Warning: Failed to install RsaCtfTool requirements"
+            return 1
+        }
     fi
 
-    if [ -f "${repo_dir}/RsaCtfTool.py" ]; then
-        script_path="${repo_dir}/RsaCtfTool.py"
-    elif [ -f "/opt/tools/RsaCtfTool/RsaCtfTool.py" ]; then
-        script_path="/opt/tools/RsaCtfTool/RsaCtfTool.py"
+    if [ ! -f "${script_path}" ]; then
+        colorecho "  ✗ Warning: RsaCtfTool.py not found after clone"
+        return 1
     fi
 
-    if ! command -v RsaCtfTool > /dev/null 2>&1 && [ -n "${script_path}" ]; then
-        cat > /usr/local/bin/RsaCtfTool <<'EOF'
+    cat > /usr/local/bin/RsaCtfTool <<EOF
 #!/bin/sh
-PY_BIN="__PY_BIN__"
-SCRIPT_PATH="__SCRIPT_PATH__"
-exec "$PY_BIN" "$SCRIPT_PATH" "$@"
+exec "${venv_dir}/bin/python3" "${script_path}" "\$@"
 EOF
-        sed -i "s|__PY_BIN__|${py_bin}|g" /usr/local/bin/RsaCtfTool
-        sed -i "s|__SCRIPT_PATH__|${script_path}|g" /usr/local/bin/RsaCtfTool
-        chmod +x /usr/local/bin/RsaCtfTool
+    chmod +x /usr/local/bin/RsaCtfTool
+
+    if ! command -v RsaCtfTool > /dev/null 2>&1; then
+        colorecho "  ✗ Warning: RsaCtfTool command not available after installation"
+        return 1
     fi
+
+    colorecho "  ✓ RsaCtfTool installed"
 }
 
 function install_xortool() {
