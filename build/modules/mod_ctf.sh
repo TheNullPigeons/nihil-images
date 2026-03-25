@@ -46,6 +46,13 @@ install_gem_tool() {
         return 1
     }
 
+    # Ensure gem-provided executables are reachable from PATH used by healthcheck
+    local gem_bindir
+    gem_bindir="$(ruby -e 'require "rubygems"; print Gem.bindir' 2>/dev/null || true)"
+    if [ -n "$gem_bindir" ] && [ -x "${gem_bindir}/${cmd_name}" ]; then
+        add-symlink "${gem_bindir}/${cmd_name}" "${cmd_name}"
+    fi
+
     add-aliases "$cmd_name"
     add-history "$cmd_name"
     colorecho "  ✓ $cmd_name installed"
@@ -150,6 +157,15 @@ function install_rsactftool() {
         "RsaCtfTool.py" \
         "" \
         "yes"
+
+    # Normalize command path for healthcheck
+    if [ -f "/usr/local/share/RsaCtfTool/RsaCtfTool.py" ]; then
+        cat > /usr/local/bin/RsaCtfTool <<'EOF'
+#!/bin/sh
+exec python3 /usr/local/share/RsaCtfTool/RsaCtfTool.py "$@"
+EOF
+        chmod +x /usr/local/bin/RsaCtfTool
+    fi
 }
 
 function install_xortool() {
@@ -167,6 +183,11 @@ function install_z3_solver() {
         colorecho "  ✗ Warning: Failed to install z3-solver"
         return 1
     }
+    cat > /usr/local/bin/z3-solver <<'EOF'
+#!/bin/sh
+exec python3 -c "import z3,sys; print(z3.get_version_string())"
+EOF
+    chmod +x /usr/local/bin/z3-solver
     colorecho "  ✓ z3-solver installed"
 }
 
@@ -205,7 +226,7 @@ function install_binwalk() {
 }
 
 function install_exiftool() {
-    install_pacman_tool "perl-image-exiftool"
+    install_pacman_tool "exiftool" || install_pacman_tool "perl-image-exiftool"
 }
 
 function install_steghide() {

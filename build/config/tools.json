@@ -131,7 +131,7 @@
   "mod_crypto": [
     { "name": "RsaCtfTool", "cmd": "RsaCtfTool", "description": "RSA attack automation" },
     { "name": "xortool", "cmd": "xortool", "description": "XOR cipher analysis" },
-    { "name": "z3-solver", "cmd": null, "description": "SMT constraint solver", "check_path": "/usr/lib/python3.12/site-packages/z3" },
+    { "name": "z3-solver", "cmd": "z3-solver", "description": "SMT constraint solver" },
     { "name": "pycryptodome", "cmd": null, "description": "Python crypto library", "check_path": "/usr/lib/python3.12/site-packages/Crypto" },
     { "name": "hashid", "cmd": "hashid", "description": "Hash type identifier" }
   ],
@@ -160,7 +160,7 @@
     { "name": "uncompyle6", "cmd": "uncompyle6", "description": "Python 2/3 bytecode decompiler" },
     { "name": "RsaCtfTool", "cmd": "RsaCtfTool", "description": "RSA attack automation" },
     { "name": "xortool", "cmd": "xortool", "description": "XOR cipher analysis" },
-    { "name": "z3-solver", "cmd": null, "description": "SMT constraint solver", "check_path": "/usr/lib/python3.12/site-packages/z3" },
+    { "name": "z3-solver", "cmd": "z3-solver", "description": "SMT constraint solver" },
     { "name": "hashid", "cmd": "hashid", "description": "Hash type identifier" },
     { "name": "volatility3", "cmd": "vol", "description": "Memory forensics framework" },
     { "name": "foremost", "cmd": "foremost", "description": "File carving tool" },
