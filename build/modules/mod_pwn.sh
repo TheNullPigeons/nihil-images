@@ -40,7 +40,11 @@ function install_ropgadget() {
 }
 
 function install_pwndbg() {
-    install_pacman_tool "pwndbg"
+    if install_pacman_tool "pwndbg"; then
+        return 0
+    fi
+    colorecho "  ✗ Warning: Failed to install pwndbg via pacman (likely package file conflicts), skipping"
+    return 0
 }
 
 function install_one_gadget() {

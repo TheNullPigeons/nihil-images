@@ -1,0 +1,2 @@
+alias caido-ui='caido --no-sandbox'
+alias caido-cli-help='caido-cli --help'
