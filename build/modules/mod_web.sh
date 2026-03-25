@@ -173,15 +173,137 @@ function install_httpie() {
 }
 
 function install_caido() {
-    colorecho "  → Installing Caido (desktop + CLI) via AUR"
-    install_aur_tool "caido" "caido" || {
-        colorecho "  ✗ Warning: Failed to install caido from AUR"
+    local caido_bin
+    local caido_cli_bin
+    local arch
+    local release_json
+
+    colorecho "  → Installing Caido (desktop + CLI)"
+
+    # Runtime deps for the desktop AppImage (best effort)
+    install_pacman_tool "libxss" || true
+
+    # 1) Try AUR (fast path on Arch)
+    install_aur_tool "caido" "caido" || colorecho "  ✗ Warning: Failed to install caido from AUR"
+    install_aur_tool "caido-cli" "caido-cli" || colorecho "  ✗ Warning: Failed to install caido-cli from AUR"
+
+    # 2) Normalize paths for healthcheck expectations
+    caido_bin="$(command -v caido 2>/dev/null || true)"
+    if [ -n "$caido_bin" ]; then
+        ln -sf "$caido_bin" /usr/local/bin/caido
+    fi
+    caido_cli_bin="$(command -v caido-cli 2>/dev/null || true)"
+    if [ -n "$caido_cli_bin" ]; then
+        ln -sf "$caido_cli_bin" /usr/local/bin/caido-cli
+    fi
+
+    if [ -x /usr/local/bin/caido ] && command -v caido-cli >/dev/null 2>&1; then
+        colorecho "  ✓ Caido binaries detected"
+        add-aliases "caido"
+        add-history "caido"
         return 0
-    }
-    install_aur_tool "caido-cli" "caido-cli" || {
-        colorecho "  ✗ Warning: Failed to install caido-cli from AUR"
+    fi
+
+    # 3) Fallback: install from upstream release assets
+    colorecho "  → Falling back to upstream release downloads"
+    arch="$(uname -m)"
+
+    release_json="$(curl -fsSL https://api.caido.io/releases/latest 2>/dev/null)" || release_json=""
+    if [ -z "$release_json" ]; then
+        colorecho "  ✗ Warning: Failed to fetch Caido release metadata"
         return 0
-    }
+    fi
+
+    local appimage_url
+    local cli_url
+
+    appimage_url="$(ARCH="$arch" python3 -c 'import sys, json, os
+data=json.load(sys.stdin)
+arch=os.environ.get("ARCH","")
+assets=data.get("assets",[])
+links=[a.get("link","") for a in assets if a.get("link")]
+app=[l for l in links if l.endswith(".AppImage")]
+if not app:
+    print("")
+    raise SystemExit
+arch_map={
+  "x86_64":["amd64","x86_64","linux-x86_64","linux-amd64"],
+  "aarch64":["arm64","aarch64","linux-arm64","linux-aarch64"],
+  "armv7l":["armv7l","arm-linux-gnueabihf","linux-armv7l"],
+}
+want=arch_map.get(arch,[arch])
+for w in want:
+    if not w: 
+        continue
+    for l in app:
+        if w in l:
+            print(l)
+            raise SystemExit
+print(app[0])' <<<"$release_json")"
+
+    cli_url="$(ARCH="$arch" python3 -c 'import sys, json, os
+data=json.load(sys.stdin)
+arch=os.environ.get("ARCH","")
+assets=data.get("assets",[])
+links=[a.get("link","") for a in assets if a.get("link")]
+cli=[l for l in links if "caido-cli" in l and l.endswith(".tar.gz")]
+if not cli:
+    print("")
+    raise SystemExit
+arch_map={
+  "x86_64":["amd64","x86_64","linux-x86_64","linux-amd64"],
+  "aarch64":["arm64","aarch64","linux-arm64","linux-aarch64"],
+  "armv7l":["armv7l","arm-linux-gnueabihf","linux-armv7l"],
+}
+want=arch_map.get(arch,[arch])
+for w in want:
+    if not w:
+        continue
+    for l in cli:
+        if w in l:
+            print(l)
+            raise SystemExit
+print(cli[0])' <<<"$release_json")"
+
+    mkdir -p /opt/tools/caido /opt/tools/bin
+
+    if [ -n "$appimage_url" ]; then
+        local appimage_name
+        appimage_name="$(basename "$appimage_url")"
+        if curl -fsSL "$appimage_url" -o "/opt/tools/caido/${appimage_name}" 2>/dev/null; then
+            chmod +x "/opt/tools/caido/${appimage_name}" || true
+            ln -sf "/opt/tools/caido/${appimage_name}" /usr/local/bin/caido
+        fi
+    fi
+
+    if [ -n "$cli_url" ]; then
+        local cli_archive
+        cli_archive="/tmp/$(basename "$cli_url")"
+        if curl -fsSL "$cli_url" -o "$cli_archive" 2>/dev/null; then
+            if tar -xzf "$cli_archive" -C /opt/tools/bin 2>/dev/null; then
+                if [ -f /opt/tools/bin/caido-cli ]; then
+                    chmod +x /opt/tools/bin/caido-cli || true
+                    ln -sf /opt/tools/bin/caido-cli /usr/local/bin/caido-cli
+                else
+                    local extracted
+                    extracted="$(python3 -c 'import os
+root="/opt/tools/bin"
+target="caido-cli"
+for dp,_,files in os.walk(root):
+  for f in files:
+    if f==target:
+      print(os.path.join(dp,f))
+      raise SystemExit
+print("")')"
+                    if [ -n "$extracted" ] && [ -f "$extracted" ]; then
+                        chmod +x "$extracted" || true
+                        ln -sf "$extracted" /usr/local/bin/caido-cli
+                    fi
+                fi
+            fi
+            rm -f "$cli_archive" || true
+        fi
+    fi
 
     add-aliases "caido"
     add-history "caido"
