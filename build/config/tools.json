@@ -110,7 +110,7 @@
     { "name": "cmake", "cmd": "cmake", "description": "Build system generator" },
     { "name": "pwntools", "cmd": "pwn", "description": "CTF/exploit development library" },
     { "name": "ROPgadget", "cmd": "ROPgadget", "description": "ROP gadget finder" },
-    { "name": "pwndbg", "cmd": null, "description": "GDB plugin for exploit dev", "check_path": "/usr/share/pwndbg" },
+    { "name": "pwndbg", "cmd": "pwndbg", "description": "GDB plugin for exploit dev" },
     { "name": "one_gadget", "cmd": "one_gadget", "description": "One-gadget RCE finder for libc" },
     { "name": "seccomp-tools", "cmd": "seccomp-tools", "description": "Seccomp filter analyzer" },
     { "name": "checksec", "cmd": "checksec", "description": "Binary security property checker" }
@@ -151,7 +151,7 @@
     { "name": "radare2", "cmd": "r2", "description": "Reverse engineering framework" },
     { "name": "strace", "cmd": "strace", "description": "System call tracer" },
     { "name": "ltrace", "cmd": "ltrace", "description": "Library call tracer" },
-    { "name": "pwndbg", "cmd": null, "description": "GDB plugin for exploit dev", "check_path": "/usr/share/pwndbg" },
+    { "name": "pwndbg", "cmd": "pwndbg", "description": "GDB plugin for exploit dev" },
     { "name": "one_gadget", "cmd": "one_gadget", "description": "One-gadget RCE finder for libc" },
     { "name": "seccomp-tools", "cmd": "seccomp-tools", "description": "Seccomp filter analyzer" },
     { "name": "checksec", "cmd": "checksec", "description": "Binary security property checker" },
