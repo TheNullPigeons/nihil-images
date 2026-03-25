@@ -10,53 +10,10 @@ source "${MODULE_DIR}/../lib/registry/pipx.sh"
 source "${MODULE_DIR}/../lib/registry/cargo.sh"
 source "${MODULE_DIR}/../lib/registry/pacman.sh"
 source "${MODULE_DIR}/../lib/registry/aur.sh"
+source "${MODULE_DIR}/../lib/registry/gem.sh"
 source "${MODULE_DIR}/../lib/registry/go.sh"
 source "${MODULE_DIR}/../lib/registry/git.sh"
 source "${MODULE_DIR}/../lib/registry/curl.sh"
-
-# ===========================================================================
-# Helper: Ruby gem installation
-# ===========================================================================
-
-_ensure_ruby() {
-    if ! command -v ruby > /dev/null 2>&1; then
-        colorecho "ruby not found, installing via pacman"
-        pacman -Sy --noconfirm && \
-        pacman -S --noconfirm --needed ruby || {
-            criticalecho "Failed to install ruby"
-            return 1
-        }
-    fi
-}
-
-install_gem_tool() {
-    local cmd_name="$1"
-    local gem_name="${2:-$cmd_name}"
-
-    _ensure_ruby || return 1
-
-    if command -v "$cmd_name" > /dev/null 2>&1; then
-        colorecho "  ✓ $cmd_name already installed (gem)"
-        return 0
-    fi
-
-    colorecho "  → Installing $cmd_name via gem ($gem_name)"
-    gem install "$gem_name" --no-document || {
-        colorecho "  ✗ Warning: Failed to install $gem_name via gem"
-        return 1
-    }
-
-    # Ensure gem-provided executables are reachable from PATH used by healthcheck
-    local gem_bindir
-    gem_bindir="$(ruby -e 'require "rubygems"; print Gem.bindir' 2>/dev/null || true)"
-    if [ -n "$gem_bindir" ] && [ -x "${gem_bindir}/${cmd_name}" ]; then
-        add-symlink "${gem_bindir}/${cmd_name}" "${cmd_name}"
-    fi
-
-    add-aliases "$cmd_name"
-    add-history "$cmd_name"
-    colorecho "  ✓ $cmd_name installed"
-}
 
 # ===========================================================================
 # Pwn / Binary Exploitation
@@ -159,7 +116,9 @@ function install_rsactftool() {
         "yes"
 
     # Normalize command path for healthcheck
-    if [ -f "/usr/local/share/RsaCtfTool/RsaCtfTool.py" ]; then
+    if [ -x "/root/.local/bin/RsaCtfTool" ]; then
+        add-symlink "/root/.local/bin/RsaCtfTool" "RsaCtfTool"
+    elif [ -f "/usr/local/share/RsaCtfTool/RsaCtfTool.py" ]; then
         cat > /usr/local/bin/RsaCtfTool <<'EOF'
 #!/bin/sh
 exec python3 /usr/local/share/RsaCtfTool/RsaCtfTool.py "$@"
@@ -227,6 +186,18 @@ function install_binwalk() {
 
 function install_exiftool() {
     install_pacman_tool "exiftool" || install_pacman_tool "perl-image-exiftool"
+    if ! command -v exiftool > /dev/null 2>&1; then
+        for p in \
+            "/usr/bin/exiftool" \
+            "/usr/bin/vendor_perl/exiftool" \
+            "/usr/share/perl5/vendor_perl/Image/ExifTool/exiftool"
+        do
+            if [ -x "$p" ]; then
+                add-symlink "$p" "exiftool"
+                break
+            fi
+        done
+    fi
 }
 
 function install_steghide() {
