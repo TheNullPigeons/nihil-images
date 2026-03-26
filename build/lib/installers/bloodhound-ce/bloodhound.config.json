@@ -14,10 +14,10 @@
       "key_file": ""
     },
     "database": {
-      "connection": "user=bloodhound password=nihil4thewin dbname=bloodhound host=localhost sslmode=disable"
+      "connection": "user=bloodhound password=nihil4thewin dbname=bloodhound host=127.0.0.1 sslmode=disable"
     },
     "neo4j": {
-      "connection": "neo4j://neo4j:fly2own@localhost:7687/"
+      "connection": "neo4j://neo4j:fly2own1@127.0.0.1:7687/"
     },
     "collectors_base_path": "/opt/tools/BloodHound-CE/collectors"
 }
