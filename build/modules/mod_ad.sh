@@ -48,8 +48,8 @@ function install_bloodhound_ce_desktop() {
     install_pacman_tool "go" || return 1
     install_pacman_tool "jq" || return 1
     install_pacman_tool "postgresql" || return 1
-    install_aur_tool "neo4j-community" "neo4j" || return 1
-    neo4j-admin dbms set-initial-password fly2own >/dev/null 2>&1 || true
+    install_aur_tool "neo4j-community-bin" "neo4j" || return 1
+    neo4j-admin dbms set-initial-password fly2own1 >/dev/null 2>&1 || true
 
     mkdir -p "${install_root}"
     tmp_json="$(mktemp)"
