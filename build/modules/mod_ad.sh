@@ -48,7 +48,19 @@ function install_bloodhound_ce_desktop() {
     install_pacman_tool "go" || return 1
     install_pacman_tool "jq" || return 1
     install_pacman_tool "postgresql" || return 1
-    install_aur_tool "neo4j-community-bin" "neo4j" || return 1
+    install_pacman_tool "java-runtime-headless" || install_pacman_tool "jre21-openjdk-headless" || true
+
+    local neo4j_version
+    neo4j_version="$(curl -fsSL "https://api.github.com/repos/neo4j/neo4j/releases" \
+        | jq -r 'first(.[] | select(.tag_name | startswith("5.")) | select(.prerelease | not) | .tag_name)' \
+        | sed 's/^5\.//' | xargs -I{} echo "5.{}" 2>/dev/null)" || neo4j_version="5.26.8"
+    [ -z "${neo4j_version}" ] && neo4j_version="5.26.8"
+    colorecho "  → Installing Neo4j ${neo4j_version}"
+    curl -fsSL "https://dist.neo4j.org/neo4j-community-${neo4j_version}-unix.tar.gz" \
+        | tar -xz -C /opt/
+    ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j"        /usr/local/bin/neo4j
+    ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j-admin"  /usr/local/bin/neo4j-admin
+    ln -sf "/opt/neo4j-community-${neo4j_version}/bin/cypher-shell" /usr/local/bin/cypher-shell
     neo4j-admin dbms set-initial-password fly2own1 >/dev/null 2>&1 || true
 
     mkdir -p "${install_root}"
