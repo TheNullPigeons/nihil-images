@@ -180,8 +180,25 @@ function install_caido() {
 
     colorecho "  → Installing Caido (desktop + CLI)"
 
-    # Runtime deps for the desktop AppImage (best effort)
-    install_pacman_tool "libxss" || true
+    # Runtime deps for the desktop app (Electron/GTK)
+    local electron_deps=(
+        atk
+        at-spi2-atk
+        at-spi2-core
+        gtk3
+        nss
+        libxss
+        libdrm
+        libxcomposite
+        libxdamage
+        libxrandr
+        mesa
+        xdg-utils
+        alsa-lib
+    )
+    for dep in "${electron_deps[@]}"; do
+        install_pacman_tool "$dep" || true
+    done
 
     # 1) Try AUR first on Arch
     install_aur_tool "caido-desktop" "caido" || colorecho "  ✗ Warning: Failed to install caido-desktop from AUR"
