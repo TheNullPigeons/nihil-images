@@ -47,6 +47,8 @@ function install_bloodhound_ce_desktop() {
     install_pacman_tool "yarn" || return 1
     install_pacman_tool "go" || return 1
     install_pacman_tool "jq" || return 1
+    install_pacman_tool "postgresql" || return 1
+    install_aur_tool "neo4j-community" "neo4j" || return 1
 
     mkdir -p "${install_root}"
     tmp_json="$(mktemp)"
@@ -85,8 +87,36 @@ function install_bloodhound_ce_desktop() {
     fi
 
     cat > /usr/local/bin/bloodhound-ce <<'EOF'
-#!/bin/sh
-exec /opt/tools/BloodHound-CE/bloodhound "$@"
+#!/bin/bash
+# bloodhound-ce wrapper — starts PostgreSQL and Neo4j automatically
+
+BHCE_BIN="/opt/tools/BloodHound-CE/bloodhound"
+
+# PostgreSQL
+if ! pg_isready -q 2>/dev/null; then
+    mkdir -p /run/postgresql
+    chown postgres:postgres /run/postgresql
+    if [ ! -f /var/lib/postgres/data/PG_VERSION ]; then
+        echo "[nihil] Initializing PostgreSQL..."
+        su -s /bin/bash postgres -c "initdb -D /var/lib/postgres/data" >/dev/null
+    fi
+    echo "[nihil] Starting PostgreSQL..."
+    su -s /bin/bash postgres -c "pg_ctl -D /var/lib/postgres/data -l /tmp/postgres.log start" >/dev/null
+    for i in $(seq 1 15); do pg_isready -q 2>/dev/null && break || sleep 1; done
+fi
+
+# Neo4j
+if ! neo4j status 2>/dev/null | grep -q "is running"; then
+    echo "[nihil] Starting Neo4j..."
+    neo4j start >/dev/null 2>&1
+    echo "[nihil] Waiting for Neo4j..."
+    for i in $(seq 1 30); do
+        bash -c "echo > /dev/tcp/127.0.0.1/7687" 2>/dev/null && break || sleep 2
+    done
+fi
+
+echo "[nihil] Starting BloodHound CE..."
+exec "$BHCE_BIN" "$@"
 EOF
     chmod +x /usr/local/bin/bloodhound-ce
 
