@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pkill bloodhound 2>/dev/null || true
+
+if neo4j status 2>/dev/null | grep -q "is running"; then
+    neo4j stop >/dev/null 2>&1
+fi
+
+if pg_isready -q 2>/dev/null; then
+    su -s /bin/bash postgres -c "pg_ctl -D /var/lib/postgres/data stop" >/dev/null 2>&1
+fi

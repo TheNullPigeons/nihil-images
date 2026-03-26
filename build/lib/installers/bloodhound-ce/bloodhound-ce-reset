@@ -1,0 +1,17 @@
+#!/bin/bash
+
+bloodhound-ce-stop
+
+if ! pg_isready -q 2>/dev/null; then
+    mkdir -p /run/postgresql
+    chown postgres:postgres /run/postgresql
+    su -s /bin/bash postgres -c "pg_ctl -D /var/lib/postgres/data -l /tmp/postgres.log start" >/dev/null
+    for i in $(seq 1 15); do pg_isready -q 2>/dev/null && break || sleep 1; done
+fi
+
+cd /tmp
+su -s /bin/bash postgres -c "psql -c \"DROP DATABASE IF EXISTS bloodhound;\""
+su -s /bin/bash postgres -c "psql -c \"CREATE DATABASE bloodhound;\""
+su -s /bin/bash postgres -c "psql -c \"ALTER DATABASE bloodhound OWNER TO bloodhound;\""
+
+echo "[nihil] BloodHound CE database reset. Run bloodhound-ce to start fresh."
