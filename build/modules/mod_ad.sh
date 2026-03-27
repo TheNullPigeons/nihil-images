@@ -65,7 +65,7 @@ function install_bloodhound_ce_desktop() {
     ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j"        /usr/local/bin/neo4j
     ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j-admin"  /usr/local/bin/neo4j-admin
     ln -sf "/opt/neo4j-community-${neo4j_version}/bin/cypher-shell" /usr/local/bin/cypher-shell
-    neo4j-admin dbms set-initial-password fly2own1 >/dev/null 2>&1 || true
+    neo4j-admin set-initial-password fly2own1 >/dev/null 2>&1 || true
 
     mkdir -p "${install_root}" "${sharphound_path}" "${azurehound_path}"
     curl_tempfile="$(mktemp)"
