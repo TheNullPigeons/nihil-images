@@ -50,7 +50,8 @@ function install_bloodhound_ce_desktop() {
     install_pacman_tool "jq" || return 1
     install_pacman_tool "p7zip" || true
     install_pacman_tool "postgresql" || return 1
-    install_pacman_tool "jre11-openjdk-headless" || install_pacman_tool "java-runtime-headless" || true
+    install_pacman_tool "jre11-openjdk-headless" || return 1
+    archlinux-java set java-11-openjdk
 
     # BloodHound CE requires Neo4j 4.4.x — Neo4j 5.x removed the db.indexes procedure
     local neo4j_version
