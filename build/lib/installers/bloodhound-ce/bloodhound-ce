@@ -2,6 +2,8 @@
 
 BHCE_BIN="/opt/tools/BloodHound-CE/bloodhound"
 BHCE_CFG="/opt/tools/BloodHound-CE/bloodhound.config.json"
+export NEO4J_HOME
+NEO4J_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v neo4j)")")")"
 
 # PostgreSQL
 if ! pg_isready -q 2>/dev/null; then
@@ -19,10 +21,10 @@ fi
 # Neo4j
 if ! neo4j status 2>/dev/null | grep -q "is running"; then
     echo "[nihil] Starting Neo4j..."
-    NEO4J_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v neo4j)")")")" neo4j start >/dev/null 2>&1
+    neo4j start >/dev/null 2>&1
     echo "[nihil] Waiting for Neo4j..."
-    for i in $(seq 1 30); do
-        bash -c "echo > /dev/tcp/127.0.0.1/7687" 2>/dev/null && break || sleep 2
+    for i in $(seq 1 60); do
+        neo4j status 2>/dev/null | grep -q "is running" && break || sleep 2
     done
 fi
 

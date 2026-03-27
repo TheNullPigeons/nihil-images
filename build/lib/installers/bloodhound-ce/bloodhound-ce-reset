@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export NEO4J_HOME
+NEO4J_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v neo4j)")")")"
+
 bloodhound-ce-stop
 
 if ! pg_isready -q 2>/dev/null; then
