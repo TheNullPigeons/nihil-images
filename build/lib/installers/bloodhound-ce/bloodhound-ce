@@ -27,6 +27,9 @@ if ! neo4j status 2>/dev/null | grep -q "is running"; then
         neo4j status 2>/dev/null | grep -q "is running" && break || sleep 2
     done
 fi
+for i in $(seq 1 30); do
+    ss -tlnp 2>/dev/null | grep -q ':7687' && break || sleep 2
+done
 
 echo "[nihil] Starting BloodHound CE..."
 echo "[nihil] UI → http://localhost:1030 | Login: admin (password printed on first run)"
