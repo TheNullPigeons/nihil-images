@@ -29,7 +29,9 @@ function install_bloodhound_ce_desktop() {
     local install_root="/opt/tools/BloodHound-CE"
     local src_dir="${install_root}/src"
     local api_bin="${install_root}/bloodhound"
-    local tmp_json
+    local sharphound_path="${install_root}/collectors/sharphound"
+    local azurehound_path="${install_root}/collectors/azurehound"
+    local curl_tempfile
     local tag_name
 
     if command -v bloodhound-ce > /dev/null 2>&1; then
@@ -39,22 +41,23 @@ function install_bloodhound_ce_desktop() {
         return 0
     fi
 
-    colorecho "  → Installing bloodhound-ce from upstream source (Exegol-like flow)"
+    colorecho "  → Installing bloodhound-ce from upstream source"
 
-    # Exegol builds BloodHound CE from SpecterOps sources (not AUR).
     install_pacman_tool "nodejs" || return 1
     install_pacman_tool "npm" || true
     install_pacman_tool "yarn" || return 1
     install_pacman_tool "go" || return 1
     install_pacman_tool "jq" || return 1
+    install_pacman_tool "p7zip" || true
     install_pacman_tool "postgresql" || return 1
     install_pacman_tool "java-runtime-headless" || install_pacman_tool "jre21-openjdk-headless" || true
 
+    # BloodHound CE requires Neo4j 4.4.x — Neo4j 5.x removed the db.indexes procedure
     local neo4j_version
     neo4j_version="$(curl -fsSL "https://api.github.com/repos/neo4j/neo4j/releases" \
-        | jq -r 'first(.[] | select(.tag_name | startswith("5.")) | select(.prerelease | not) | .tag_name)' \
-        | sed 's/^5\.//' | xargs -I{} echo "5.{}" 2>/dev/null)" || neo4j_version="5.26.8"
-    [ -z "${neo4j_version}" ] && neo4j_version="5.26.8"
+        | jq -r 'first(.[] | select(.tag_name | startswith("4.4.")) | select(.prerelease | not) | .tag_name)' \
+        | sed 's/^4\.4\.//' | xargs -I{} echo "4.4.{}" 2>/dev/null)" || neo4j_version="4.4.40"
+    [ -z "${neo4j_version}" ] && neo4j_version="4.4.40"
     colorecho "  → Installing Neo4j ${neo4j_version}"
     curl -fsSL "https://dist.neo4j.org/neo4j-community-${neo4j_version}-unix.tar.gz" \
         | tar -xz -C /opt/
@@ -63,40 +66,84 @@ function install_bloodhound_ce_desktop() {
     ln -sf "/opt/neo4j-community-${neo4j_version}/bin/cypher-shell" /usr/local/bin/cypher-shell
     neo4j-admin dbms set-initial-password fly2own1 >/dev/null 2>&1 || true
 
-    mkdir -p "${install_root}"
-    tmp_json="$(mktemp)"
-    if ! curl -fsSL "https://api.github.com/repos/SpecterOps/BloodHound/releases" -o "${tmp_json}"; then
+    mkdir -p "${install_root}" "${sharphound_path}" "${azurehound_path}"
+    curl_tempfile="$(mktemp)"
+
+    if ! curl -fsSL "https://api.github.com/repos/SpecterOps/BloodHound/releases" -o "${curl_tempfile}"; then
         colorecho "  ✗ Warning: Failed to fetch BloodHound releases"
-        rm -f "${tmp_json}"
+        rm -f "${curl_tempfile}"
         return 1
     fi
 
-    tag_name="$(jq -r 'first(.[] | select(.tag_name | contains("-rc") | not) | .tag_name)' "${tmp_json}")"
-    rm -f "${tmp_json}"
+    tag_name="$(jq -r 'first(.[] | select(.tag_name | contains("-rc") | not) | .tag_name)' "${curl_tempfile}")"
     if [ -z "${tag_name}" ] || [ "${tag_name}" = "null" ]; then
         colorecho "  ✗ Warning: Unable to resolve BloodHound release tag"
+        rm -f "${curl_tempfile}"
         return 1
     fi
 
     rm -rf "${src_dir}"
     if ! git clone --depth 1 --branch "${tag_name}" "https://github.com/SpecterOps/BloodHound.git" "${src_dir}"; then
         colorecho "  ✗ Warning: Failed to clone BloodHound source"
+        rm -f "${curl_tempfile}"
         return 1
     fi
 
     if ! (cd "${src_dir}" && yarn install && yarn build); then
         colorecho "  ✗ Warning: Failed to build BloodHound UI"
+        rm -f "${curl_tempfile}"
         return 1
     fi
 
     if ! (cd "${src_dir}" && mkdir -p ./cmd/api/src/api/static/assets && cp -r ./cmd/ui/dist/. ./cmd/api/src/api/static/assets); then
         colorecho "  ✗ Warning: Failed to stage BloodHound UI assets"
+        rm -f "${curl_tempfile}"
         return 1
     fi
 
-    if ! go build -C "${src_dir}/cmd/api/src" -o "${api_bin}" github.com/specterops/bloodhound/cmd/api/src/cmd/bhapi; then
+    # Fix STORAGE MAIN incompatibility in PostgreSQL migration (upstream issue, expires 2026-08-10)
+    if [[ "$(date +%Y%m%d)" < "20260810" ]]; then
+        sed -i 's/\s*STORAGE MAIN//' "${src_dir}/cmd/api/src/database/migration/migrations/v8.5.0.sql"
+    fi
+
+    if ! go build -C "${src_dir}/cmd/api/src" -o "${api_bin}" \
+        -ldflags "-X 'github.com/specterops/bloodhound/cmd/api/src/version.majorVersion=8' \
+                  -X 'github.com/specterops/bloodhound/cmd/api/src/version.minorVersion=0' \
+                  -X 'github.com/specterops/bloodhound/cmd/api/src/version.patchVersion=1'" \
+        github.com/specterops/bloodhound/cmd/api/src/cmd/bhapi; then
         colorecho "  ✗ Warning: Failed to build BloodHound API binary"
+        rm -f "${curl_tempfile}"
         return 1
+    fi
+
+    rm -rf "${src_dir}/cache" "${src_dir}/.yarn/cache"
+
+    # SharpHound
+    local sharphound_url sharphound_name
+    curl -fsSL "https://api.github.com/repos/BloodHoundAD/SharpHound/releases/latest" -o "${curl_tempfile}"
+    sharphound_url="$(jq -r '.assets[].browser_download_url | select(contains("debug") | not) | select(contains("sha256") | not)' "${curl_tempfile}")"
+    sharphound_name="$(jq -r '.assets[].name | ascii_downcase | select(contains("debug") | not) | select(contains("sha256") | not)' "${curl_tempfile}")"
+    if [ -n "${sharphound_url}" ]; then
+        wget -q --directory-prefix "${sharphound_path}" "${sharphound_url}"
+        mv "${sharphound_path}/$(basename "${sharphound_url}")" "${sharphound_path}/${sharphound_name}" 2>/dev/null || true
+        sha256sum "${sharphound_path}/${sharphound_name}" > "${sharphound_path}/${sharphound_name}.sha256"
+    fi
+
+    # AzureHound
+    local azurehound_version azurehound_url_amd64 azurehound_url_amd64_sha256 azurehound_url_arm64 azurehound_url_arm64_sha256
+    curl -fsSL "https://api.github.com/repos/BloodHoundAD/AzureHound/releases/latest" -o "${curl_tempfile}"
+    azurehound_version="$(jq -r '.tag_name' "${curl_tempfile}")"
+    azurehound_url_amd64="$(jq -r '.assets[].browser_download_url | select(endswith("_linux_amd64.zip"))' "${curl_tempfile}")"
+    azurehound_url_amd64_sha256="$(jq -r '.assets[].browser_download_url | select(endswith("_linux_amd64.zip.sha256"))' "${curl_tempfile}")"
+    azurehound_url_arm64="$(jq -r '.assets[].browser_download_url | select(endswith("_linux_arm64.zip"))' "${curl_tempfile}")"
+    azurehound_url_arm64_sha256="$(jq -r '.assets[].browser_download_url | select(endswith("_linux_arm64.zip.sha256"))' "${curl_tempfile}")"
+    rm -f "${curl_tempfile}"
+    if [ -n "${azurehound_url_amd64}" ]; then
+        wget -q --directory-prefix "${azurehound_path}" "${azurehound_url_amd64}" "${azurehound_url_amd64_sha256}"
+        wget -q --directory-prefix "${azurehound_path}" "${azurehound_url_arm64}" "${azurehound_url_arm64_sha256}"
+        (cd "${azurehound_path}" && sha256sum --check --warn ./*.sha256) || return 1
+        7z a -tzip -mx9 "${azurehound_path}/azurehound-${azurehound_version}.zip" "${azurehound_path}/azurehound-*"
+        sha256sum "${azurehound_path}/azurehound-${azurehound_version}.zip" > "${azurehound_path}/azurehound-${azurehound_version}.zip.sha256"
     fi
 
     mkdir -p /run/postgresql
