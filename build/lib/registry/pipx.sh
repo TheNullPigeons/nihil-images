@@ -2,9 +2,7 @@
 # Registry for pipx-based tool installation
 # Contains generic helper functions; domain modules (mod_ad.sh, etc.) call these.
 
-# Resolve path to lib/common.sh relative to this registry file
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../common.sh"
+nihil::import lib/common
 
 # Ensure pipx is installed
 _ensure_pipx() {

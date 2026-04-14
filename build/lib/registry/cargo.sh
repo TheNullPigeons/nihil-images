@@ -3,9 +3,7 @@
 # Ce fichier contient les fonctions génériques pour installer via cargo
 # Les fichiers par domaine (mod_ad.sh, etc.) appellent ces fonctions
 
-# Resolve path to lib/common.sh relative to this module file
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../common.sh"
+nihil::import lib/common
 
 # Fonction pour s'assurer que cargo est installé avec toutes les dépendances de build
 _ensure_cargo() {

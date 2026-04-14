@@ -2,12 +2,10 @@
 # Red-team tools for Network
 # Each tool has its own install_$TOOL function for easier maintenance.
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MODULE_DIR="$SCRIPT_DIR"
-source "${SCRIPT_DIR}/../lib/common.sh"
-source "${MODULE_DIR}/../lib/registry/pipx.sh"
-source "${MODULE_DIR}/../lib/registry/cargo.sh"
-source "${MODULE_DIR}/../lib/registry/pacman.sh"
+nihil::import lib/common
+nihil::import lib/registry/pipx
+nihil::import lib/registry/cargo
+nihil::import lib/registry/pacman
 
 # ---------------------------------------------------------------------------
 # Individual install functions

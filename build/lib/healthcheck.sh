@@ -3,10 +3,9 @@
 # Usage: ./entrypoint.sh healthcheck [module1 module2 ...]
 # If no modules specified, checks all modules.
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/common.sh"
+nihil::import lib/common
 
-TOOLS_JSON="${SCRIPT_DIR}/../config/tools.json"
+TOOLS_JSON="${NIHIL_BUILD}/config/tools.json"
 
 function healthcheck() {
     local modules=("$@")

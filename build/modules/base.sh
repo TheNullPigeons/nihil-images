@@ -1,9 +1,7 @@
 #!/bin/bash
 # Base package installation
 
-# Resolve path to lib/common.sh relative to this module file
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../lib/common.sh"
+nihil::import lib/common
 
 function package_base() {
     colorecho "Updating system and installing base OS packages"

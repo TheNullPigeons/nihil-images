@@ -2,11 +2,9 @@
 # Red-team tools for Command & Control (C2)
 # Each tool has its own install_$TOOL function for easier maintenance.
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MODULE_DIR="$SCRIPT_DIR"
-source "${SCRIPT_DIR}/../lib/common.sh"
-source "${MODULE_DIR}/../lib/registry/pacman.sh"
-source "${MODULE_DIR}/../lib/registry/git.sh"
+nihil::import lib/common
+nihil::import lib/registry/pacman
+nihil::import lib/registry/git
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -85,7 +83,7 @@ function install_metasploit() {
 
 function install_silverc2() {
     colorecho "  → Installing Sliver C2 (server + client)"
-    local installer="${MODULE_DIR}/../lib/installers/sliver/sliver_install.sh"
+    local installer="${NIHIL_BUILD}/lib/installers/sliver/sliver_install.sh"
     if [ -f "$installer" ]; then
         bash "$installer" || colorecho "  ✗ Warning: Sliver installation failed"
     else
