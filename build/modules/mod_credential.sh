@@ -29,7 +29,26 @@ function install_hashcat() {
 }
 
 function install_seclists() {
-    install_aur_tool "seclists" "seclists"
+    local install_dir="/usr/share/seclists"
+
+    if [ -d "$install_dir" ]; then
+        colorecho "  ✓ seclists already installed"
+        return 0
+    fi
+
+    if install_aur_tool "seclists" "seclists"; then
+        return 0
+    fi
+
+    colorecho "  → Falling back to upstream SecLists repository"
+    mkdir -p /usr/share
+    if ! git-clone-retry "https://github.com/danielmiessler/SecLists.git" "$install_dir" 1 3; then
+        colorecho "  ✗ Warning: Failed to clone upstream SecLists"
+        return 1
+    fi
+
+    rm -rf "$install_dir/.git"
+    colorecho "  ✓ seclists installed from upstream repository"
 }
 
 # ---------------------------------------------------------------------------
