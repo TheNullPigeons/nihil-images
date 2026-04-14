@@ -2,8 +2,7 @@
 # Registry pour installation d'outils via go install
 # Les fichiers par domaine (mod_ad.sh, etc.) appellent install_go_tool
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../common.sh"
+nihil::import lib/common
 
 GO_INSTALL_DIR="${GO_INSTALL_DIR:-/root/go}"
 GO_BIN_DIR="${GO_BIN_DIR:-$GO_INSTALL_DIR/bin}"

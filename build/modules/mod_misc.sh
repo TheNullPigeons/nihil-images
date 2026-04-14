@@ -1,10 +1,8 @@
 #!/bin/bash
 # Outils red-team divers (exploit-db, etc.)
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MODULE_DIR="$SCRIPT_DIR"
-source "${SCRIPT_DIR}/../lib/common.sh"
-source "${MODULE_DIR}/../lib/registry/git.sh"
+nihil::import lib/common
+nihil::import lib/registry/git
 
 # ---------------------------------------------------------------------------
 # Individual install functions

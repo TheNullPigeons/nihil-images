@@ -2,8 +2,7 @@
 # Registry pour installation d'outils via AUR (clone + makepkg + pacman -U)
 # builder exécute makepkg -s (qui appelle sudo pacman pour les deps) : sudoers NOPASSWD pour pacman
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../common.sh"
+nihil::import lib/common
 
 AUR_BASE="https://aur.archlinux.org"
 SUDOERS_AUR="/etc/sudoers.d/builder-aur"
