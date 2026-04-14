@@ -3,9 +3,7 @@
 # Ce fichier contient les fonctions génériques pour installer via pacman
 # Les fichiers par domaine (mod_ad.sh, etc.) appellent ces fonctions
 
-# Resolve path to lib/common.sh relative to this module file
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../common.sh"
+nihil::import lib/common
 
 # Fonction générique pour installer un outil via pacman
 # Usage: install_pacman_tool "package_name"

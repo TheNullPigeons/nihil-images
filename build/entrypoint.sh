@@ -3,34 +3,26 @@
 
 set -e
 
-# Load utilities and modules
-source lib/common.sh
-source modules/base.sh
-source modules/core_tools.sh
+# Chargeur central : définit nihil::import + charge lib/common
+source lib/loader.sh
 
-# Registres d'installation (pipx/cargo/pacman/aur/curl)
-source lib/registry/pipx.sh
-source lib/registry/cargo.sh
-source lib/registry/pacman.sh
-source lib/registry/aur.sh
-source lib/registry/curl.sh
-source lib/registry/go.sh
-source lib/registry/git.sh
-source lib/registry/gem.sh
+# Modules de base
+nihil::import modules/base
+nihil::import modules/core_tools
 
-# Modules par domaine
-source modules/mod_ad.sh
-source modules/mod_web.sh
-source modules/mod_network.sh
-source modules/mod_credential.sh
-source modules/mod_pwn.sh
-source modules/mod_c2.sh
-source modules/mod_misc.sh
-source modules/mod_reverse.sh
-source modules/mod_crypto.sh
-source modules/mod_forensics.sh
-source modules/mod_ctf.sh
-source lib/healthcheck.sh
+# Modules par domaine (chacun déclare ses propres dépendances de registres)
+nihil::import modules/mod_ad
+nihil::import modules/mod_web
+nihil::import modules/mod_network
+nihil::import modules/mod_credential
+nihil::import modules/mod_pwn
+nihil::import modules/mod_c2
+nihil::import modules/mod_misc
+nihil::import modules/mod_reverse
+nihil::import modules/mod_crypto
+nihil::import modules/mod_forensics
+nihil::import modules/mod_ctf
+nihil::import lib/healthcheck
 
 if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"

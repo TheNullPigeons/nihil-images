@@ -4,10 +4,8 @@
 # Ici on met tout ce qui est confort d'utilisation dans le conteneur :
 # éditeurs, multiplexeurs, utilitaires réseau génériques, etc.
 
-# Resolve path to lib/common.sh relative to this module file
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../lib/common.sh"
-source "${SCRIPT_DIR}/../lib/registry/pipx.sh"
+nihil::import lib/common
+nihil::import lib/registry/pipx
 
 function install_core_tools() {
     colorecho "Installing core CLI tools (editors, tmux, fzf, etc.)"

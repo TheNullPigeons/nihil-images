@@ -3,17 +3,15 @@
 # Self-contained: all tools needed for CTF competitions in one module.
 # Categories: Pwn, Reverse, Crypto, Forensics/Stego, Web, Network, Cracking, Misc
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MODULE_DIR="$SCRIPT_DIR"
-source "${SCRIPT_DIR}/../lib/common.sh"
-source "${MODULE_DIR}/../lib/registry/pipx.sh"
-source "${MODULE_DIR}/../lib/registry/cargo.sh"
-source "${MODULE_DIR}/../lib/registry/pacman.sh"
-source "${MODULE_DIR}/../lib/registry/aur.sh"
-source "${MODULE_DIR}/../lib/registry/gem.sh"
-source "${MODULE_DIR}/../lib/registry/go.sh"
-source "${MODULE_DIR}/../lib/registry/git.sh"
-source "${MODULE_DIR}/../lib/registry/curl.sh"
+nihil::import lib/common
+nihil::import lib/registry/pipx
+nihil::import lib/registry/cargo
+nihil::import lib/registry/pacman
+nihil::import lib/registry/aur
+nihil::import lib/registry/gem
+nihil::import lib/registry/go
+nihil::import lib/registry/git
+nihil::import lib/registry/curl
 
 # ===========================================================================
 # Pwn / Binary Exploitation

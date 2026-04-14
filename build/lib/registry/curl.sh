@@ -3,8 +3,7 @@
 # - install_download_tool : script ou binaire unique
 # - install_tar_tool : archive tar.gz/tar.xz avec support multi-architecture
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../common.sh"
+nihil::import lib/common
 
 INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"
 

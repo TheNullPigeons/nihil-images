@@ -2,16 +2,14 @@
 # Red-team tools for Active Directory
 # Each tool has its own install_$TOOL function for easier maintenance.
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MODULE_DIR="$SCRIPT_DIR"
-source "${SCRIPT_DIR}/../lib/common.sh"
-source "${MODULE_DIR}/../lib/registry/pipx.sh"
-source "${MODULE_DIR}/../lib/registry/cargo.sh"
-source "${MODULE_DIR}/../lib/registry/pacman.sh"
-source "${MODULE_DIR}/../lib/registry/aur.sh"
-source "${MODULE_DIR}/../lib/registry/go.sh"
-source "${MODULE_DIR}/../lib/registry/git.sh"
-source "${MODULE_DIR}/../lib/registry/curl.sh"
+nihil::import lib/common
+nihil::import lib/registry/pipx
+nihil::import lib/registry/cargo
+nihil::import lib/registry/pacman
+nihil::import lib/registry/aur
+nihil::import lib/registry/go
+nihil::import lib/registry/git
+nihil::import lib/registry/curl
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -159,7 +157,7 @@ function install_bloodhound_ce_desktop() {
     cd /tmp && su -s /bin/bash postgres -c "psql -c \"ALTER DATABASE bloodhound OWNER TO bloodhound;\""
     su -s /bin/bash postgres -c "pg_ctl -D /var/lib/postgres/data stop" >/dev/null
 
-    local assets="${MODULE_DIR}/../lib/installers/bloodhound-ce"
+    local assets="${NIHIL_BUILD}/lib/installers/bloodhound-ce"
 
     mkdir -p "${install_root}/work"
     cp "${assets}/bloodhound.config.json" "${install_root}/bloodhound.config.json"

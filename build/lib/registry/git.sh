@@ -2,8 +2,7 @@
 # Registry pour installation d'outils via Git (clone + build/install personnalisable)
 # Supporte : pip requirements.txt, make, make install, ou toute commande shell.
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../common.sh"
+nihil::import lib/common
 
 GIT_INSTALL_DIR="${GIT_INSTALL_DIR:-/usr/local/share}"
 GIT_BIN_DIR="${GIT_BIN_DIR:-/root/.local/bin}"
