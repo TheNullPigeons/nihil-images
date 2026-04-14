@@ -85,6 +85,35 @@ function add-symlink() {
     fi
 
     colorecho "Creating symlink: $link_name -> $target"
-    
+
     ln -sf "$target" "$link_name" || colorecho "Warning: Failed to create symlink"
+}
+
+function git-clone-retry() {
+    local repo_url="$1"
+    local dest_dir="$2"
+    local depth="${3:-1}"
+    local attempts="${4:-3}"
+    local branch="${5:-}"
+
+    local -i try=1
+    while (( try <= attempts )); do
+        rm -rf "$dest_dir"
+
+        if [[ -n "$branch" ]]; then
+            if git -c http.version=HTTP/1.1 clone --depth "$depth" --branch "$branch" "$repo_url" "$dest_dir"; then
+                return 0
+            fi
+        else
+            if git -c http.version=HTTP/1.1 clone --depth "$depth" "$repo_url" "$dest_dir"; then
+                return 0
+            fi
+        fi
+
+        colorecho "  ✗ Warning: Clone failed for $repo_url (attempt $try/$attempts)"
+        sleep "$try"
+        (( try++ ))
+    done
+
+    return 1
 }

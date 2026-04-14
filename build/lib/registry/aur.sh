@@ -24,7 +24,7 @@ install_aur_tool() {
     echo 'builder ALL=(ALL) NOPASSWD: /usr/bin/pacman' > "$SUDOERS_AUR"
     chmod 440 "$SUDOERS_AUR"
     useradd -m -s /bin/bash builder 2>/dev/null || true
-    if ! git clone "${AUR_BASE}/${pkg_name}.git" "$build_dir"; then
+    if ! git-clone-retry "${AUR_BASE}/${pkg_name}.git" "$build_dir" 1 3; then
         colorecho "  ✗ Warning: Failed to clone AUR $pkg_name"
         rm -f "$SUDOERS_AUR"
         userdel -r builder 2>/dev/null || true
