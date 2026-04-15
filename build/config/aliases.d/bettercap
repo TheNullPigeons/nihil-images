@@ -1,0 +1,2 @@
+alias bettercap='bettercap -iface eth0'
+alias bettercap-ui='bettercap-ui'
