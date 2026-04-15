@@ -1,0 +1,4 @@
+bettercap -iface eth0
+bettercap -eval "net.probe on; net.show"
+bettercap -eval "api.rest on; ui.on"
+bettercap -caplet http-ui

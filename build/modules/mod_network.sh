@@ -6,6 +6,7 @@ nihil::import lib/common
 nihil::import lib/registry/pipx
 nihil::import lib/registry/cargo
 nihil::import lib/registry/pacman
+nihil::import lib/registry/aur
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -27,6 +28,14 @@ function install_wireshark_cli() {
     install_pacman_tool "wireshark-cli"
 }
 
+function install_bettercap() {
+    install_pacman_tool "bettercap"
+}
+
+function install_bettercap_ui() {
+    install_aur_tool "bettercap-ui"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -39,6 +48,8 @@ function install_mod_network() {
     install_netcat
     install_socat
     install_wireshark_cli
+    install_bettercap
+    install_bettercap_ui
 
     colorecho "Network tools installation finished"
 }
