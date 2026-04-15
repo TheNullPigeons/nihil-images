@@ -49,7 +49,7 @@ function install_mod_network() {
     install_socat
     install_wireshark_cli
     install_bettercap
-    install_bettercap_ui
+#   install_bettercap_ui
 
     colorecho "Network tools installation finished"
 }
