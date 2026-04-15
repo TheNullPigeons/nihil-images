@@ -5,7 +5,7 @@ set -e
 
 trap "exit 0" SIGTERM SIGINT
 
-LOCKFILE="/opt/my-resources/.nihil_setup_done"
+LOCKFILE="/root/.nihil_setup_done"
 LOAD_SCRIPT="/opt/nihil/runtime/load_my_resources.sh"
 
 # Déploie les my-resources au premier démarrage du container
