@@ -113,6 +113,22 @@ export COLORTERM=truecolor
 # nihil-history env variables
 [ -f ~/.nihil-history/env.sh ] && source ~/.nihil-history/env.sh
 
+# nihil-history wrappers (auto-source env after each command)
+nhi() {
+  command nhi "$@"
+  [ -f ~/.nihil-history/env.sh ] && source ~/.nihil-history/env.sh
+}
+
+nhit() {
+  command nhit "$@"
+  [ -f ~/.nihil-history/env.sh ] && source ~/.nihil-history/env.sh
+}
+
+nihil-history() {
+  command nihil-history "$@"
+  [ -f ~/.nihil-history/env.sh ] && source ~/.nihil-history/env.sh
+}
+
 # Source user custom resources
 [ -f /opt/my-resources/setup/zsh/zshrc ] && source /opt/my-resources/setup/zsh/zshrc
 
