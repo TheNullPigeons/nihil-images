@@ -50,6 +50,15 @@ function install_cyberchef() {
     fi
 }
 
+function install_firefox() {
+    install_pacman_tool "firefox"
+}
+function install_chromium() {
+    install_pacman_tool "chromium"
+}
+
+
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -57,11 +66,10 @@ function install_cyberchef() {
 function install_mod_misc() {
     colorecho "Installing misc red-team tools"
 
-    colorecho "  [git] Misc tools:"
     install_searchsploit
-
-    colorecho "  [curl] Misc tools:"
     install_cyberchef
+    install_firefox
+    install_chromium
 
     colorecho "Misc red-team tools installation finished"
 }
