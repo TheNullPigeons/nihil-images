@@ -110,6 +110,9 @@ export COLORTERM=truecolor
 # Source custom aliases & history
 [ -f /opt/nihil/config/aliases ] && source /opt/nihil/config/aliases
 
+# nihil-history env variables
+[ -f ~/.nihil-history/env.sh ] && source ~/.nihil-history/env.sh
+
 # Source user custom resources
 [ -f /opt/my-resources/setup/zsh/zshrc ] && source /opt/my-resources/setup/zsh/zshrc
 
