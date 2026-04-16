@@ -21,6 +21,7 @@ function install_core_tools() {
     wget \
     asciinema \
     whois \
+    xclip \
     gdb && \
     pacman -Sc --noconfirm
 
