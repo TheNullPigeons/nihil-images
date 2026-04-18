@@ -57,8 +57,8 @@ function install_firefox() {
 function install_chromium() {
     install_pacman_tool "chromium"
 }
-function install_ntpdate() {
-    install_aur_tool "ntpdate"
+function install_chrony() {
+    install_pacman_tool "chrony"
 }
 
 function install_rdate() {
@@ -84,7 +84,7 @@ function install_mod_misc() {
     install_cyberchef
     install_firefox
     install_chromium
-    install_ntpdate
+    install_chrony
     install_rdate
 
     colorecho "Misc red-team tools installation finished"
