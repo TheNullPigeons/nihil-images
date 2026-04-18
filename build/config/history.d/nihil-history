@@ -2,17 +2,21 @@ nhi engagement init "client-pentest"
 nhi engagement list
 nhi engagement use "client-pentest"
 nhi creds add -u "admin" -p "P@ssw0rd" -d "corp.local"
-nhi creds add -u "svc_sql" -p "aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0" -d "corp.local" --type hash --format ntlm
+nhi creds add -u "admin" --hash "aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0" -d "corp.local"
 nhi creds list
 nhi creds set --id 1
-nhi hosts add --ip "10.10.10.1" --hostname "DC01" --domain "corp.local" --os "Windows Server 2022"
+nhi creds rm --id 1
+nhi hosts add --ip "10.10.10.1" --hostname "DC01.corp.local" --os "Windows Server 2022" --role DC
 nhi hosts list
 nhi hosts import-nmap -f scan.xml
-nhi access link --cred-id 1 --host-id 1 --protocol smb --status confirmed
+nhi access link --cred-id 1 --host-id 1 --protocol smb --status valid
 nhi access list
 nhi access matrix
-nhi sync nxc -f nxc_output.txt
+nhi sync nxc
+nhi sync nxc -w ~/.nxc/workspaces
 nhi env print --shell zsh
+nhi env export --shell zsh
 nhi export json -o report.json
 nhi export markdown -o report.md --include-secrets
 nhi tui
+nhit

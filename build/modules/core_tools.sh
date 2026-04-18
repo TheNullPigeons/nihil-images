@@ -31,5 +31,7 @@ function install_core_tools() {
     install_pipx_tool_git "nihil-history" "https://github.com/TheNullPigeons/nihil-history"
     add-symlink "/root/.local/bin/nhi" "nhi"
     colorecho "nihil-history installed"
+
+    add-history "shell_misc"
 }
 
