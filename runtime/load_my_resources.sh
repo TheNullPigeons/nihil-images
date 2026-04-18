@@ -2,7 +2,7 @@
 # load_my_resources.sh
 # Appelé au premier démarrage du container pour déployer les configurations
 # utilisateur depuis le volume monté /opt/my-resources.
-# Même logique qu'Exegol : si le dossier existe → on applique la config ;
+# Si le dossier existe → on applique la config ;
 # sinon → on le crée vide pour que l'utilisateur sache qu'il peut le remplir.
 
 MY_ROOT_PATH="/opt/my-resources"

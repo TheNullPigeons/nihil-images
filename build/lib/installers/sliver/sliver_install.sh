@@ -2,7 +2,7 @@
 set -e
 
 # Sliver installation script adapted for Nihil (Arch-based images).
-# Based on the Exegol project integration, without any systemd/service setup.
+# Adapted for Nihil, without any systemd/service setup.
 
 SLIVER_GPG_KEY_ID="4449039C"
 
@@ -145,4 +145,3 @@ if test -f "/tmp/$SLIVER_CLIENT"; then
 fi
 
 echo "Sliver installation completed."
-

