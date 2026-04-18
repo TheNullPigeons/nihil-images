@@ -3,6 +3,7 @@
 
 nihil::import lib/common
 nihil::import lib/registry/git
+nihil::import lib/registry/aur
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -56,7 +57,20 @@ function install_firefox() {
 function install_chromium() {
     install_pacman_tool "chromium"
 }
+function install_ntpdate() {
+    install_aur_tool "ntpdate"
+}
 
+function install_rdate() {
+    pacman -S --noconfirm --needed libbsd autoconf automake make gcc
+    local tmpdir
+    tmpdir=$(mktemp -d)
+    git clone --depth 1 https://github.com/resurrecting-open-source-projects/openrdate.git "$tmpdir/rdate"
+    cd "$tmpdir/rdate"
+    ./autogen.sh && ./configure && make && make install
+    cd /
+    rm -rf "$tmpdir"
+}
 
 
 # ---------------------------------------------------------------------------
@@ -70,6 +84,8 @@ function install_mod_misc() {
     install_cyberchef
     install_firefox
     install_chromium
+    install_ntpdate
+    install_rdate
 
     colorecho "Misc red-team tools installation finished"
 }

@@ -1,0 +1,4 @@
+faketime "$(rdate -n $IP -p | awk '{print $2, $3, $4}' | date -f - "+%Y-%m-%d %H:%M:%S")" zsh
+faketime "$(ntpdate -q $IP | awk 'NR==1{print $1, $2}')" zsh
+pipx install git+"$GIT_URL"
+pipx install -e .
