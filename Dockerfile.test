@@ -1,0 +1,31 @@
+# Author: Nihil Project
+# Minimal test image — base + core only, no modules.
+# Use to verify package_base, zsh setup, history injection, and core tools.
+
+FROM archlinux:latest
+
+ARG TAG="local"
+ARG VERSION="local"
+ARG BUILD_DATE="n/a"
+
+LABEL org.nihil.tag="${TAG}"
+LABEL org.nihil.version="${VERSION}"
+LABEL org.nihil.build_date="${BUILD_DATE}"
+LABEL org.nihil.app="Nihil"
+LABEL org.nihil.variant="test"
+
+COPY build /opt/nihil/build/
+COPY runtime /opt/nihil/runtime/
+RUN chmod +x /opt/nihil/runtime/entrypoint.sh /opt/nihil/runtime/load_my_resources.sh /opt/nihil/runtime/browser_ui.sh
+
+WORKDIR /opt/nihil/build
+SHELL ["/bin/bash", "-c"]
+
+RUN chmod +x entrypoint.sh && \
+    ./entrypoint.sh package_base && \
+    ./entrypoint.sh install_core_tools && \
+    ./entrypoint.sh healthcheck core_tools
+
+WORKDIR /workspace
+SHELL ["/usr/bin/zsh", "-c"]
+ENTRYPOINT ["/opt/nihil/runtime/entrypoint.sh"]
