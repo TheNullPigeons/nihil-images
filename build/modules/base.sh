@@ -36,6 +36,7 @@ function package_base() {
     mariadb \
     libpcap \
     libfaketime \
+    ntp \
     && \
     pacman -Syu --noconfirm && \
     pacman -Sc --noconfirm
@@ -148,6 +149,9 @@ function package_base() {
             colorecho "Warning: Nihil theme not found"
         fi
     fi
+
+    # Inject generic shell history (tool-agnostic commands)
+    add-history "shell_misc"
 
     # Inject custom zsh history
     if [ -f "/opt/nihil/build/config/zsh_history" ]; then

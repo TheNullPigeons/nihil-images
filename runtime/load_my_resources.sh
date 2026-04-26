@@ -77,11 +77,64 @@ function deploy_tmux() {
 }
 
 # ---------------------------------------------------------------------------
+# Burp CA
+# ---------------------------------------------------------------------------
+
+function deploy_burp_ca() {
+    local burp_jar="/opt/tools/BurpSuiteCommunity/BurpSuiteCommunity.jar"
+    local burp_conf="/opt/tools/BurpSuiteCommunity/conf.json"
+    local ca_path="/opt/tools/BurpSuiteCommunity/cacert.der"
+
+    [[ -f "$burp_jar" ]] || return 0
+    command -v certutil > /dev/null 2>&1 || return 0
+
+    echo "[NIHIL] Generating Burp CA certificate..."
+
+    # Start Burp headlessly and wait for proxy to be up
+    local burp_port=8080
+    echo y | java -Djava.awt.headless=true -jar "$burp_jar" \
+        --config-file="$burp_conf" > /dev/null 2>&1 &
+    local burp_pid=$!
+
+    local timeout=0
+    while ! curl -sf "http://127.0.0.1:${burp_port}/cert" -o /dev/null 2>/dev/null; do
+        sleep 1
+        timeout=$((timeout + 1))
+        if (( timeout >= 60 )); then
+            echo "[NIHIL] Burp CA timeout, skipping."
+            kill "$burp_pid" 2>/dev/null
+            return 1
+        fi
+    done
+
+    curl -sf "http://127.0.0.1:${burp_port}/cert" -o "$ca_path"
+    kill "$burp_pid" 2>/dev/null
+    wait "$burp_pid" 2>/dev/null
+
+    # Trust in Firefox (Nihil profile)
+    local ff_profile="/root/.mozilla/firefox/nihil.Nihil"
+    if [[ -d "$ff_profile" ]]; then
+        certutil -A -n "Burp CA" -t "CT,," -i "$ca_path" -d "sql:${ff_profile}/" 2>/dev/null \
+            && echo "[NIHIL] Burp CA trusted in Firefox"
+    fi
+
+    # Trust in Chromium (NSS database)
+    local nss_dir="/root/.pki/nssdb"
+    if [[ ! -d "$nss_dir" ]]; then
+        mkdir -p "$nss_dir"
+        certutil -N -d "sql:${nss_dir}" --empty-password 2>/dev/null
+    fi
+    certutil -A -n "Burp CA" -t "CT,," -i "$ca_path" -d "sql:${nss_dir}" 2>/dev/null \
+        && echo "[NIHIL] Burp CA trusted in Chromium"
+}
+
+# ---------------------------------------------------------------------------
 # Exécution
 # ---------------------------------------------------------------------------
 init_my_resources
 deploy_zsh
 deploy_nvim
 deploy_tmux
+deploy_burp_ca
 
 echo "[NIHIL] my-resources déployés avec succès."

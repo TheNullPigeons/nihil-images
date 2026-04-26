@@ -32,6 +32,5 @@ function install_core_tools() {
     add-symlink "/root/.local/bin/nhi" "nhi"
     colorecho "nihil-history installed"
 
-    add-history "shell_misc"
 }
 

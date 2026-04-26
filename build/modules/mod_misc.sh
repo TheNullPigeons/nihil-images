@@ -53,9 +53,22 @@ function install_cyberchef() {
 
 function install_firefox() {
     install_pacman_tool "firefox"
+    pip install requests --quiet --break-system-packages
+    python3 /opt/nihil/build/assets/firefox/setup.py
 }
 function install_chromium() {
     install_pacman_tool "chromium"
+    printf '#!/bin/bash\nexec /usr/sbin/chromium --no-sandbox "$@"\n' > /usr/local/bin/chromium
+    chmod +x /usr/local/bin/chromium
+    # Force-install extensions via policy (downloaded on first launch)
+    mkdir -p /etc/chromium/policies/managed
+    cat > /etc/chromium/policies/managed/extensions.json << 'EOF'
+{
+  "ExtensionInstallForcelist": [
+    "gcknhkkoolaabfmlnjonogaaifnjlfnp;https://clients2.google.com/service/update2/crx"
+  ]
+}
+EOF
 }
 function install_chrony() {
     install_pacman_tool "chrony"
