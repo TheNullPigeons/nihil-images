@@ -325,6 +325,27 @@ print("")')"
 }
 
 # ---------------------------------------------------------------------------
+# Burp Suite Community
+# ---------------------------------------------------------------------------
+
+function install_burpsuite() {
+    colorecho "  → Installing Burp Suite Community"
+    install_pacman_tool "jdk-openjdk"
+    install_pacman_tool "nss"
+    local burp_dir="/opt/tools/BurpSuiteCommunity"
+    mkdir -p "$burp_dir"
+    local burp_version
+    burp_version=$(curl -s "https://portswigger.net/burp/releases#community" | grep -P -o "\d{4}-\d-\d" | head -1 | tr - .)
+    wget -q "https://portswigger.net/burp/releases/download?product=community&version=${burp_version}&type=Jar" \
+        -O "${burp_dir}/BurpSuiteCommunity.jar"
+    cp /opt/nihil/build/assets/burpsuite/conf.json "${burp_dir}/conf.json"
+    printf '#!/bin/bash\nexec java -jar -Xmx4g /opt/tools/BurpSuiteCommunity/BurpSuiteCommunity.jar "$@"\n' \
+        > /usr/local/bin/burpsuite
+    chmod +x /usr/local/bin/burpsuite
+    colorecho "  ✓ Burp Suite Community installed at ${burp_dir}"
+}
+
+# ---------------------------------------------------------------------------
 # Offline resources
 # ---------------------------------------------------------------------------
 
@@ -394,6 +415,7 @@ function install_mod_web() {
     install_testssl
     install_kiterunner
     install_caido
+    install_burpsuite
 
     colorecho "  [resources] Offline payloads / cheat sheets:"
     install_payloadsallthethings
