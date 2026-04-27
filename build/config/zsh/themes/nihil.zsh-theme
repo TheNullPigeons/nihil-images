@@ -25,5 +25,5 @@ _nihil_cred_info() {
   fi
 }
 
-PROMPT='$(_nihil_cred_info)%F{red}[%D{%d/%m/%Y %H:%M:%S %Z}]%f 🕊️ %B%F{green}%n@%m%f%b %F{blue}%~%f$(git_prompt_info) > '
+PROMPT='$(_nihil_cred_info)%F{red}[%D{%d/%m/%Y %H:%M:%S %Z}]%f %B%F{green}%n@%m%f%b %F{blue}%~%f$(git_prompt_info) > '
 RPROMPT=''
