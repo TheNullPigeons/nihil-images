@@ -7,7 +7,8 @@ function post_install() {
     colorecho "Running post-install cleanup"
 
     # Full pacman cache wipe (no reason to keep pkg files in a Docker image)
-    pacman -Scc --noconfirm
+    # --noconfirm defaults to N on the "remove ALL files" prompt, so pipe yes instead
+    yes | pacman -Scc
 
     # Language/tool caches
     rm -rf \
