@@ -23,6 +23,7 @@ nihil::import modules/mod_crypto
 nihil::import modules/mod_forensics
 nihil::import modules/mod_ctf
 nihil::import lib/healthcheck
+nihil::import modules/post_install
 
 if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"
