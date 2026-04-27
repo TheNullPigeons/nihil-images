@@ -6,8 +6,8 @@ nihil::import lib/common
 function post_install() {
     colorecho "Running post-install cleanup"
 
-    # Full pacman cache wipe (no reason to keep pkg files in a Docker image)
-    # --noconfirm defaults to N on the "remove ALL files" prompt, so pipe yes instead
+    # Pre-remove leftover download-* temp dirs so pacman -Scc doesn't choke on them
+    rm -rf /var/cache/pacman/pkg/download-*
     yes | pacman -Scc
 
     # Language/tool caches
