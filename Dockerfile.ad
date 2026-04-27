@@ -28,7 +28,8 @@ RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh install_mod_network && \
     ./entrypoint.sh install_mod_credential && \
     ./entrypoint.sh install_mod_misc && \
-    ./entrypoint.sh healthcheck core_tools mod_ad mod_c2 mod_network mod_credential mod_misc
+    ./entrypoint.sh healthcheck core_tools mod_ad mod_c2 mod_network mod_credential mod_misc && \
+    ./entrypoint.sh post_install
 
 WORKDIR /workspace
 SHELL ["/usr/bin/zsh", "-c"]

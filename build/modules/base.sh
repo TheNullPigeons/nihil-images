@@ -39,7 +39,7 @@ function package_base() {
     ntp \
     && \
     pacman -Syu --noconfirm && \
-    pacman -Sc --noconfirm
+    pacman -Scc --noconfirm
     
     colorecho "Adding Nihil repository to pacman.conf"
     # Ajouter le dépôt nihil à pacman.conf
@@ -245,7 +245,7 @@ function package_base() {
     
     # Nettoyage final du cache pacman pour réduire la taille
     colorecho "Cleaning pacman cache"
-    pacman -Sc --noconfirm
+    pacman -Scc --noconfirm
     
     colorecho "Base packages installed"
 }
