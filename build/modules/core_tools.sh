@@ -23,7 +23,7 @@ function install_core_tools() {
     whois \
     xclip \
     gdb && \
-    pacman -Sc --noconfirm
+    pacman -Scc --noconfirm
 
     colorecho "Core tools installed"
 
