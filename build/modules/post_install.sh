@@ -6,9 +6,7 @@ nihil::import lib/common
 function post_install() {
     colorecho "Running post-install cleanup"
 
-    # Pre-remove leftover download-* temp dirs so pacman -Scc doesn't choke on them
-    rm -rf /var/cache/pacman/pkg/download-*
-    yes | pacman -Scc
+    rm -rf /var/cache/pacman/pkg/ /var/lib/pacman/sync/
 
     # Language/tool caches
     rm -rf \
