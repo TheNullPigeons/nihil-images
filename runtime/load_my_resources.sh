@@ -74,6 +74,7 @@ function deploy_tmux() {
         mkdir -p "$MY_SETUP_PATH/tmux"
         chmod 770 "$MY_SETUP_PATH/tmux"
     fi
+
 }
 
 # ---------------------------------------------------------------------------
@@ -129,6 +130,18 @@ function deploy_burp_ca() {
 }
 
 # ---------------------------------------------------------------------------
+# User setup script
+# ---------------------------------------------------------------------------
+function run_user_setup() {
+    local script="$MY_SETUP_PATH/load_user_setup.sh"
+    if [[ -f "$script" ]]; then
+        echo "[NIHIL] Running load_user_setup.sh..."
+        bash "$script" && echo "[NIHIL] load_user_setup.sh done." || \
+            echo "[NIHIL] Warning: load_user_setup.sh returned an error."
+    fi
+}
+
+# ---------------------------------------------------------------------------
 # Exécution
 # ---------------------------------------------------------------------------
 init_my_resources
@@ -136,5 +149,6 @@ deploy_zsh
 deploy_nvim
 deploy_tmux
 deploy_burp_ca
+run_user_setup
 
 echo "[NIHIL] my-resources déployés avec succès."
