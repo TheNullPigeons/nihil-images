@@ -20,6 +20,7 @@ function package_base() {
     php \
     rust \
     dotnet-sdk \
+    pocl \
     openssl \
     pkg-config \
     clang \
