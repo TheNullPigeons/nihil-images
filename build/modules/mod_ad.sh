@@ -51,7 +51,7 @@ function install_bloodhound_ce_desktop() {
     install_pacman_tool "jre11-openjdk-headless" || return 1
     archlinux-java set java-11-openjdk
 
-    # BloodHound CE requires Neo4j 4.4.x — Neo4j 5.x removed the db.indexes procedure
+    # BloodHound CE requires Neo4j 4.4.x - Neo4j 5.x removed the db.indexes procedure
     local neo4j_version
     neo4j_version="$(curl -fsSL "https://api.github.com/repos/neo4j/neo4j/releases" \
         | jq -r 'first(.[] | select(.tag_name | startswith("4.4.")) | select(.prerelease | not) | .tag_name)' \
@@ -247,6 +247,10 @@ function install_sprayhound() {
     install_pipx_tool_git "sprayhound" "https://github.com/Hackndo/sprayhound.git"
 }
 
+function install_krb5() {
+    install_pacman_tool "krb5"
+}
+
 function install_openldap() {
     install_pacman_tool "openldap"
 }
@@ -381,6 +385,7 @@ function install_mod_ad() {
     install_pre2k
 
     colorecho "  [pacman] AD tools:"
+    install_krb5
     install_openldap
     install_smbclient
     install_python_pcapy
