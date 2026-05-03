@@ -5,6 +5,7 @@
 nihil::import lib/common
 nihil::import lib/registry/pacman
 nihil::import lib/registry/git
+nihil::import lib/registry/pipx
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -91,6 +92,10 @@ function install_silverc2() {
     fi
 }
 
+function install_penelope() {
+    install_pipx_tool_git "penelope" "https://github.com/brightio/penelope"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -101,6 +106,9 @@ function install_mod_c2() {
     colorecho "  [git] C2 tools:"
     install_metasploit
     install_silverc2
+
+    colorecho "  [pipx] C2 tools:"
+    install_penelope
 
     colorecho "Command & Control tools installation finished"
 }
