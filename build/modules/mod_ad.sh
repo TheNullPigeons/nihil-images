@@ -189,7 +189,7 @@ function install_bloodyad() {
 }
 
 function install_evil_winrm_py() {
-    install_pipx_tool "evil-winrm-py" "evil-winrm-py"
+    install_pipx_tool "evil-winrm-py" "evil-winrm-py[kerberos]"
 }
 
 function install_netexec() {
