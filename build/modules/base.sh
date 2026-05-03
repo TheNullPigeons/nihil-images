@@ -19,6 +19,7 @@ function package_base() {
     go \
     php \
     rust \
+    dotnet-sdk \
     openssl \
     pkg-config \
     clang \
