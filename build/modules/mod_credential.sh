@@ -7,6 +7,7 @@ nihil::import lib/registry/pipx
 nihil::import lib/registry/cargo
 nihil::import lib/registry/pacman
 nihil::import lib/registry/aur
+nihil::import lib/registry/gem
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -18,6 +19,10 @@ function install_pypykatz() {
 
 function install_binwalk() {
     install_pacman_tool "binwalk"
+}
+
+function install_haiti() {
+    install_gem_tool "haiti" "haiti-hash"
 }
 
 function install_john() {
@@ -60,6 +65,9 @@ function install_mod_credential() {
 
     colorecho "  [pipx] Credential tools:"
     install_pypykatz
+
+    colorecho "  [gem] Credential tools:"
+    install_haiti
 
     colorecho "  [pacman] Credential tools:"
     install_binwalk
