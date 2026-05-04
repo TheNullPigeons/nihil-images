@@ -7,6 +7,7 @@ nihil::import lib/registry/pipx
 nihil::import lib/registry/cargo
 nihil::import lib/registry/pacman
 nihil::import lib/registry/aur
+nihil::import lib/registry/go
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -36,6 +37,10 @@ function install_bettercap_ui() {
     install_aur_tool "bettercap-ui"
 }
 
+function install_udpx() {
+    install_go_tool "github.com/nullt3r/udpx/cmd/udpx@latest"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -50,6 +55,9 @@ function install_mod_network() {
     install_wireshark_cli
     install_bettercap
 #   install_bettercap_ui
+
+    colorecho "  [go] Network tools:"
+    install_udpx
 
     colorecho "Network tools installation finished"
 }
