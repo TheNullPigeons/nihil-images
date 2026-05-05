@@ -27,6 +27,7 @@ function package_base() {
     curl \
     wget \
     inetutils \
+    openssh \
     openvpn \
     docker \
     docker-compose \
