@@ -28,6 +28,7 @@ function package_base() {
     wget \
     inetutils \
     openssh \
+    sshpass \
     openvpn \
     docker \
     docker-compose \
