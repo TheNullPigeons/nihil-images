@@ -19,5 +19,8 @@
     "neo4j": {
       "connection": "neo4j://neo4j:fly2own1@127.0.0.1:7687/"
     },
-    "collectors_base_path": "/opt/tools/BloodHound-CE/collectors"
+    "collectors_base_path": "/opt/tools/BloodHound-CE/collectors",
+    "default_admin": {
+        "expire_now": true
+    }
 }
