@@ -100,8 +100,7 @@
     { "name": "pypykatz", "cmd": "pypykatz", "description": "LSASS minidump parser (Python)" },
     { "name": "binwalk", "cmd": "binwalk", "description": "Binary analysis / extraction" },
     { "name": "john", "cmd": "john", "description": "Password cracker (John the Ripper)" },
-    { "name": "hashcat", "cmd": "hashcat", "description": "GPU password cracker" },
-    { "name": "seclists", "cmd": null, "description": "Security wordlists collection", "check_path": "/usr/share/seclists" }
+    { "name": "hashcat", "cmd": "hashcat", "description": "GPU password cracker" }
   ],
   "mod_pwn": [
     { "name": "radare2", "cmd": "r2", "description": "Reverse engineering framework" },
@@ -183,11 +182,11 @@
     { "name": "wireshark-cli", "cmd": "tshark", "description": "Network protocol analyzer (CLI)" },
     { "name": "john", "cmd": "john", "description": "Password cracker (John the Ripper)" },
     { "name": "hashcat", "cmd": "hashcat", "description": "Password cracker" },
-    { "name": "seclists", "cmd": null, "description": "Security wordlists collection", "check_path": "/usr/share/seclists" },
     { "name": "searchsploit", "cmd": "searchsploit", "description": "Exploit database search" },
     { "name": "CyberChef", "cmd": null, "description": "Data transformation toolkit (offline)", "check_path": "/opt/tools/CyberChef" }
   ],
-  "resources": [
-    { "name": "PayloadsAllTheThings", "cmd": null, "description": "Offline payloads and cheat sheets", "check_path": "/opt/resources/PayloadsAllTheThings" }
+  "mod_wordlists": [
+    { "name": "seclists", "cmd": null, "description": "Security wordlists collection", "check_path": "/opt/lists/seclists" },
+    { "name": "rockyou", "cmd": null, "description": "Rockyou password list (extracted from seclists)", "check_path": "/opt/lists/rockyou.txt" }
   ]
 }
