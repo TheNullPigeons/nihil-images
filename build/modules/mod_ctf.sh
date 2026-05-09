@@ -341,29 +341,6 @@ function install_hashcat() {
     install_pacman_tool "hashcat"
 }
 
-function install_seclists() {
-    local install_dir="/usr/share/seclists"
-
-    if [ -d "$install_dir" ]; then
-        colorecho "  ✓ seclists already installed"
-        return 0
-    fi
-
-    if install_aur_tool "seclists" "seclists"; then
-        return 0
-    fi
-
-    colorecho "  → Falling back to upstream SecLists repository"
-    mkdir -p /usr/share
-    if ! git-clone-retry "https://github.com/danielmiessler/SecLists.git" "$install_dir" 1 3; then
-        colorecho "  ✗ Warning: Failed to clone upstream SecLists"
-        return 1
-    fi
-
-    rm -rf "$install_dir/.git"
-    colorecho "  ✓ seclists installed from upstream repository"
-}
-
 # ===========================================================================
 # Misc / Resources
 # ===========================================================================
@@ -378,18 +355,6 @@ function install_searchsploit() {
         sed -i 's/\(.*[pP]aper.*\)/#\1/' ~/.searchsploit_rc
         sed -i 's|opt/exploitdb|opt/tools/exploitdb|g' ~/.searchsploit_rc
     fi
-}
-
-function install_payloadsallthethings() {
-    local install_dir="/opt/resources/PayloadsAllTheThings"
-    colorecho "  → Cloning PayloadsAllTheThings"
-    if [ ! -d "$install_dir" ]; then
-        git clone --depth 1 "https://github.com/swisskyrepo/PayloadsAllTheThings.git" "$install_dir" || {
-            colorecho "  ✗ Warning: Failed to clone PayloadsAllTheThings"
-            return 1
-        }
-    fi
-    colorecho "  ✓ PayloadsAllTheThings installed at $install_dir"
 }
 
 function install_cyberchef() {
@@ -490,12 +455,10 @@ function install_mod_ctf() {
     colorecho "  [cracking] Password cracking tools:"
     install_john
     install_hashcat
-    install_seclists
 
     # --- Misc / Resources ---
     colorecho "  [misc] Misc tools and resources:"
     install_searchsploit
-    install_payloadsallthethings
     install_cyberchef
 
     colorecho "CTF tools installation finished"

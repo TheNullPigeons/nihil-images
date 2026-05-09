@@ -346,22 +346,6 @@ function install_burpsuite() {
 }
 
 # ---------------------------------------------------------------------------
-# Offline resources
-# ---------------------------------------------------------------------------
-
-function install_payloadsallthethings() {
-    local install_dir="/opt/resources/PayloadsAllTheThings"
-    colorecho "  → Cloning PayloadsAllTheThings"
-    if [ ! -d "$install_dir" ]; then
-        git clone --depth 1 "https://github.com/swisskyrepo/PayloadsAllTheThings.git" "$install_dir" || {
-            colorecho "  ✗ Warning: Failed to clone PayloadsAllTheThings"
-            return 1
-        }
-    fi
-    colorecho "  ✓ PayloadsAllTheThings installed at $install_dir"
-}
-
-# ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
 
@@ -416,9 +400,6 @@ function install_mod_web() {
     install_kiterunner
     install_caido
     install_burpsuite
-
-    colorecho "  [resources] Offline payloads / cheat sheets:"
-    install_payloadsallthethings
 
     colorecho "Web tools installation finished"
 }
