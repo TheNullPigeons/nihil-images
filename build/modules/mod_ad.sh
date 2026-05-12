@@ -276,7 +276,7 @@ function install_kerbrute() {
 }
 
 function install_krbrelayx() {
-    install_git_tool_venv "krbrelayx" "https://github.com/dirkjanm/krbrelayx.git" "krbrelayx.py addspn.py printerbug.py" "dnspython ldap3 impacket dsinternals" "yes"
+    install_git_tool_venv "krbrelayx" "https://github.com/dirkjanm/krbrelayx.git" "krbrelayx.py addspn.py printerbug.py dnstool.py" "dnspython ldap3 impacket dsinternals" "yes"
 }
 
 function install_gmsadumper() {

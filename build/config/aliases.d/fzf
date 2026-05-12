@@ -1,5 +1,5 @@
 alias fzf-resources="find /opt/resources -type f | fzf"
-alias fzf-wordlists='find /usr/share/seclists /usr/share/wordlists /usr/share/wfuzz /usr/share/dirb -type f 2>/dev/null | fzf'
+alias fzf-wordlists='find /opt/lists -type f | fzf'
 alias fzf-rules='find /opt/rules/ /usr/share/hashcat/rules/ -type f 2>/dev/null | fzf'
 alias fzf-haiti-hashcat='(){ haiti -e $1 | fzf --ansi | grep -E -o " [0-9]*]" | cut -d "]" -f 1 | cut -d " " -f 2 ;}'
 alias fzf-haiti-john='(){ haiti -e $1 | fzf --ansi | grep -E -o "JtR: .*]" | cut -d "]" -f 1 | cut -d " " -f 2 ;}'
