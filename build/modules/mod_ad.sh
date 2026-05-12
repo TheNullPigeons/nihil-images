@@ -275,6 +275,10 @@ function install_kerbrute() {
   install_go_tool "github.com/ropnop/kerbrute@latest"
 }
 
+function install_gofenrir{
+  install_go_tool "github.com/0xbbuddha/GoFenrir/cmd/gf@latest"
+}
+
 function install_krbrelayx() {
   install_git_tool_venv "krbrelayx" "https://github.com/dirkjanm/krbrelayx.git" "krbrelayx.py addspn.py printerbug.py dnstool.py" "dnspython ldap3 impacket dsinternals" "yes"
 }
@@ -401,6 +405,7 @@ function install_mod_ad() {
 
   colorecho "  [go] AD tools:"
   install_kerbrute
+  install_gofenrir
   install_windapsearch
 
   colorecho "  [git] AD tools:"
