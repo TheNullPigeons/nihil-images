@@ -1,0 +1,14 @@
+gf ldap -t $TARGET -u $USER -p $PASSWORD
+gf ldap -t $TARGET -u $USER -H $NT_HASH
+gf smb -t $TARGET -u $USER -p $PASSWORD
+gf smb -t $TARGET -u $USER -H $NT_HASH
+gf ldap -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
+gf ldap -t $TARGET -u $USER -p $PASSWORD --users
+gf ldap -t $TARGET -u $USER -p $PASSWORD --privileged-groups
+gf ldap -t $TARGET -u $USER -p $PASSWORD --kerberoastable
+gf ldap -t $TARGET -u $USER -p $PASSWORD --asresproast
+gf ldap -t $TARGET -u $USER -p $PASSWORD --adcs
+gf ldap -t $TARGET -u $USER -p $PASSWORD --users --log ldap-users.log
+gf smb -t $TARGET -u $USER -p $PASSWORD --shares
+gf smb -t $TARGET -u $USER -p $PASSWORD --gpp-passwords
+gf smb -t $TARGET -u $USER -p $PASSWORD --shares --log smb-shares.log
