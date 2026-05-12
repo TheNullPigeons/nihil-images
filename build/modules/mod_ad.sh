@@ -275,7 +275,7 @@ function install_kerbrute() {
   install_go_tool "github.com/ropnop/kerbrute@latest"
 }
 
-function install_gofenrir{
+function install_gofenrir() {
   install_go_tool "github.com/0xbbuddha/GoFenrir/cmd/gf@latest"
 }
 
