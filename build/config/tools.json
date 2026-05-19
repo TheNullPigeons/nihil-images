@@ -29,6 +29,7 @@
     { "name": "pywhisker", "cmd": "pywhisker", "description": "Shadow credentials manipulation" },
     { "name": "enum4linux-ng", "cmd": "enum4linux-ng", "description": "SMB/RPC/LDAP enumeration" },
     { "name": "smbmap", "cmd": "smbmap", "description": "SMB share enumeration" },
+    { "name": "smbclientng", "cmd": "smbclientng", "description": "Interactive SMB client with modern UX" },
     { "name": "sprayhound", "cmd": "sprayhound", "description": "Password spraying with BloodHound" },
     { "name": "ldapsearch-ad", "cmd": "ldapsearch-ad.py", "description": "LDAP enumeration wrapper for AD" },
     { "name": "pywerview", "cmd": "pywerview", "description": "Python port of PowerView" },
