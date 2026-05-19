@@ -255,6 +255,10 @@ function install_openldap() {
   install_pacman_tool "openldap"
 }
 
+function install_smbclientng() {
+  install_pipx_tool "smbclientng" "smbclientng"
+}
+
 function install_smbclient() {
   install_pacman_tool "smbclient"
 }
@@ -379,6 +383,7 @@ function install_mod_ad() {
   install_pywhisker
   install_enum4linux_ng
   install_smbmap
+  install_smbclientng
   install_sprayhound
   install_ldapsearch_ad
   install_pywerview
