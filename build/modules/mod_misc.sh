@@ -74,6 +74,13 @@ function install_chrony() {
     install_pacman_tool "chrony"
 }
 
+function install_grc() {
+    install_pacman_tool "grc"
+    local grc_assets="/opt/nihil/build/assets/grc"
+    cp "${grc_assets}/grc.conf" /etc/grc.conf
+    cp "${grc_assets}"/conf.* /usr/share/grc/
+}
+
 function install_rdate() {
     pacman -S --noconfirm --needed libbsd autoconf automake make gcc
     local tmpdir
@@ -99,6 +106,7 @@ function install_mod_misc() {
     install_chromium
     install_chrony
     install_rdate
+    install_grc
 
     colorecho "Misc red-team tools installation finished"
 }
