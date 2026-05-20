@@ -332,18 +332,24 @@ function install_burpsuite() {
     colorecho "  → Installing Burp Suite Community"
     install_pacman_tool "jdk-openjdk"
     install_pacman_tool "nss"
+    install_pacman_tool "ttf-dejavu"
+    install_pacman_tool "freetype2"
     local burp_dir="/opt/tools/BurpSuiteCommunity"
     mkdir -p "$burp_dir"
-    local burp_version
     wget -q "https://portswigger.net/burp/releases/download?product=community&type=Jar" \
         -O "${burp_dir}/BurpSuiteCommunity.jar"
     file "${burp_dir}/BurpSuiteCommunity.jar" | grep -q "Java archive" \
         || { colorecho "  ✗ Downloaded file is not a valid JAR"; exit 1; }
     cp /opt/nihil/build/assets/burpsuite/conf.json "${burp_dir}/conf.json"
+    mkdir -p /root/.BurpSuite
+    cp /opt/nihil/build/assets/burpsuite/UserConfigCommunity.json /root/.BurpSuite/UserConfigCommunity.json
+    mkdir -p /etc/fonts/conf.d
+    cp /opt/nihil/build/assets/fontconfig/local.conf /etc/fonts/local.conf
+    fc-cache -fv > /dev/null 2>&1 || true
     local java_bin
     java_bin=$(archlinux-java get 2>/dev/null | xargs -I{} echo "/usr/lib/jvm/{}/bin/java")
     [[ -x "$java_bin" ]] || java_bin=$(which java)
-    printf '#!/bin/bash\nexec %s -jar -Xmx4g /opt/tools/BurpSuiteCommunity/BurpSuiteCommunity.jar "$@"\n' "$java_bin" \
+    printf '#!/bin/bash\nexec %s -Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true -jar -Xmx4g /opt/tools/BurpSuiteCommunity/BurpSuiteCommunity.jar "$@"\n' "$java_bin" \
         > /usr/local/bin/burpsuite
     chmod +x /usr/local/bin/burpsuite
     colorecho "  ✓ Burp Suite Community installed at ${burp_dir}"
