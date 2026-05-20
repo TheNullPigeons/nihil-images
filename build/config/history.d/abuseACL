@@ -1,0 +1,4 @@
+abuseACL -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -dc-ip "$DC_IP"
+abuseACL -d "$DOMAIN" -u "$USER" -H "$NT_HASH" -dc-ip "$DC_IP"
+abuseACL -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -dc-ip "$DC_IP" -target "$TARGET_USER"
+abuseACL -principalsfile users.txt "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
