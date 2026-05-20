@@ -1,3 +1,4 @@
+nxc smb "$IP" -u "$USER" -H "$NT_HASH"
 nxc winrm "$IP" -u "$USER" -p "$PASSWORD"
 nxc mssql "$IP" -u "$USER" -p "$PASSWORD" -M enum_impersonate 
 nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --bloodhound -c all --dns-server "$IP"
