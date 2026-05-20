@@ -71,5 +71,7 @@ function install_mod_network() {
     colorecho "  [pipx] Network tools:"
     install_zone_dnsenum
 
+    add-aliases "network"
+
     colorecho "Network tools installation finished"
 }
