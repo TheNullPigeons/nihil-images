@@ -3,3 +3,4 @@ echo $DOMAIN | waybackurls
 echo $DOMAIN | waybackurls | sort -u > wayback.txt
 echo $DOMAIN | waybackurls | grep -E "\.(js|php|aspx|jsp)$"
 echo $DOMAIN | waybackurls | grep -E "\?(.*=)" | sort -u
+waybackurls test.com

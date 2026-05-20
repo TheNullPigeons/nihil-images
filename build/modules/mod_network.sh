@@ -33,12 +33,20 @@ function install_bettercap() {
     install_pacman_tool "bettercap"
 }
 
+function install_fping() {
+    install_pacman_tool "fping"
+}
+
 function install_bettercap_ui() {
     install_aur_tool "bettercap-ui"
 }
 
 function install_udpx() {
     install_go_tool "github.com/nullt3r/udpx/cmd/udpx@latest"
+}
+
+function install_zone_dnsenum() {
+    install_pipx_tool_git "zone-dnsenum" "https://github.com/Goultarde/Zone-DNSenum"
 }
 
 # ---------------------------------------------------------------------------
@@ -54,10 +62,14 @@ function install_mod_network() {
     install_socat
     install_wireshark_cli
     install_bettercap
+    install_fping
 #   install_bettercap_ui
 
     colorecho "  [go] Network tools:"
     install_udpx
+
+    colorecho "  [pipx] Network tools:"
+    install_zone_dnsenum
 
     colorecho "Network tools installation finished"
 }

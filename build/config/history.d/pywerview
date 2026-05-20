@@ -9,3 +9,8 @@ pywerview get-netshare -u $USER -p $PASSWORD -t $TARGET_IP
 pywerview get-netlocalgroup -u $USER -p $PASSWORD -t $TARGET_IP
 pywerview get-netsession -u $USER -p $PASSWORD -t $TARGET_IP
 pywerview get-netloggedon -u $USER -p $PASSWORD -t $TARGET_IP
+KRB5CCNAME="$CCACHE_PATH" pywerview get-localdisks -k --computername $COMPUTER --user "$USER"
+KRB5CCNAME="$CCACHE_PATH" pywerview get-netcomputer -k --dc-ip "$DC_IP" --user "$USER"
+pywerview get-netgmsa --dc-ip "$DC_IP" --user "$USER" --hashes "$NT_HASH" --resolve-sids
+pywerview get-netgmsa --dc-ip "$DC_IP" --tls --user "$USER" --hashes "$NT_HASH" --resolve-sids
+pywerview get-netuser --workgroup "$DOMAIN" --dc-ip "$DC_IP" --tls --cert cert.crt --key cert.key --username "$USER" --attributes distinguishedname useraccountcontrol

