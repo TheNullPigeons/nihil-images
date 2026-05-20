@@ -1,1 +1,2 @@
 alias ipa='ip -brief a'
+alias ipr='ip -brief r'
