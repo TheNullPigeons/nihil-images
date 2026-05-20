@@ -1,3 +1,4 @@
 foremost -i disk.img -o output/
 foremost -t jpg,png,pdf -i disk.img -o output/
 foremost -v -i capture.pcap -o output/
+foremost -i image.png

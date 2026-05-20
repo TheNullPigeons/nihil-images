@@ -1,0 +1,4 @@
+zone-dnsenum -d "$DOMAIN"
+zone-dnsenum -d "$DOMAIN" -r
+zone-dnsenum -d "$DOMAIN" --dc "$DC_IP"
+zone-dnsenum -d "$DOMAIN" -s "$DNS_SERVER_IP" -w "$SUBDOMAIN_WORDLIST_PATH" -o results.txt

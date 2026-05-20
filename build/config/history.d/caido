@@ -1,2 +1,3 @@
 caido --no-sandbox
 caido-cli --help
+caido --no-sandbox &> /dev/null &

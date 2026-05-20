@@ -4,3 +4,4 @@ gau $DOMAIN --subs --o urls.txt
 gau $DOMAIN --blacklist css,png,jpg,svg,woff,gif
 gau $DOMAIN | grep "\.js$" | sort -u
 gau $DOMAIN | grep -E "\?(.*=)" | sort -u
+gau $TARGET

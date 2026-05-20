@@ -1,0 +1,2 @@
+aclpwn -f "$USER" -ft user -t "$DOMAIN" -tt domain -d "$DOMAIN" -dry
+aclpwn -f "$USER" -ft user -t "$DOMAIN" -tt domain -d "$DOMAIN" --neo4jpassword nihil4thewin

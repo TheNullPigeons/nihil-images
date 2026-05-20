@@ -275,6 +275,14 @@ function install_rusthound_ce() {
   install_cargo_tool "rusthound-ce"
 }
 
+function install_rusthound() {
+  install_cargo_tool "rusthound"
+}
+
+function install_bloodbash() {
+  install_pipx_tool_git "bloodbash" "https://github.com/DotNetRussell/BloodBash"
+}
+
 function install_kerbrute() {
   install_go_tool "github.com/ropnop/kerbrute@latest"
 }
@@ -375,6 +383,7 @@ function install_mod_ad() {
   install_evil_winrm_py
   install_netexec
   install_impacket
+  install_bloodbash
   install_mitm6
   install_aclpwn
   install_lsassy
@@ -407,6 +416,7 @@ function install_mod_ad() {
 
   colorecho "  [cargo] AD tools:"
   install_rusthound_ce
+  install_rusthound
 
   colorecho "  [go] AD tools:"
   install_kerbrute

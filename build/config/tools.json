@@ -21,6 +21,7 @@
     { "name": "evil-winrm-py", "cmd": "evil-winrm-py", "description": "WinRM shell (Python)" },
     { "name": "netexec", "cmd": "netexec", "description": "SMB/LDAP/WinRM/SSH exploitation framework" },
     { "name": "impacket", "cmd": "secretsdump.py", "description": "Windows protocol library (Fortra)" },
+    { "name": "Get-GPPPassword", "cmd": "Get-GPPPassword.py", "description": "Extract plaintext credentials from GPP (impacket)" },
     { "name": "mitm6", "cmd": "mitm6", "description": "DHCPv6 spoofing for NTLM relay" },
     { "name": "aclpwn", "cmd": "aclpwn", "description": "AD ACL exploitation" },
     { "name": "lsassy", "cmd": "lsassy", "description": "Remote LSASS credential dumper" },
@@ -38,6 +39,8 @@
     { "name": "pre2k", "cmd": "pre2k", "description": "Pre-Windows 2000 computer account exploitation" },
     { "name": "responder", "cmd": "responder", "description": "LLMNR/NBT-NS/mDNS poisoner" },
     { "name": "rusthound-ce", "cmd": "rusthound-ce", "description": "BloodHound CE collector (Rust)" },
+    { "name": "rusthound", "cmd": "rusthound", "description": "BloodHound legacy collector (Rust)" },
+    { "name": "bloodbash", "cmd": "bloodbash", "description": "BloodHound-based offensive automation" },
     { "name": "kerbrute", "cmd": "kerbrute", "description": "Kerberos brute-force / user enumeration" },
     { "name": "windapsearch", "cmd": "windapsearch", "description": "LDAP enumeration (Go)" },
     { "name": "krbrelayx", "cmd": "krbrelayx", "description": "Kerberos relay attacks" },
@@ -95,7 +98,9 @@
     { "name": "nmap", "cmd": "nmap", "description": "Network scanner" },
     { "name": "netcat", "cmd": "nc", "description": "Network utility (OpenBSD)" },
     { "name": "socat", "cmd": "socat", "description": "Multipurpose network relay" },
-    { "name": "wireshark-cli", "cmd": "tshark", "description": "Network protocol analyzer (CLI)" }
+    { "name": "wireshark-cli", "cmd": "tshark", "description": "Network protocol analyzer (CLI)" },
+    { "name": "fping", "cmd": "fping", "description": "Fast ICMP host discovery" },
+    { "name": "zone-dnsenum", "cmd": "zone-dnsenum", "description": "DNS zone enumeration and transfer" }
   ],
   "mod_credential": [
     { "name": "pypykatz", "cmd": "pypykatz", "description": "LSASS minidump parser (Python)" },
