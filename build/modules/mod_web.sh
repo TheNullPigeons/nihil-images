@@ -340,7 +340,10 @@ function install_burpsuite() {
     file "${burp_dir}/BurpSuiteCommunity.jar" | grep -q "Java archive" \
         || { colorecho "  ✗ Downloaded file is not a valid JAR"; exit 1; }
     cp /opt/nihil/build/assets/burpsuite/conf.json "${burp_dir}/conf.json"
-    printf '#!/bin/bash\nexec java -jar -Xmx4g /opt/tools/BurpSuiteCommunity/BurpSuiteCommunity.jar "$@"\n' \
+    local java_bin
+    java_bin=$(archlinux-java get 2>/dev/null | xargs -I{} echo "/usr/lib/jvm/{}/bin/java")
+    [[ -x "$java_bin" ]] || java_bin=$(which java)
+    printf '#!/bin/bash\nexec %s -jar -Xmx4g /opt/tools/BurpSuiteCommunity/BurpSuiteCommunity.jar "$@"\n' "$java_bin" \
         > /usr/local/bin/burpsuite
     chmod +x /usr/local/bin/burpsuite
     colorecho "  ✓ Burp Suite Community installed at ${burp_dir}"
