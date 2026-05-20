@@ -1,0 +1,39 @@
+# Keep the marker separate from ticket details so fields stay readable.
+regexp=(\[\*\])(.*)
+colours=bright_cyan,default
+=======
+regexp=(\[\-\])(.*)
+colours=bright_yellow,default
+=======
+regexp=(\[\+\])(.*)
+colours=bright_green,default
+=======
+# Ticket keys and encoded material
+regexp=.*Ticket Session Key.*
+colours=bold bright_magenta
+=======
+regexp=.*Base64\(key\).*
+colours=bold bright_magenta
+=======
+regexp=.*krb5tgs\S*.*
+colours=bold bright_magenta
+=======
+# Identity and ticket metadata
+regexp=.*User Name.*
+colours=bright_green
+=======
+regexp=.*(User|Service) Realm.*
+colours=bright_blue
+=======
+regexp=.*Service Name.*
+colours=bright_cyan
+=======
+regexp=.*Flags.*
+colours=bright_yellow
+=======
+regexp=.*(Start Time|End Time|RenewTill).*
+colours=default
+=======
+regexp=.*KeyType.*
+colours=bright_blue
+=======

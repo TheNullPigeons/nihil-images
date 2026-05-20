@@ -1,0 +1,22 @@
+# Impacket Kerberos ticket and hash output
+regexp=.*\[\*\].*
+colours=bright_cyan
+=======
+regexp=.*\[\+\].*
+colours=bright_green
+=======
+regexp=.*\[!\].*
+colours=bright_yellow
+=======
+regexp=.*\[-\].*
+colours=bright_red
+=======
+regexp=.*Saving ticket in.*
+colours=bright_green
+=======
+regexp=.*\$krb5tgs\$.*
+colours=bold bright_magenta
+=======
+regexp=.*\$krb5asrep\$.*
+colours=bold bright_magenta
+=======

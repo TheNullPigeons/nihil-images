@@ -1,0 +1,21 @@
+# Nihil colors: cyan info, yellow warnings, green success.
+# GENERAL INFO
+regexp=.*\[\*\].*
+colours=bright_cyan
+=======
+# GENERAL WARNING
+regexp=.*\[\!\].*
+colours=bright_yellow
+=======
+# GENERAL DEFAULT
+regexp=.*\[\-\].*
+colours=default
+=======
+# SUCCESS Ticket decrypt
+regexp=.*Ticket decrypt OK.*
+colours=bright_green
+=======
+# SUCCESS Saving ticket
+regexp=.*Saving ticket.*
+colours=bright_green
+=======

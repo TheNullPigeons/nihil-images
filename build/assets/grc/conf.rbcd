@@ -1,0 +1,29 @@
+# Nihil colors: cyan info, yellow warnings, green success.
+# GENERAL INFO
+regexp=.*\[\*\].*
+colours=bright_cyan
+=======
+# GENERAL WARNING
+regexp=.*\[\!\].*
+colours=bright_yellow
+=======
+# GENERAL DEFAULT
+regexp=.*\[\-\].*
+colours=default
+=======
+# can impersonate success
+regexp=.*can now impersonate users on.*
+colours=bright_green
+=======
+# delegate access success
+regexp=.*Delegation rights modified succes.*
+colours=bright_green
+=======
+# delegate access success
+regexp=.*can already impersonate users.*
+colours=bright_green
+=======
+# delegate access success
+regexp=.*Delegation rights flushed succes.*
+colours=bright_green
+=======

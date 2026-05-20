@@ -1,0 +1,15 @@
+# Nihil highlights standard Impacket status markers and credential material.
+regexp=.*\[\+\].*
+colours=bold bright_green
+=======
+regexp=.*\[\*\].*
+colours=bright_cyan
+=======
+regexp=.*\[\!\].*
+colours=bold bright_yellow
+=======
+regexp=.*\[-\].*
+colours=bright_red
+=======
+regexp=(?i)^.*(password|credential|ntlm|hash).*$
+colours=bold bright_magenta
