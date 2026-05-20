@@ -1,3 +1,4 @@
 # FindUncommonShares — Discover non-standard SMB shares
 python3 FindUncommonShares.py -u $USER -p $PASSWORD -d $DOMAIN --dc-ip $DC_IP
 python3 FindUncommonShares.py -u $USER -p $PASSWORD -d $DOMAIN --dc-ip $DC_IP -ts
+FindUncommonShares.py -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --dc-ip "$DC_IP"

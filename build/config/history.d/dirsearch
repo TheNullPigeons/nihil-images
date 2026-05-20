@@ -1,0 +1,3 @@
+dirsearch -u http://$TARGET
+dirsearch -u http://$TARGET -e php,html,js,txt
+dirsearch -u http://$TARGET -w /usr/share/seclists/Discovery/Web-Content/common.txt

@@ -2,3 +2,4 @@ smbclientng --host "$TARGET" --domain "$DOMAIN" --username "$USER" --password "$
 smbclientng --host "$TARGET" --domain "$DOMAIN" --username "$USER" --hashes :"$NT_HASH"
 smbclientng --host "$TARGET" --domain "$DOMAIN" --username "$USER" --kerberos
 smbclientng --host "$TARGET" --no-pass
+smbclientng -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DC_IP"

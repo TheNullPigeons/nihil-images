@@ -2,3 +2,13 @@ RsaCtfTool -n <modulus> -e <exponent> --uncipher <ciphertext>
 RsaCtfTool --publickey key.pub --uncipherfile flag.enc
 RsaCtfTool --publickey key.pub --private
 RsaCtfTool -n <modulus> -e <exponent> --attack all
+RsaCtfTool --attack partial_d --key $PEM_KEY
+RsaCtfTool --attack partial_q --key $PEM_KEY
+RsaCtfTool --convert_idrsa_pub --publickey $HOME/.ssh/id_rsa.pub
+RsaCtfTool --createpub -n 7828374823761928712873129873981723...12837182 -e 65537
+RsaCtfTool --dumpkey --key $PUBLIC_KEY
+RsaCtfTool --isroca --publickey $PUBLIC_KEY
+RsaCtfTool --key examples/conspicuous.priv --isconspicuous
+RsaCtfTool --publickey $PUBLIC_KEY --ecmdigits 25 --verbose --private
+RsaCtfTool --publickey $PUBLIC_KEY --private
+RsaCtfTool --publickey $PUBLIC_KEY --uncipherfile ./ciphered_file

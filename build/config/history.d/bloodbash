@@ -1,0 +1,2 @@
+bloodbash -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -dc "$DC_IP"
+bloodbash -u "$USER" -H "$NT_HASH" -d "$DOMAIN" -dc "$DC_IP"

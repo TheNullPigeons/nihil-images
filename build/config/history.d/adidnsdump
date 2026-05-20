@@ -1,0 +1,2 @@
+adidnsdump -u "$DOMAIN"\\$USER ldap://"$DC_HOST"
+adidnsdump -u "$DOMAIN"\\$USER ldap://"$DC_HOST" -r

@@ -1,3 +1,4 @@
 enum4linux-ng -A "$TARGET"
 enum4linux-ng -A "$TARGET" -u "$DOMAIN"/"$USER" -p "$PASSWORD"
 enum4linux-ng -A "$TARGET" -u "$USER" -p "$PASSWORD" -oY enum4linux-ng_output
+enum4linux-ng -A -u "$DOMAIN"/"$USER" -p "$PASSWORD" "$DC_HOST"
