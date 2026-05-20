@@ -219,6 +219,10 @@ function install_aclpwn() {
   install_pipx_tool "aclpwn" "aclpwn"
 }
 
+function install_abuseacl() {
+  install_pipx_tool_git "abuseACL" "https://github.com/AetherBlack/abuseACL"
+}
+
 function install_lsassy() {
   install_pipx_tool "lsassy" "lsassy"
 }
@@ -386,6 +390,7 @@ function install_mod_ad() {
   install_bloodbash
   install_mitm6
   install_aclpwn
+  install_abuseacl
   install_lsassy
   install_donpapi
   install_coercer

@@ -24,6 +24,7 @@
     { "name": "Get-GPPPassword", "cmd": "Get-GPPPassword.py", "description": "Extract plaintext credentials from GPP (impacket)" },
     { "name": "mitm6", "cmd": "mitm6", "description": "DHCPv6 spoofing for NTLM relay" },
     { "name": "aclpwn", "cmd": "aclpwn", "description": "AD ACL exploitation" },
+    { "name": "abuseACL", "cmd": "abuseACL", "description": "AD ACL abuse and privilege escalation" },
     { "name": "lsassy", "cmd": "lsassy", "description": "Remote LSASS credential dumper" },
     { "name": "donpapi", "cmd": "DonPAPI", "description": "DPAPI credential extraction" },
     { "name": "coercer", "cmd": "coercer", "description": "NTLM authentication coercion" },
