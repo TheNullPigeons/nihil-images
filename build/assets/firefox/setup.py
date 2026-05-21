@@ -138,6 +138,46 @@ def finalize_profile():
     print("[+] Profile finalised")
 
 
+def pin_to_navbar(addon_ids: list):
+    """Add extension browser-action buttons to the Firefox nav-bar."""
+    profile = get_profile_path()
+    prefs_js = Path(profile) / "prefs.js"
+    if not prefs_js.is_file():
+        print("[!] prefs.js not found, skipping toolbar pinning")
+        return
+
+    content = prefs_js.read_text()
+    m = re.search(r'user_pref\("browser\.uiCustomization\.state",\s*"(.+?)"\);', content)
+    if not m:
+        print("[!] uiCustomization.state not found in prefs.js, skipping")
+        return
+
+    raw = m.group(1).replace('\\"', '"')
+    state = json.loads(raw)
+
+    navbar = state.get("placements", {}).get("nav-bar", [])
+    changed = False
+    for addon_id in addon_ids:
+        if addon_id not in navbar:
+            navbar.append(addon_id)
+            changed = True
+
+    if not changed:
+        print("[+] Extensions already pinned to nav-bar")
+        return
+
+    state.setdefault("placements", {})["nav-bar"] = navbar
+    new_raw = json.dumps(state).replace('"', '\\"')
+    new_pref = f'user_pref("browser.uiCustomization.state", "{new_raw}");'
+    new_content = re.sub(
+        r'user_pref\("browser\.uiCustomization\.state",\s*".*?"\);',
+        new_pref,
+        content,
+    )
+    prefs_js.write_text(new_content)
+    print(f"[+] Pinned to nav-bar: {addon_ids}")
+
+
 if __name__ == "__main__":
     create_profile()
 
@@ -156,5 +196,7 @@ if __name__ == "__main__":
     init_profile()
     enable_addons(installed_ids)
     finalize_profile()
+
+    pin_to_navbar(["foxyproxy_eric_h_jung-browser-action"])
 
     print("[+] Firefox setup complete")
