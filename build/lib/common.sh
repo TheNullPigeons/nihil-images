@@ -79,9 +79,9 @@ function add-symlink() {
     local target="$1"
     local link_name="$2"
     
-    # Defaults to /usr/bin if just a name is provided
+    # Defaults to /opt/tools/bin if just a name is provided
     if [[ "$link_name" != /* ]]; then
-        link_name="/usr/bin/$link_name"
+        link_name="/opt/tools/bin/$link_name"
     fi
 
     colorecho "Creating symlink: $link_name -> $target"

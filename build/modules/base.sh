@@ -114,6 +114,8 @@ function package_base() {
         colorecho "Chaotic-AUR repository already exists in pacman.conf"
     fi
 
+    mkdir -p /opt/tools/bin
+
     # Configure zsh + oh-my-zsh for a nicer shell experience
     colorecho "Installing and configuring zsh with oh-my-zsh"
     export ZSH="/root/.oh-my-zsh"
@@ -191,6 +193,25 @@ function package_base() {
             echo ""
             echo "# Add /root/.local/bin to PATH (pipx, user-installed tools)"
             echo "export PATH=\"/root/.local/bin:\$PATH\""
+        } >> /root/.bashrc
+    fi
+
+    # Ajouter /opt/tools/bin au PATH pour bash (via /etc/profile)
+    colorecho "Adding /opt/tools/bin to system PATH"
+    if ! grep -q "/opt/tools/bin" /etc/profile 2>/dev/null; then
+        {
+            echo ""
+            echo "# Add /opt/tools/bin to PATH (nihil custom tools)"
+            echo "export PATH=\"/opt/tools/bin:\$PATH\""
+        } >> /etc/profile
+    fi
+
+    # Ajouter aussi dans /root/.bashrc pour bash interactif
+    if [ ! -f "/root/.bashrc" ] || ! grep -q "/opt/tools/bin" /root/.bashrc 2>/dev/null; then
+        {
+            echo ""
+            echo "# Add /opt/tools/bin to PATH (nihil custom tools)"
+            echo "export PATH=\"/opt/tools/bin:\$PATH\""
         } >> /root/.bashrc
     fi
 

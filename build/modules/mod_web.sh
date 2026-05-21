@@ -205,14 +205,14 @@ function install_caido() {
     # 2) Normalize paths for healthcheck expectations
     caido_bin="$(command -v caido 2>/dev/null || true)"
     if [ -n "$caido_bin" ]; then
-        ln -sf "$caido_bin" /usr/local/bin/caido
+        ln -sf "$caido_bin" /opt/tools/bin/caido
     fi
     caido_cli_bin="$(command -v caido-cli 2>/dev/null || true)"
     if [ -n "$caido_cli_bin" ]; then
-        ln -sf "$caido_cli_bin" /usr/local/bin/caido-cli
+        ln -sf "$caido_cli_bin" /opt/tools/bin/caido-cli
     fi
 
-    if [ -x /usr/local/bin/caido ] && command -v caido-cli >/dev/null 2>&1; then
+    if [ -x /opt/tools/bin/caido ] && command -v caido-cli >/dev/null 2>&1; then
         colorecho "  ✓ Caido binaries detected"
         add-aliases "caido"
         add-history "caido"
@@ -287,7 +287,7 @@ print(cli[0])' <<<"$release_json")"
         appimage_name="$(basename "$appimage_url")"
         if curl -fsSL "$appimage_url" -o "/opt/tools/caido/${appimage_name}" 2>/dev/null; then
             chmod +x "/opt/tools/caido/${appimage_name}" || true
-            ln -sf "/opt/tools/caido/${appimage_name}" /usr/local/bin/caido
+            ln -sf "/opt/tools/caido/${appimage_name}" /opt/tools/bin/caido
         fi
     fi
 
@@ -298,7 +298,7 @@ print(cli[0])' <<<"$release_json")"
             if tar -xzf "$cli_archive" -C /opt/tools/bin 2>/dev/null; then
                 if [ -f /opt/tools/bin/caido-cli ]; then
                     chmod +x /opt/tools/bin/caido-cli || true
-                    ln -sf /opt/tools/bin/caido-cli /usr/local/bin/caido-cli
+                    ln -sf /opt/tools/bin/caido-cli /opt/tools/bin/caido-cli
                 else
                     local extracted
                     extracted="$(python3 -c 'import os
@@ -312,7 +312,7 @@ for dp,_,files in os.walk(root):
 print("")')"
                     if [ -n "$extracted" ] && [ -f "$extracted" ]; then
                         chmod +x "$extracted" || true
-                        ln -sf "$extracted" /usr/local/bin/caido-cli
+                        ln -sf "$extracted" /opt/tools/bin/caido-cli
                     fi
                 fi
             fi
@@ -350,8 +350,8 @@ function install_burpsuite() {
     java_bin=$(archlinux-java get 2>/dev/null | xargs -I{} echo "/usr/lib/jvm/{}/bin/java")
     [[ -x "$java_bin" ]] || java_bin=$(which java)
     printf '#!/bin/bash\nexec %s -Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true -jar -Xmx4g /opt/tools/BurpSuiteCommunity/BurpSuiteCommunity.jar "$@"\n' "$java_bin" \
-        > /usr/local/bin/burpsuite
-    chmod +x /usr/local/bin/burpsuite
+        > /opt/tools/bin/burpsuite
+    chmod +x /opt/tools/bin/burpsuite
     colorecho "  ✓ Burp Suite Community installed at ${burp_dir}"
 }
 

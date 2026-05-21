@@ -36,8 +36,8 @@ function install_pycdc() {
         colorecho "  ✗ Warning: Failed to build pycdc"
         return 1
     }
-    ln -sf "$install_dir/pycdc" /usr/local/bin/pycdc
-    ln -sf "$install_dir/pycdas" /usr/local/bin/pycdas
+    ln -sf "$install_dir/pycdc" /opt/tools/bin/pycdc
+    ln -sf "$install_dir/pycdas" /opt/tools/bin/pycdas
     cd - > /dev/null
 
     colorecho "  ✓ pycdc installed"
