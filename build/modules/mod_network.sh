@@ -49,6 +49,23 @@ function install_zone_dnsenum() {
     install_pipx_tool_git "zone-dnsenum" "https://github.com/Goultarde/Zone-DNSenum"
 }
 
+function install_ligolo_ng() {
+    local arch
+    local url
+    arch="$(uname -m)"
+    url="$(curl -fsSL "https://api.github.com/repos/nicocha30/ligolo-ng/releases/latest" \
+        | grep 'browser_download_url.*ligolo-ng_proxy.*linux.*'"$arch"'.*tar.gz"' \
+        | grep -o 'https://[^"]*')"
+    if [ -z "$url" ]; then
+        colorecho "  ✗ Warning: Failed to resolve ligolo-ng proxy download URL"
+        return 1
+    fi
+    curl -fsSL "$url" | tar -xz -C /tmp proxy
+    mv /tmp/proxy /opt/tools/bin/ligolo-ng
+    chmod +x /opt/tools/bin/ligolo-ng
+    add-history "ligolo-ng"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -70,6 +87,9 @@ function install_mod_network() {
 
     colorecho "  [pipx] Network tools:"
     install_zone_dnsenum
+
+    colorecho "  [bin] Tunneling tools:"
+    install_ligolo_ng
 
     add-aliases "network"
 
