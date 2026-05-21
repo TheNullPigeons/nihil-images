@@ -29,6 +29,9 @@ function install_core_tools() {
 
     colorecho "Core tools installed"
 
+    add-aliases "fzf"
+    add-history "fzf"
+
     colorecho "Installing nihil-history"
     install_pipx_tool_git "nihil-history" "https://github.com/TheNullPigeons/nihil-history"
     add-symlink "/root/.local/bin/nhi" "nhi"
