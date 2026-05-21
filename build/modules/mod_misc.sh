@@ -58,8 +58,8 @@ function install_firefox() {
 }
 function install_chromium() {
     install_pacman_tool "chromium"
-    printf '#!/bin/bash\nexec /usr/sbin/chromium --no-sandbox "$@"\n' > /usr/local/bin/chromium
-    chmod +x /usr/local/bin/chromium
+    printf '#!/bin/bash\nexec /usr/sbin/chromium --no-sandbox "$@"\n' > /opt/tools/bin/chromium
+    chmod +x /opt/tools/bin/chromium
     # Force-install extensions via policy (downloaded on first launch)
     mkdir -p /etc/chromium/policies/managed
     cat > /etc/chromium/policies/managed/extensions.json << 'EOF'

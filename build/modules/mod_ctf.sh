@@ -87,8 +87,8 @@ function install_pycdc() {
         colorecho "  ✗ Warning: Failed to build pycdc"
         return 1
     }
-    ln -sf "$install_dir/pycdc" /usr/local/bin/pycdc
-    ln -sf "$install_dir/pycdas" /usr/local/bin/pycdas
+    ln -sf "$install_dir/pycdc" /opt/tools/bin/pycdc
+    ln -sf "$install_dir/pycdas" /opt/tools/bin/pycdas
     cd - > /dev/null
 
     colorecho "  ✓ pycdc installed"
@@ -130,11 +130,11 @@ function install_rsactftool() {
         return 1
     fi
 
-    cat > /usr/local/bin/RsaCtfTool <<EOF
+    cat > /opt/tools/bin/RsaCtfTool <<EOF
 #!/bin/sh
 exec "${venv_dir}/bin/python3" -m RsaCtfTool.main "\$@"
 EOF
-    chmod +x /usr/local/bin/RsaCtfTool
+    chmod +x /opt/tools/bin/RsaCtfTool
 
     if ! command -v RsaCtfTool > /dev/null 2>&1; then
         colorecho "  ✗ Warning: RsaCtfTool command not available after installation"
@@ -159,11 +159,11 @@ function install_z3_solver() {
         colorecho "  ✗ Warning: Failed to install z3-solver"
         return 1
     }
-    cat > /usr/local/bin/z3-solver <<'EOF'
+    cat > /opt/tools/bin/z3-solver <<'EOF'
 #!/bin/sh
 exec python3 -c "import z3,sys; print(z3.get_version_string())"
 EOF
-    chmod +x /usr/local/bin/z3-solver
+    chmod +x /opt/tools/bin/z3-solver
     colorecho "  ✓ z3-solver installed"
 }
 
@@ -176,11 +176,11 @@ function install_pycryptodome() {
             return 1
         }
     fi
-    cat > /usr/local/bin/pycryptodome <<'EOF'
+    cat > /opt/tools/bin/pycryptodome <<'EOF'
 #!/bin/sh
 exec python3 -c "import Crypto,sys; print(Crypto.__name__)"
 EOF
-    chmod +x /usr/local/bin/pycryptodome
+    chmod +x /opt/tools/bin/pycryptodome
     colorecho "  ✓ pycryptodome installed"
 }
 
@@ -247,7 +247,7 @@ function install_stegseek() {
         cd - > /dev/null
         return 1
     }
-    ln -sf "$install_dir/build/src/stegseek" /usr/local/bin/stegseek
+    ln -sf "$install_dir/build/src/stegseek" /opt/tools/bin/stegseek
     cd - > /dev/null
 
     colorecho "  ✓ stegseek installed"
