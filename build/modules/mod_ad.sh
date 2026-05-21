@@ -256,7 +256,8 @@ function install_krb5() {
 }
 
 function install_openldap() {
-  install_pacman_tool "openldap"
+    install_pacman_tool "openldap"
+    add-history "ldapsearch"
 }
 
 function install_smbclientng() {
