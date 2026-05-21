@@ -118,6 +118,25 @@ def enable_addons(addon_ids: list):
     print("[+] Extensions activated")
 
 
+def grant_all_urls_permission(addon_ids: list):
+    """Grant <all_urls> host permission to specified extensions."""
+    profile = get_profile_path()
+    ext_json = Path(profile) / "extensions.json"
+    if not ext_json.is_file():
+        print("[!] extensions.json not found, skipping permission grant")
+        return
+    data = json.loads(ext_json.read_text())
+    for addon in data.get("addons", []):
+        if addon.get("id") not in addon_ids:
+            continue
+        user_perms = addon.setdefault("userPermissions", {})
+        origins = user_perms.setdefault("origins", [])
+        if "<all_urls>" not in origins:
+            origins.append("<all_urls>")
+    ext_json.write_text(json.dumps(data))
+    print(f"[+] Granted <all_urls> to: {addon_ids}")
+
+
 def finalize_profile():
     print("[*] Finalising profile (second headless run)")
     profile = get_profile_path()
@@ -195,6 +214,7 @@ if __name__ == "__main__":
 
     init_profile()
     enable_addons(installed_ids)
+    grant_all_urls_permission(["foxyproxy@eric.h.jung"])
     finalize_profile()
 
     pin_to_navbar(["foxyproxy_eric_h_jung-browser-action"])
