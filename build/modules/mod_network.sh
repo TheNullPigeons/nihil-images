@@ -49,8 +49,6 @@ function install_zone_dnsenum() {
     install_pipx_tool_git "zone-dnsenum" "https://github.com/Goultarde/Zone-DNSenum"
 }
 
-LIGOLO_NG_VERSION="0.8.3"
-
 function install_ligolo_ng() {
     local arch goarch url
     arch="$(uname -m)"
@@ -59,7 +57,13 @@ function install_ligolo_ng() {
         aarch64) goarch="arm64" ;;
         *)        colorecho "  ✗ Warning: Unsupported arch $arch for ligolo-ng"; return 0 ;;
     esac
-    url="https://github.com/nicocha30/ligolo-ng/releases/download/v${LIGOLO_NG_VERSION}/ligolo-ng_proxy_${LIGOLO_NG_VERSION}_Linux_${goarch}.tar.gz"
+    url="$(curl -sSL "https://api.github.com/repos/nicocha30/ligolo-ng/releases/latest" \
+        | grep -o "\"browser_download_url\": \"[^\"]*ligolo-ng_proxy[^\"]*Linux_${goarch}\.tar\.gz\"" \
+        | grep -o 'https://[^"]*' || true)"
+    if [ -z "$url" ]; then
+        colorecho "  ✗ Warning: Failed to resolve ligolo-ng proxy download URL"
+        return 0
+    fi
     curl -fsSL "$url" | tar -xz -C /tmp proxy
     mv /tmp/proxy /opt/tools/bin/ligolo-ng
     chmod +x /opt/tools/bin/ligolo-ng
