@@ -53,8 +53,8 @@ function install_cyberchef() {
 
 function install_firefox() {
     install_pacman_tool "firefox"
-    pip install requests --quiet --break-system-packages
-    python3 /opt/nihil/build/assets/firefox/setup.py
+    python3 /opt/nihil/build/assets/firefox/generate_policy.py
+    add-history "firefox"
 }
 function install_chromium() {
     install_pacman_tool "chromium"
