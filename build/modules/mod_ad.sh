@@ -60,9 +60,9 @@ function install_bloodhound_ce_desktop() {
   colorecho "  → Installing Neo4j ${neo4j_version}"
   curl -fsSL "https://dist.neo4j.org/neo4j-community-${neo4j_version}-unix.tar.gz" |
     tar -xz -C /opt/
-  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j" /usr/local/bin/neo4j
-  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j-admin" /usr/local/bin/neo4j-admin
-  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/cypher-shell" /usr/local/bin/cypher-shell
+  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j" /opt/tools/bin/neo4j
+  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j-admin" /opt/tools/bin/neo4j-admin
+  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/cypher-shell" /opt/tools/bin/cypher-shell
   neo4j-admin set-initial-password fly2own1 >/dev/null 2>&1 || true
 
   mkdir -p "${install_root}" "${sharphound_path}" "${azurehound_path}"
@@ -162,10 +162,10 @@ function install_bloodhound_ce_desktop() {
   mkdir -p "${install_root}/work"
   cp "${assets}/bloodhound.config.json" "${install_root}/bloodhound.config.json"
 
-  cp "${assets}/bloodhound-ce" /usr/local/bin/bloodhound-ce
-  cp "${assets}/bloodhound-ce-stop" /usr/local/bin/bloodhound-ce-stop
-  cp "${assets}/bloodhound-ce-reset" /usr/local/bin/bloodhound-ce-reset
-  chmod +x /usr/local/bin/bloodhound-ce /usr/local/bin/bloodhound-ce-stop /usr/local/bin/bloodhound-ce-reset
+  cp "${assets}/bloodhound-ce" /opt/tools/bin/bloodhound-ce
+  cp "${assets}/bloodhound-ce-stop" /opt/tools/bin/bloodhound-ce-stop
+  cp "${assets}/bloodhound-ce-reset" /opt/tools/bin/bloodhound-ce-reset
+  chmod +x /opt/tools/bin/bloodhound-ce /opt/tools/bin/bloodhound-ce-stop /opt/tools/bin/bloodhound-ce-reset
 
   add-aliases "bloodhound-ce"
   add-history "bloodhound-ce"
