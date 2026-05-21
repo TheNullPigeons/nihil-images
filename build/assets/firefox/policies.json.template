@@ -1,0 +1,17 @@
+{
+  "policies": {
+    "DisableTelemetry": true,
+    "DisplayBookmarksToolbar": "always",
+
+    "UserMessaging": {
+      "WhatsNew": false,
+      "ExtensionRecommendations": false,
+      "FeatureRecommendations": false,
+      "UrlbarInterventions": false,
+      "SkipOnboarding": true,
+      "MoreFromMozilla": false
+    },
+
+    "ExtensionSettings": {}
+  }
+}
