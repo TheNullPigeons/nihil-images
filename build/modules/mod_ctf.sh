@@ -136,8 +136,8 @@ exec "${venv_dir}/bin/python3" -m RsaCtfTool.main "\$@"
 EOF
     chmod +x /opt/tools/bin/RsaCtfTool
 
-    if ! command -v RsaCtfTool > /dev/null 2>&1; then
-        colorecho "  ✗ Warning: RsaCtfTool command not available after installation"
+    if [[ ! -x /opt/tools/bin/RsaCtfTool ]]; then
+        colorecho "  ✗ Warning: RsaCtfTool wrapper not found after installation"
         return 1
     fi
 
