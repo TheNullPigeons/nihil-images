@@ -14,7 +14,12 @@ install_browser_ui_deps() {
     if command -v pacman >/dev/null 2>&1; then
         if [[ ! -f "$MARKER" ]]; then
             pacman -Sy --noconfirm
-            pacman -S --noconfirm --needed \
+            # xfce4-panel-compiz (chaotic-aur) peut avoir une signature inconnue et
+            # conflicte avec xfce4-panel. On utilise une config sans chaotic-aur pour
+            # forcer l'install du xfce4-panel standard.
+            grep -v 'chaotic' /etc/pacman.conf > /tmp/pacman_no_chaotic.conf || cp /etc/pacman.conf /tmp/pacman_no_chaotic.conf
+            pacman -Sy --config /tmp/pacman_no_chaotic.conf --noconfirm 2>/dev/null || true
+            pacman -S --config /tmp/pacman_no_chaotic.conf --noconfirm --needed \
                 xorg-server-xvfb \
                 x11vnc \
                 xfce4 \
@@ -26,6 +31,7 @@ install_browser_ui_deps() {
                 dbus \
                 python-pip \
                 python-pipx || true
+            rm -f /tmp/pacman_no_chaotic.conf
         fi
     else
         echo "[NIHIL] browser-ui: unsupported base OS (expected Arch/pacman)."
@@ -194,18 +200,18 @@ DOCKRC
 }
 
 start_browser_ui() {
-    export DISPLAY=:1
+    export DISPLAY=:99
     export USER=root
     export HOME=/root
     export NO_AT_BRIDGE=1
-    # Session D-Bus – évite "Unable to contact settings server"
+    # Session D-Bus: évite "Unable to contact settings server"
     export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/tmp/nihil-runtime}"
     mkdir -p "$XDG_RUNTIME_DIR" /tmp/dbus-session
     chmod 700 "$XDG_RUNTIME_DIR" /tmp/dbus-session 2>/dev/null || true
 
     # Xvfb (stable)
     if ! pgrep -x Xvfb >/dev/null 2>&1; then
-        Xvfb :1 -screen 0 1280x720x24 >/tmp/nihil_xvfb.log 2>&1 &
+        Xvfb :99 -screen 0 1280x720x24 >/tmp/nihil_xvfb.log 2>&1 &
         sleep 2
     fi
 
@@ -227,24 +233,28 @@ start_browser_ui() {
 
     # Mot de passe de session (affiché sur la page de connexion HTML + récap wrapper)
     VNC_PASSWORD_FILE="/tmp/nihil_vnc_password"
+    VNC_RFBAUTH_FILE="/tmp/nihil_x11vnc_rfbauth"
     if ! pgrep -x x11vnc >/dev/null 2>&1; then
         PASSWORD="${NIHIL_BROWSER_UI_PASSWORD:-$(openssl rand -base64 12)}"
         echo "$PASSWORD" > "$VNC_PASSWORD_FILE"
         echo "$PASSWORD" > /opt/nihil/.session_password
         chmod 600 "$VNC_PASSWORD_FILE" /opt/nihil/.session_password
+        x11vnc -storepasswd "$PASSWORD" "$VNC_RFBAUTH_FILE" 2>/dev/null
         sync
-        x11vnc -display :1 -rfbport 5901 -nopw -forever -shared >/tmp/nihil_x11vnc.log 2>&1 &
+        x11vnc -display :99 -rfbport 5901 -rfbauth "$VNC_RFBAUTH_FILE" -forever -shared >/tmp/nihil_x11vnc.log 2>&1 &
+    else
+        PASSWORD="$(cat /opt/nihil/.session_password 2>/dev/null || echo '???')"
     fi
 
-    # Page de connexion HTML : login affiché, mot de passe à saisir par l'utilisateur (voir récap CLI)
+    # Page de connexion HTML : mot de passe injecte directement (heredoc sans guillemets = interpolation)
     if [[ -d "$NOVNC_DIR" ]]; then
-        cat > "$NOVNC_DIR/index.html" << 'INDEXEOF'
+        cat > "$NOVNC_DIR/index.html" << INDEXEOF
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nihil — Connexion</title>
+  <title>Nihil - Connexion</title>
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; background: #1a1a1a; color: #e0e0e0; font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; }
@@ -264,8 +274,8 @@ start_browser_ui() {
     <h1>Nihil</h1>
     <p class="sub">Connexion à la session</p>
     <div class="row"><span class="label">Utilisateur</span><span class="value">root</span></div>
-    <div class="row"><span class="label">Mot de passe</span><span class="value">— à saisir —</span></div>
-    <p class="hint">Le mot de passe a été affiché dans le terminal au démarrage du conteneur (récap « Session (browser) »).</p>
+    <div class="row"><span class="label">Mot de passe</span><span class="value">${PASSWORD}</span></div>
+    <p class="hint">Ce mot de passe est unique à cette session. Il est régénéré à chaque démarrage du conteneur.</p>
     <a href="vnc.html?autoconnect=1&amp;resize=scale" class="btn">Ouvrir le bureau</a>
   </div>
 </body>
@@ -273,7 +283,7 @@ start_browser_ui() {
 INDEXEOF
     fi
 
-    # XFCE4 (panel + docklike) — démarrage direct, pas de greeter tk
+    # XFCE4 (panel + docklike): demarrage direct, pas de greeter tk
     if ! pgrep -x xfce4-session >/dev/null 2>&1; then
         startxfce4 >/tmp/nihil_xfce.log 2>&1 &
         sleep 5
