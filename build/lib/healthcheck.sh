@@ -54,7 +54,7 @@ for tool in module:
         colorecho "[$module]"
 
         # Add binary dirs to PATH for healthcheck since we're not running in a full login shell here
-        export PATH="/root/.local/bin:/root/.cargo/bin:/root/go/bin:${PATH}"
+        export PATH="/opt/tools/bin:/root/.local/bin:/root/.cargo/bin:/root/go/bin:${PATH}"
 
         while IFS='|' read -r name cmd check_path; do
             total=$((total + 1))
