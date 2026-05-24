@@ -70,6 +70,32 @@ function install_ligolo_ng() {
     add-history "ligolo-ng"
 }
 
+function install_ngrok() {
+    if command -v ngrok >/dev/null 2>&1; then
+        colorecho "  ✓ ngrok already installed"
+        add-history "ngrok"
+        return 0
+    fi
+    local arch goarch url
+    arch="$(uname -m)"
+    case "$arch" in
+        x86_64)  goarch="amd64" ;;
+        aarch64) goarch="arm64" ;;
+        *)        colorecho "  ✗ Warning: Unsupported arch $arch for ngrok"; return 0 ;;
+    esac
+    local equinox_arch
+    case "$arch" in
+        x86_64)  equinox_arch="amd64" ;;
+        aarch64) equinox_arch="arm64" ;;
+    esac
+    url="https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-${equinox_arch}.tgz"
+    curl -fsSL "$url" | tar -xz -C /tmp ngrok
+    mv /tmp/ngrok /opt/tools/bin/ngrok
+    chmod +x /opt/tools/bin/ngrok
+    add-history "ngrok"
+    colorecho "  ✓ ngrok installed"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -94,6 +120,7 @@ function install_mod_network() {
 
     colorecho "  [bin] Tunneling tools:"
     install_ligolo_ng
+    install_ngrok
 
     add-aliases "network"
 

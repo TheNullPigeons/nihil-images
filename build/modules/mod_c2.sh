@@ -96,6 +96,11 @@ function install_penelope() {
     install_pipx_tool_git "penelope" "https://github.com/brightio/penelope"
 }
 
+function install_pwncat_vl() {
+    install_pipx_tool "pwncat-vl" "pwncat-vl"
+    pipx inject pwncat-vl cryptography==36.0.2 2>/dev/null || true
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -109,6 +114,7 @@ function install_mod_c2() {
 
     colorecho "  [pipx] C2 tools:"
     install_penelope
+    install_pwncat_vl
 
     colorecho "Command & Control tools installation finished"
 }

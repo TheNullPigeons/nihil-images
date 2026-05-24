@@ -1,0 +1,5 @@
+swaks --to $TARGET_EMAIL --from $FROM_EMAIL --server $SMTP_SERVER
+swaks --to $TARGET_EMAIL --from $FROM_EMAIL --server $SMTP_SERVER --auth-user $USER --auth-password $PASSWORD
+swaks --to $TARGET_EMAIL --from $FROM_EMAIL --server $SMTP_SERVER --tls
+swaks --to $TARGET_EMAIL --from $FROM_EMAIL --server $SMTP_SERVER --header "Subject: Test" --body "Hello"
+swaks --to $TARGET_EMAIL --from $FROM_EMAIL --server $SMTP_SERVER --attach $FILE

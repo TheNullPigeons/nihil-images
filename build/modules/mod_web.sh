@@ -19,6 +19,17 @@ function install_sqlmap() {
     install_pacman_tool "sqlmap"
 }
 
+function install_swaks() {
+    install_pacman_tool "swaks"
+}
+
+function install_mail() {
+    install_pacman_tool "mailutils"
+    install_pacman_tool "msmtp"
+    install_pacman_tool "msmtp-mta"
+    ln -sf /usr/bin/gnu-mail /usr/local/bin/mail
+}
+
 function install_gobuster() {
     install_pacman_tool "gobuster"
 }
@@ -367,6 +378,8 @@ function install_mod_web() {
     install_gobuster
     install_nikto
     install_httpie
+    install_swaks
+    install_mail
 
     colorecho "  [pipx] Web fuzzers / scanners:"
     install_wfuzz

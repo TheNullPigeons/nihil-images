@@ -1,0 +1,4 @@
+smtp-user-enum -M VRFY -U $WORDLIST -t $TARGET
+smtp-user-enum -M EXPN -U $WORDLIST -t $TARGET
+smtp-user-enum -M RCPT -U $WORDLIST -t $TARGET -D $DOMAIN
+smtp-user-enum -M VRFY -u $USER -t $TARGET
