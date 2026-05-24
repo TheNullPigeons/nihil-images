@@ -1,4 +1,4 @@
-gMSADumper.py -u "$USER" -p "$PASSWORD" -d "DOMAIN"
-gMSADumper.py -u "$USER" -p "$PASSWORD" -d "DOMAIN" -l "$DC_HOST"
-gMSADumper.py -k -d "DOMAIN" -l "$DC_HOST"
+gMSADumper.py -u "$USER" -p "$PASSWORD" -d "$DOMAIN"
+gMSADumper.py -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -l "$DC_HOST"
+gMSADumper.py -k -d "$DOMAIN" -l "$DC_HOST"
 gMSADumper.py -d "$DOMAIN" -l "$DC_HOST" -u "$USER" -p "$PASSWORD"

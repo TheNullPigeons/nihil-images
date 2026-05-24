@@ -371,6 +371,14 @@ function install_manspider() {
   install_pipx_tool "manspider" "man-spider"
 }
 
+function install_smtp_user_enum() {
+  install_pipx_tool "smtp-user-enum" "smtp-user-enum"
+}
+
+function install_ntlm_theft() {
+  install_git_tool_venv "ntlm_theft" "https://github.com/Greenwolf/ntlm_theft.git" "ntlm_theft.py" "xlsxwriter" "yes"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -404,6 +412,7 @@ function install_mod_ad() {
   install_pywerview
   install_masky
   install_manspider
+  install_smtp_user_enum
 
   colorecho "  [pipx-git] AD tools:"
   install_pre2k
@@ -440,6 +449,7 @@ function install_mod_ad() {
   install_zerologon
   install_shadowcoerce
   install_dfscoerce
+  install_ntlm_theft
 
   colorecho "  [download] AD tools:"
   install_powershell
