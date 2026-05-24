@@ -1,0 +1,9 @@
+penelope 8888
+penelope -a
+penelope -i $INTERFACE 8888
+
+penelope --port 8888 --ssl
+penelope --port 8888 --no-upgrade
+
+penelope --connect $HOST 8888
+penelope --address $ATTACKER_IP --port 8888
