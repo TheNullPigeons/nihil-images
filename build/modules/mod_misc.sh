@@ -81,6 +81,10 @@ function install_grc() {
     cp "${grc_assets}"/conf.* /usr/share/grc/
 }
 
+function install_sqlitebrowser() {
+    install_pacman_tool "sqlitebrowser"
+}
+
 function install_rdate() {
     pacman -S --noconfirm --needed libbsd autoconf automake make gcc
     local tmpdir
@@ -107,6 +111,7 @@ function install_mod_misc() {
     install_chrony
     install_rdate
     install_grc
+    install_sqlitebrowser
 
     colorecho "Misc red-team tools installation finished"
 }

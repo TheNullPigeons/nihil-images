@@ -95,3 +95,71 @@ for tool in module:
     colorecho "All tools OK"
     return 0
 }
+
+# Usage: filter_tools_json module1 module2 ...
+# Rewrites tools.json to only contain the specified modules.
+function filter_tools_json() {
+    local modules=("$@")
+    python3 - "$TOOLS_JSON" "${modules[@]}" << 'PYEOF'
+import json, sys
+path = sys.argv[1]
+keep = set(sys.argv[2:])
+with open(path) as f:
+    data = json.load(f)
+filtered = {k: v for k, v in data.items() if k in keep}
+with open(path, 'w') as f:
+    json.dump(filtered, f, indent=4)
+    f.write('\n')
+PYEOF
+    colorecho "tools.json filtered to: ${modules[*]}"
+}
+
+# Usage: list_tools [module1 module2 ...]
+# Lists all tools from tools.json with name, command and description.
+# Without arguments, lists all modules.
+function list_tools() {
+    local modules=("$@")
+
+    if [ ! -f "$TOOLS_JSON" ]; then
+        criticalecho "tools.json not found at $TOOLS_JSON"
+        return 1
+    fi
+
+    if [ ${#modules[@]} -eq 0 ]; then
+        modules=($(python3 -c "
+import json
+with open('$TOOLS_JSON') as f:
+    data = json.load(f)
+for key in data:
+    print(key)
+"))
+    fi
+
+    local total=0
+    for module in "${modules[@]}"; do
+        python3 -c "
+import json
+with open('$TOOLS_JSON') as f:
+    data = json.load(f)
+tools = data.get('$module', [])
+if not tools:
+    exit(0)
+print(f'\n[$module]')
+for t in tools:
+    name = t['name']
+    cmd  = t.get('cmd') or '-'
+    desc = t.get('description') or ''
+    print(f'  {name:<30} {cmd:<25} {desc}')
+print(f'  ({len(tools)} tools)')
+" 2>/dev/null
+        total=$(python3 -c "
+import json
+with open('$TOOLS_JSON') as f:
+    data = json.load(f)
+print(sum(len(v) for v in data.values() if isinstance(v, list)))
+" 2>/dev/null)
+    done
+
+    echo ""
+    colorecho "$total tools total"
+}
