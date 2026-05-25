@@ -339,6 +339,44 @@ print("")')"
 # Burp Suite Community
 # ---------------------------------------------------------------------------
 
+function install_eyewitness() {
+    local tool_name="EyeWitness"
+    local git_url="https://github.com/RedSiege/EyeWitness.git"
+    local repo_dir="${GIT_INSTALL_DIR}/${tool_name}"
+    local venv_dir="${repo_dir}/venv"
+
+    if command -v EyeWitness > /dev/null 2>&1; then
+        colorecho "  ✓ EyeWitness already installed"
+        return 0
+    fi
+
+    colorecho "  → Installing EyeWitness"
+    git clone --depth=1 "$git_url" "$repo_dir" || {
+        colorecho "  ✗ Warning: Failed to clone EyeWitness"
+        return 1
+    }
+
+    python3 -m venv "$venv_dir" || return 1
+    source "$venv_dir/bin/activate"
+    pip install --quiet -r "$repo_dir/Python/requirements.txt" || {
+        colorecho "  ✗ Warning: Failed to install EyeWitness requirements"
+        deactivate
+        return 1
+    }
+    deactivate
+
+    mkdir -p "$GIT_BIN_DIR"
+    cat > "${GIT_BIN_DIR}/EyeWitness" << EOF
+#!/bin/sh
+cd "$repo_dir/Python" || exit 1
+source "$venv_dir/bin/activate"
+exec python3 "$repo_dir/Python/EyeWitness.py" "\$@"
+EOF
+    chmod +x "${GIT_BIN_DIR}/EyeWitness"
+    add-history "EyeWitness"
+    colorecho "  ✓ EyeWitness installed"
+}
+
 function install_burpsuite() {
     colorecho "  → Installing Burp Suite Community"
     install_pacman_tool "jdk-openjdk"
@@ -414,6 +452,7 @@ function install_mod_web() {
     install_nosqlmap
     install_corsy
     install_whatweb
+    install_eyewitness
 
     colorecho "  [cargo] Web fuzzer:"
     install_feroxbuster
