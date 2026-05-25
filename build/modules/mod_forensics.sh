@@ -21,7 +21,18 @@ function install_foremost() {
 }
 
 function install_exiftool() {
-    install_pacman_tool "perl-image-exiftool"
+    if command -v exiftool > /dev/null 2>&1; then
+        colorecho "  ✓ exiftool already installed"
+        return 0
+    fi
+    colorecho "  → Installing exiftool via pacman (perl-image-exiftool)"
+    pacman -S --noconfirm --needed perl-image-exiftool 2>/dev/null || \
+    pacman -S --noconfirm --needed --overwrite '/usr/lib/perl*' perl-image-exiftool || {
+        colorecho "  ✗ Warning: Failed to install exiftool"
+        return 0
+    }
+    add-history "exiftool"
+    colorecho "  ✓ exiftool installed"
 }
 
 function install_steghide() {
