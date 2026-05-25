@@ -28,6 +28,7 @@ RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh install_mod_blueteam && \
     ./entrypoint.sh install_mod_wordlists && \
     ./entrypoint.sh healthcheck core_tools mod_forensics mod_network mod_blueteam mod_wordlists && \
+    ./entrypoint.sh filter_tools_json core_tools mod_forensics mod_network mod_blueteam mod_wordlists && \
     ./entrypoint.sh post_install
 
 WORKDIR /workspace
