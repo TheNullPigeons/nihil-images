@@ -1,5 +1,5 @@
 # Author: Nihil Project
-# Capture the flag, no fluff.
+# Blue team / DFIR. Incident response, threat hunting, forensic analysis.
 
 FROM archlinux:latest
 
@@ -11,7 +11,7 @@ LABEL org.nihil.tag="${TAG}"
 LABEL org.nihil.version="${VERSION}"
 LABEL org.nihil.build_date="${BUILD_DATE}"
 LABEL org.nihil.app="Nihil"
-LABEL org.nihil.variant="ctf"
+LABEL org.nihil.variant="blueteam"
 
 COPY build /opt/nihil/build/
 COPY runtime /opt/nihil/runtime/
@@ -23,9 +23,11 @@ SHELL ["/bin/bash", "-c"]
 RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh package_base && \
     ./entrypoint.sh install_core_tools && \
-    ./entrypoint.sh install_mod_ctf && \
+    ./entrypoint.sh install_mod_forensics && \
+    ./entrypoint.sh install_mod_network && \
+    ./entrypoint.sh install_mod_blueteam && \
     ./entrypoint.sh install_mod_wordlists && \
-    ./entrypoint.sh healthcheck core_tools mod_ctf mod_wordlists && \
+    ./entrypoint.sh healthcheck core_tools mod_forensics mod_network mod_blueteam mod_wordlists && \
     ./entrypoint.sh post_install
 
 WORKDIR /workspace
