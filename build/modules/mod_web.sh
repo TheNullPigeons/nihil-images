@@ -339,6 +339,11 @@ print("")')"
 # Burp Suite Community
 # ---------------------------------------------------------------------------
 
+function install_aquatone() {
+    install_go_tool "github.com/michenriksen/aquatone@latest" "aquatone"
+    add-history "aquatone"
+}
+
 function install_eyewitness() {
     local tool_name="EyeWitness"
     local git_url="https://github.com/RedSiege/EyeWitness.git"
@@ -443,6 +448,7 @@ function install_mod_web() {
     install_gau
     install_waybackurls
     install_crlfuzz
+    install_aquatone
 
     colorecho "  [git] Scripts (clone + requirements):"
     install_ssrfmap

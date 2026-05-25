@@ -503,6 +503,11 @@
             "name": "EyeWitness",
             "cmd": "EyeWitness",
             "description": "Web screenshot and service enumeration tool"
+        },
+        {
+            "name": "aquatone",
+            "cmd": "aquatone",
+            "description": "Visual inspection of websites across large host lists"
         }
     ],
     "mod_network": [
