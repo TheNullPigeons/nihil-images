@@ -10,6 +10,7 @@ nihil::import lib/registry/aur
 nihil::import lib/registry/curl
 nihil::import lib/registry/git
 nihil::import lib/registry/go
+nihil::import lib/registry/gem
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -339,6 +340,11 @@ print("")')"
 # Burp Suite Community
 # ---------------------------------------------------------------------------
 
+function install_wpscan() {
+    install_gem_tool "wpscan"
+    add-history "wpscan"
+}
+
 function install_aquatone() {
     install_go_tool "github.com/michenriksen/aquatone@latest" "aquatone"
     add-history "aquatone"
@@ -449,6 +455,9 @@ function install_mod_web() {
     install_waybackurls
     install_crlfuzz
     install_aquatone
+
+    colorecho "  [gem] CMS scanners:"
+    install_wpscan
 
     colorecho "  [git] Scripts (clone + requirements):"
     install_ssrfmap
