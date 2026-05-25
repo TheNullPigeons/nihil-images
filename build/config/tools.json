@@ -508,6 +508,11 @@
             "name": "aquatone",
             "cmd": "aquatone",
             "description": "Visual inspection of websites across large host lists"
+        },
+        {
+            "name": "wpscan",
+            "cmd": "wpscan",
+            "description": "WordPress vulnerability scanner"
         }
     ],
     "mod_network": [
