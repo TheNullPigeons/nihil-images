@@ -821,16 +821,6 @@
             "name": "sleuthkit",
             "cmd": "fls",
             "description": "Disk forensics toolkit (The Sleuth Kit)"
-        },
-        {
-            "name": "plaso",
-            "cmd": "log2timeline",
-            "description": "Forensic timeline (log2timeline)"
-        },
-        {
-            "name": "suricata",
-            "cmd": "suricata",
-            "description": "Network IDS/IPS/NSM engine"
         }
     ],
     "mod_ctf": [

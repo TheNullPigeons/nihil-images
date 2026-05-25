@@ -6,6 +6,11 @@ nihil::import lib/common
 nihil::import lib/registry/pipx
 nihil::import lib/registry/pacman
 
+# Résout le tag de la dernière release via redirect HTTP (pas d'API, pas de rate limit)
+_latest_tag() {
+    curl -Ls -o /dev/null -w '%{url_effective}' "https://github.com/$1/releases/latest" | sed 's:.*/::' || true
+}
+
 # ===========================================================================
 # Log Analysis / Threat Hunting
 # ===========================================================================
@@ -19,23 +24,17 @@ function install_chainsaw() {
     fi
 
     colorecho "  → Installing chainsaw (Windows event log hunter)"
-    local asset_url
-    asset_url=$(curl -s https://api.github.com/repos/WithSecureLabs/chainsaw/releases/latest | \
-        grep "browser_download_url" | grep "x86_64-unknown-linux-musl\.tar\.gz" | \
-        head -1 | cut -d'"' -f4)
 
-    if [ -z "$asset_url" ]; then
-        colorecho "  ✗ Warning: Failed to fetch chainsaw release URL"
-        return 1
-    fi
+    # Asset name is stable across versions (no version in filename)
+    local url="https://github.com/WithSecureLabs/chainsaw/releases/latest/download/chainsaw_x86_64-unknown-linux-gnu.tar.gz"
 
     mkdir -p "$install_dir"
-    curl -sSL "$asset_url" -o /tmp/chainsaw.tar.gz || {
+    curl -fsSL "$url" -o /tmp/chainsaw.tar.gz || {
         colorecho "  ✗ Warning: Failed to download chainsaw"
-        return 1
+        return 0
     }
 
-    # Archive structure: chainsaw/ -> chainsaw (binary) + rule_libs/ + sigma/ etc.
+    # Archive: chainsaw/ -> chainsaw (binary) + rule_libs/ + sigma/ etc.
     tar xzf /tmp/chainsaw.tar.gz -C "$install_dir" --strip-components=1
     rm -f /tmp/chainsaw.tar.gz
 
@@ -45,8 +44,8 @@ function install_chainsaw() {
         colorecho "  ✓ chainsaw installed"
     else
         colorecho "  ✗ Warning: chainsaw binary not found after extraction"
-        return 1
     fi
+    return 0
 }
 
 function install_hayabusa() {
@@ -60,37 +59,39 @@ function install_hayabusa() {
     colorecho "  → Installing hayabusa (Windows DFIR timeline generator)"
     pacman -S --noconfirm --needed unzip 2>/dev/null || true
 
-    local asset_url
-    asset_url=$(curl -s https://api.github.com/repos/Yamato-Security/hayabusa/releases/latest | \
-        grep "browser_download_url" | grep "linux-x86_64-gnu\.zip" | \
-        head -1 | cut -d'"' -f4)
+    local tag version url
+    tag=$(_latest_tag "Yamato-Security/hayabusa")
+    version="${tag#v}"
 
-    if [ -z "$asset_url" ]; then
-        colorecho "  ✗ Warning: Failed to fetch hayabusa release URL"
-        return 1
+    if [ -z "$tag" ]; then
+        colorecho "  ✗ Warning: Failed to resolve hayabusa latest tag"
+        return 0
     fi
 
+    # Asset format (since v3.x): hayabusa-<version>-lin-x64-gnu.zip
+    url="https://github.com/Yamato-Security/hayabusa/releases/download/${tag}/hayabusa-${version}-lin-x64-gnu.zip"
+
     mkdir -p "$install_dir"
-    curl -sSL "$asset_url" -o /tmp/hayabusa.zip || {
+    curl -fsSL "$url" -o /tmp/hayabusa.zip || {
         colorecho "  ✗ Warning: Failed to download hayabusa"
-        return 1
+        return 0
     }
 
     unzip -o /tmp/hayabusa.zip -d "$install_dir" 2>/dev/null
     rm -f /tmp/hayabusa.zip
 
-    # Binary shipped as hayabusa-<version>-linux-x86_64-gnu (versioned, no extension)
+    # Binary: hayabusa-<version>-lin-x64-gnu (no extension)
     local hayabusa_bin
-    hayabusa_bin=$(find "$install_dir" -maxdepth 1 -name "hayabusa-*" -type f 2>/dev/null | head -1)
-    if [ -n "$hayabusa_bin" ] && [ -f "$hayabusa_bin" ]; then
+    hayabusa_bin=$(find "$install_dir" -maxdepth 1 -name "hayabusa-*" -not -name "*.zip" -type f 2>/dev/null | head -1)
+    if [ -n "$hayabusa_bin" ]; then
         chmod +x "$hayabusa_bin"
         ln -sf "$hayabusa_bin" /opt/tools/bin/hayabusa
         add-history "hayabusa"
         colorecho "  ✓ hayabusa installed"
     else
         colorecho "  ✗ Warning: hayabusa binary not found after extraction"
-        return 1
     fi
+    return 0
 }
 
 function install_sigma_cli() {
@@ -115,37 +116,37 @@ function install_capa() {
     fi
 
     colorecho "  → Installing capa (FLARE malware capability detection)"
-    local asset_url
-    asset_url=$(curl -s https://api.github.com/repos/mandiant/capa/releases/latest | \
-        grep "browser_download_url" | grep "linux\.zip" | \
-        head -1 | cut -d'"' -f4)
+    pacman -S --noconfirm --needed unzip 2>/dev/null || true
 
-    if [ -z "$asset_url" ]; then
-        colorecho "  ✗ Warning: Failed to fetch capa release URL"
-        return 1
+    local tag url
+    tag=$(_latest_tag "mandiant/capa")
+
+    if [ -z "$tag" ]; then
+        colorecho "  ✗ Warning: Failed to resolve capa latest tag"
+        return 0
     fi
 
-    pacman -S --noconfirm --needed unzip 2>/dev/null || true
+    # Asset format: capa-v9.4.0-linux.zip (tag includes 'v' prefix)
+    url="https://github.com/mandiant/capa/releases/download/${tag}/capa-${tag}-linux.zip"
+
     mkdir -p "$install_dir"
-    curl -sSL "$asset_url" -o /tmp/capa.zip || {
+    curl -fsSL "$url" -o /tmp/capa.zip || {
         colorecho "  ✗ Warning: Failed to download capa"
-        return 1
+        return 0
     }
 
     unzip -o /tmp/capa.zip -d "$install_dir" 2>/dev/null
     rm -f /tmp/capa.zip
 
-    local capa_bin
-    capa_bin=$(find "$install_dir" -maxdepth 1 -name "capa" -type f 2>/dev/null | head -1)
-    if [ -n "$capa_bin" ] && [ -f "$capa_bin" ]; then
-        chmod +x "$capa_bin"
-        ln -sf "$capa_bin" /opt/tools/bin/capa
+    if [ -f "$install_dir/capa" ]; then
+        chmod +x "$install_dir/capa"
+        ln -sf "$install_dir/capa" /opt/tools/bin/capa
         add-history "capa"
         colorecho "  ✓ capa installed"
     else
         colorecho "  ✗ Warning: capa binary not found after extraction"
-        return 1
     fi
+    return 0
 }
 
 function install_loki() {
@@ -160,7 +161,7 @@ function install_loki() {
     if [ ! -d "$install_dir" ]; then
         git clone --depth 1 https://github.com/Neo23x0/Loki.git "$install_dir" || {
             colorecho "  ✗ Warning: Failed to clone loki"
-            return 1
+            return 0
         }
     fi
 
@@ -177,6 +178,7 @@ EOF
     chmod +x /root/.local/bin/loki
     add-history "loki"
     colorecho "  ✓ loki installed"
+    return 0
 }
 
 # ===========================================================================
@@ -191,23 +193,10 @@ function install_sleuthkit() {
     colorecho "  → Installing sleuthkit via pacman"
     pacman -Sy --noconfirm && pacman -S --noconfirm --needed sleuthkit || {
         colorecho "  ✗ Warning: Failed to install sleuthkit"
-        return 1
+        return 0
     }
     add-history "sleuthkit"
     colorecho "  ✓ sleuthkit installed"
-}
-
-function install_plaso() {
-    # PyPI: plaso, binary: log2timeline
-    install_pipx_tool "log2timeline" "plaso"
-}
-
-# ===========================================================================
-# Network Detection
-# ===========================================================================
-
-function install_suricata() {
-    install_pacman_tool "suricata"
 }
 
 # ===========================================================================
@@ -229,10 +218,6 @@ function install_mod_blueteam() {
 
     colorecho "  [disk] Disk forensics:"
     install_sleuthkit
-    install_plaso
-
-    colorecho "  [ids] Network detection:"
-    install_suricata
 
     colorecho "Blue team / SOC tools installation finished"
 }

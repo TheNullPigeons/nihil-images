@@ -50,24 +50,33 @@ function install_zone_dnsenum() {
 }
 
 function install_ligolo_ng() {
-    local arch goarch url
+    local arch goarch tag version url
     arch="$(uname -m)"
     case "$arch" in
         x86_64)  goarch="amd64" ;;
         aarch64) goarch="arm64" ;;
         *)        colorecho "  ✗ Warning: Unsupported arch $arch for ligolo-ng"; return 0 ;;
     esac
-    url="$(curl -sSL "https://api.github.com/repos/nicocha30/ligolo-ng/releases/latest" \
-        | grep "browser_download_url.*ligolo-ng_proxy.*linux.*${goarch}.*tar.gz" \
-        | grep -o 'https://[^"]*' || true)"
-    if [ -z "$url" ]; then
-        colorecho "  ✗ Warning: Failed to resolve ligolo-ng proxy download URL"
+
+    # Resolve latest tag via redirect (no API, no rate limit)
+    tag=$(curl -Ls -o /dev/null -w '%{url_effective}' "https://github.com/nicocha30/ligolo-ng/releases/latest" | sed 's:.*/::' || true)
+    if [ -z "$tag" ]; then
+        colorecho "  ✗ Warning: Failed to resolve ligolo-ng latest tag"
         return 0
     fi
-    curl -fsSL "$url" | tar -xz -C /tmp proxy
+    version="${tag#v}"
+
+    # Asset format: ligolo-ng_proxy_0.8.3_linux_amd64.tar.gz
+    url="https://github.com/nicocha30/ligolo-ng/releases/download/${tag}/ligolo-ng_proxy_${version}_linux_${goarch}.tar.gz"
+
+    if ! curl -fsSL "$url" | tar -xz -C /tmp proxy 2>/dev/null; then
+        colorecho "  ✗ Warning: Failed to download/extract ligolo-ng proxy"
+        return 0
+    fi
     mv /tmp/proxy /opt/tools/bin/ligolo-ng
     chmod +x /opt/tools/bin/ligolo-ng
     add-history "ligolo-ng"
+    colorecho "  ✓ ligolo-ng proxy installed (${tag})"
 }
 
 function install_ngrok() {
