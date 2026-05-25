@@ -17,6 +17,7 @@ function install_core_tools() {
     neovim \
     tmux \
     fzf \
+    zoxide \
     curl \
     wget \
     asciinema \
@@ -31,6 +32,8 @@ function install_core_tools() {
 
     add-aliases "fzf"
     add-history "fzf"
+    add-aliases "zoxide"
+    add-history "zoxide"
 
     colorecho "Installing nihil-history"
     install_pipx_tool_git "nihil-history" "https://github.com/TheNullPigeons/nihil-history"
