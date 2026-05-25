@@ -58,7 +58,7 @@ function install_ligolo_ng() {
         *)        colorecho "  ✗ Warning: Unsupported arch $arch for ligolo-ng"; return 0 ;;
     esac
     url="$(curl -sSL "https://api.github.com/repos/nicocha30/ligolo-ng/releases/latest" \
-        | grep -o "\"browser_download_url\": \"[^\"]*ligolo-ng_proxy[^\"]*Linux_${goarch}\.tar\.gz\"" \
+        | grep "browser_download_url.*ligolo-ng_proxy.*linux.*${goarch}.*tar.gz" \
         | grep -o 'https://[^"]*' || true)"
     if [ -z "$url" ]; then
         colorecho "  ✗ Warning: Failed to resolve ligolo-ng proxy download URL"
