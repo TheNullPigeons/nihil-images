@@ -11,11 +11,67 @@ nihil::import lib/registry/git
 # ---------------------------------------------------------------------------
 
 function install_rsactftool() {
-    install_git_tool_venv "RsaCtfTool" \
-        "https://github.com/RsaCtfTool/RsaCtfTool.git" \
-        "RsaCtfTool.py" \
-        "" \
-        "yes"
+    local tool_name="RsaCtfTool"
+    local git_url="https://github.com/RsaCtfTool/RsaCtfTool.git"
+    local repo_dir="${GIT_INSTALL_DIR}/${tool_name}"
+    local venv_dir="${repo_dir}/venv"
+
+    if command -v RsaCtfTool >/dev/null 2>&1; then
+        colorecho "  ✓ RsaCtfTool already installed"
+        return 0
+    fi
+
+    colorecho "  → Installing RsaCtfTool via Git with venv ($git_url)"
+
+    if [ ! -d "$repo_dir" ]; then
+        git clone --depth=1 "$git_url" "$repo_dir" || {
+            colorecho "  ✗ Warning: Failed to clone RsaCtfTool"
+            return 1
+        }
+    fi
+
+    python3 -m venv --system-site-packages "$venv_dir" || {
+        colorecho "  ✗ Warning: Failed to create venv for RsaCtfTool"
+        return 1
+    }
+
+    source "$venv_dir/bin/activate"
+    # Try installing via setup.py/pyproject.toml first (handles repo restructuring)
+    if [ -f "$repo_dir/setup.py" ] || [ -f "$repo_dir/pyproject.toml" ]; then
+        pip install --quiet "$repo_dir" 2>/dev/null || true
+    fi
+    # Fallback: install from requirements.txt
+    if [ -f "$repo_dir/requirements.txt" ]; then
+        pip install --quiet -r "$repo_dir/requirements.txt" 2>/dev/null || true
+    fi
+    deactivate
+
+    mkdir -p "$GIT_BIN_DIR"
+    local wrapper="${GIT_BIN_DIR}/RsaCtfTool"
+
+    if [ -f "$venv_dir/bin/RsaCtfTool" ]; then
+        # Entry point installed by pip
+        cat > "$wrapper" <<EOF
+#!/bin/sh
+exec "$venv_dir/bin/RsaCtfTool" "\$@"
+EOF
+    elif [ -f "$repo_dir/RsaCtfTool.py" ]; then
+        # Classic .py entrypoint at repo root
+        cat > "$wrapper" <<EOF
+#!/bin/sh
+cd "$repo_dir" || exit 1
+source "$venv_dir/bin/activate"
+exec python3 "$repo_dir/RsaCtfTool.py" "\$@"
+EOF
+    else
+        colorecho "  ✗ Warning: Could not find RsaCtfTool entry point after install"
+        return 1
+    fi
+
+    chmod +x "$wrapper"
+    add-aliases "RsaCtfTool"
+    add-history "RsaCtfTool"
+    colorecho "  ✓ RsaCtfTool installed"
 }
 
 function install_xortool() {
@@ -24,15 +80,18 @@ function install_xortool() {
 
 function install_z3_solver() {
     colorecho "  → Installing z3-solver"
-    if python3 -c "import z3" 2>/dev/null; then
-        colorecho "  ✓ z3-solver already installed"
-        return 0
+    if ! python3 -c "import z3" 2>/dev/null; then
+        python3 -m pip install --break-system-packages z3-solver --quiet 2>/dev/null || \
+            python3 -m pip install z3-solver --quiet 2>/dev/null || {
+            colorecho "  ✗ Warning: Failed to install z3-solver"
+            return 1
+        }
     fi
-    python3 -m pip install --break-system-packages z3-solver --quiet 2>/dev/null || \
-        python3 -m pip install z3-solver --quiet 2>/dev/null || {
-        colorecho "  ✗ Warning: Failed to install z3-solver"
-        return 1
-    }
+    cat > /usr/local/bin/z3-solver <<'EOF'
+#!/bin/sh
+exec python3 -c "import z3, sys; print('z3-solver', z3.__version__)"
+EOF
+    chmod +x /usr/local/bin/z3-solver
     colorecho "  ✓ z3-solver installed"
 }
 
