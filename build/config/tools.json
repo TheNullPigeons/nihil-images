@@ -291,6 +291,21 @@
             "name": "smtp-user-enum",
             "cmd": "smtp-user-enum",
             "description": "SMTP user enumeration via VRFY, EXPN and RCPT"
+        },
+        {
+            "name": "neo4j",
+            "cmd": "neo4j",
+            "description": "Neo4j graph database (BloodHound CE backend)"
+        },
+        {
+            "name": "cypher-shell",
+            "cmd": "cypher-shell",
+            "description": "Neo4j Cypher query shell"
+        },
+        {
+            "name": "gofenrir",
+            "cmd": "gf",
+            "description": "Fast AD user/group enumeration (Go)"
         }
     ],
     "mod_web": [
@@ -473,6 +488,16 @@
             "name": "swaks",
             "cmd": "swaks",
             "description": "SMTP test tool (Swiss Army Knife for SMTP)"
+        },
+        {
+            "name": "mail",
+            "cmd": "mail",
+            "description": "Command-line email client (mailutils + msmtp)"
+        },
+        {
+            "name": "burpsuite",
+            "cmd": "burpsuite",
+            "description": "Web application security testing platform"
         }
     ],
     "mod_network": [
@@ -510,6 +535,21 @@
             "name": "ngrok",
             "cmd": "ngrok",
             "description": "Reverse tunnel for exposing local ports"
+        },
+        {
+            "name": "udpx",
+            "cmd": "udpx",
+            "description": "Fast UDP port scanner"
+        },
+        {
+            "name": "bettercap",
+            "cmd": "bettercap",
+            "description": "Network attack and monitoring framework"
+        },
+        {
+            "name": "ligolo-ng",
+            "cmd": "ligolo-ng",
+            "description": "Tunneling via TUN interface (proxy)"
         }
     ],
     "mod_credential": [
@@ -532,6 +572,11 @@
             "name": "hashcat",
             "cmd": "hashcat",
             "description": "GPU password cracker"
+        },
+        {
+            "name": "haiti",
+            "cmd": "haiti",
+            "description": "Hash type identifier"
         }
     ],
     "mod_pwn": [
@@ -619,6 +664,21 @@
             "cmd": null,
             "description": "Data transformation toolkit (offline)",
             "check_path": "/opt/tools/CyberChef"
+        },
+        {
+            "name": "firefox",
+            "cmd": "firefox",
+            "description": "Web browser"
+        },
+        {
+            "name": "chromium",
+            "cmd": "chromium",
+            "description": "Web browser (no-sandbox wrapper)"
+        },
+        {
+            "name": "grc",
+            "cmd": "grc",
+            "description": "Generic log colorizer"
         }
     ],
     "mod_reverse": [
@@ -641,6 +701,11 @@
             "name": "uncompyle6",
             "cmd": "uncompyle6",
             "description": "Python 2/3 bytecode decompiler"
+        },
+        {
+            "name": "pycdas",
+            "cmd": "pycdas",
+            "description": "Python bytecode disassembler"
         }
     ],
     "mod_crypto": [
