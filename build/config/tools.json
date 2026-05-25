@@ -1,199 +1,741 @@
 {
-  "core_tools": [
-    { "name": "vim", "cmd": "vim", "description": "Text editor" },
-    { "name": "nano", "cmd": "nano", "description": "Text editor" },
-    { "name": "neovim", "cmd": "nvim", "description": "Text editor" },
-    { "name": "tmux", "cmd": "tmux", "description": "Terminal multiplexer" },
-    { "name": "fzf", "cmd": "fzf", "description": "Fuzzy finder" },
-    { "name": "gdb", "cmd": "gdb", "description": "GNU debugger" },
-    { "name": "asciinema", "cmd": "asciinema", "description": "Terminal recorder" },
-    { "name": "whois", "cmd": "whois", "description": "WHOIS lookup" },
-    { "name": "nihil-history", "cmd": "nhi", "description": "Pentest engagement knowledge manager" }
-  ],
-  "mod_ad": [
-    { "name": "bloodhound", "cmd": "bloodhound-python", "description": "AD attack path visualization (ingestor)" },
-    { "name": "bloodhound-ce-python", "cmd": "bloodhound-ce-python", "description": "BloodHound CE Python ingestor" },
-    { "name": "bloodhound-ce", "cmd": "bloodhound-ce", "description": "BloodHound CE desktop client" },
-    { "name": "ldapdomaindump", "cmd": "ldapdomaindump", "description": "LDAP domain information dumper" },
-    { "name": "adidnsdump", "cmd": "adidnsdump", "description": "AD integrated DNS dumper" },
-    { "name": "certipy", "cmd": "certipy", "description": "ADCS enumeration and exploitation" },
-    { "name": "bloodyad", "cmd": "bloodyAD", "description": "AD privilege escalation framework" },
-    { "name": "evil-winrm-py", "cmd": "evil-winrm-py", "description": "WinRM shell (Python)" },
-    { "name": "netexec", "cmd": "netexec", "description": "SMB/LDAP/WinRM/SSH exploitation framework" },
-    { "name": "impacket", "cmd": "secretsdump.py", "description": "Windows protocol library (Fortra)" },
-    { "name": "Get-GPPPassword", "cmd": "Get-GPPPassword.py", "description": "Extract plaintext credentials from GPP (impacket)" },
-    { "name": "mitm6", "cmd": "mitm6", "description": "DHCPv6 spoofing for NTLM relay" },
-    { "name": "aclpwn", "cmd": "aclpwn", "description": "AD ACL exploitation" },
-    { "name": "abuseACL", "cmd": "abuseACL", "description": "AD ACL abuse and privilege escalation" },
-    { "name": "lsassy", "cmd": "lsassy", "description": "Remote LSASS credential dumper" },
-    { "name": "donpapi", "cmd": "DonPAPI", "description": "DPAPI credential extraction" },
-    { "name": "coercer", "cmd": "coercer", "description": "NTLM authentication coercion" },
-    { "name": "pywhisker", "cmd": "pywhisker", "description": "Shadow credentials manipulation" },
-    { "name": "enum4linux-ng", "cmd": "enum4linux-ng", "description": "SMB/RPC/LDAP enumeration" },
-    { "name": "smbmap", "cmd": "smbmap", "description": "SMB share enumeration" },
-    { "name": "smbclientng", "cmd": "smbclientng", "description": "Interactive SMB client with modern UX" },
-    { "name": "sprayhound", "cmd": "sprayhound", "description": "Password spraying with BloodHound" },
-    { "name": "ldapsearch-ad", "cmd": "ldapsearch-ad.py", "description": "LDAP enumeration wrapper for AD" },
-    { "name": "pywerview", "cmd": "pywerview", "description": "Python port of PowerView" },
-    { "name": "masky", "cmd": "masky", "description": "ADCS-based credential extraction" },
-    { "name": "manspider", "cmd": "manspider", "description": "Search sensitive files across SMB shares" },
-    { "name": "pre2k", "cmd": "pre2k", "description": "Pre-Windows 2000 computer account exploitation" },
-    { "name": "responder", "cmd": "responder", "description": "LLMNR/NBT-NS/mDNS poisoner" },
-    { "name": "rusthound-ce", "cmd": "rusthound-ce", "description": "BloodHound CE collector (Rust)" },
-    { "name": "rusthound", "cmd": "rusthound", "description": "BloodHound legacy collector (Rust)" },
-    { "name": "bloodbash", "cmd": "bloodbash", "description": "BloodHound-based offensive automation" },
-    { "name": "kerbrute", "cmd": "kerbrute", "description": "Kerberos brute-force / user enumeration" },
-    { "name": "windapsearch", "cmd": "windapsearch", "description": "LDAP enumeration (Go)" },
-    { "name": "krbrelayx", "cmd": "krbrelayx", "description": "Kerberos relay attacks" },
-    { "name": "gmsadumper", "cmd": "gmsadumper", "description": "gMSA credential extraction" },
-    { "name": "FindUncommonShares", "cmd": "FindUncommonShares", "description": "Discover non-standard SMB shares" },
-    { "name": "targetedKerberoast", "cmd": "targetedKerberoast", "description": "Kerberoast via ACL abuse" },
-    { "name": "PKINITtools", "cmd": "gettgtpkinit", "description": "PKINIT exploitation (shadow creds, UnPAC-the-hash)" },
-    { "name": "noPac", "cmd": "noPac", "description": "CVE-2021-42278/42287 Sam-Account-Name spoofing" },
-    { "name": "PetitPotam", "cmd": "PetitPotam", "description": "NTLM relay via EFS (CVE-2021-36942)" },
-    { "name": "zerologon", "cmd": "cve-2020-1472-exploit", "description": "CVE-2020-1472 Netlogon exploit" },
-    { "name": "ShadowCoerce", "cmd": "ShadowCoerce", "description": "Coercion via MS-FSRVP" },
-    { "name": "DFSCoerce", "cmd": "DFSCoerce", "description": "Coercion via MS-DFSNM" },
-    { "name": "openldap", "cmd": "ldapsearch", "description": "LDAP command-line utilities" },
-    { "name": "smbclient", "cmd": "smbclient", "description": "SMB command-line client" },
-    { "name": "powershell", "cmd": "pwsh", "description": "PowerShell 7" }
-  ],
-  "mod_web": [
-    { "name": "sqlmap", "cmd": "sqlmap", "description": "SQL injection testing" },
-    { "name": "gobuster", "cmd": "gobuster", "description": "Directory/subdomain brute-force" },
-    { "name": "nikto", "cmd": "nikto", "description": "Web server vulnerability scanner" },
-    { "name": "wfuzz", "cmd": "wfuzz", "description": "Web fuzzer" },
-    { "name": "arjun", "cmd": "arjun", "description": "HTTP parameter discovery" },
-    { "name": "wafw00f", "cmd": "wafw00f", "description": "WAF detection" },
-    { "name": "gopherus", "cmd": "gopherus3", "description": "SSRF exploitation via Gopher" },
-    { "name": "droopescan", "cmd": "droopescan", "description": "Drupal/CMS scanner" },
-    { "name": "cmsmap", "cmd": "cmsmap", "description": "CMS exploitation" },
-    { "name": "ssrfmap", "cmd": "ssrfmap", "description": "SSRF exploitation framework" },
-    { "name": "jwt-tool", "cmd": "jwt-tool", "description": "JWT manipulation and attacks" },
-    { "name": "xsstrike", "cmd": "xsstrike", "description": "XSS detection and exploitation" },
-    { "name": "feroxbuster", "cmd": "feroxbuster", "description": "Fast content discovery (Rust)" },
-    { "name": "testssl.sh", "cmd": "testssl.sh", "description": "TLS/SSL configuration testing" },
-    { "name": "nuclei", "cmd": "nuclei", "description": "Template-based vulnerability scanner" },
-    { "name": "httpx", "cmd": "httpx", "description": "HTTP probe and technology fingerprinting" },
-    { "name": "subfinder", "cmd": "subfinder", "description": "Passive subdomain enumeration" },
-    { "name": "katana", "cmd": "katana", "description": "Web crawler (ProjectDiscovery)" },
-    { "name": "ffuf", "cmd": "ffuf", "description": "Fast web fuzzer" },
-    { "name": "dirsearch", "cmd": "dirsearch", "description": "Directory brute-force" },
-    { "name": "whatweb", "cmd": "whatweb", "description": "Web technology fingerprinting" },
-    { "name": "hakrawler", "cmd": "hakrawler", "description": "Web crawler for endpoint discovery" },
-    { "name": "gau", "cmd": "gau", "description": "Get All URLs (Wayback, Common Crawl)" },
-    { "name": "waybackurls", "cmd": "waybackurls", "description": "Fetch URLs from Wayback Machine" },
-    { "name": "commix", "cmd": "commix", "description": "OS command injection exploitation" },
-    { "name": "tplmap", "cmd": "tplmap", "description": "Server-Side Template Injection" },
-    { "name": "nosqlmap", "cmd": "nosqlmap", "description": "NoSQL injection exploitation" },
-    { "name": "graphqlmap", "cmd": "graphqlmap", "description": "GraphQL exploitation" },
-    { "name": "corsy", "cmd": "corsy", "description": "CORS misconfiguration scanner" },
-    { "name": "crlfuzz", "cmd": "crlfuzz", "description": "CRLF injection testing" },
-    { "name": "mitmproxy", "cmd": "mitmproxy", "description": "HTTP/HTTPS interception proxy" },
-    { "name": "kiterunner", "cmd": "kr", "description": "API endpoint discovery" },
-    { "name": "httpie", "cmd": "http", "description": "User-friendly HTTP client" },
-    { "name": "caido", "cmd": "caido", "description": "Web security desktop toolkit" },
-    { "name": "caido-cli", "cmd": "caido-cli", "description": "Caido command-line interface" }
-  ],
-  "mod_network": [
-    { "name": "nmap", "cmd": "nmap", "description": "Network scanner" },
-    { "name": "netcat", "cmd": "nc", "description": "Network utility (OpenBSD)" },
-    { "name": "socat", "cmd": "socat", "description": "Multipurpose network relay" },
-    { "name": "wireshark-cli", "cmd": "tshark", "description": "Network protocol analyzer (CLI)" },
-    { "name": "fping", "cmd": "fping", "description": "Fast ICMP host discovery" },
-    { "name": "zone-dnsenum", "cmd": "zone-dnsenum", "description": "DNS zone enumeration and transfer" }
-  ],
-  "mod_credential": [
-    { "name": "pypykatz", "cmd": "pypykatz", "description": "LSASS minidump parser (Python)" },
-    { "name": "binwalk", "cmd": "binwalk", "description": "Binary analysis / extraction" },
-    { "name": "john", "cmd": "john", "description": "Password cracker (John the Ripper)" },
-    { "name": "hashcat", "cmd": "hashcat", "description": "GPU password cracker" }
-  ],
-  "mod_pwn": [
-    { "name": "radare2", "cmd": "r2", "description": "Reverse engineering framework" },
-    { "name": "strace", "cmd": "strace", "description": "System call tracer" },
-    { "name": "ltrace", "cmd": "ltrace", "description": "Library call tracer" },
-    { "name": "cmake", "cmd": "cmake", "description": "Build system generator" },
-    { "name": "pwntools", "cmd": "pwn", "description": "CTF/exploit development library" },
-    { "name": "ROPgadget", "cmd": "ROPgadget", "description": "ROP gadget finder" },
-    { "name": "pwndbg", "cmd": "pwndbg", "description": "GDB plugin for exploit dev" },
-    { "name": "one_gadget", "cmd": "one_gadget", "description": "One-gadget RCE finder for libc" },
-    { "name": "seccomp-tools", "cmd": "seccomp-tools", "description": "Seccomp filter analyzer" },
-    { "name": "checksec", "cmd": "checksec", "description": "Binary security property checker" }
-  ],
-  "mod_c2": [
-    { "name": "metasploit", "cmd": "msfconsole", "description": "Exploitation framework" },
-    { "name": "sliver", "cmd": "sliver-server", "description": "C2 framework" }
-  ],
-  "mod_misc": [
-    { "name": "searchsploit", "cmd": "searchsploit", "description": "Exploit database search" },
-    { "name": "CyberChef", "cmd": null, "description": "Data transformation toolkit (offline)", "check_path": "/opt/tools/CyberChef" }
-  ],
-  "mod_reverse": [
-    { "name": "ghidra", "cmd": "ghidra", "description": "NSA reverse engineering suite" },
-    { "name": "angr", "cmd": "angr", "description": "Symbolic execution and binary analysis" },
-    { "name": "pycdc", "cmd": "pycdc", "description": "Python bytecode decompiler" },
-    { "name": "uncompyle6", "cmd": "uncompyle6", "description": "Python 2/3 bytecode decompiler" }
-  ],
-  "mod_crypto": [
-    { "name": "RsaCtfTool", "cmd": "RsaCtfTool", "description": "RSA attack automation" },
-    { "name": "xortool", "cmd": "xortool", "description": "XOR cipher analysis" },
-    { "name": "z3-solver", "cmd": "z3-solver", "description": "SMT constraint solver" },
-    { "name": "pycryptodome", "cmd": "pycryptodome", "description": "Python crypto library" },
-    { "name": "hashid", "cmd": "hashid", "description": "Hash type identifier" }
-  ],
-  "mod_forensics": [
-    { "name": "volatility3", "cmd": "vol", "description": "Memory forensics framework" },
-    { "name": "foremost", "cmd": "foremost", "description": "File carving tool" },
-    { "name": "exiftool", "cmd": "exiftool", "description": "Metadata extraction" },
-    { "name": "steghide", "cmd": "steghide", "description": "JPEG/BMP steganography" },
-    { "name": "zsteg", "cmd": "zsteg", "description": "PNG/BMP steganography detector" },
-    { "name": "stegseek", "cmd": "stegseek", "description": "Steghide brute-forcer" },
-    { "name": "openstego", "cmd": "openstego", "description": "Steganography tool" }
-  ],
-  "mod_ctf": [
-    { "name": "pwntools", "cmd": "pwn", "description": "Exploit development toolkit" },
-    { "name": "ROPgadget", "cmd": "ROPgadget", "description": "ROP gadget finder" },
-    { "name": "radare2", "cmd": "r2", "description": "Reverse engineering framework" },
-    { "name": "strace", "cmd": "strace", "description": "System call tracer" },
-    { "name": "ltrace", "cmd": "ltrace", "description": "Library call tracer" },
-    { "name": "pwndbg", "cmd": "pwndbg", "description": "GDB plugin for exploit dev" },
-    { "name": "one_gadget", "cmd": "one_gadget", "description": "One-gadget RCE finder for libc" },
-    { "name": "seccomp-tools", "cmd": "seccomp-tools", "description": "Seccomp filter analyzer" },
-    { "name": "checksec", "cmd": "checksec", "description": "Binary security property checker" },
-    { "name": "ghidra", "cmd": "ghidra", "description": "NSA reverse engineering suite" },
-    { "name": "angr", "cmd": "angr", "description": "Symbolic execution and binary analysis" },
-    { "name": "pycdc", "cmd": "pycdc", "description": "Python bytecode decompiler" },
-    { "name": "uncompyle6", "cmd": "uncompyle6", "description": "Python 2/3 bytecode decompiler" },
-    { "name": "RsaCtfTool", "cmd": "RsaCtfTool", "description": "RSA attack automation" },
-    { "name": "xortool", "cmd": "xortool", "description": "XOR cipher analysis" },
-    { "name": "z3-solver", "cmd": "z3-solver", "description": "SMT constraint solver" },
-    { "name": "hashid", "cmd": "hashid", "description": "Hash type identifier" },
-    { "name": "volatility3", "cmd": "vol", "description": "Memory forensics framework" },
-    { "name": "foremost", "cmd": "foremost", "description": "File carving tool" },
-    { "name": "binwalk", "cmd": "binwalk", "description": "Binary analysis and extraction" },
-    { "name": "exiftool", "cmd": "exiftool", "description": "Metadata extraction" },
-    { "name": "steghide", "cmd": "steghide", "description": "JPEG/BMP steganography" },
-    { "name": "zsteg", "cmd": "zsteg", "description": "PNG/BMP steganography detector" },
-    { "name": "stegseek", "cmd": "stegseek", "description": "Steghide brute-forcer" },
-    { "name": "sqlmap", "cmd": "sqlmap", "description": "SQL injection automation" },
-    { "name": "ffuf", "cmd": "ffuf", "description": "Fast web fuzzer" },
-    { "name": "gobuster", "cmd": "gobuster", "description": "Directory/subdomain brute-force" },
-    { "name": "feroxbuster", "cmd": "feroxbuster", "description": "Fast content discovery (Rust)" },
-    { "name": "nikto", "cmd": "nikto", "description": "Web server vulnerability scanner" },
-    { "name": "jwt-tool", "cmd": "jwt-tool", "description": "JWT manipulation and attacks" },
-    { "name": "nuclei", "cmd": "nuclei", "description": "Template-based vulnerability scanner" },
-    { "name": "nmap", "cmd": "nmap", "description": "Network scanner" },
-    { "name": "netcat", "cmd": "nc", "description": "Network utility (OpenBSD)" },
-    { "name": "socat", "cmd": "socat", "description": "Multipurpose network relay" },
-    { "name": "wireshark-cli", "cmd": "tshark", "description": "Network protocol analyzer (CLI)" },
-    { "name": "john", "cmd": "john", "description": "Password cracker (John the Ripper)" },
-    { "name": "hashcat", "cmd": "hashcat", "description": "Password cracker" },
-    { "name": "searchsploit", "cmd": "searchsploit", "description": "Exploit database search" },
-    { "name": "CyberChef", "cmd": null, "description": "Data transformation toolkit (offline)", "check_path": "/opt/tools/CyberChef" }
-  ],
-  "mod_wordlists": [
-    { "name": "seclists", "cmd": null, "description": "Security wordlists collection", "check_path": "/opt/lists/seclists" },
-    { "name": "rockyou", "cmd": null, "description": "Rockyou password list (extracted from seclists)", "check_path": "/opt/lists/rockyou.txt" }
-  ]
+    "core_tools": [
+        {
+            "name": "vim",
+            "cmd": "vim",
+            "description": "Text editor"
+        },
+        {
+            "name": "nano",
+            "cmd": "nano",
+            "description": "Text editor"
+        },
+        {
+            "name": "neovim",
+            "cmd": "nvim",
+            "description": "Text editor"
+        },
+        {
+            "name": "tmux",
+            "cmd": "tmux",
+            "description": "Terminal multiplexer"
+        },
+        {
+            "name": "fzf",
+            "cmd": "fzf",
+            "description": "Fuzzy finder"
+        },
+        {
+            "name": "gdb",
+            "cmd": "gdb",
+            "description": "GNU debugger"
+        },
+        {
+            "name": "asciinema",
+            "cmd": "asciinema",
+            "description": "Terminal recorder"
+        },
+        {
+            "name": "whois",
+            "cmd": "whois",
+            "description": "WHOIS lookup"
+        },
+        {
+            "name": "nihil-history",
+            "cmd": "nhi",
+            "description": "Pentest engagement knowledge manager"
+        },
+        {
+            "name": "zoxide",
+            "cmd": "zoxide",
+            "description": "Smart directory navigation (z)"
+        }
+    ],
+    "mod_ad": [
+        {
+            "name": "bloodhound",
+            "cmd": "bloodhound-python",
+            "description": "AD attack path visualization (ingestor)"
+        },
+        {
+            "name": "bloodhound-ce-python",
+            "cmd": "bloodhound-ce-python",
+            "description": "BloodHound CE Python ingestor"
+        },
+        {
+            "name": "bloodhound-ce",
+            "cmd": "bloodhound-ce",
+            "description": "BloodHound CE desktop client"
+        },
+        {
+            "name": "ldapdomaindump",
+            "cmd": "ldapdomaindump",
+            "description": "LDAP domain information dumper"
+        },
+        {
+            "name": "adidnsdump",
+            "cmd": "adidnsdump",
+            "description": "AD integrated DNS dumper"
+        },
+        {
+            "name": "certipy",
+            "cmd": "certipy",
+            "description": "ADCS enumeration and exploitation"
+        },
+        {
+            "name": "bloodyad",
+            "cmd": "bloodyAD",
+            "description": "AD privilege escalation framework"
+        },
+        {
+            "name": "evil-winrm-py",
+            "cmd": "evil-winrm-py",
+            "description": "WinRM shell (Python)"
+        },
+        {
+            "name": "netexec",
+            "cmd": "netexec",
+            "description": "SMB/LDAP/WinRM/SSH exploitation framework"
+        },
+        {
+            "name": "impacket",
+            "cmd": "secretsdump.py",
+            "description": "Windows protocol library (Fortra)"
+        },
+        {
+            "name": "Get-GPPPassword",
+            "cmd": "Get-GPPPassword.py",
+            "description": "Extract plaintext credentials from GPP (impacket)"
+        },
+        {
+            "name": "mitm6",
+            "cmd": "mitm6",
+            "description": "DHCPv6 spoofing for NTLM relay"
+        },
+        {
+            "name": "aclpwn",
+            "cmd": "aclpwn",
+            "description": "AD ACL exploitation"
+        },
+        {
+            "name": "abuseACL",
+            "cmd": "abuseACL",
+            "description": "AD ACL abuse and privilege escalation"
+        },
+        {
+            "name": "lsassy",
+            "cmd": "lsassy",
+            "description": "Remote LSASS credential dumper"
+        },
+        {
+            "name": "donpapi",
+            "cmd": "DonPAPI",
+            "description": "DPAPI credential extraction"
+        },
+        {
+            "name": "coercer",
+            "cmd": "coercer",
+            "description": "NTLM authentication coercion"
+        },
+        {
+            "name": "pywhisker",
+            "cmd": "pywhisker",
+            "description": "Shadow credentials manipulation"
+        },
+        {
+            "name": "enum4linux-ng",
+            "cmd": "enum4linux-ng",
+            "description": "SMB/RPC/LDAP enumeration"
+        },
+        {
+            "name": "smbmap",
+            "cmd": "smbmap",
+            "description": "SMB share enumeration"
+        },
+        {
+            "name": "smbclientng",
+            "cmd": "smbclientng",
+            "description": "Interactive SMB client with modern UX"
+        },
+        {
+            "name": "sprayhound",
+            "cmd": "sprayhound",
+            "description": "Password spraying with BloodHound"
+        },
+        {
+            "name": "ldapsearch-ad",
+            "cmd": "ldapsearch-ad.py",
+            "description": "LDAP enumeration wrapper for AD"
+        },
+        {
+            "name": "pywerview",
+            "cmd": "pywerview",
+            "description": "Python port of PowerView"
+        },
+        {
+            "name": "masky",
+            "cmd": "masky",
+            "description": "ADCS-based credential extraction"
+        },
+        {
+            "name": "manspider",
+            "cmd": "manspider",
+            "description": "Search sensitive files across SMB shares"
+        },
+        {
+            "name": "pre2k",
+            "cmd": "pre2k",
+            "description": "Pre-Windows 2000 computer account exploitation"
+        },
+        {
+            "name": "responder",
+            "cmd": "responder",
+            "description": "LLMNR/NBT-NS/mDNS poisoner"
+        },
+        {
+            "name": "rusthound-ce",
+            "cmd": "rusthound-ce",
+            "description": "BloodHound CE collector (Rust)"
+        },
+        {
+            "name": "rusthound",
+            "cmd": "rusthound",
+            "description": "BloodHound legacy collector (Rust)"
+        },
+        {
+            "name": "bloodbash",
+            "cmd": "bloodbash",
+            "description": "BloodHound-based offensive automation"
+        },
+        {
+            "name": "kerbrute",
+            "cmd": "kerbrute",
+            "description": "Kerberos brute-force / user enumeration"
+        },
+        {
+            "name": "windapsearch",
+            "cmd": "windapsearch",
+            "description": "LDAP enumeration (Go)"
+        },
+        {
+            "name": "krbrelayx",
+            "cmd": "krbrelayx",
+            "description": "Kerberos relay attacks"
+        },
+        {
+            "name": "gmsadumper",
+            "cmd": "gmsadumper",
+            "description": "gMSA credential extraction"
+        },
+        {
+            "name": "FindUncommonShares",
+            "cmd": "FindUncommonShares",
+            "description": "Discover non-standard SMB shares"
+        },
+        {
+            "name": "targetedKerberoast",
+            "cmd": "targetedKerberoast",
+            "description": "Kerberoast via ACL abuse"
+        },
+        {
+            "name": "PKINITtools",
+            "cmd": "gettgtpkinit",
+            "description": "PKINIT exploitation (shadow creds, UnPAC-the-hash)"
+        },
+        {
+            "name": "noPac",
+            "cmd": "noPac",
+            "description": "CVE-2021-42278/42287 Sam-Account-Name spoofing"
+        },
+        {
+            "name": "PetitPotam",
+            "cmd": "PetitPotam",
+            "description": "NTLM relay via EFS (CVE-2021-36942)"
+        },
+        {
+            "name": "zerologon",
+            "cmd": "cve-2020-1472-exploit",
+            "description": "CVE-2020-1472 Netlogon exploit"
+        },
+        {
+            "name": "ShadowCoerce",
+            "cmd": "ShadowCoerce",
+            "description": "Coercion via MS-FSRVP"
+        },
+        {
+            "name": "DFSCoerce",
+            "cmd": "DFSCoerce",
+            "description": "Coercion via MS-DFSNM"
+        },
+        {
+            "name": "openldap",
+            "cmd": "ldapsearch",
+            "description": "LDAP command-line utilities"
+        },
+        {
+            "name": "smbclient",
+            "cmd": "smbclient",
+            "description": "SMB command-line client"
+        },
+        {
+            "name": "powershell",
+            "cmd": "pwsh",
+            "description": "PowerShell 7"
+        }
+    ],
+    "mod_web": [
+        {
+            "name": "sqlmap",
+            "cmd": "sqlmap",
+            "description": "SQL injection testing"
+        },
+        {
+            "name": "gobuster",
+            "cmd": "gobuster",
+            "description": "Directory/subdomain brute-force"
+        },
+        {
+            "name": "nikto",
+            "cmd": "nikto",
+            "description": "Web server vulnerability scanner"
+        },
+        {
+            "name": "wfuzz",
+            "cmd": "wfuzz",
+            "description": "Web fuzzer"
+        },
+        {
+            "name": "arjun",
+            "cmd": "arjun",
+            "description": "HTTP parameter discovery"
+        },
+        {
+            "name": "wafw00f",
+            "cmd": "wafw00f",
+            "description": "WAF detection"
+        },
+        {
+            "name": "gopherus",
+            "cmd": "gopherus3",
+            "description": "SSRF exploitation via Gopher"
+        },
+        {
+            "name": "droopescan",
+            "cmd": "droopescan",
+            "description": "Drupal/CMS scanner"
+        },
+        {
+            "name": "cmsmap",
+            "cmd": "cmsmap",
+            "description": "CMS exploitation"
+        },
+        {
+            "name": "ssrfmap",
+            "cmd": "ssrfmap",
+            "description": "SSRF exploitation framework"
+        },
+        {
+            "name": "jwt-tool",
+            "cmd": "jwt-tool",
+            "description": "JWT manipulation and attacks"
+        },
+        {
+            "name": "xsstrike",
+            "cmd": "xsstrike",
+            "description": "XSS detection and exploitation"
+        },
+        {
+            "name": "feroxbuster",
+            "cmd": "feroxbuster",
+            "description": "Fast content discovery (Rust)"
+        },
+        {
+            "name": "testssl.sh",
+            "cmd": "testssl.sh",
+            "description": "TLS/SSL configuration testing"
+        },
+        {
+            "name": "nuclei",
+            "cmd": "nuclei",
+            "description": "Template-based vulnerability scanner"
+        },
+        {
+            "name": "httpx",
+            "cmd": "httpx",
+            "description": "HTTP probe and technology fingerprinting"
+        },
+        {
+            "name": "subfinder",
+            "cmd": "subfinder",
+            "description": "Passive subdomain enumeration"
+        },
+        {
+            "name": "katana",
+            "cmd": "katana",
+            "description": "Web crawler (ProjectDiscovery)"
+        },
+        {
+            "name": "ffuf",
+            "cmd": "ffuf",
+            "description": "Fast web fuzzer"
+        },
+        {
+            "name": "dirsearch",
+            "cmd": "dirsearch",
+            "description": "Directory brute-force"
+        },
+        {
+            "name": "whatweb",
+            "cmd": "whatweb",
+            "description": "Web technology fingerprinting"
+        },
+        {
+            "name": "hakrawler",
+            "cmd": "hakrawler",
+            "description": "Web crawler for endpoint discovery"
+        },
+        {
+            "name": "gau",
+            "cmd": "gau",
+            "description": "Get All URLs (Wayback, Common Crawl)"
+        },
+        {
+            "name": "waybackurls",
+            "cmd": "waybackurls",
+            "description": "Fetch URLs from Wayback Machine"
+        },
+        {
+            "name": "commix",
+            "cmd": "commix",
+            "description": "OS command injection exploitation"
+        },
+        {
+            "name": "tplmap",
+            "cmd": "tplmap",
+            "description": "Server-Side Template Injection"
+        },
+        {
+            "name": "nosqlmap",
+            "cmd": "nosqlmap",
+            "description": "NoSQL injection exploitation"
+        },
+        {
+            "name": "graphqlmap",
+            "cmd": "graphqlmap",
+            "description": "GraphQL exploitation"
+        },
+        {
+            "name": "corsy",
+            "cmd": "corsy",
+            "description": "CORS misconfiguration scanner"
+        },
+        {
+            "name": "crlfuzz",
+            "cmd": "crlfuzz",
+            "description": "CRLF injection testing"
+        },
+        {
+            "name": "mitmproxy",
+            "cmd": "mitmproxy",
+            "description": "HTTP/HTTPS interception proxy"
+        },
+        {
+            "name": "kiterunner",
+            "cmd": "kr",
+            "description": "API endpoint discovery"
+        },
+        {
+            "name": "httpie",
+            "cmd": "http",
+            "description": "User-friendly HTTP client"
+        },
+        {
+            "name": "caido",
+            "cmd": "caido",
+            "description": "Web security desktop toolkit"
+        },
+        {
+            "name": "caido-cli",
+            "cmd": "caido-cli",
+            "description": "Caido command-line interface"
+        }
+    ],
+    "mod_network": [
+        {
+            "name": "nmap",
+            "cmd": "nmap",
+            "description": "Network scanner"
+        },
+        {
+            "name": "netcat",
+            "cmd": "nc",
+            "description": "Network utility (OpenBSD)"
+        },
+        {
+            "name": "socat",
+            "cmd": "socat",
+            "description": "Multipurpose network relay"
+        },
+        {
+            "name": "wireshark-cli",
+            "cmd": "tshark",
+            "description": "Network protocol analyzer (CLI)"
+        },
+        {
+            "name": "fping",
+            "cmd": "fping",
+            "description": "Fast ICMP host discovery"
+        },
+        {
+            "name": "zone-dnsenum",
+            "cmd": "zone-dnsenum",
+            "description": "DNS zone enumeration and transfer"
+        }
+    ],
+    "mod_credential": [
+        {
+            "name": "pypykatz",
+            "cmd": "pypykatz",
+            "description": "LSASS minidump parser (Python)"
+        },
+        {
+            "name": "binwalk",
+            "cmd": "binwalk",
+            "description": "Binary analysis / extraction"
+        },
+        {
+            "name": "john",
+            "cmd": "john",
+            "description": "Password cracker (John the Ripper)"
+        },
+        {
+            "name": "hashcat",
+            "cmd": "hashcat",
+            "description": "GPU password cracker"
+        }
+    ],
+    "mod_pwn": [
+        {
+            "name": "radare2",
+            "cmd": "r2",
+            "description": "Reverse engineering framework"
+        },
+        {
+            "name": "strace",
+            "cmd": "strace",
+            "description": "System call tracer"
+        },
+        {
+            "name": "ltrace",
+            "cmd": "ltrace",
+            "description": "Library call tracer"
+        },
+        {
+            "name": "cmake",
+            "cmd": "cmake",
+            "description": "Build system generator"
+        },
+        {
+            "name": "pwntools",
+            "cmd": "pwn",
+            "description": "CTF/exploit development library"
+        },
+        {
+            "name": "ROPgadget",
+            "cmd": "ROPgadget",
+            "description": "ROP gadget finder"
+        },
+        {
+            "name": "pwndbg",
+            "cmd": "pwndbg",
+            "description": "GDB plugin for exploit dev"
+        },
+        {
+            "name": "one_gadget",
+            "cmd": "one_gadget",
+            "description": "One-gadget RCE finder for libc"
+        },
+        {
+            "name": "seccomp-tools",
+            "cmd": "seccomp-tools",
+            "description": "Seccomp filter analyzer"
+        },
+        {
+            "name": "checksec",
+            "cmd": "checksec",
+            "description": "Binary security property checker"
+        }
+    ],
+    "mod_c2": [
+        {
+            "name": "metasploit",
+            "cmd": "msfconsole",
+            "description": "Exploitation framework"
+        },
+        {
+            "name": "sliver",
+            "cmd": "sliver-server",
+            "description": "C2 framework"
+        }
+    ],
+    "mod_misc": [
+        {
+            "name": "searchsploit",
+            "cmd": "searchsploit",
+            "description": "Exploit database search"
+        },
+        {
+            "name": "CyberChef",
+            "cmd": null,
+            "description": "Data transformation toolkit (offline)",
+            "check_path": "/opt/tools/CyberChef"
+        }
+    ],
+    "mod_reverse": [
+        {
+            "name": "ghidra",
+            "cmd": "ghidra",
+            "description": "NSA reverse engineering suite"
+        },
+        {
+            "name": "angr",
+            "cmd": "angr",
+            "description": "Symbolic execution and binary analysis"
+        },
+        {
+            "name": "pycdc",
+            "cmd": "pycdc",
+            "description": "Python bytecode decompiler"
+        },
+        {
+            "name": "uncompyle6",
+            "cmd": "uncompyle6",
+            "description": "Python 2/3 bytecode decompiler"
+        }
+    ],
+    "mod_crypto": [
+        {
+            "name": "RsaCtfTool",
+            "cmd": "RsaCtfTool",
+            "description": "RSA attack automation"
+        },
+        {
+            "name": "xortool",
+            "cmd": "xortool",
+            "description": "XOR cipher analysis"
+        },
+        {
+            "name": "z3-solver",
+            "cmd": "z3-solver",
+            "description": "SMT constraint solver"
+        },
+        {
+            "name": "pycryptodome",
+            "cmd": "pycryptodome",
+            "description": "Python crypto library"
+        },
+        {
+            "name": "hashid",
+            "cmd": "hashid",
+            "description": "Hash type identifier"
+        }
+    ],
+    "mod_forensics": [
+        {
+            "name": "volatility3",
+            "cmd": "vol",
+            "description": "Memory forensics framework"
+        },
+        {
+            "name": "foremost",
+            "cmd": "foremost",
+            "description": "File carving tool"
+        },
+        {
+            "name": "exiftool",
+            "cmd": "exiftool",
+            "description": "Metadata extraction"
+        },
+        {
+            "name": "steghide",
+            "cmd": "steghide",
+            "description": "JPEG/BMP steganography"
+        },
+        {
+            "name": "zsteg",
+            "cmd": "zsteg",
+            "description": "PNG/BMP steganography detector"
+        },
+        {
+            "name": "stegseek",
+            "cmd": "stegseek",
+            "description": "Steghide brute-forcer"
+        },
+        {
+            "name": "openstego",
+            "cmd": "openstego",
+            "description": "Steganography tool"
+        }
+    ],
+    "mod_wordlists": [
+        {
+            "name": "seclists",
+            "cmd": null,
+            "description": "Security wordlists collection",
+            "check_path": "/opt/lists/seclists"
+        },
+        {
+            "name": "rockyou",
+            "cmd": null,
+            "description": "Rockyou password list (extracted from seclists)",
+            "check_path": "/opt/lists/rockyou.txt"
+        }
+    ],
+    "mod_blueteam": [
+        {
+            "name": "chainsaw",
+            "cmd": "chainsaw",
+            "description": "Windows event log threat hunting"
+        },
+        {
+            "name": "hayabusa",
+            "cmd": "hayabusa",
+            "description": "Windows DFIR timeline generator"
+        },
+        {
+            "name": "sigma-cli",
+            "cmd": "sigma",
+            "description": "Sigma detection rule CLI"
+        },
+        {
+            "name": "yara",
+            "cmd": "yara",
+            "description": "Malware pattern matching"
+        },
+        {
+            "name": "capa",
+            "cmd": "capa",
+            "description": "FLARE malware capability detection"
+        },
+        {
+            "name": "loki",
+            "cmd": "loki",
+            "description": "IOC scanner"
+        },
+        {
+            "name": "sleuthkit",
+            "cmd": "fls",
+            "description": "Disk forensics toolkit (The Sleuth Kit)"
+        },
+        {
+            "name": "plaso",
+            "cmd": "log2timeline",
+            "description": "Forensic timeline (log2timeline)"
+        },
+        {
+            "name": "suricata",
+            "cmd": "suricata",
+            "description": "Network IDS/IPS/NSM engine"
+        }
+    ]
 }

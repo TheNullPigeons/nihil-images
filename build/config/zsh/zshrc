@@ -143,3 +143,6 @@ setopt SHARE_HISTORY
 
 #FZF
 source /usr/share/fzf/key-bindings.zsh
+
+# zoxide (smarter cd)
+eval "$(zoxide init zsh)"
