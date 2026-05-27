@@ -238,7 +238,7 @@ function install_gpp_decrypt() {
 }
 
 function install_keepwn() {
-    install_pipx_tool "keepwn" "keepwn"
+    install_pipx_tool_git "keepwn" "https://github.com/Orange-Cyberdefense/KeePwn"
 }
 
 function install_krbjack() {
