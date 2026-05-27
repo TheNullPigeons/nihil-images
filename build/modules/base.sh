@@ -41,6 +41,7 @@ function package_base() {
     libpcap \
     libfaketime \
     ntp \
+    tree \
     && \
     pacman -Syu --noconfirm && \
     pacman -Scc --noconfirm

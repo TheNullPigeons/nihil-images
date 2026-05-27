@@ -93,6 +93,11 @@
             "description": "WinRM shell (Python)"
         },
         {
+            "name": "evil-winrm",
+            "cmd": "evil-winrm",
+            "description": "WinRM shell (Ruby, original)"
+        },
+        {
             "name": "netexec",
             "cmd": "netexec",
             "description": "SMB/LDAP/WinRM/SSH exploitation framework"

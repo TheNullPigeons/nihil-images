@@ -1,6 +1,8 @@
 penelope 8888
 penelope -a
 penelope -i $INTERFACE 8888
+penelope -i "$INTERFACE" -p "$PORT"
+penelope -p "$PORT"
 
 penelope --port 8888 --ssl
 penelope --port 8888 --no-upgrade

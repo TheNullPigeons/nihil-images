@@ -1,0 +1,5 @@
+evil-winrm -i "$TARGET" -u "$USER" -p "$PASSWORD"
+evil-winrm -i "$TARGET" -u "$USER" -H "$NT_HASH"
+evil-winrm -i "$TARGET" -u "$USER" -p "$PASSWORD" -S
+evil-winrm -i "$TARGET" -u "$USER" -p "$PASSWORD" -c "$CERT" -k "$KEY"
+evil-winrm -i "$TARGET" -u "$USER" -k --realm "$DOMAIN"
