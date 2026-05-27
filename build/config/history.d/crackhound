@@ -1,0 +1,1 @@
+crackhound --bloodhound-url bolt://"$NEO4J_HOST":7687 --bloodhound-user "$NEO4J_USER" --bloodhound-password "$NEO4J_PASS" --potfile "$POTFILE"

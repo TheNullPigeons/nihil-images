@@ -1,0 +1,3 @@
+netdiscover -r "$CIDR"
+netdiscover -i "$INTERFACE"
+netdiscover -r "$CIDR" -p

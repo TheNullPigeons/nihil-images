@@ -1,0 +1,4 @@
+tcpdump -i "$INTERFACE"
+tcpdump -i "$INTERFACE" -w "$OUTPUT".pcap
+tcpdump -i "$INTERFACE" host "$TARGET"
+tcpdump -i "$INTERFACE" port "$PORT" -w "$OUTPUT".pcap

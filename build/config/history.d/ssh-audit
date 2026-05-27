@@ -1,0 +1,3 @@
+ssh-audit "$TARGET"
+ssh-audit "$TARGET":"$PORT"
+ssh-audit -l warn "$TARGET"

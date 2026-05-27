@@ -1,0 +1,4 @@
+xfreerdp /v:"$TARGET" /u:"$USER" /p:"$PASSWORD"
+xfreerdp /v:"$TARGET" /u:"$USER" /p:"$PASSWORD" /cert:ignore /dynamic-resolution
+xfreerdp /v:"$TARGET" /u:"$USER" /pth:"$NT_HASH" /cert:ignore
+xfreerdp /v:"$TARGET" /u:"$USER" /p:"$PASSWORD" /drive:"$LOCAL_PATH",share

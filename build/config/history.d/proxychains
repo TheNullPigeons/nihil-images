@@ -1,0 +1,3 @@
+proxychains nmap -sT -Pn "$TARGET"
+proxychains netexec smb "$TARGET"
+proxychains python3 "$SCRIPT"

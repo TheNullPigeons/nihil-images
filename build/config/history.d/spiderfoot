@@ -1,0 +1,2 @@
+spiderfoot -s "$DOMAIN" -m sfp_dns,sfp_portscan_basic -o csv -F "$OUTPUT".csv
+spiderfoot -l 0.0.0.0:5001

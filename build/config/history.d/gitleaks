@@ -1,0 +1,3 @@
+gitleaks detect --source .
+gitleaks detect --source "$REPO_PATH" -v
+gitleaks detect --source . --report-path "$OUTPUT".json
