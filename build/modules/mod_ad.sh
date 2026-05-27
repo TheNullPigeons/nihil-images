@@ -198,7 +198,7 @@ function install_evil_winrm() {
 }
 
 function install_asrepcatcher() {
-    install_git_tool "asrepcatcher" "https://github.com/n00py/ASRepCatcher.git" "ASRepCatcher.py"
+    install_pipx_tool_git "ASRepCatcher" "https://github.com/Yaxxine7/ASRepCatcher"
 }
 
 function install_autobloody() {
@@ -218,7 +218,7 @@ function install_godap() {
 }
 
 function install_goexec() {
-    install_go_tool "github.com/ropnop/goexec@latest"
+    install_go_tool "github.com/FalconOpsLLC/goexec@latest"
 }
 
 function install_goldencopy() {
@@ -234,7 +234,7 @@ function install_gpoddity() {
 }
 
 function install_gpp_decrypt() {
-    install_gem_tool "gpp-decrypt"
+    install_git_tool_venv "gpp-decrypt" "https://github.com/t0thkr1s/gpp-decrypt" "gpp-decrypt.py" "pycryptodome colorama" "yes"
 }
 
 function install_keepwn() {
@@ -242,7 +242,7 @@ function install_keepwn() {
 }
 
 function install_krbjack() {
-    install_go_tool "github.com/almandin/krbjack@latest"
+    install_pipx_tool "krbjack" "krbjack"
 }
 
 function install_ldaprelayscan() {
@@ -254,7 +254,7 @@ function install_ldeep() {
 }
 
 function install_ldapwordlistharvester() {
-    install_pipx_tool_git "LDAPWordlistHarvester" "https://github.com/p0dalirius/LDAPWordlistHarvester.git"
+    install_pipx_tool_git "LDAPWordlistHarvester" "https://github.com/p0dalirius/pyLDAPWordlistHarvester.git"
 }
 
 function install_nbtscan() {
@@ -278,7 +278,7 @@ function install_sccmhunter() {
 }
 
 function install_teamsphisher() {
-    install_pipx_tool_git "teamsphisher" "https://github.com/Octoberfest7/TeamsPhisher.git"
+    install_git_tool_venv "teamsphisher" "https://github.com/Octoberfest7/TeamsPhisher.git" "TeamsPhisher.py" "msal colorama requests" "yes"
 }
 
 function install_netexec() {
