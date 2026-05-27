@@ -440,7 +440,7 @@ function install_joomscan() {
 }
 
 function install_linkfinder() {
-    install_pipx_tool_git "linkfinder" "https://github.com/GerbenJavado/LinkFinder.git"
+    install_git_tool "linkfinder" "https://github.com/GerbenJavado/LinkFinder.git" "linkfinder.py"
 }
 
 function install_naabu() {
