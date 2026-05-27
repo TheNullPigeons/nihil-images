@@ -26,6 +26,7 @@ RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh install_mod_ad && \
     ./entrypoint.sh install_mod_c2 && \
     ./entrypoint.sh install_mod_web && \
+    ./entrypoint.sh install_mod_osint && \
     ./entrypoint.sh install_mod_pwn && \
     ./entrypoint.sh install_mod_network && \
     ./entrypoint.sh install_mod_credential && \
@@ -34,7 +35,7 @@ RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh install_mod_crypto && \
     ./entrypoint.sh install_mod_forensics && \
     ./entrypoint.sh install_mod_wordlists && \
-    ./entrypoint.sh healthcheck core_tools mod_ad mod_web mod_network mod_credential mod_pwn mod_c2 mod_misc mod_reverse mod_crypto mod_forensics mod_wordlists && \
+    ./entrypoint.sh healthcheck core_tools mod_ad mod_web mod_osint mod_network mod_credential mod_pwn mod_c2 mod_misc mod_reverse mod_crypto mod_forensics mod_wordlists && \
     ./entrypoint.sh post_install
 
 WORKDIR /workspace
