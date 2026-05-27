@@ -13,6 +13,7 @@ nihil::import modules/core_tools
 # Modules par domaine (chacun déclare ses propres dépendances de registres)
 nihil::import modules/mod_ad
 nihil::import modules/mod_web
+nihil::import modules/mod_osint
 nihil::import modules/mod_network
 nihil::import modules/mod_credential
 nihil::import modules/mod_pwn
