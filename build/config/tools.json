@@ -311,6 +311,111 @@
             "name": "gofenrir",
             "cmd": "gf",
             "description": "Fast AD user/group enumeration (Go)"
+        },
+        {
+            "name": "asrepcatcher",
+            "cmd": "asrepcatcher",
+            "description": "AS-REP Roasting listener"
+        },
+        {
+            "name": "autobloody",
+            "cmd": "autobloody",
+            "description": "BloodyAD automation wrapper"
+        },
+        {
+            "name": "certsync",
+            "cmd": "certsync",
+            "description": "Sync ADCS certs for PKINIT"
+        },
+        {
+            "name": "crackhound",
+            "cmd": "crackhound",
+            "description": "BloodHound + hashcat path cracking"
+        },
+        {
+            "name": "godap",
+            "cmd": "godap",
+            "description": "Interactive LDAP client (TUI)"
+        },
+        {
+            "name": "goexec",
+            "cmd": "goexec",
+            "description": "Remote code execution via SMB/WMI"
+        },
+        {
+            "name": "goldencopy",
+            "cmd": "goldencopy",
+            "description": "Copy/forge Kerberos tickets"
+        },
+        {
+            "name": "gosecretsdump",
+            "cmd": "gosecretsdump",
+            "description": "Pure Go secretsdump"
+        },
+        {
+            "name": "GPOddity",
+            "cmd": "gpoddity",
+            "description": "GPO abuse automation"
+        },
+        {
+            "name": "gpp-decrypt",
+            "cmd": "gpp-decrypt",
+            "description": "Decrypt GPP passwords"
+        },
+        {
+            "name": "keepwn",
+            "cmd": "keepwn",
+            "description": "KeePass trigger attack"
+        },
+        {
+            "name": "krbjack",
+            "cmd": "krbjack",
+            "description": "Kerberos pre-auth hijack"
+        },
+        {
+            "name": "ldaprelayscan",
+            "cmd": "ldaprelayscan",
+            "description": "LDAP relay attack scanner"
+        },
+        {
+            "name": "ldeep",
+            "cmd": "ldeep",
+            "description": "Deep LDAP enumeration"
+        },
+        {
+            "name": "LDAPWordlistHarvester",
+            "cmd": "LDAPWordlistHarvester",
+            "description": "Build wordlists from LDAP"
+        },
+        {
+            "name": "nbtscan",
+            "cmd": "nbtscan",
+            "description": "NBT-NS scanner"
+        },
+        {
+            "name": "PassTheCert",
+            "cmd": "passthecert",
+            "description": "Pass-the-cert LDAP/LDAPS auth"
+        },
+        {
+            "name": "PCredz",
+            "cmd": "PCredz",
+            "description": "Network credential capture"
+        },
+        {
+            "name": "pygpoabuse",
+            "cmd": "pygpoabuse",
+            "description": "GPO immediate task abuse"
+        },
+        {
+            "name": "sccmhunter",
+            "cmd": "sccmhunter",
+            "description": "SCCM attack framework"
+        },
+        {
+            "name": "teamsphisher",
+            "cmd": "teamsphisher",
+            "description": "Teams external phishing"
         }
     ],
     "mod_web": [
@@ -510,14 +615,79 @@
             "description": "Web screenshot and service enumeration tool"
         },
         {
-            "name": "aquatone",
-            "cmd": "aquatone",
-            "description": "Visual inspection of websites across large host lists"
-        },
-        {
             "name": "wpscan",
             "cmd": "wpscan",
             "description": "WordPress vulnerability scanner"
+        },
+        {
+            "name": "bbot",
+            "cmd": "bbot",
+            "description": "Automated recon and subdomain OSINT"
+        },
+        {
+            "name": "byp4xx",
+            "cmd": "byp4xx",
+            "description": "HTTP 40x bypass"
+        },
+        {
+            "name": "git-dumper",
+            "cmd": "git-dumper",
+            "description": "Dump exposed .git directories"
+        },
+        {
+            "name": "gowitness",
+            "cmd": "gowitness",
+            "description": "Web screenshot tool (Go)"
+        },
+        {
+            "name": "httpmethods",
+            "cmd": "httpmethods",
+            "description": "HTTP method enumeration"
+        },
+        {
+            "name": "joomscan",
+            "cmd": "joomscan",
+            "description": "Joomla vulnerability scanner"
+        },
+        {
+            "name": "linkfinder",
+            "cmd": "linkfinder",
+            "description": "Endpoint discovery in JS files"
+        },
+        {
+            "name": "naabu",
+            "cmd": "naabu",
+            "description": "Fast port scanner (ProjectDiscovery)"
+        },
+        {
+            "name": "patator",
+            "cmd": "patator",
+            "description": "Multi-purpose brute-forcer"
+        },
+        {
+            "name": "phpggc",
+            "cmd": "phpggc",
+            "description": "PHP gadget chain generator"
+        },
+        {
+            "name": "smuggler",
+            "cmd": "smuggler",
+            "description": "HTTP request smuggling tester"
+        },
+        {
+            "name": "sslscan",
+            "cmd": "sslscan",
+            "description": "SSL/TLS configuration scanner"
+        },
+        {
+            "name": "xxeinjector",
+            "cmd": "xxeinjector",
+            "description": "XXE injection automation"
+        },
+        {
+            "name": "ysoserial",
+            "cmd": "ysoserial",
+            "description": "Java deserialization exploit payloads"
         }
     ],
     "mod_network": [
@@ -570,6 +740,56 @@
             "name": "ligolo-ng",
             "cmd": "ligolo-ng",
             "description": "Tunneling via TUN interface (proxy)"
+        },
+        {
+            "name": "chisel",
+            "cmd": "chisel",
+            "description": "TCP/UDP tunnel over HTTP"
+        },
+        {
+            "name": "masscan",
+            "cmd": "masscan",
+            "description": "Fast port scanner"
+        },
+        {
+            "name": "netdiscover",
+            "cmd": "netdiscover",
+            "description": "ARP recon tool"
+        },
+        {
+            "name": "nmap-parse-output",
+            "cmd": "nmap-parse-output",
+            "description": "Nmap XML output parser"
+        },
+        {
+            "name": "proxychains",
+            "cmd": "proxychains",
+            "description": "SOCKS/HTTP proxy chain"
+        },
+        {
+            "name": "rustscan",
+            "cmd": "rustscan",
+            "description": "Fast port scanner (Rust)"
+        },
+        {
+            "name": "ssh-audit",
+            "cmd": "ssh-audit",
+            "description": "SSH server configuration audit"
+        },
+        {
+            "name": "sshuttle",
+            "cmd": "sshuttle",
+            "description": "VPN over SSH"
+        },
+        {
+            "name": "tcpdump",
+            "cmd": "tcpdump",
+            "description": "Packet capture"
+        },
+        {
+            "name": "xfreerdp",
+            "cmd": "xfreerdp",
+            "description": "RDP client"
         }
     ],
     "mod_credential": [
@@ -597,6 +817,26 @@
             "name": "haiti",
             "cmd": "haiti",
             "description": "Hash type identifier"
+        },
+        {
+            "name": "fcrackzip",
+            "cmd": "fcrackzip",
+            "description": "ZIP password cracker"
+        },
+        {
+            "name": "hydra",
+            "cmd": "hydra",
+            "description": "Multi-protocol brute-forcer"
+        },
+        {
+            "name": "name-that-hash",
+            "cmd": "nth",
+            "description": "Hash identifier"
+        },
+        {
+            "name": "pdfcrack",
+            "cmd": "pdfcrack",
+            "description": "PDF password cracker"
         }
     ],
     "mod_pwn": [
@@ -704,6 +944,26 @@
             "name": "sqlitebrowser",
             "cmd": "sqlitebrowser",
             "description": "GUI SQLite database browser"
+        },
+        {
+            "name": "keepassxc",
+            "cmd": "keepassxc",
+            "description": "KeePass password manager"
+        },
+        {
+            "name": "rsync",
+            "cmd": "rsync",
+            "description": "File sync utility"
+        },
+        {
+            "name": "wesng",
+            "cmd": "wes",
+            "description": "Windows Exploit Suggester NG"
+        },
+        {
+            "name": "gitleaks",
+            "cmd": "gitleaks",
+            "description": "Git secrets scanner"
         }
     ],
     "mod_reverse": [
@@ -731,6 +991,11 @@
             "name": "pycdas",
             "cmd": "pycdas",
             "description": "Python bytecode disassembler"
+        },
+        {
+            "name": "nasm",
+            "cmd": "nasm",
+            "description": "x86/x64 assembler"
         }
     ],
     "mod_crypto": [
@@ -795,6 +1060,11 @@
             "name": "openstego",
             "cmd": "openstego",
             "description": "Steganography tool"
+        },
+        {
+            "name": "jadx",
+            "cmd": "jadx",
+            "description": "Android/Java decompiler"
         }
     ],
     "mod_wordlists": [
@@ -809,6 +1079,26 @@
             "cmd": null,
             "description": "Rockyou password list (extracted from seclists)",
             "check_path": "/opt/lists/rockyou.txt"
+        },
+        {
+            "name": "cewl",
+            "cmd": "cewl",
+            "description": "Wordlist generator from websites"
+        },
+        {
+            "name": "crunch",
+            "cmd": "crunch",
+            "description": "Wordlist generator"
+        },
+        {
+            "name": "cupp",
+            "cmd": "cupp",
+            "description": "Custom user password profiler"
+        },
+        {
+            "name": "username-anarchy",
+            "cmd": "username-anarchy",
+            "description": "Username generation from names"
         }
     ],
     "mod_blueteam": [
@@ -846,6 +1136,38 @@
             "name": "sleuthkit",
             "cmd": "fls",
             "description": "Disk forensics toolkit (The Sleuth Kit)"
+        }
+    ],
+    "mod_osint": [
+        {
+            "name": "amass",
+            "cmd": "amass",
+            "description": "Subdomain enumeration (OWASP)"
+        },
+        {
+            "name": "recon-ng",
+            "cmd": "recon-ng",
+            "description": "Web recon framework"
+        },
+        {
+            "name": "sherlock",
+            "cmd": "sherlock",
+            "description": "Username OSINT across platforms"
+        },
+        {
+            "name": "spiderfoot",
+            "cmd": "spiderfoot",
+            "description": "Automated OSINT framework"
+        },
+        {
+            "name": "sublist3r",
+            "cmd": "sublist3r",
+            "description": "Subdomain enumeration"
+        },
+        {
+            "name": "theHarvester",
+            "cmd": "theHarvester",
+            "description": "Email and domain OSINT"
         }
     ]
 }
