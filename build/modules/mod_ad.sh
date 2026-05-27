@@ -197,6 +197,90 @@ function install_evil_winrm() {
   install_gem_tool "evil-winrm"
 }
 
+function install_asrepcatcher() {
+    install_git_tool "asrepcatcher" "https://github.com/n00py/ASRepCatcher.git" "ASRepCatcher.py"
+}
+
+function install_autobloody() {
+    install_pipx_tool "autobloody" "autobloody"
+}
+
+function install_certsync() {
+    install_pipx_tool "certsync" "certsync"
+}
+
+function install_crackhound() {
+    install_git_tool "crackhound" "https://github.com/trustedsec/crackhound.git" "crackhound.py"
+}
+
+function install_godap() {
+    install_go_tool "github.com/Macmod/godap/v2/cmd/godap@latest"
+}
+
+function install_goexec() {
+    install_go_tool "github.com/ropnop/goexec@latest"
+}
+
+function install_goldencopy() {
+    install_pipx_tool "goldencopy" "goldencopy"
+}
+
+function install_gosecretsdump() {
+    install_go_tool "github.com/C-Sto/gosecretsdump@latest"
+}
+
+function install_gpoddity() {
+    install_pipx_tool_git "gpoddity" "https://github.com/synacktiv/GPOddity.git"
+}
+
+function install_gpp_decrypt() {
+    install_gem_tool "gpp-decrypt"
+}
+
+function install_keepwn() {
+    install_pipx_tool "keepwn" "keepwn"
+}
+
+function install_krbjack() {
+    install_go_tool "github.com/almandin/krbjack@latest"
+}
+
+function install_ldaprelayscan() {
+    install_git_tool "ldaprelayscan" "https://github.com/zyn3rgy/LdapRelayScan.git" "LdapRelayScan.py"
+}
+
+function install_ldeep() {
+    install_pipx_tool "ldeep" "ldeep"
+}
+
+function install_ldapwordlistharvester() {
+    install_pipx_tool_git "LDAPWordlistHarvester" "https://github.com/p0dalirius/LDAPWordlistHarvester.git"
+}
+
+function install_nbtscan() {
+    install_pacman_tool "nbtscan"
+}
+
+function install_passthecert() {
+    install_git_tool "passthecert" "https://github.com/AlmondOffSec/PassTheCert.git" "Python/passthecert.py"
+}
+
+function install_pcredz() {
+    install_pipx_tool_git "PCredz" "https://github.com/lgandx/PCredz.git"
+}
+
+function install_pygpoabuse() {
+    install_pipx_tool_git "pygpoabuse" "https://github.com/Hackndo/pyGPOAbuse.git"
+}
+
+function install_sccmhunter() {
+    install_pipx_tool_git "sccmhunter" "https://github.com/garrettfoster13/sccmhunter.git"
+}
+
+function install_teamsphisher() {
+    install_pipx_tool_git "teamsphisher" "https://github.com/Octoberfest7/TeamsPhisher.git"
+}
+
 function install_netexec() {
   # Ensure Rust is available (required to build NetExec native extensions)
   if ! command -v rustc >/dev/null 2>&1; then
@@ -400,6 +484,7 @@ function install_mod_ad() {
   install_bloodyad
   install_evil_winrm_py
   install_evil_winrm
+  install_gpp_decrypt
   install_netexec
   install_impacket
   install_bloodbash
@@ -419,6 +504,21 @@ function install_mod_ad() {
   install_masky
   install_manspider
   install_smtp_user_enum
+  install_autobloody
+  install_certsync
+  install_goldencopy
+  install_keepwn
+  install_ldeep
+  install_gpoddity
+  install_asrepcatcher
+  install_ldaprelayscan
+  install_ldapwordlistharvester
+  install_passthecert
+  install_pcredz
+  install_pygpoabuse
+  install_sccmhunter
+  install_teamsphisher
+  install_crackhound
 
   colorecho "  [pipx-git] AD tools:"
   install_pre2k
@@ -428,6 +528,7 @@ function install_mod_ad() {
   install_openldap
   install_smbclient
   install_python_pcapy
+  install_nbtscan
 
   colorecho "  [source-build] AD tools:"
   install_bloodhound_ce_desktop
@@ -443,6 +544,10 @@ function install_mod_ad() {
   install_kerbrute
   install_gofenrir
   install_windapsearch
+  install_godap
+  install_goexec
+  install_gosecretsdump
+  install_krbjack
 
   colorecho "  [git] AD tools:"
   install_krbrelayx
