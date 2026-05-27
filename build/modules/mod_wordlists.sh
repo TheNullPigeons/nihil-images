@@ -65,7 +65,7 @@ function install_crunch() {
 }
 
 function install_cupp() {
-    install_pipx_tool_git "cupp" "https://github.com/Mebus/cupp.git"
+    install_git_tool "cupp" "https://github.com/Mebus/cupp.git" "cupp.py"
 }
 
 function install_username_anarchy() {
