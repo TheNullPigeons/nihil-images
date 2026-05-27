@@ -110,6 +110,10 @@ function install_openstego() {
     install_aur_tool "openstego" "openstego"
 }
 
+function install_jadx() {
+    install_aur_tool "jadx" "jadx"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -127,6 +131,7 @@ function install_mod_forensics() {
     install_foremost
     install_steghide
     install_openstego
+    install_jadx
 
     colorecho "  [gem] Stego tools:"
     install_zsteg
