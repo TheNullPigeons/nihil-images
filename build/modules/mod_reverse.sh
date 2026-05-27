@@ -47,6 +47,10 @@ function install_uncompyle6() {
     install_pipx_tool "uncompyle6" "uncompyle6"
 }
 
+function install_nasm() {
+    install_pacman_tool "nasm"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -56,6 +60,7 @@ function install_mod_reverse() {
 
     colorecho "  [pacman] Reverse tools:"
     install_ghidra
+    install_nasm
 
     colorecho "  [pipx] Reverse tools:"
     install_angr
