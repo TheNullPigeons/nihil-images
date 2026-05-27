@@ -111,7 +111,7 @@ function install_openstego() {
 }
 
 function install_jadx() {
-    install_aur_tool "jadx" "jadx"
+    install_aur_tool "jadx" "jadx-bin"
 }
 
 # ---------------------------------------------------------------------------
