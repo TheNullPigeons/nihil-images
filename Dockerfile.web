@@ -24,12 +24,13 @@ RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh package_base && \
     ./entrypoint.sh install_core_tools && \
     ./entrypoint.sh install_mod_web && \
+    ./entrypoint.sh install_mod_osint && \
     ./entrypoint.sh install_mod_network && \
     ./entrypoint.sh install_mod_credential && \
     ./entrypoint.sh install_mod_misc && \
     ./entrypoint.sh install_mod_wordlists && \
-    ./entrypoint.sh healthcheck core_tools mod_web mod_network mod_credential mod_misc mod_wordlists && \
-    ./entrypoint.sh filter_tools_json core_tools mod_web mod_network mod_credential mod_misc mod_wordlists && \
+    ./entrypoint.sh healthcheck core_tools mod_web mod_osint mod_network mod_credential mod_misc mod_wordlists && \
+    ./entrypoint.sh filter_tools_json core_tools mod_web mod_osint mod_network mod_credential mod_misc mod_wordlists && \
     ./entrypoint.sh post_install
 
 WORKDIR /workspace
