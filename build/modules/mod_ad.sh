@@ -10,6 +10,7 @@ nihil::import lib/registry/aur
 nihil::import lib/registry/go
 nihil::import lib/registry/git
 nihil::import lib/registry/curl
+nihil::import lib/registry/gem
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -190,6 +191,10 @@ function install_bloodyad() {
 
 function install_evil_winrm_py() {
   install_pipx_tool "evil-winrm-py" "evil-winrm-py[kerberos]"
+}
+
+function install_evil_winrm() {
+  install_gem_tool "evil-winrm"
 }
 
 function install_netexec() {
@@ -394,6 +399,7 @@ function install_mod_ad() {
   install_certipy
   install_bloodyad
   install_evil_winrm_py
+  install_evil_winrm
   install_netexec
   install_impacket
   install_bloodbash
