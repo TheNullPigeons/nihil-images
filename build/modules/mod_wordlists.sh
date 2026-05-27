@@ -6,6 +6,10 @@
 # expecting the historical Kali-style locations.
 
 nihil::import lib/common
+nihil::import lib/registry/gem
+nihil::import lib/registry/pipx
+nihil::import lib/registry/pacman
+nihil::import lib/registry/git
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -52,6 +56,25 @@ function install_seclists() {
     colorecho "  ✓ seclists installed at $install_dir"
 }
 
+function install_cewl() {
+    install_gem_tool "cewl"
+}
+
+function install_crunch() {
+    install_pacman_tool "crunch"
+}
+
+function install_cupp() {
+    install_pipx_tool_git "cupp" "https://github.com/Mebus/cupp.git"
+}
+
+function install_username_anarchy() {
+    install_git_tool_symlink "/opt/tools/username-anarchy" \
+        "https://github.com/urbanadventurer/username-anarchy.git" \
+        "username-anarchy" \
+        "username-anarchy"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -63,6 +86,11 @@ function install_mod_wordlists() {
 
     colorecho "  [git] Wordlists:"
     install_seclists
+
+    install_cewl
+    install_crunch
+    install_cupp
+    install_username_anarchy
 
     colorecho "Wordlists installation finished"
 }
