@@ -8,6 +8,7 @@ nihil::import lib/registry/cargo
 nihil::import lib/registry/pacman
 nihil::import lib/registry/aur
 nihil::import lib/registry/go
+nihil::import lib/registry/git
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -105,6 +106,49 @@ function install_ngrok() {
     colorecho "  ✓ ngrok installed"
 }
 
+function install_chisel() {
+    install_go_tool "github.com/jpillora/chisel@latest"
+}
+
+function install_masscan() {
+    install_pacman_tool "masscan"
+}
+
+function install_netdiscover() {
+    install_pacman_tool "netdiscover"
+}
+
+function install_nmap_parse_output() {
+    install_git_tool_symlink "/opt/tools/nmap-parse-output" \
+        "https://github.com/ernw/nmap-parse-output.git" \
+        "nmap-parse-output" \
+        "nmap-parse-output"
+}
+
+function install_proxychains() {
+    install_pacman_tool "proxychains-ng"
+}
+
+function install_rustscan() {
+    install_aur_tool "rustscan" "rustscan"
+}
+
+function install_ssh_audit() {
+    install_pipx_tool "ssh-audit" "ssh-audit"
+}
+
+function install_sshuttle() {
+    install_pipx_tool "sshuttle" "sshuttle"
+}
+
+function install_tcpdump() {
+    install_pacman_tool "tcpdump"
+}
+
+function install_xfreerdp() {
+    install_pacman_tool "freerdp"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -130,6 +174,17 @@ function install_mod_network() {
     colorecho "  [bin] Tunneling tools:"
     install_ligolo_ng
     install_ngrok
+
+    install_chisel
+    install_masscan
+    install_netdiscover
+    install_nmap_parse_output
+    install_proxychains
+    install_rustscan
+    install_ssh_audit
+    install_sshuttle
+    install_tcpdump
+    install_xfreerdp
 
     add-aliases "network"
 
