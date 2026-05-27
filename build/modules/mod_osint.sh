@@ -15,7 +15,7 @@ function install_amass() {
 }
 
 function install_recon_ng() {
-    install_pipx_tool "recon-ng" "recon-ng"
+    install_pipx_tool_git "recon-ng" "https://github.com/lanmaster53/recon-ng"
 }
 
 function install_sherlock() {
