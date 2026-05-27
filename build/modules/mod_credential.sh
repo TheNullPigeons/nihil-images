@@ -33,6 +33,22 @@ function install_hashcat() {
     install_pacman_tool "hashcat"
 }
 
+function install_fcrackzip() {
+    install_pacman_tool "fcrackzip"
+}
+
+function install_hydra() {
+    install_pacman_tool "hydra"
+}
+
+function install_name_that_hash() {
+    install_pipx_tool "nth" "name-that-hash"
+}
+
+function install_pdfcrack() {
+    install_pacman_tool "pdfcrack"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -42,6 +58,7 @@ function install_mod_credential() {
 
     colorecho "  [pipx] Credential tools:"
     install_pypykatz
+    install_name_that_hash
 
     colorecho "  [gem] Credential tools:"
     install_haiti
@@ -50,6 +67,9 @@ function install_mod_credential() {
     install_binwalk
     install_john
     install_hashcat
+    install_fcrackzip
+    install_hydra
+    install_pdfcrack
 
     colorecho "Credential tools installation finished"
 }
