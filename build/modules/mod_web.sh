@@ -345,10 +345,6 @@ function install_wpscan() {
     add-history "wpscan"
 }
 
-function install_aquatone() {
-    install_go_tool "github.com/michenriksen/aquatone@latest" "aquatone"
-    add-history "aquatone"
-}
 
 function install_eyewitness() {
     local tool_name="EyeWitness"
@@ -415,6 +411,98 @@ function install_burpsuite() {
     colorecho "  ✓ Burp Suite Community installed at ${burp_dir}"
 }
 
+function install_bbot() {
+    install_pipx_tool "bbot" "bbot"
+}
+
+function install_byp4xx() {
+    install_go_tool "github.com/lobuhi/byp4xx@latest"
+}
+
+function install_git_dumper() {
+    install_pipx_tool "git-dumper" "git-dumper"
+}
+
+function install_gowitness() {
+    install_go_tool "github.com/sensepost/gowitness@latest"
+}
+
+function install_httpmethods() {
+    install_pipx_tool_git "httpmethods" "https://github.com/ShutdownRepo/httpmethods.git"
+}
+
+function install_joomscan() {
+    install_pacman_tool "perl"
+    install_git_tool_symlink "/opt/tools/joomscan" \
+        "https://github.com/OWASP/joomscan.git" \
+        "joomscan.pl" \
+        "joomscan"
+}
+
+function install_linkfinder() {
+    install_pipx_tool_git "linkfinder" "https://github.com/GerbenJavado/LinkFinder.git"
+}
+
+function install_naabu() {
+    install_go_tool "github.com/projectdiscovery/naabu/v2/cmd/naabu@latest"
+}
+
+function install_patator() {
+    install_pipx_tool_git "patator" "https://github.com/lanjelot/patator.git"
+}
+
+function install_phpggc() {
+    install_git_tool_symlink "/opt/tools/phpggc" \
+        "https://github.com/ambionics/phpggc.git" \
+        "phpggc" \
+        "phpggc"
+}
+
+function install_smuggler() {
+    install_git_tool "smuggler" "https://github.com/defparam/smuggler.git" "smuggler.py"
+}
+
+function install_sslscan() {
+    install_pacman_tool "sslscan"
+}
+
+function install_xxeinjector() {
+    install_git_tool_symlink "/opt/tools/XXEinjector" \
+        "https://github.com/enjoiz/XXEinjector.git" \
+        "XXEinjector.rb" \
+        "xxeinjector"
+}
+
+function install_ysoserial() {
+    local jar_dir="/opt/tools/ysoserial"
+    local jar_file="${jar_dir}/ysoserial.jar"
+
+    if command -v ysoserial >/dev/null 2>&1; then
+        colorecho "  ✓ ysoserial already installed"
+        return 0
+    fi
+
+    colorecho "  → Installing ysoserial"
+    mkdir -p "$jar_dir"
+    local tag
+    tag=$(curl -Ls -o /dev/null -w '%{url_effective}' \
+        "https://github.com/frohoff/ysoserial/releases/latest" | sed 's:.*/::' || true)
+    if [ -z "$tag" ]; then
+        colorecho "  ✗ Warning: Failed to resolve ysoserial version"
+        return 0
+    fi
+    if ! curl -fsSL "https://github.com/frohoff/ysoserial/releases/download/${tag}/ysoserial-all.jar" \
+            -o "$jar_file" 2>/dev/null; then
+        colorecho "  ✗ Warning: Failed to download ysoserial"
+        return 0
+    fi
+    local java_bin
+    java_bin=$(command -v java 2>/dev/null || echo "java")
+    printf '#!/bin/bash\nexec %s -jar %s "$@"\n' "$java_bin" "$jar_file" > /opt/tools/bin/ysoserial
+    chmod +x /opt/tools/bin/ysoserial
+    colorecho "  ✓ ysoserial installed (${tag})"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -429,6 +517,7 @@ function install_mod_web() {
     install_httpie
     install_swaks
     install_mail
+    install_sslscan
 
     colorecho "  [pipx] Web fuzzers / scanners:"
     install_wfuzz
@@ -440,6 +529,11 @@ function install_mod_web() {
     install_dirsearch
     install_commix
     install_mitmproxy
+    install_bbot
+    install_git_dumper
+    install_httpmethods
+    install_linkfinder
+    install_patator
 
     colorecho "  [pipx-git] Web scanners:"
     install_graphqlmap
@@ -454,7 +548,9 @@ function install_mod_web() {
     install_gau
     install_waybackurls
     install_crlfuzz
-    install_aquatone
+    install_byp4xx
+    install_gowitness
+    install_naabu
 
     colorecho "  [gem] CMS scanners:"
     install_wpscan
@@ -468,6 +564,10 @@ function install_mod_web() {
     install_corsy
     install_whatweb
     install_eyewitness
+    install_joomscan
+    install_phpggc
+    install_smuggler
+    install_xxeinjector
 
     colorecho "  [cargo] Web fuzzer:"
     install_feroxbuster
@@ -477,6 +577,8 @@ function install_mod_web() {
     install_kiterunner
     install_caido
     install_burpsuite
+
+    install_ysoserial
 
     colorecho "Web tools installation finished"
 }
