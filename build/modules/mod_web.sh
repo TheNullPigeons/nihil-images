@@ -365,7 +365,7 @@ function install_eyewitness() {
 
     python3 -m venv "$venv_dir" || return 1
     source "$venv_dir/bin/activate"
-    pip install --quiet -r "$repo_dir/Python/requirements.txt" || {
+    pip install --quiet selenium Pillow fuzzywuzzy python-Levenshtein requests netaddr || {
         colorecho "  ✗ Warning: Failed to install EyeWitness requirements"
         deactivate
         return 1
