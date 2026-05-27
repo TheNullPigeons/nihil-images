@@ -314,7 +314,7 @@
         },
         {
             "name": "asrepcatcher",
-            "cmd": "asrepcatcher",
+            "cmd": "ASRepCatcher",
             "description": "AS-REP Roasting listener"
         },
         {
