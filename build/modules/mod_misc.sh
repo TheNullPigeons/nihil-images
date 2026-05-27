@@ -4,6 +4,8 @@
 nihil::import lib/common
 nihil::import lib/registry/git
 nihil::import lib/registry/aur
+nihil::import lib/registry/go
+nihil::import lib/registry/pacman
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -85,6 +87,22 @@ function install_sqlitebrowser() {
     install_pacman_tool "sqlitebrowser"
 }
 
+function install_keepassxc() {
+    install_pacman_tool "keepassxc"
+}
+
+function install_rsync() {
+    install_pacman_tool "rsync"
+}
+
+function install_wes() {
+    install_git_tool "wes" "https://github.com/bitsadmin/wesng.git" "wes.py"
+}
+
+function install_gitleaks() {
+    install_go_tool "github.com/gitleaks/gitleaks/v8@latest"
+}
+
 function install_rdate() {
     pacman -S --noconfirm --needed libbsd autoconf automake make gcc
     local tmpdir
@@ -112,6 +130,11 @@ function install_mod_misc() {
     install_rdate
     install_grc
     install_sqlitebrowser
+
+    install_keepassxc
+    install_rsync
+    install_wes
+    install_gitleaks
 
     colorecho "Misc red-team tools installation finished"
 }
