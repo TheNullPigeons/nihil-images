@@ -254,7 +254,7 @@ function install_ldeep() {
 }
 
 function install_ldapwordlistharvester() {
-    install_pipx_tool_git "LDAPWordlistHarvester" "https://github.com/p0dalirius/pyLDAPWordlistHarvester.git"
+    install_git_tool "LDAPWordlistHarvester" "https://github.com/p0dalirius/pyLDAPWordlistHarvester.git" "LDAPWordlistHarvester.py"
 }
 
 function install_nbtscan() {
@@ -266,7 +266,7 @@ function install_passthecert() {
 }
 
 function install_pcredz() {
-    install_pipx_tool_git "PCredz" "https://github.com/lgandx/PCredz.git"
+    install_git_tool_venv "PCredz" "https://github.com/lgandx/PCredz.git" "PCredz.py" "Crypto scapy" "yes"
 }
 
 function install_pygpoabuse() {
@@ -305,7 +305,7 @@ function install_mitm6() {
 }
 
 function install_aclpwn() {
-  install_pipx_tool "aclpwn" "aclpwn"
+    install_pipx_tool_git "aclpwn" "https://github.com/fox-it/aclpwn.py"
 }
 
 function install_abuseacl() {
