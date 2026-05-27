@@ -1,0 +1,3 @@
+sshuttle -r "$USER"@"$TARGET" "$CIDR"
+sshuttle -r "$USER"@"$TARGET" 0/0
+sshuttle -r "$USER"@"$TARGET" "$CIDR" --ssh-cmd "ssh -i $KEY"

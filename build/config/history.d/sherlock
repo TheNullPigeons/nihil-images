@@ -1,0 +1,3 @@
+sherlock "$USERNAME"
+sherlock "$USERNAME" --output "$OUTPUT".txt
+sherlock "$USERNAME" --site Twitter --site Reddit

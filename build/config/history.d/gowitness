@@ -1,0 +1,4 @@
+gowitness scan single --url "$URL"
+gowitness scan file -f "$URLS_FILE"
+gowitness scan nmap --file "$NMAP_XML"
+gowitness report serve

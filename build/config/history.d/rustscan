@@ -1,0 +1,4 @@
+rustscan -a "$TARGET"
+rustscan -a "$TARGET" -- -sV -sC
+rustscan -a "$TARGET" -r 1-65535
+rustscan -a "$CIDR" --ulimit 5000

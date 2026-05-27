@@ -1,0 +1,3 @@
+theHarvester -d "$DOMAIN" -b all
+theHarvester -d "$DOMAIN" -b google,bing,linkedin
+theHarvester -d "$DOMAIN" -b all -f "$OUTPUT"

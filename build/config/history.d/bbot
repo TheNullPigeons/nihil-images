@@ -1,0 +1,4 @@
+bbot -t "$DOMAIN" -p subdomain-enum
+bbot -t "$DOMAIN" -p full
+bbot -t "$DOMAIN" -f email-enum
+bbot -t "$CIDR" -p web-basic
