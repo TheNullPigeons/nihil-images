@@ -1,0 +1,4 @@
+amass enum -d "$DOMAIN"
+amass enum -d "$DOMAIN" -passive
+amass enum -d "$DOMAIN" -brute -w "$WORDLIST"
+amass enum -d "$DOMAIN" -o "$OUTPUT".txt

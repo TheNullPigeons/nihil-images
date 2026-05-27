@@ -1,0 +1,3 @@
+nth --text "$HASH"
+nth --file "$HASHFILE"
+nth --text "$HASH" --no-banner

@@ -1,0 +1,3 @@
+recon-ng
+recon-ng -w "$WORKSPACE"
+recon-ng -w "$WORKSPACE" -m recon/domains-hosts/hackertarget

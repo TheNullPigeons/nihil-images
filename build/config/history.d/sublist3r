@@ -1,0 +1,3 @@
+sublist3r -d "$DOMAIN"
+sublist3r -d "$DOMAIN" -o "$OUTPUT".txt
+sublist3r -d "$DOMAIN" -b -p 80,443
