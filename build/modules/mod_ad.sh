@@ -238,7 +238,8 @@ function install_gpp_decrypt() {
 }
 
 function install_keepwn() {
-    install_pipx_tool_git "keepwn" "https://github.com/Orange-Cyberdefense/KeePwn"
+    # pipx registers the entry point as "KeePwn" (capital K+P), not "keepwn"
+    install_pipx_tool_git "KeePwn" "https://github.com/Orange-Cyberdefense/KeePwn"
 }
 
 function install_krbjack() {
@@ -274,7 +275,13 @@ function install_pygpoabuse() {
 }
 
 function install_sccmhunter() {
-    install_pipx_tool_git "sccmhunter" "https://github.com/garrettfoster13/sccmhunter.git"
+    if command -v sccmhunter > /dev/null 2>&1 || command -v sccmhunter.py > /dev/null 2>&1; then
+        colorecho "  ✓ sccmhunter already installed (pipx)"
+        return 0
+    fi
+    # pipx registers the entry point as "sccmhunter.py" (from pyproject.toml console_scripts)
+    install_pipx_tool_git "sccmhunter.py" "https://github.com/garrettfoster13/sccmhunter.git" || return 1
+    ln -sf "/root/.local/bin/sccmhunter.py" "/usr/bin/sccmhunter" 2>/dev/null || true
 }
 
 function install_teamsphisher() {

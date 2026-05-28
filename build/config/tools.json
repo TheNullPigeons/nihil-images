@@ -364,7 +364,7 @@
         },
         {
             "name": "keepwn",
-            "cmd": "keepwn",
+            "cmd": "KeePwn",
             "description": "KeePass trigger attack"
         },
         {
