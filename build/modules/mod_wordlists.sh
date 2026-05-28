@@ -9,6 +9,7 @@ nihil::import lib/common
 nihil::import lib/registry/gem
 nihil::import lib/registry/pipx
 nihil::import lib/registry/pacman
+nihil::import lib/registry/aur
 nihil::import lib/registry/git
 
 # ---------------------------------------------------------------------------
@@ -61,7 +62,7 @@ function install_cewl() {
 }
 
 function install_crunch() {
-    install_pacman_tool "crunch"
+    install_aur_tool "crunch" "crunch"
 }
 
 function install_cupp() {
