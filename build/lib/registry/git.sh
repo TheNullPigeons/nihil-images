@@ -353,9 +353,9 @@ install_git_tool_bundler() {
     # Créer les wrappers pour chaque entrypoint
     mkdir -p "$GIT_BIN_DIR"
     for entrypoint in $entrypoints; do
-        local cmd_name="$entrypoint"
+        local cmd_name=$(basename "$entrypoint" .rb)
         local wrapper="${GIT_BIN_DIR}/${cmd_name}"
-        
+
         # Créer le wrapper qui exécute bundle exec ruby depuis le repo
         cat > "$wrapper" <<EOF
 #!/bin/sh
