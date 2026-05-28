@@ -214,7 +214,7 @@ function install_crackhound() {
 }
 
 function install_godap() {
-    install_go_tool "github.com/Macmod/godap/v2/cmd/godap@latest"
+    install_go_tool "github.com/Macmod/godap@latest"
 }
 
 function install_goexec() {
