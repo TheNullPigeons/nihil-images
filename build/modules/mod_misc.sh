@@ -100,7 +100,40 @@ function install_wes() {
 }
 
 function install_gitleaks() {
-    install_go_tool "github.com/gitleaks/gitleaks/v8@latest"
+    # go install github.com/gitleaks/gitleaks/v8@latest fails: go.mod in v8.30.1+
+    # still declares the old path github.com/zricethezav/gitleaks/v8 (org rename),
+    # causing a module path mismatch. Use the prebuilt binary instead.
+    if command -v gitleaks > /dev/null 2>&1; then
+        colorecho "  ✓ gitleaks already installed"
+        return 0
+    fi
+
+    colorecho "  → Installing gitleaks (prebuilt binary)"
+    local arch
+    arch=$(uname -m)
+    [ "$arch" = "aarch64" ] && arch="arm64" || arch="x64"
+
+    local url
+    url=$(curl -Ls "https://api.github.com/repos/gitleaks/gitleaks/releases/latest" \
+        | grep "browser_download_url.*gitleaks.*linux_${arch}.*tar\.gz" \
+        | grep -o 'https://[^"]*' | head -1)
+
+    if [ -z "$url" ]; then
+        colorecho "  ✗ Warning: Failed to resolve gitleaks download URL"
+        return 0
+    fi
+
+    curl -fsSL "$url" -o /tmp/gitleaks.tar.gz || {
+        colorecho "  ✗ Warning: Failed to download gitleaks"
+        return 0
+    }
+    tar -xf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+    rm -f /tmp/gitleaks.tar.gz
+    mv /tmp/gitleaks /opt/tools/bin/gitleaks
+    chmod +x /opt/tools/bin/gitleaks
+
+    add-history "gitleaks"
+    colorecho "  ✓ gitleaks installed"
 }
 
 function install_rdate() {
