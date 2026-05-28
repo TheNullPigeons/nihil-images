@@ -448,7 +448,8 @@ function install_naabu() {
 }
 
 function install_patator() {
-    install_git_tool_venv "patator" "https://github.com/lanjelot/patator.git" "patator.py" "ldap3 paramiko impacket dnspython pyotp requests" "yes"
+    # setuptools>=82 removed pkg_resources which patator imports at runtime
+    install_git_tool_venv "patator" "https://github.com/lanjelot/patator.git" "src/patator/patator.py" "setuptools<82 ldap3 paramiko impacket dnspython pyotp requests" "yes"
 }
 
 function install_phpggc() {
