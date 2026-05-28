@@ -5,6 +5,7 @@
 nihil::import lib/common
 nihil::import lib/registry/pipx
 nihil::import lib/registry/go
+nihil::import lib/registry/git
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -23,7 +24,42 @@ function install_sherlock() {
 }
 
 function install_spiderfoot() {
-    install_pipx_tool "spiderfoot" "spiderfoot"
+    local install_dir="${GIT_INSTALL_DIR}/spiderfoot"
+    local venv_dir="${install_dir}/venv"
+
+    if command -v spiderfoot > /dev/null 2>&1; then
+        colorecho "  ✓ spiderfoot already installed"
+        return 0
+    fi
+
+    colorecho "  → Installing spiderfoot"
+    git clone --depth 1 https://github.com/smicallef/spiderfoot "$install_dir" || {
+        colorecho "  ✗ Warning: Failed to clone spiderfoot"
+        return 1
+    }
+
+    python3 -m venv --system-site-packages "$venv_dir" || {
+        colorecho "  ✗ Warning: Failed to create venv for spiderfoot"
+        return 1
+    }
+    source "$venv_dir/bin/activate"
+    pip install --quiet -r "$install_dir/requirements.txt" || {
+        colorecho "  ✗ Warning: Failed to install spiderfoot requirements"
+        deactivate
+        return 1
+    }
+    deactivate
+
+    mkdir -p "$GIT_BIN_DIR"
+    cat > "${GIT_BIN_DIR}/spiderfoot" <<EOF
+#!/bin/sh
+cd "${install_dir}" || exit 1
+exec "${venv_dir}/bin/python3" "${install_dir}/sf.py" "\$@"
+EOF
+    chmod +x "${GIT_BIN_DIR}/spiderfoot"
+
+    add-history "spiderfoot"
+    colorecho "  ✓ spiderfoot installed"
 }
 
 function install_sublist3r() {
