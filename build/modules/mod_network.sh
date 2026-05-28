@@ -130,7 +130,7 @@ function install_proxychains() {
 }
 
 function install_rustscan() {
-    install_aur_tool "rustscan" "rustscan"
+    install_cargo_tool "rustscan"
 }
 
 function install_ssh_audit() {
