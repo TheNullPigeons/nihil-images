@@ -57,7 +57,7 @@ function install_seclists() {
 }
 
 function install_cewl() {
-    install_gem_tool "cewl"
+    install_git_tool_bundler "CeWL" "https://github.com/digininja/CeWL.git" "cewl.rb"
 }
 
 function install_crunch() {
