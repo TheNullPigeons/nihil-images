@@ -102,8 +102,12 @@ function install_bloodhound_ce_desktop() {
   fi
 
   # Fix STORAGE MAIN incompatibility in PostgreSQL migration (upstream issue, expires 2026-08-10)
+  # Guard with -f: newer BloodHound releases may not include this specific migration file.
   if [[ "$(date +%Y%m%d)" < "20260810" ]]; then
-    sed -i 's/\s*STORAGE MAIN//' "${src_dir}/cmd/api/src/database/migration/migrations/v8.5.0.sql"
+    local migration_file="${src_dir}/cmd/api/src/database/migration/migrations/v8.5.0.sql"
+    if [ -f "$migration_file" ]; then
+      sed -i 's/\s*STORAGE MAIN//' "$migration_file"
+    fi
   fi
 
   if ! go build -C "${src_dir}/cmd/api/src" -o "${api_bin}" \
