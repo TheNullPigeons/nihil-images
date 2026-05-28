@@ -304,6 +304,8 @@ install_git_tool_bundler() {
     # Configurer git pour les outils qui en ont besoin (ex: msfupdate)
     git config user.name "nihil" || true
     git config user.email "nihil@localhost" || true
+    # Docker overlay filesystems don't support cross-layer hardlinks
+    git config --global core.hardlinks false || true
 
     # Installer bundler si pas déjà installé
     if ! gem list -i bundler >/dev/null 2>&1; then
@@ -317,13 +319,21 @@ install_git_tool_bundler() {
     # Installer les dépendances Ruby avec bundler
     colorecho "  → Installing Ruby dependencies"
     if [ -n "$bundle_args" ]; then
-        bundle install $bundle_args || {
-            colorecho "  ✗ Warning: Bundle install failed, trying without args"
+        # Bundler 4.0 removed --without; translate to bundle config set
+        if echo "$bundle_args" | grep -q -- '--without'; then
+            local without_val
+            without_val=$(printf '%s' "$bundle_args" | sed 's/.*--without[[:space:]]*//')
+            bundle config set --local without "$without_val" 2>/dev/null || true
             bundle install || {
                 colorecho "  ✗ Warning: Failed to install Ruby dependencies"
                 return 1
             }
-        }
+        else
+            bundle install $bundle_args || {
+                colorecho "  ✗ Warning: Failed to install Ruby dependencies"
+                return 1
+            }
+        fi
     else
         bundle install || {
             colorecho "  ✗ Warning: Failed to install Ruby dependencies"
