@@ -266,7 +266,7 @@ function install_passthecert() {
 }
 
 function install_pcredz() {
-    install_git_tool_venv "PCredz" "https://github.com/lgandx/PCredz.git" "PCredz.py" "Crypto scapy" "yes"
+    install_git_tool_venv "PCredz" "https://github.com/lgandx/PCredz.git" "Pcredz" "Crypto scapy" "yes"
 }
 
 function install_pygpoabuse() {
@@ -278,7 +278,7 @@ function install_sccmhunter() {
 }
 
 function install_teamsphisher() {
-    install_git_tool_venv "teamsphisher" "https://github.com/Octoberfest7/TeamsPhisher.git" "TeamsPhisher.py" "msal colorama requests" "yes"
+    install_git_tool_venv "teamsphisher" "https://github.com/Octoberfest7/TeamsPhisher.git" "teamsphisher.py" "msal colorama requests" "yes"
 }
 
 function install_netexec() {
