@@ -30,10 +30,12 @@ nihil::import modules/post_install
 if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"
 else
-    if declare -f "$1" > /dev/null
-    then
-        if [[ -f '/.dockerenv' ]]; then
-            "$@"
+    if declare -f "$1" > /dev/null; then
+        if [[ "${NIHIL_AUDIT:-0}" == "1" ]]; then
+            # Audit mode: run in a subshell so exit 1 / set -e failures are absorbed.
+            # The build always completes; the healthcheck output reveals all missing tools.
+            ("$@") || true
+            exit 0
         else
             "$@"
         fi

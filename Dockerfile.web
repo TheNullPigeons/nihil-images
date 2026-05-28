@@ -6,6 +6,8 @@ FROM archlinux:latest
 ARG TAG="local"
 ARG VERSION="local"
 ARG BUILD_DATE="n/a"
+ARG NIHIL_AUDIT=0
+ENV NIHIL_AUDIT=${NIHIL_AUDIT}
 
 LABEL org.nihil.tag="${TAG}"
 LABEL org.nihil.version="${VERSION}"
