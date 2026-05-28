@@ -149,6 +149,10 @@ function install_xfreerdp() {
     install_pacman_tool "freerdp"
 }
 
+function install_nfs_utils() {
+    install_pacman_tool "nfs-utils"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -185,6 +189,7 @@ function install_mod_network() {
     install_sshuttle
     install_tcpdump
     install_xfreerdp
+    install_nfs_utils
 
     add-aliases "network"
 

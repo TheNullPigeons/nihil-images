@@ -790,6 +790,11 @@
             "name": "xfreerdp",
             "cmd": "xfreerdp",
             "description": "RDP client"
+        },
+        {
+            "name": "nfs-utils",
+            "cmd": "showmount",
+            "description": "NFS client utilities (showmount, nfsstat, rpcinfo)"
         }
     ],
     "mod_credential": [
