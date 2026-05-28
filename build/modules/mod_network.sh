@@ -115,7 +115,7 @@ function install_masscan() {
 }
 
 function install_netdiscover() {
-    install_pacman_tool "netdiscover"
+    install_aur_tool "netdiscover" "netdiscover"
 }
 
 function install_nmap_parse_output() {
