@@ -74,7 +74,7 @@ function install_sublist3r() {
 }
 
 function install_theharvester() {
-    install_pipx_tool "theHarvester" "theHarvester"
+    install_pipx_tool_git "theHarvester" "https://github.com/laramies/theHarvester"
 }
 
 # ---------------------------------------------------------------------------
