@@ -3,6 +3,7 @@
 # Each tool has its own install_$TOOL function for easier maintenance.
 
 nihil::import lib/common
+nihil::import lib/registry/pacman
 nihil::import lib/registry/pipx
 nihil::import lib/registry/go
 nihil::import lib/registry/git
@@ -10,6 +11,10 @@ nihil::import lib/registry/git
 # ---------------------------------------------------------------------------
 # Individual install functions
 # ---------------------------------------------------------------------------
+
+function install_python_lxml() {
+    install_pacman_tool "python-lxml"
+}
 
 function install_amass() {
     install_go_tool "github.com/owasp-amass/amass/v4/cmd/amass@latest"
@@ -43,7 +48,9 @@ function install_spiderfoot() {
         return 1
     }
     source "$venv_dir/bin/activate"
-    pip install --quiet -r "$install_dir/requirements.txt" || {
+    # lxml pinned to 4.9.4 doesn't compile against Python 3.14+; skip it, the system
+    # package installed via pacman is visible through --system-site-packages
+    grep -v '^lxml' "$install_dir/requirements.txt" | pip install --quiet -r /dev/stdin || {
         colorecho "  ✗ Warning: Failed to install spiderfoot requirements"
         deactivate
         return 1
@@ -76,6 +83,9 @@ function install_theharvester() {
 
 function install_mod_osint() {
     colorecho "Installing OSINT red-team tools"
+
+    colorecho "  [pacman] OSINT tools:"
+    install_python_lxml
 
     colorecho "  [go] OSINT tools:"
     install_amass
