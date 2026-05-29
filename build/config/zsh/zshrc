@@ -113,6 +113,16 @@ export COLORTERM=truecolor
 # Source custom aliases & history
 [ -f /opt/nihil/config/aliases ] && source /opt/nihil/config/aliases
 
+# nihil-ntp shell hook (sync clock to the configured NTP server / DC)
+[ -f /opt/nihil/config/nihil-ntp/hook.sh ] && source /opt/nihil/config/nihil-ntp/hook.sh
+
+# nihil-ntp wrapper: re-apply (or clear) faketime in the CURRENT shell right
+# after set/enable/disable, so the change is immediate without a new terminal.
+nihil-ntp() {
+  command nihil-ntp "$@"
+  [ -f /opt/nihil/config/nihil-ntp/hook.sh ] && source /opt/nihil/config/nihil-ntp/hook.sh
+}
+
 # nihil-history env variables
 [ -f ~/.nihil-history/env.sh ] && source ~/.nihil-history/env.sh
 

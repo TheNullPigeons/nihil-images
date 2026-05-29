@@ -40,5 +40,32 @@ function install_core_tools() {
     add-symlink "/root/.local/bin/nhi" "nhi"
     colorecho "nihil-history installed"
 
+    install_nihil_ntp
+}
+
+# nihil-ntp: point every terminal at a chosen NTP server (typically the DC) so
+# Kerberos does not reject tickets for clock skew. Needs the ntp + libfaketime
+# packages, both already pulled by package_base.
+function install_nihil_ntp() {
+    colorecho "Installing nihil-ntp"
+    local assets="${NIHIL_BUILD}/lib/installers/nihil-ntp"
+    local hook_dir="/opt/nihil/config/nihil-ntp"
+
+    install -Dm755 "${assets}/nihil-ntp" /opt/tools/bin/nihil-ntp
+    install -Dm644 "${assets}/hook.sh" "${hook_dir}/hook.sh"
+
+    # zsh tab-completion: drop in the default site-functions fpath so the
+    # compinit run by oh-my-zsh autoloads it at shell startup.
+    install -Dm644 "${assets}/_nihil-ntp" /usr/share/zsh/site-functions/_nihil-ntp
+
+    # Source the hook from every interactive shell. zsh reads the baked-in
+    # /root/.zshrc (which already carries the source line); wire bash too.
+    local src_line="[ -f ${hook_dir}/hook.sh ] && source ${hook_dir}/hook.sh"
+    if [ -f /root/.bashrc ] && ! grep -qF "${hook_dir}/hook.sh" /root/.bashrc; then
+        printf '\n# nihil-ntp shell hook\n%s\n' "${src_line}" >>/root/.bashrc
+    fi
+
+    add-history "nihil-ntp"
+    colorecho "nihil-ntp installed"
 }
 

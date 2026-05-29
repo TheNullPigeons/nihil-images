@@ -1,0 +1,4 @@
+nihil-ntp status
+nihil-ntp disable
+nihil-ntp enable
+nihil-ntp "$DC_IP"
