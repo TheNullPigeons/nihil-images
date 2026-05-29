@@ -29,6 +29,16 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+      - name: Free up disk space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: false
+          swap-storage: true
       - uses: docker/setup-buildx-action@v3
       - name: Build (ad) in audit mode
         uses: docker/build-push-action@v5
@@ -47,6 +57,16 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+      - name: Free up disk space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: false
+          swap-storage: true
       - uses: docker/setup-buildx-action@v3
       - name: Build (web) in audit mode
         uses: docker/build-push-action@v5
@@ -65,6 +85,16 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+      - name: Free up disk space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: false
+          swap-storage: true
       - uses: docker/setup-buildx-action@v3
       - name: Build (blueteam) in audit mode
         uses: docker/build-push-action@v5
@@ -83,6 +113,16 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+      - name: Free up disk space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: false
+          swap-storage: true
       - uses: docker/setup-buildx-action@v3
       - name: Build (full) in audit mode
         uses: docker/build-push-action@v5
