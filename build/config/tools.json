@@ -882,8 +882,18 @@
         },
         {
             "name": "pwndbg",
-            "cmd": "pwndbg",
+            "check_path": "/opt/tools/gdb/pwndbg/gdbinit.py",
             "description": "GDB plugin for exploit dev"
+        },
+        {
+            "name": "peda",
+            "check_path": "/opt/tools/gdb/peda/peda.py",
+            "description": "Python Exploit Development Assistance for GDB"
+        },
+        {
+            "name": "gef",
+            "check_path": "/opt/tools/gdb/gef/gef.py",
+            "description": "GDB Enhanced Features for exploit devs and reverse engineers"
         },
         {
             "name": "one_gadget",

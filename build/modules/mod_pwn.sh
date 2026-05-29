@@ -38,7 +38,50 @@ function install_ropgadget() {
 }
 
 function install_pwndbg() {
-    install_pacman_tool "pwndbg"
+    # Install pwndbg from source (Exegol-style) into /opt/tools/gdb/pwndbg.
+    # Its own setup.sh provisions a venv with pinned deps, which sidesteps the Arch
+    # package dep-skew (capstone6pwndbg) that breaks a pacman install:
+    #   ImportError: cannot import name 'CS_MODE_RISCVC' from 'capstone6pwndbg'
+    if [ -f /opt/tools/gdb/pwndbg/gdbinit.py ]; then
+        colorecho "  ✓ pwndbg already installed (source)"
+    else
+        colorecho "  → Installing pwndbg GDB plugin (from source)"
+        mkdir -p /opt/tools/gdb
+        if git-clone-retry "https://github.com/pwndbg/pwndbg.git" "/opt/tools/gdb/pwndbg"; then
+            ( cd /opt/tools/gdb/pwndbg && ./setup.sh ) \
+                || colorecho "  ✗ Warning: pwndbg setup.sh failed"
+        else
+            colorecho "  ✗ Warning: Failed to clone pwndbg"
+        fi
+    fi
+    # Make `gdb` start pwndbg by default (Exegol-style):
+    # ~/.gdbinit defines the init-pwndbg/init-peda/init-gef commands,
+    # the aliases (gdb, gdb-peda, gdb-gef) trigger the chosen one on launch.
+    cp /opt/nihil/build/assets/gdb/gdbinit /root/.gdbinit
+    add-aliases "gdb"
+}
+
+function install_peda() {
+    if [ -f /opt/tools/gdb/peda/peda.py ]; then
+        colorecho "  ✓ peda already installed"
+        return 0
+    fi
+    colorecho "  → Installing peda GDB plugin"
+    mkdir -p /opt/tools/gdb
+    git-clone-retry "https://github.com/longld/peda.git" "/opt/tools/gdb/peda" \
+        || colorecho "  ✗ Warning: Failed to install peda"
+}
+
+function install_gef() {
+    if [ -f /opt/tools/gdb/gef/gef.py ]; then
+        colorecho "  ✓ gef already installed"
+        return 0
+    fi
+    colorecho "  → Installing gef GDB plugin"
+    mkdir -p /opt/tools/gdb/gef
+    curl -sSLf "https://raw.githubusercontent.com/hugsy/gef/refs/heads/main/gef.py" \
+        -o /opt/tools/gdb/gef/gef.py \
+        || colorecho "  ✗ Warning: Failed to install gef"
 }
 
 function install_one_gadget() {
@@ -67,6 +110,10 @@ function install_mod_pwn() {
     install_cmake
     install_checksec
     install_pwndbg
+
+    colorecho "  [git] GDB plugins:"
+    install_peda
+    install_gef
 
     colorecho "  [pipx] Pwn / exploit tools:"
     install_pwntools
