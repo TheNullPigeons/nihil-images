@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+export NEO4J_HOME
+NEO4J_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v neo4j)")")")"
+
+pkill -f "BloodHound-Legacy" 2>/dev/null || true
+
+if ! neo4j status 2>/dev/null | grep -q "is running"; then
+    neo4j start >/dev/null 2>&1
+    for i in $(seq 1 60); do
+        neo4j status 2>/dev/null | grep -q "is running" && break || sleep 2
+    done
+fi
+for i in $(seq 1 30); do
+    ss -tlnp 2>/dev/null | grep -q ':7687' && break || sleep 2
+done
+
+echo "[nihil] Wiping BloodHound graph from Neo4j..."
+cypher-shell -a bolt://localhost:7687 -u neo4j -p fly2own1 "MATCH (n) DETACH DELETE n;"
+echo "[nihil] BloodHound legacy graph reset. Run bloodhound-legacy to start fresh."

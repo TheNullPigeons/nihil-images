@@ -16,12 +16,39 @@ nihil::import lib/registry/gem
 # Individual install functions
 # ---------------------------------------------------------------------------
 
-function install_bloodhound() {
+function install_bloodhound_python() {
   install_pipx_tool "bloodhound" "bloodhound"
 }
 
-function install_bloodhound_ce() {
+function install_bloodhound_ce_python() {
   install_pipx_tool "bloodhound-ce-python" "bloodhound-ce"
+}
+
+# Neo4j 4.4.x is the shared graph backend for both BloodHound CE desktop and the
+# BloodHound legacy desktop. Idempotent: skips if a neo4j binary is already linked.
+function install_neo4j() {
+  if command -v neo4j >/dev/null 2>&1; then
+    colorecho "  ✓ neo4j already installed"
+    return 0
+  fi
+
+  install_pacman_tool "jq" || return 1
+  install_pacman_tool "jre11-openjdk-headless" || return 1
+  archlinux-java set java-11-openjdk
+
+  # BloodHound requires Neo4j 4.4.x - Neo4j 5.x removed the db.indexes procedure
+  local neo4j_version
+  neo4j_version="$(curl -fsSL "https://api.github.com/repos/neo4j/neo4j/releases" |
+    jq -r 'first(.[] | select(.tag_name | startswith("4.4.")) | select(.prerelease | not) | .tag_name)' |
+    sed 's/^4\.4\.//' | xargs -I{} echo "4.4.{}" 2>/dev/null)" || neo4j_version="4.4.40"
+  [ -z "${neo4j_version}" ] && neo4j_version="4.4.40"
+  colorecho "  → Installing Neo4j ${neo4j_version}"
+  curl -fsSL "https://dist.neo4j.org/neo4j-community-${neo4j_version}-unix.tar.gz" |
+    tar -xz -C /opt/
+  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j" /opt/tools/bin/neo4j
+  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j-admin" /opt/tools/bin/neo4j-admin
+  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/cypher-shell" /opt/tools/bin/cypher-shell
+  neo4j-admin set-initial-password fly2own1 >/dev/null 2>&1 || true
 }
 
 function install_bloodhound_ce_desktop() {
@@ -49,22 +76,7 @@ function install_bloodhound_ce_desktop() {
   install_pacman_tool "jq" || return 1
   install_pacman_tool "p7zip" || true
   install_pacman_tool "postgresql" || return 1
-  install_pacman_tool "jre11-openjdk-headless" || return 1
-  archlinux-java set java-11-openjdk
-
-  # BloodHound CE requires Neo4j 4.4.x - Neo4j 5.x removed the db.indexes procedure
-  local neo4j_version
-  neo4j_version="$(curl -fsSL "https://api.github.com/repos/neo4j/neo4j/releases" |
-    jq -r 'first(.[] | select(.tag_name | startswith("4.4.")) | select(.prerelease | not) | .tag_name)' |
-    sed 's/^4\.4\.//' | xargs -I{} echo "4.4.{}" 2>/dev/null)" || neo4j_version="4.4.40"
-  [ -z "${neo4j_version}" ] && neo4j_version="4.4.40"
-  colorecho "  → Installing Neo4j ${neo4j_version}"
-  curl -fsSL "https://dist.neo4j.org/neo4j-community-${neo4j_version}-unix.tar.gz" |
-    tar -xz -C /opt/
-  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j" /opt/tools/bin/neo4j
-  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j-admin" /opt/tools/bin/neo4j-admin
-  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/cypher-shell" /opt/tools/bin/cypher-shell
-  neo4j-admin set-initial-password fly2own1 >/dev/null 2>&1 || true
+  install_neo4j || return 1
 
   mkdir -p "${install_root}" "${sharphound_path}" "${azurehound_path}"
   curl_tempfile="$(mktemp)"
@@ -175,6 +187,89 @@ function install_bloodhound_ce_desktop() {
   add-aliases "bloodhound-ce"
   add-history "bloodhound-ce"
   colorecho "  ✓ bloodhound-ce installed"
+}
+
+# BloodHound legacy (4.x) is the pre-CE Electron GUI. SpecterOps archived it, so we
+# pull the last prebuilt release rather than building the EOL Node 16 toolchain.
+function install_bloodhound_legacy_desktop() {
+  local install_root="/opt/tools/BloodHound-Legacy"
+  local curl_tempfile zip_tempfile
+  local tag_name asset_url arch_label bh_bin
+
+  if command -v bloodhound-legacy >/dev/null 2>&1; then
+    colorecho "  ✓ bloodhound-legacy already installed"
+    add-aliases "bloodhound-legacy"
+    add-history "bloodhound-legacy"
+    return 0
+  fi
+
+  colorecho "  → Installing bloodhound-legacy (BloodHound 4.x Electron GUI)"
+
+  case "$(uname -m)" in
+    x86_64) arch_label="linux-x64" ;;
+    aarch64) arch_label="linux-arm64"; install_pacman_tool "mesa" || true ;;
+    *) colorecho "  ✗ Warning: unsupported architecture $(uname -m) for bloodhound-legacy"; return 1 ;;
+  esac
+
+  install_pacman_tool "jq" || return 1
+  install_pacman_tool "unzip" || return 1
+  install_neo4j || return 1
+
+  mkdir -p "${install_root}"
+  curl_tempfile="$(mktemp)"
+
+  if ! curl -fsSL "https://api.github.com/repos/BloodHoundAD/BloodHound/releases/latest" -o "${curl_tempfile}"; then
+    colorecho "  ✗ Warning: Failed to fetch BloodHound legacy release"
+    rm -f "${curl_tempfile}"
+    return 1
+  fi
+
+  tag_name="$(jq -r '.tag_name' "${curl_tempfile}")"
+  asset_url="$(jq -r --arg a "BloodHound-${arch_label}.zip" '.assets[] | select(.name == $a) | .browser_download_url' "${curl_tempfile}")"
+  rm -f "${curl_tempfile}"
+
+  if [ -z "${asset_url}" ] || [ "${asset_url}" = "null" ]; then
+    colorecho "  ✗ Warning: No BloodHound-${arch_label}.zip asset in release ${tag_name}"
+    return 1
+  fi
+
+  zip_tempfile="$(mktemp --suffix=.zip)"
+  if ! curl -fsSL "${asset_url}" -o "${zip_tempfile}"; then
+    colorecho "  ✗ Warning: Failed to download BloodHound legacy ${tag_name}"
+    rm -f "${zip_tempfile}"
+    return 1
+  fi
+
+  rm -rf "${install_root}/app"
+  if ! unzip -q -o "${zip_tempfile}" -d "${install_root}/app"; then
+    colorecho "  ✗ Warning: Failed to extract BloodHound legacy archive"
+    rm -f "${zip_tempfile}"
+    return 1
+  fi
+  rm -f "${zip_tempfile}"
+
+  # The zip unpacks to a BloodHound-<arch>/ subdir holding the Electron binary.
+  bh_bin="$(find "${install_root}/app" -maxdepth 2 -type f -name BloodHound | head -1)"
+  if [ -z "${bh_bin}" ]; then
+    colorecho "  ✗ Warning: BloodHound binary not found after extraction"
+    return 1
+  fi
+  chmod +x "${bh_bin}"
+  ln -sf "${bh_bin}" "${install_root}/BloodHound"
+
+  # Pre-seed the Neo4j connection so the GUI login is one click.
+  local assets="${NIHIL_BUILD}/lib/installers/bloodhound-legacy"
+  mkdir -p /root/.config/bloodhound
+  cp "${assets}/config.json" /root/.config/bloodhound/config.json
+
+  cp "${assets}/bloodhound-legacy" /opt/tools/bin/bloodhound-legacy
+  cp "${assets}/bloodhound-legacy-stop" /opt/tools/bin/bloodhound-legacy-stop
+  cp "${assets}/bloodhound-legacy-reset" /opt/tools/bin/bloodhound-legacy-reset
+  chmod +x /opt/tools/bin/bloodhound-legacy /opt/tools/bin/bloodhound-legacy-stop /opt/tools/bin/bloodhound-legacy-reset
+
+  add-aliases "bloodhound-legacy"
+  add-history "bloodhound-legacy"
+  colorecho "  ✓ bloodhound-legacy installed (${tag_name})"
 }
 
 function install_ldapdomaindump() {
@@ -487,8 +582,8 @@ function install_mod_ad() {
   colorecho "Installing Active Directory red-team tools"
 
   colorecho "  [pipx] AD tools:"
-  install_bloodhound
-  install_bloodhound_ce
+  install_bloodhound_python
+  install_bloodhound_ce_python
   install_ldapdomaindump
   install_adidnsdump
   install_certipy
@@ -543,6 +638,7 @@ function install_mod_ad() {
 
   colorecho "  [source-build] AD tools:"
   install_bloodhound_ce_desktop
+  install_bloodhound_legacy_desktop
 
   colorecho "  [AUR] AD tools:"
   install_responder
