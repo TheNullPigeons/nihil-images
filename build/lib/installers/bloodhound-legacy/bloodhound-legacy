@@ -1,0 +1,22 @@
+#!/bin/bash
+
+BH_BIN="/opt/tools/BloodHound-Legacy/BloodHound"
+export NEO4J_HOME
+NEO4J_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v neo4j)")")")"
+
+# Neo4j
+if ! neo4j status 2>/dev/null | grep -q "is running"; then
+    echo "[nihil] Starting Neo4j..."
+    neo4j start >/dev/null 2>&1
+    echo "[nihil] Waiting for Neo4j..."
+    for i in $(seq 1 60); do
+        neo4j status 2>/dev/null | grep -q "is running" && break || sleep 2
+    done
+fi
+for i in $(seq 1 30); do
+    ss -tlnp 2>/dev/null | grep -q ':7687' && break || sleep 2
+done
+
+echo "[nihil] Starting BloodHound (legacy)..."
+echo "[nihil] Neo4j → bolt://localhost:7687 | Login: neo4j / fly2own1"
+exec "$BH_BIN" --no-sandbox --disable-dev-shm-usage "$@"
