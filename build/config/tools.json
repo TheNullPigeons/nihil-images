@@ -68,6 +68,11 @@
             "description": "BloodHound CE desktop client"
         },
         {
+            "name": "bloodhound-legacy",
+            "cmd": "bloodhound-legacy",
+            "description": "BloodHound legacy (4.x) desktop client"
+        },
+        {
             "name": "ldapdomaindump",
             "cmd": "ldapdomaindump",
             "description": "LDAP domain information dumper"

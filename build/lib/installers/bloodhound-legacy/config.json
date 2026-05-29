@@ -1,0 +1,15 @@
+{
+  "performance": {
+    "edge": 5,
+    "lowGraphics": false,
+    "nodeLabels": 1,
+    "edgeLabels": 1,
+    "darkMode": true,
+    "debug": false
+  },
+  "databaseInfo": {
+    "url": "bolt://localhost:7687",
+    "user": "neo4j",
+    "password": "fly2own1"
+  }
+}
