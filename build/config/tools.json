@@ -49,6 +49,11 @@
             "name": "zoxide",
             "cmd": "zoxide",
             "description": "Smart directory navigation (z)"
+        },
+        {
+            "name": "nihil-ntp",
+            "cmd": "nihil-ntp",
+            "description": "Sync the container clock to a target NTP server (DC) for Kerberos"
         }
     ],
     "mod_ad": [
