@@ -1,0 +1,5 @@
+updog
+updog -d /workspace -p 9090
+updog -d /workspace -p 443 --ssl --enable-uploads
+updog -d /workspace -p 9090 -P "$PASSWORD"
+updog -d /workspace -p 9090 --enable-uploads
