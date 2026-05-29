@@ -182,6 +182,10 @@ function install_httpie() {
     install_pacman_tool "httpie"
 }
 
+function install_updog() {
+    install_pipx_tool "updog" "updog"
+}
+
 function install_caido() {
     local caido_bin
     local caido_cli_bin
@@ -535,6 +539,7 @@ function install_mod_web() {
     install_httpmethods
     install_linkfinder
     install_patator
+    install_updog
 
     colorecho "  [pipx-git] Web scanners:"
     install_graphqlmap

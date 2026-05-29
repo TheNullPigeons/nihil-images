@@ -670,6 +670,11 @@
             "description": "Multi-purpose brute-forcer"
         },
         {
+            "name": "updog",
+            "cmd": "updog",
+            "description": "HTTP file server with upload (SimpleHTTPServer replacement)"
+        },
+        {
             "name": "phpggc",
             "cmd": "phpggc",
             "description": "PHP gadget chain generator"
