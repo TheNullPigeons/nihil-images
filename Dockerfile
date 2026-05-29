@@ -36,8 +36,9 @@ RUN chmod +x entrypoint.sh && \
     ./entrypoint.sh install_mod_reverse && \
     ./entrypoint.sh install_mod_crypto && \
     ./entrypoint.sh install_mod_forensics && \
+    ./entrypoint.sh install_mod_blueteam && \
     ./entrypoint.sh install_mod_wordlists && \
-    ./entrypoint.sh healthcheck core_tools mod_ad mod_web mod_osint mod_network mod_credential mod_pwn mod_c2 mod_misc mod_reverse mod_crypto mod_forensics mod_wordlists && \
+    ./entrypoint.sh healthcheck core_tools mod_ad mod_web mod_osint mod_network mod_credential mod_pwn mod_c2 mod_misc mod_reverse mod_crypto mod_forensics mod_blueteam mod_wordlists && \
     ./entrypoint.sh post_install
 
 WORKDIR /workspace
