@@ -1,0 +1,4 @@
+# `command gdb` avoids recursively expanding the `gdb` alias in zsh.
+alias gdb='command gdb -q --command=/opt/tools/gdb/pwndbg/gdbinit.py'
+alias gdb-peda='command gdb -q --command=/opt/tools/gdb/peda/peda.py'
+alias gdb-gef='command gdb -q --command=/opt/tools/gdb/gef/gef.py'
