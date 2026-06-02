@@ -22,7 +22,8 @@ nihil::import modules/mod_misc
 nihil::import modules/mod_reverse
 nihil::import modules/mod_crypto
 nihil::import modules/mod_forensics
-nihil::import modules/mod_blueteam
+nihil::import modules/mod_hunt
+nihil::import modules/mod_dfir
 nihil::import modules/mod_wordlists
 nihil::import lib/healthcheck
 nihil::import modules/post_install
