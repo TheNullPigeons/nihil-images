@@ -6,6 +6,7 @@ nihil::import lib/common
 nihil::import lib/registry/pacman
 nihil::import lib/registry/git
 nihil::import lib/registry/pipx
+nihil::import lib/registry/go
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -101,6 +102,38 @@ function install_pwncat_vl() {
     pipx inject pwncat-vl cryptography==36.0.2 2>/dev/null || true
 }
 
+function install_mythic_cli() {
+    local install_dir="/opt/tools/mythic"
+    local repo_dir="/tmp/mythic-src"
+
+    if command -v mythic-cli > /dev/null 2>&1; then
+        colorecho "  ✓ mythic-cli already installed"
+        return 0
+    fi
+
+    colorecho "  → Installing mythic-cli (Mythic C2 management CLI, build from source)"
+
+    _ensure_go || return 0
+
+    git clone --depth 1 https://github.com/its-a-feature/Mythic.git "$repo_dir" 2>/dev/null || {
+        colorecho "  ✗ Warning: Failed to clone Mythic"
+        return 0
+    }
+
+    mkdir -p "$install_dir"
+    (cd "$repo_dir/Mythic_CLI/src" && go build -o "$install_dir/mythic-cli" .) || {
+        colorecho "  ✗ Warning: Failed to build mythic-cli"
+        rm -rf "$repo_dir"
+        return 0
+    }
+
+    rm -rf "$repo_dir"
+    ln -sf "$install_dir/mythic-cli" /opt/tools/bin/mythic-cli
+    add-history "mythic-cli"
+    colorecho "  ✓ mythic-cli installed"
+    return 0
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -115,6 +148,9 @@ function install_mod_c2() {
     colorecho "  [pipx] C2 tools:"
     install_penelope
     install_pwncat_vl
+
+    colorecho "  [bin] C2 management:"
+    install_mythic_cli
 
     colorecho "Command & Control tools installation finished"
 }
