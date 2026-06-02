@@ -941,6 +941,11 @@
             "name": "pwncat-vl",
             "cmd": "pwncat-vl",
             "description": "Maintained fork of pwncat-cs with reverse/bind shell automation"
+        },
+        {
+            "name": "mythic-cli",
+            "cmd": "mythic-cli",
+            "description": "Mythic C2 framework management CLI"
         }
     ],
     "mod_misc": [
@@ -1131,7 +1136,7 @@
             "description": "Username generation from names"
         }
     ],
-    "mod_blueteam": [
+    "mod_hunt": [
         {
             "name": "chainsaw",
             "cmd": "chainsaw",
@@ -1147,6 +1152,13 @@
             "cmd": "sigma",
             "description": "Sigma detection rule CLI"
         },
+        {
+            "name": "wazuh-cli",
+            "cmd": "wazuh-cli",
+            "description": "Wazuh SIEM/XDR management CLI"
+        }
+    ],
+    "mod_dfir": [
         {
             "name": "yara",
             "cmd": "yara",
