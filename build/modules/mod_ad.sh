@@ -45,9 +45,19 @@ function install_neo4j() {
   colorecho "  → Installing Neo4j ${neo4j_version}"
   curl -fsSL "https://dist.neo4j.org/neo4j-community-${neo4j_version}-unix.tar.gz" |
     tar -xz -C /opt/
-  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j" /opt/tools/bin/neo4j
-  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/neo4j-admin" /opt/tools/bin/neo4j-admin
-  ln -sf "/opt/neo4j-community-${neo4j_version}/bin/cypher-shell" /opt/tools/bin/cypher-shell
+  # Wrappers exec plutot que des symlinks: les scripts Neo4j utilisent
+  # dirname "$0" pour retrouver leur arborescence (jars, NEO4J_HOME).
+  # Via un symlink, "$0" pointe vers /opt/tools/bin et la detection echoue
+  # (find: .../share/cypher-shell: No such file or directory). Le wrapper
+  # garde "$0" sur le vrai chemin dans /opt/neo4j-community-*.
+  local neo4j_home="/opt/neo4j-community-${neo4j_version}"
+  for bin in neo4j neo4j-admin cypher-shell; do
+    printf '#!/bin/bash\nexec "%s/bin/%s" "$@"\n' "${neo4j_home}" "${bin}" > "/opt/tools/bin/${bin}"
+    chmod +x "/opt/tools/bin/${bin}"
+  done
+  # Best-effort pre-seed: only takes effect on a pristine data dir (before the
+  # Neo4j system db is created). Once that db exists this silently no-ops, so the
+  # bloodhound-ce launcher self-heals the password at runtime instead.
   neo4j-admin set-initial-password fly2own1 >/dev/null 2>&1 || true
 }
 

@@ -5,6 +5,61 @@ BHCE_CFG="/opt/tools/BloodHound-CE/bloodhound.config.json"
 export NEO4J_HOME
 NEO4J_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v neo4j)")")")"
 
+# Neo4j 4.x stores users in the system database, not a flat auth file, so
+# `neo4j-admin set-initial-password` at build time is a silent no-op once that db
+# exists. If Neo4j ever started with the default neo4j/neo4j (e.g. an older image),
+# its password never gets aligned with what BloodHound expects, and the API fails
+# to start with: graph migration error: Neo.ClientError.Security.Unauthorized.
+# This heals it: read the credentials BloodHound will use from its own config,
+# and if they are rejected, reset them via the canonical Neo4j recovery procedure.
+ensure_neo4j_password() {
+    local cs="$NEO4J_HOME/bin/cypher-shell"
+    [ -x "$cs" ] || return 0
+
+    local uri user pass
+    uri="$(jq -r '.neo4j.connection // empty' "$BHCE_CFG" 2>/dev/null)"
+    uri="${uri#neo4j://}"
+    local creds="${uri%%@*}"
+    user="${creds%%:*}"
+    pass="${creds#*:}"
+    # Fall back to the documented defaults if the config could not be parsed.
+    [ -n "$user" ] && [ "$user" != "$creds" ] || { user="neo4j"; pass="fly2own1"; }
+
+    # Fast path: credentials already valid, nothing to do.
+    if "$cs" -a bolt://127.0.0.1:7687 -u "$user" -p "$pass" "RETURN 1;" >/dev/null 2>&1 </dev/null; then
+        return 0
+    fi
+
+    echo "[nihil] Neo4j password not aligned with BloodHound config, fixing..."
+    local conf="$NEO4J_HOME/conf/neo4j.conf"
+    neo4j stop >/dev/null 2>&1
+
+    # Temporarily disable auth: bypasses both the unknown password and the
+    # failed-attempt rate limiter, so we can ALTER the user in the system db.
+    cp "$conf" "$conf.nihilbak"
+    sed -i '/^#\?dbms\.security\.auth_enabled/d' "$conf"
+    echo 'dbms.security.auth_enabled=false' >> "$conf"
+
+    neo4j start >/dev/null 2>&1
+    for i in $(seq 1 30); do ss -tlnp 2>/dev/null | grep -q ':7687' && break || sleep 2; done
+
+    # CHANGE NOT REQUIRED so BloodHound (non-interactive) is not forced to rotate it.
+    "$cs" -a bolt://127.0.0.1:7687 -d system \
+        "ALTER USER $user SET PASSWORD '$pass' CHANGE NOT REQUIRED;" >/dev/null 2>&1 </dev/null
+
+    # Restore the original conf (auth re-enabled) and restart.
+    neo4j stop >/dev/null 2>&1
+    mv "$conf.nihilbak" "$conf"
+    neo4j start >/dev/null 2>&1
+    for i in $(seq 1 30); do ss -tlnp 2>/dev/null | grep -q ':7687' && break || sleep 2; done
+
+    if "$cs" -a bolt://127.0.0.1:7687 -u "$user" -p "$pass" "RETURN 1;" >/dev/null 2>&1 </dev/null; then
+        echo "[nihil] Neo4j password aligned."
+    else
+        echo "[nihil] Warning: could not align the Neo4j password automatically." >&2
+    fi
+}
+
 # PostgreSQL
 if ! pg_isready -q 2>/dev/null; then
     mkdir -p /run/postgresql
@@ -30,6 +85,9 @@ fi
 for i in $(seq 1 30); do
     ss -tlnp 2>/dev/null | grep -q ':7687' && break || sleep 2
 done
+
+# Make sure Neo4j accepts the credentials BloodHound is about to use.
+ensure_neo4j_password
 
 echo "[nihil] Starting BloodHound CE..."
 echo "[nihil] UI → http://localhost:1030 | Login: admin (password printed on first run)"
