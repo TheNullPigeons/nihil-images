@@ -465,6 +465,12 @@ function install_openldap() {
     add-history "ldapsearch"
 }
 
+# GSSAPI SASL plugin: enables Kerberos auth over LDAP/SASL (ldapsearch -Y GSSAPI,
+# ldap3 / certipy / bloodyAD / netexec with -k). Library only, no binary.
+function install_cyrus_sasl_gssapi() {
+    install_pacman_tool "cyrus-sasl-gssapi"
+}
+
 function install_smbclientng() {
   install_pipx_tool "smbclientng" "smbclientng"
 }
@@ -642,6 +648,7 @@ function install_mod_ad() {
   colorecho "  [pacman] AD tools:"
   install_krb5
   install_openldap
+  install_cyrus_sasl_gssapi
   install_smbclient
   install_python_pcapy
   install_nbtscan
