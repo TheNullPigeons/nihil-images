@@ -767,11 +767,6 @@
             "description": "Fast port scanner"
         },
         {
-            "name": "netdiscover",
-            "cmd": "netdiscover",
-            "description": "ARP recon tool"
-        },
-        {
             "name": "nmap-parse-output",
             "cmd": "nmap-parse-output",
             "description": "Nmap XML output parser"

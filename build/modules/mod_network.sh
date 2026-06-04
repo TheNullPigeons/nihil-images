@@ -181,7 +181,8 @@ function install_mod_network() {
 
     install_chisel
     install_masscan
-    install_netdiscover
+    # install_netdiscover  # disabled: AUR build fails fetching the IEEE OUI db
+    # (http://standards-oui.ieee.org/oui/oui.txt) from CI, which aborts the build
     install_nmap_parse_output
     install_proxychains
     install_rustscan
