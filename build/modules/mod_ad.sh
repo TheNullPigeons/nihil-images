@@ -570,6 +570,10 @@ function install_pre2k() {
   install_pipx_tool_git "pre2k" "https://github.com/garrettfoster13/pre2k"
 }
 
+function install_powerview_py() {
+  install_pipx_tool_git "powerview" "https://github.com/aniqfakhrul/powerview.py"
+}
+
 function install_shadowcoerce() {
   install_git_tool "ShadowCoerce" "https://github.com/ShutdownRepo/ShadowCoerce" "shadowcoerce.py"
 }
@@ -644,6 +648,7 @@ function install_mod_ad() {
 
   colorecho "  [pipx-git] AD tools:"
   install_pre2k
+  install_powerview_py
 
   colorecho "  [pacman] AD tools:"
   install_krb5

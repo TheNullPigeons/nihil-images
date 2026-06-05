@@ -188,6 +188,11 @@
             "description": "Python port of PowerView"
         },
         {
+            "name": "powerview.py",
+            "cmd": "powerview",
+            "description": "Interactive PowerView for Linux (LDAP enum/abuse)"
+        },
+        {
             "name": "masky",
             "cmd": "masky",
             "description": "ADCS-based credential extraction"

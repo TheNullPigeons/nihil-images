@@ -1,0 +1,5 @@
+powerview "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_IP"
+powerview "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_IP" --use-ldaps
+powerview "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_IP" -k
+powerview "$DOMAIN"/"$USER"@"$DC_IP" -k --no-pass
+powerview "$DOMAIN"/"$USER"@"$DC_IP" -H :"$NT_HASH"
