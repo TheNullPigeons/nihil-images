@@ -193,6 +193,11 @@
             "description": "Interactive PowerView for Linux (LDAP enum/abuse)"
         },
         {
+            "name": "tdo-dump",
+            "cmd": "tdo-dump",
+            "description": "Dump trusted domain objects and secrets via DRS replication"
+        },
+        {
             "name": "masky",
             "cmd": "masky",
             "description": "ADCS-based credential extraction"
