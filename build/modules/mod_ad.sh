@@ -574,6 +574,10 @@ function install_powerview_py() {
   install_pipx_tool_git "powerview" "https://github.com/aniqfakhrul/powerview.py"
 }
 
+function install_tdo_dump() {
+  install_pipx_tool_git "tdo-dump" "https://github.com/Goultarde/tdo_dump"
+}
+
 function install_shadowcoerce() {
   install_git_tool "ShadowCoerce" "https://github.com/ShutdownRepo/ShadowCoerce" "shadowcoerce.py"
 }
@@ -649,6 +653,7 @@ function install_mod_ad() {
   colorecho "  [pipx-git] AD tools:"
   install_pre2k
   install_powerview_py
+  install_tdo_dump
 
   colorecho "  [pacman] AD tools:"
   install_krb5
