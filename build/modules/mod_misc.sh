@@ -57,6 +57,12 @@ function install_firefox() {
     install_pacman_tool "firefox"
     python3 /opt/nihil/build/assets/firefox/generate_policy.py
     add-history "firefox"
+    # Default browser for HTML and http(s) links (chromium misbehaves in a container).
+    if command -v xdg-mime >/dev/null 2>&1; then
+        xdg-mime default firefox.desktop \
+            text/html application/xhtml+xml x-scheme-handler/http x-scheme-handler/https \
+            >/dev/null 2>&1 || true
+    fi
 }
 function install_chromium() {
     install_pacman_tool "chromium"

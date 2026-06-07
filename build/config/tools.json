@@ -51,6 +51,11 @@
             "description": "Smart directory navigation (z)"
         },
         {
+            "name": "yazi",
+            "cmd": "yazi",
+            "description": "TUI file manager (browse and open files, alias: y)"
+        },
+        {
             "name": "nihil-ntp",
             "cmd": "nihil-ntp",
             "description": "Sync the container clock to a target NTP server (DC) for Kerberos"
