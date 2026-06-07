@@ -19,6 +19,15 @@ function install_core_tools() {
     tmux \
     fzf \
     zoxide \
+    yazi \
+    fd \
+    ripgrep \
+    chafa \
+    feh \
+    zathura \
+    zathura-pdf-mupdf \
+    thunar \
+    xdg-utils \
     curl \
     wget \
     asciinema \
@@ -30,12 +39,32 @@ function install_core_tools() {
     xcb-util-cursor && \
     pacman -Scc --noconfirm
 
+    # D-Bus machine-id: GTK/Qt apps like thunar fail to start in a container
+    # without it ("Cannot spawn a message bus without a machine-id").
+    if [ ! -s /etc/machine-id ]; then
+        (command -v dbus-uuidgen >/dev/null 2>&1 && dbus-uuidgen --ensure=/etc/machine-id) \
+            || systemd-machine-id-setup >/dev/null 2>&1 || true
+    fi
+    mkdir -p /var/lib/dbus && ln -sf /etc/machine-id /var/lib/dbus/machine-id
+
     colorecho "Core tools installed"
 
     add-aliases "fzf"
     add-history "fzf"
     add-aliases "zoxide"
     add-history "zoxide"
+    add-aliases "yazi"
+    add-history "yazi"
+    install -Dm644 "${NIHIL_BUILD}/config/yazi/yazi.toml" /root/.config/yazi/yazi.toml
+    # Lightweight default viewers, so `open`/yazi launch a real window (on the
+    # host display when the container runs with --enable-x11): feh for images,
+    # zathura for PDFs. Both behave better in a container than chromium.
+    if command -v xdg-mime >/dev/null 2>&1; then
+        xdg-mime default feh.desktop \
+            image/png image/jpeg image/gif image/webp image/bmp image/x-icon image/tiff image/svg+xml \
+            >/dev/null 2>&1 || true
+        xdg-mime default org.pwmt.zathura.desktop application/pdf >/dev/null 2>&1 || true
+    fi
 
     colorecho "Installing nihil-history"
     install_pipx_tool_git "nihil-history" "https://github.com/TheNullPigeons/nihil-history"

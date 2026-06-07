@@ -1,0 +1,97 @@
+# _yazi_display_live: true only if a usable GUI display is actually reachable.
+# DISPLAY may be set (e.g. :1) with no X server behind it, so for local ":N"
+# displays we check the matching /tmp/.X11-unix/XN socket exists.
+_yazi_display_live() {
+	[ -n "$WAYLAND_DISPLAY" ] && return 0
+	[ -n "$DISPLAY" ] || return 1
+	case "$DISPLAY" in
+		:*|unix:*|localhost:*)
+			local n="${DISPLAY#*:}"; n="${n%%.*}"
+			[ -S "/tmp/.X11-unix/X${n}" ] ;;
+		*) return 0 ;;  # remote / host.docker.internal:0 -> assume reachable
+	esac
+}
+# _yazi_gui_open: open a file or URL in a real window via the desktop default
+# app, or print a clear hint when there is no usable GUI display.
+_yazi_gui_open() {
+	if _yazi_display_live && command -v xdg-open >/dev/null 2>&1; then
+		( xdg-open "$1" >/dev/null 2>&1 & )
+	else
+		print -u2 "open: no GUI display in this session. Start the container with --enable-x11 (or use the Browser UI) to open '$1' in a window."
+	fi
+}
+# open: smart opener.
+#   open <file|url>          auto-route (text->$EDITOR, html/media->default GUI app)
+#   open <file|url> <app>    force a specific app (e.g. open report.pdf firefox)
+#   open [dir]               launch the yazi browser
+# Terminal apps run in the foreground; GUI apps open in a window (need a display).
+open() {
+	local target="$1" app="$2"
+
+	# Explicit app form: open <target> <app>
+	if [[ -n "$app" ]]; then
+		if ! command -v "$app" >/dev/null 2>&1; then
+			print -u2 "open: '$app' not found"
+			return 1
+		fi
+		case "$app" in
+			nvim|vim|vi|nano|micro|emacs|helix|hx|less|more|bat|view|cat)
+				"$app" "$target" ;;                          # terminal app -> foreground
+			*)
+				if _yazi_display_live; then
+					( "$app" "$target" >/dev/null 2>&1 & )   # GUI app -> window
+				else
+					print -u2 "open: no GUI display to run '$app' on '$target'."
+				fi ;;
+		esac
+		return
+	fi
+
+	# Auto-route form
+	case "$target" in
+		http://*|https://*) _yazi_gui_open "$target"; return ;;
+	esac
+	if [[ -z "$target" || -d "$target" ]]; then
+		yazi ${target:+"$target"}
+		return
+	fi
+	[[ -f "$target" ]] || { yazi "$target"; return; }
+
+	local mime; mime="$(file -bL --mime-type -- "$target" 2>/dev/null)"
+	case "$mime" in
+		text/html|application/xhtml+xml)
+			_yazi_gui_open "$target" ;;
+		text/*|application/json|application/xml|application/javascript|application/x-sh|application/x-shellscript|application/toml|application/x-yaml|application/x-empty)
+			"${EDITOR:-nvim}" "$target" ;;
+		*)
+			_yazi_gui_open "$target" ;;
+	esac
+}
+# opendir: open a directory in the Thunar file manager window (needs a display,
+# i.e. run the container with --enable-x11, or use the Browser UI).
+opendir() {
+	local dir="${1:-$PWD}"
+	if ! _yazi_display_live; then
+		print -u2 "opendir: no GUI display in this session. Start the container with --enable-x11 (or use the Browser UI)."
+		return 1
+	fi
+	if ! command -v thunar >/dev/null 2>&1; then
+		print -u2 "opendir: thunar is not installed."
+		return 1
+	fi
+	# Thunar needs a D-Bus session bus; start one if the session has none.
+	if [ -n "$DBUS_SESSION_BUS_ADDRESS" ] || ! command -v dbus-launch >/dev/null 2>&1; then
+		( thunar "$dir" >/dev/null 2>&1 & )
+	else
+		( dbus-launch --exit-with-session thunar "$dir" >/dev/null 2>&1 & )
+	fi
+}
+# y: yazi browser that cd's into the directory you quit from.
+y() {
+	local tmp cwd
+	tmp="$(mktemp -t yazi-cwd.XXXXXX)"
+	yazi "$@" --cwd-file="$tmp"
+	cwd="$(command cat -- "$tmp")"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}

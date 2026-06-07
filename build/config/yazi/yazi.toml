@@ -1,0 +1,23 @@
+# yazi openers:
+#   - text/code -> $EDITOR in the terminal
+#   - everything else -> the desktop default app in a real window via xdg-open
+#     (needs a GUI display: run the container with --enable-x11 or the Browser UI)
+[opener]
+edit = [
+	{ run = '${EDITOR:-nvim} "$@"', block = true, desc = "Edit" },
+]
+open = [
+	{ run = 'xdg-open "$@" >/dev/null 2>&1', orphan = true, desc = "Open" },
+]
+
+[open]
+prepend_rules = [
+	{ mime = "text/html", use = "open" },
+	{ mime = "application/xhtml+xml", use = "open" },
+	{ mime = "text/*", use = "edit" },
+	{ mime = "application/json", use = "edit" },
+	{ mime = "application/x-shellscript", use = "edit" },
+]
+append_rules = [
+	{ mime = "*", use = "open" },
+]
