@@ -15,6 +15,7 @@ function install_core_tools() {
     vim \
     nano \
     neovim \
+    less \
     tmux \
     fzf \
     zoxide \
@@ -25,7 +26,8 @@ function install_core_tools() {
     xclip \
     gdb \
     rlwrap \
-    bind && \
+    bind \
+    xcb-util-cursor && \
     pacman -Scc --noconfirm
 
     colorecho "Core tools installed"
