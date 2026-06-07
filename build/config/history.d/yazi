@@ -1,0 +1,7 @@
+open "$FILE"
+open "$FILE" "$NAVIGATOR"
+open file.pdf firefox
+opendir
+opendir /workspace
+y
+yazi /workspace
