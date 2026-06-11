@@ -1,3 +1,6 @@
-alias gdb='gdb -q -ex init-pwndbg' # Use pwndbg by default
-alias gdb-peda='gdb -q -ex init-peda'
-alias gdb-gef='gdb -q -ex init-gef'
+# `command gdb` bypasses alias lookup. Without it, zsh recursively re-expands
+# the `gdb` alias inside `gdb-peda`/`gdb-gef`, injecting `-ex init-pwndbg` and
+# loading pwndbg on top of peda/gef.
+alias gdb='command gdb -q -ex init-pwndbg' # Use pwndbg by default
+alias gdb-peda='command gdb -q -ex init-peda'
+alias gdb-gef='command gdb -q -ex init-gef'

@@ -42,14 +42,30 @@ function install_pwndbg() {
     # Its own setup.sh provisions a venv with pinned deps, which sidesteps the Arch
     # package dep-skew (capstone6pwndbg) that breaks a pacman install:
     #   ImportError: cannot import name 'CS_MODE_RISCVC' from 'capstone6pwndbg'
-    if [ -f /opt/tools/gdb/pwndbg/gdbinit.py ]; then
+    # Guard on the venv, not gdbinit.py: the clone creates gdbinit.py, so checking
+    # it would mark a half-finished install (no venv) as "done" and ship a broken
+    # pwndbg that aborts on every launch with "Cannot find Pwndbg virtualenv".
+    if [ -x /opt/tools/gdb/pwndbg/.venv/bin/python ]; then
         colorecho "  ✓ pwndbg already installed (source)"
     else
         colorecho "  → Installing pwndbg GDB plugin (from source)"
         mkdir -p /opt/tools/gdb
         if git-clone-retry "https://github.com/pwndbg/pwndbg.git" "/opt/tools/gdb/pwndbg"; then
-            ( cd /opt/tools/gdb/pwndbg && ./setup.sh ) \
-                || colorecho "  ✗ Warning: pwndbg setup.sh failed"
+            # We can't use pwndbg's setup.sh: it runs `sudo pacman -S ...` and, under
+            # `set -e`, aborts before creating the venv when the pacman sync db is
+            # absent during the image build. Our base image already ships gdb, python,
+            # git, etc., so we provision the venv directly, mirroring setup.sh's steps
+            # (use GDB's own Python so the C-extension ABI matches).
+            local gdb_python
+            gdb_python=$(gdb -batch -q --nx -ex 'pi import sysconfig; print(sysconfig.get_config_vars().get("EXENAME", sysconfig.get_config_var("BINDIR")+"/python"+sysconfig.get_config_var("VERSION")+sysconfig.get_config_var("EXE")))')
+            if ( cd /opt/tools/gdb/pwndbg \
+                    && "$gdb_python" -m venv .venv \
+                    && .venv/bin/pip install -q uv \
+                    && .venv/bin/uv sync ); then
+                colorecho "  ✓ pwndbg venv provisioned"
+            else
+                colorecho "  ✗ Warning: pwndbg venv setup failed"
+            fi
         else
             colorecho "  ✗ Warning: Failed to clone pwndbg"
         fi
@@ -68,8 +84,21 @@ function install_peda() {
     fi
     colorecho "  → Installing peda GDB plugin"
     mkdir -p /opt/tools/gdb
-    git-clone-retry "https://github.com/longld/peda.git" "/opt/tools/gdb/peda" \
-        || colorecho "  ✗ Warning: Failed to install peda"
+    if git-clone-retry "https://github.com/longld/peda.git" "/opt/tools/gdb/peda"; then
+        # peda vendors six 1.9.0 (2015) in lib/ and prepends that dir to sys.path.
+        # That version's six.moves is incompatible with Python 3.14 and makes peda
+        # fail to load with "No module named 'six.moves'". Refresh the vendored copy
+        # with a current six so peda loads under GDB's modern Python.
+        if python3 -m pip install -q --break-system-packages --upgrade six; then
+            cp "$(python3 -c 'import six, sys; sys.stdout.write(six.__file__)')" \
+               /opt/tools/gdb/peda/lib/six.py \
+               && rm -rf /opt/tools/gdb/peda/lib/__pycache__
+        else
+            colorecho "  ✗ Warning: failed to refresh peda's vendored six"
+        fi
+    else
+        colorecho "  ✗ Warning: Failed to install peda"
+    fi
 }
 
 function install_gef() {
