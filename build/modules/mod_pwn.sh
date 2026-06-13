@@ -37,6 +37,47 @@ function install_ropgadget() {
     install_pipx_tool "ROPgadget" "ROPgadget"
 }
 
+function install_ropper() {
+    # ropper depends on filebytes whose setup.py uses ast.Str (removed in Python 3.12).
+    # Patch the setup.py, build a local wheel, then pass it to pipx so its isolated
+    # venv doesn't re-download the broken sdist from PyPI.
+    if command -v ropper >/dev/null 2>&1; then
+        colorecho "  ✓ ropper already installed"
+        return 0
+    fi
+    colorecho "  → Installing ropper (patching filebytes for Python 3.12+)"
+    local tmp_src="/tmp/filebytes-build"
+    local wheel_dir="/tmp/filebytes-wheel"
+    curl -sSLf "https://files.pythonhosted.org/packages/source/f/filebytes/filebytes-0.10.2.tar.gz" \
+        | tar xz -C /tmp/ \
+        && mv /tmp/filebytes-0.10.2 "$tmp_src" || { colorecho "  ✗ Warning: Failed to download filebytes"; return 1; }
+
+    # Replace ast.Str (removed in 3.12) with ast.Constant in setup.py.
+    cat > "$tmp_src/setup.py" << 'SETUP'
+from setuptools import setup
+import ast, os
+currentDir = os.path.dirname(os.path.abspath(__file__))
+def extractMetaInfo(src):
+    info = {}
+    for e in ast.parse(src).body:
+        if isinstance(e, ast.Assign) and isinstance(e.value, ast.Constant):
+            info[e.targets[0].id] = e.value.value
+    return info
+with open(currentDir + os.sep + "filebytes" + os.sep + "__init__.py") as f:
+    text = f.read()
+setup(version=extractMetaInfo(text)["VERSION"])
+SETUP
+
+    mkdir -p "$wheel_dir"
+    pip wheel --no-build-isolation "$tmp_src" -w "$wheel_dir" --quiet \
+        || { colorecho "  ✗ Warning: Failed to build filebytes wheel"; return 1; }
+
+    pipx install ropper --pip-args="--find-links $wheel_dir" \
+        && ln -sf /root/.local/bin/ropper /opt/tools/bin/ropper \
+        || colorecho "  ✗ Warning: Failed to install ropper"
+    rm -rf "$tmp_src" "$wheel_dir"
+}
+
 function install_pwndbg() {
     # Install pwndbg from source (Exegol-style) into /opt/tools/gdb/pwndbg.
     # Its own setup.sh provisions a venv with pinned deps, which sidesteps the Arch
@@ -113,6 +154,12 @@ function install_gef() {
         || colorecho "  ✗ Warning: Failed to install gef"
 }
 
+function install_pwninit() {
+    # patchelf/elfutils/xz are pwninit's runtime deps for rebuilding challenge libs.
+    install_pacman_tools "patchelf" "elfutils" "xz"
+    install_cargo_tool "pwninit"
+}
+
 function install_one_gadget() {
     install_gem_tool "one_gadget"
 }
@@ -147,6 +194,10 @@ function install_mod_pwn() {
     colorecho "  [pipx] Pwn / exploit tools:"
     install_pwntools
     install_ropgadget
+    install_ropper
+
+    colorecho "  [cargo] Pwn tools:"
+    install_pwninit
 
     colorecho "  [gem] Pwn tools:"
     install_one_gadget
