@@ -3,7 +3,20 @@
 BHCE_BIN="/opt/tools/BloodHound-CE/bloodhound"
 BHCE_CFG="/opt/tools/BloodHound-CE/bloodhound.config.json"
 export NEO4J_HOME
-NEO4J_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v neo4j)")")")"
+# The neo4j binary in /opt/tools/bin/ is a wrapper script, not a symlink,
+# so readlink -f stays inside /opt/tools. Read the real home from the wrapper.
+NEO4J_HOME="$(grep -oP '(?<=exec ").*(?=/bin/neo4j)' /opt/tools/bin/neo4j 2>/dev/null | head -1)"
+# Fallback: glob the known install location.
+[ -d "$NEO4J_HOME" ] || NEO4J_HOME="$(ls -d /opt/neo4j-community-* 2>/dev/null | head -1)"
+
+# Bail early if something else already holds port 7687 (e.g. another Neo4j
+# container on the host network), otherwise cypher-shell will auth against
+# the wrong instance and the error will be misleading.
+if ss -tlnp 2>/dev/null | grep -q ':7687' && ! "$NEO4J_HOME/bin/neo4j" status 2>/dev/null | grep -q "is running"; then
+    echo "[nihil] ERROR: port 7687 is already in use by another process." >&2
+    echo "[nihil] Stop the conflicting service (e.g. docker stop flowsint-neo4j-prod) and retry." >&2
+    exit 1
+fi
 
 # Neo4j 4.x stores users in the system database, not a flat auth file, so
 # `neo4j-admin set-initial-password` at build time is a silent no-op once that db
