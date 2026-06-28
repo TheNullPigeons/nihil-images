@@ -4,6 +4,11 @@
             "user_interface":{
                 "look_and_feel":"Dark"
             }
+        },
+        "misc":{
+            "embedded_browser":{
+                "allow_running_without_sandbox":true
+            }
         }
     }
 }
