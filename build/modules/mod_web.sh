@@ -406,8 +406,12 @@ function install_burpsuite() {
     mkdir -p /etc/fonts/conf.d
     cp /opt/nihil/build/assets/fontconfig/local.conf /etc/fonts/local.conf
     fc-cache -fv > /dev/null 2>&1 || true
+    # mod_ad.sh sets the system default to java-11 (required by Neo4j 4.4.x).
+    # Burp Suite needs Java 21+, so we resolve the path from jdk-openjdk directly
+    # instead of using archlinux-java get (which would return java-11).
     local java_bin
-    java_bin=$(archlinux-java get 2>/dev/null | xargs -I{} echo "/usr/lib/jvm/{}/bin/java")
+    java_bin=$(pacman -Ql jdk-openjdk 2>/dev/null | awk '/\/bin\/java$/{print $2}' | head -1)
+    [[ -x "$java_bin" ]] || java_bin=$(ls -d /usr/lib/jvm/java-*-openjdk 2>/dev/null | grep -v 'java-11' | sort -V | tail -1)/bin/java
     [[ -x "$java_bin" ]] || java_bin=$(which java)
     printf '#!/bin/bash\nexec %s -Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true -jar -Xmx4g /opt/tools/BurpSuiteCommunity/BurpSuiteCommunity.jar "$@"\n' "$java_bin" \
         > /opt/tools/bin/burpsuite
