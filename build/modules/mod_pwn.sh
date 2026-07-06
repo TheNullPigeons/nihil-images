@@ -172,6 +172,21 @@ function install_checksec() {
     install_pacman_tool "checksec"
 }
 
+function install_glibc_all_in_one() {
+    install_pipx_tool "glibc-aio" "git+https://github.com/matrix1001/glibc-all-in-one.git"
+}
+
+function install_qemu_user() {
+    # Static builds avoid pulling in the dynamic-linked qemu's shared lib deps,
+    # and work standalone for cross-arch pwn (ARM/MIPS/etc. binaries on x86_64).
+    install_pacman_tool "qemu-user-static"
+}
+
+function install_cross_binutils() {
+    # Cross assemblers for pwntools' asm()/shellcraft (ARM32/ARM64 shellcode).
+    install_pacman_tools "arm-none-eabi-binutils" "aarch64-linux-gnu-binutils"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -195,6 +210,9 @@ function install_mod_pwn() {
     install_pwntools
     install_ropgadget
     install_ropper
+    install_glibc_all_in_one
+    install_qemu_user
+    install_cross_binutils
 
     colorecho "  [cargo] Pwn tools:"
     install_pwninit
