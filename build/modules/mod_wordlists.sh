@@ -74,6 +74,7 @@ function install_username_anarchy() {
         "https://github.com/urbanadventurer/username-anarchy.git" \
         "username-anarchy" \
         "username-anarchy"
+    add-history "username-anarchy"
 }
 
 # ---------------------------------------------------------------------------
