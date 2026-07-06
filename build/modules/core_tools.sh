@@ -47,6 +47,13 @@ function install_core_tools() {
     fi
     mkdir -p /var/lib/dbus && ln -sf /etc/machine-id /var/lib/dbus/machine-id
 
+    # Allow pip install without --break-system-packages globally
+    mkdir -p /root/.config/pip
+    cat > /root/.config/pip/pip.conf << 'EOF'
+[global]
+break-system-packages = true
+EOF
+
     colorecho "Core tools installed"
 
     add-aliases "fzf"
