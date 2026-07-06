@@ -53,9 +53,45 @@ function install_cyberchef() {
     fi
 }
 
+function _firefox_seed_foxyproxy() {
+    local profile_dir="/root/.mozilla/firefox/nihil.Nihil"
+    mkdir -p "$profile_dir" /root/.mozilla/firefox
+
+    # Create profiles.ini so Firefox picks up the nihil profile on first launch
+    cat > /root/.mozilla/firefox/profiles.ini << 'EOF'
+[Profile0]
+Name=Nihil
+IsRelative=1
+Path=nihil.Nihil
+Default=1
+
+[General]
+StartWithLastProfile=1
+Version=2
+EOF
+
+    # Install marionette driver (needed only at build time)
+    pip install --quiet --break-system-packages marionette-driver 2>/dev/null || true
+
+    # Start Firefox headless; policies.json force-installs FoxyProxy from AMO
+    MOZ_HEADLESS=1 firefox --headless --no-remote \
+        --marionette --remote-allow-system-access \
+        --profile "$profile_dir" &
+    local ff_pid=$!
+
+    # Run configuration script (waits for marionette + FoxyProxy internally)
+    python3 /opt/nihil/build/assets/firefox/configure_foxyproxy.py || true
+
+    kill "$ff_pid" 2>/dev/null
+    wait "$ff_pid" 2>/dev/null
+
+    colorecho "  ✓ FoxyProxy pre-configured with Burp Suite (127.0.0.1:8080)"
+}
+
 function install_firefox() {
     install_pacman_tool "firefox"
     python3 /opt/nihil/build/assets/firefox/generate_policy.py
+    _firefox_seed_foxyproxy
     add-history "firefox"
     # Default browser for HTML and http(s) links (chromium misbehaves in a container).
     if command -v xdg-mime >/dev/null 2>&1; then
