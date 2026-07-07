@@ -31,6 +31,10 @@ function install_john() {
 
 function install_hashcat() {
     install_pacman_tool "hashcat"
+    install_pacman_tool "hashcat-utils"
+    git clone --depth=1 https://github.com/hashcat/hashcat /tmp/hashcat-src
+    cp -r /tmp/hashcat-src/rules /usr/share/hashcat/rules
+    rm -rf /tmp/hashcat-src
 }
 
 function install_fcrackzip() {
