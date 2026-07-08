@@ -1,0 +1,2 @@
+mongosh mongodb://"$TARGET"
+mongosh mongodb://"$USER":"$PASSWORD"@"$TARGET"/"$DB"

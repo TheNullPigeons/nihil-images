@@ -129,6 +129,14 @@ function install_sqlitebrowser() {
     install_pacman_tool "sqlitebrowser"
 }
 
+function install_mongosh() {
+    pacman-key --populate chaotic 2>/dev/null || true
+    install_pacman_tool "mongosh"
+    install_pacman_tool "mongodb-tools"
+    add-aliases "mongosh"
+    add-history "mongosh"
+}
+
 function install_keepassxc() {
     install_pacman_tool "keepassxc"
 }
@@ -205,6 +213,7 @@ function install_mod_misc() {
     install_rdate
     install_grc
     install_sqlitebrowser
+    install_mongosh
 
     install_keepassxc
     install_rsync
