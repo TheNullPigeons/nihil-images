@@ -74,7 +74,7 @@ function install_exiftool() {
 }
 
 function install_steghide() {
-    install_aur_tool "steghide" "steghide"
+    install_pacman_tool "steghide"
 }
 
 function install_zsteg() {
