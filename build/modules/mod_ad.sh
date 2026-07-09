@@ -182,6 +182,7 @@ function install_bloodhound_ce_desktop() {
   cd /tmp && su -s /bin/bash postgres -c "psql -c \"CREATE USER bloodhound WITH PASSWORD 'nihil4thewin';\""
   cd /tmp && su -s /bin/bash postgres -c "psql -c \"CREATE DATABASE bloodhound;\""
   cd /tmp && su -s /bin/bash postgres -c "psql -c \"ALTER DATABASE bloodhound OWNER TO bloodhound;\""
+  python3 "${NIHIL_BUILD}/assets/bloodhound-ce-import-queries.py" || true
   su -s /bin/bash postgres -c "pg_ctl -D /var/lib/postgres/data stop" >/dev/null
 
   local assets="${NIHIL_BUILD}/lib/installers/bloodhound-ce"
@@ -271,6 +272,7 @@ function install_bloodhound_legacy_desktop() {
   local assets="${NIHIL_BUILD}/lib/installers/bloodhound-legacy"
   mkdir -p /root/.config/bloodhound
   cp "${assets}/config.json" /root/.config/bloodhound/config.json
+  cp "${NIHIL_BUILD}/assets/bloodhound-customqueries.json" /root/.config/bloodhound/customqueries.json
 
   cp "${assets}/bloodhound-legacy" /opt/tools/bin/bloodhound-legacy
   cp "${assets}/bloodhound-legacy-stop" /opt/tools/bin/bloodhound-legacy-stop
