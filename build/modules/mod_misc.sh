@@ -83,7 +83,9 @@ EOF
     python3 /opt/nihil/build/assets/firefox/configure_foxyproxy.py || true
 
     kill "$ff_pid" 2>/dev/null
-    wait "$ff_pid" 2>/dev/null
+    pkill -9 -P "$ff_pid" 2>/dev/null || true
+    pkill -9 -f "firefox" 2>/dev/null || true
+    wait "$ff_pid" 2>/dev/null || true
 
     colorecho "  ✓ FoxyProxy pre-configured with Burp Suite (127.0.0.1:8080)"
 }
