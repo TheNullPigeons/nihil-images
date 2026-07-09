@@ -12,19 +12,19 @@ for i in $(seq 1 20); do
     sleep 0.25
 done
 
-if ! pg_isready -q 2>/dev/null; then
+if ! pg_isready -q -h /run/postgresql -p 5433 2>/dev/null; then
     mkdir -p /run/postgresql
     chown postgres:postgres /run/postgresql
     su -s /bin/bash postgres -c "pg_ctl -D /var/lib/postgres/data -l /tmp/postgres.log start" >/dev/null
-    for i in $(seq 1 15); do pg_isready -q 2>/dev/null && break || sleep 1; done
+    for i in $(seq 1 15); do pg_isready -q -h /run/postgresql -p 5433 2>/dev/null && break || sleep 1; done
 fi
 
 cd /tmp
 # Force-disconnect any remaining client (idempotent if none) before DROP.
-su -s /bin/bash postgres -c "psql -d postgres -c \"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'bloodhound' AND pid <> pg_backend_pid();\"" >/dev/null
-su -s /bin/bash postgres -c "psql -c \"DROP DATABASE IF EXISTS bloodhound;\""
-su -s /bin/bash postgres -c "psql -c \"CREATE DATABASE bloodhound;\""
-su -s /bin/bash postgres -c "psql -c \"ALTER DATABASE bloodhound OWNER TO bloodhound;\""
+su -s /bin/bash postgres -c "psql -p 5433 -d postgres -c \"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'bloodhound' AND pid <> pg_backend_pid();\"" >/dev/null
+su -s /bin/bash postgres -c "psql -p 5433 -c \"DROP DATABASE IF EXISTS bloodhound;\""
+su -s /bin/bash postgres -c "psql -p 5433 -c \"CREATE DATABASE bloodhound;\""
+su -s /bin/bash postgres -c "psql -p 5433 -c \"ALTER DATABASE bloodhound OWNER TO bloodhound;\""
 
 # Clear local work_dir state (auth secrets, sessions) so first-run logic re-triggers.
 rm -rf /opt/tools/BloodHound-CE/work/* 2>/dev/null || true
