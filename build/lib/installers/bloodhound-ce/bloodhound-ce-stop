@@ -10,5 +10,5 @@ if neo4j status 2>/dev/null | grep -q "is running"; then
 fi
 
 if pg_isready -q -h /run/postgresql 2>/dev/null; then
-    su -s /bin/bash postgres -c "pg_ctl -D /var/lib/postgres/data stop" >/dev/null 2>&1
+    sudo -u postgres bash -c "pg_ctl -D /var/lib/postgres/data stop" >/dev/null 2>&1
 fi
