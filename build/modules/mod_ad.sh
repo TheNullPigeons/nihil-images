@@ -300,6 +300,14 @@ function install_bloodyad() {
   install_pipx_tool "bloodyad" "bloodyad"
 }
 
+function install_bloodhound_quickwin() {
+  install_git_tool_venv "bloodhound-quickwin" \
+    "https://github.com/kaluche/bloodhound-quickwin" \
+    "bhqc.py" "" "yes"
+  add-aliases "bloodhound-quickwin"
+  add-history "bloodhound-quickwin"
+}
+
 function install_evil_winrm_py() {
   install_pipx_tool "evil-winrm-py" "evil-winrm-py[kerberos]"
 }
@@ -614,6 +622,7 @@ function install_mod_ad() {
   install_adidnsdump
   install_certipy
   install_bloodyad
+  install_bloodhound_quickwin
   install_evil_winrm_py
   install_evil_winrm
   install_gpp_decrypt
