@@ -1,0 +1,2 @@
+bloodhound-import --du neo4j --dp fly2own1 *.json
+bloodhound-import --du neo4j --dp fly2own1 *.zip
