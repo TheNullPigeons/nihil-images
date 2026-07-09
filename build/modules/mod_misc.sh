@@ -132,7 +132,6 @@ function install_sqlitebrowser() {
 }
 
 function install_mongosh() {
-    pacman-key --populate chaotic 2>/dev/null || true
     install_pacman_tool "mongosh"
     install_pacman_tool "mongodb-tools"
     add-aliases "mongosh"

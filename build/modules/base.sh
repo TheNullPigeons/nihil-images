@@ -64,6 +64,7 @@ function package_base() {
         # Récupérer et signer la clé GPG principale (méthode officielle)
         pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com 2>/dev/null || true
         pacman-key --lsign-key 3056513887B78AEB 2>/dev/null || true
+        pacman-key --populate chaotic 2>/dev/null || true
         
         # Installer chaotic-keyring et chaotic-mirrorlist depuis le CDN officiel
         colorecho "Installing chaotic-keyring and chaotic-mirrorlist"
