@@ -300,6 +300,11 @@ function install_bloodyad() {
   install_pipx_tool "bloodyad" "bloodyad"
 }
 
+function install_bloodhound_import() {
+  install_pipx_tool "bloodhound-import" "git+https://github.com/fox-it/bloodhound-import.git"
+  add-history "bloodhound-import"
+}
+
 function install_bloodhound_quickwin() {
   install_git_tool_venv "bloodhound-quickwin" \
     "https://github.com/kaluche/bloodhound-quickwin" \
@@ -622,6 +627,7 @@ function install_mod_ad() {
   install_adidnsdump
   install_certipy
   install_bloodyad
+  install_bloodhound_import
   install_bloodhound_quickwin
   install_evil_winrm_py
   install_evil_winrm
