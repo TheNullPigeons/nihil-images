@@ -30,6 +30,10 @@ function install_wireshark_cli() {
     install_pacman_tool "wireshark-cli"
 }
 
+function install_wireshark() {
+    install_pacman_tool "wireshark-qt"
+}
+
 function install_bettercap() {
     install_pacman_tool "bettercap"
 }
@@ -165,6 +169,7 @@ function install_mod_network() {
     install_netcat
     install_socat
     install_wireshark_cli
+    install_wireshark
     install_bettercap
     install_fping
 #   install_bettercap_ui
