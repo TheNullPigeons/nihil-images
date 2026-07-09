@@ -74,16 +74,23 @@ ensure_neo4j_password() {
 }
 
 # PostgreSQL
-if ! pg_isready -q 2>/dev/null; then
+# Use port 5433 to avoid colliding with any system postgres on the default 5432
+# (host network mode exposes the host's postgres to the container).
+PG_PORT=5433
+if ! pg_isready -q -h /run/postgresql -p "$PG_PORT" 2>/dev/null; then
     mkdir -p /run/postgresql
     chown postgres:postgres /run/postgresql
     if [ ! -f /var/lib/postgres/data/PG_VERSION ]; then
         echo "[nihil] Initializing PostgreSQL..."
         su -s /bin/bash postgres -c "initdb -D /var/lib/postgres/data" >/dev/null
+        echo "port = $PG_PORT" >> /var/lib/postgres/data/postgresql.conf
+    elif ! grep -q "^port = $PG_PORT" /var/lib/postgres/data/postgresql.conf 2>/dev/null; then
+        sed -i "s/^#\?port = .*/port = $PG_PORT/" /var/lib/postgres/data/postgresql.conf
+        grep -q "^port" /var/lib/postgres/data/postgresql.conf || echo "port = $PG_PORT" >> /var/lib/postgres/data/postgresql.conf
     fi
     echo "[nihil] Starting PostgreSQL..."
     su -s /bin/bash postgres -c "pg_ctl -D /var/lib/postgres/data -l /tmp/postgres.log start" >/dev/null
-    for i in $(seq 1 15); do pg_isready -q 2>/dev/null && break || sleep 1; done
+    for i in $(seq 1 15); do pg_isready -q -h /run/postgresql -p "$PG_PORT" 2>/dev/null && break || sleep 1; done
 fi
 
 # Neo4j

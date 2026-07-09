@@ -14,7 +14,7 @@
       "key_file": ""
     },
     "database": {
-      "connection": "user=bloodhound password=nihil4thewin dbname=bloodhound host=127.0.0.1 sslmode=disable"
+      "connection": "user=bloodhound password=nihil4thewin dbname=bloodhound host=127.0.0.1 port=5433 sslmode=disable"
     },
     "neo4j": {
       "connection": "neo4j://neo4j:fly2own1@127.0.0.1:7687/"
