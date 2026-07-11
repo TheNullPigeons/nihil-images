@@ -1,3 +1,4 @@
 bloodhound-legacy
 bloodhound-legacy-stop
 bloodhound-legacy-reset
+bloodhound-legacy &> /dev/null &
