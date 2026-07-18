@@ -186,6 +186,13 @@ function install_updog() {
     install_pipx_tool "updog" "updog"
 }
 
+function install_wsgidav() {
+    install_pipx_tool "wsgidav" "wsgidav"
+    # wsgidav has no server backend by default and errors out at runtime
+    # ("Could not import Cheroot") without this.
+    pipx inject wsgidav cheroot 2>/dev/null || true
+}
+
 function install_caido() {
     local caido_bin
     local caido_cli_bin
@@ -544,6 +551,7 @@ function install_mod_web() {
     install_linkfinder
     install_patator
     install_updog
+    install_wsgidav
 
     colorecho "  [pipx-git] Web scanners:"
     install_graphqlmap
