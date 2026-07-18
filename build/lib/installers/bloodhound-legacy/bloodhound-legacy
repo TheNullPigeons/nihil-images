@@ -1,16 +1,18 @@
 #!/bin/bash
 
 BH_BIN="/opt/tools/BloodHound-Legacy/BloodHound"
+export PATH="/opt/tools/bin:$PATH"
 export NEO4J_HOME
-NEO4J_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v neo4j)")")")"
+NEO4J_HOME="$(grep -oP '(?<=exec ").*(?=/bin/neo4j)' /opt/tools/bin/neo4j 2>/dev/null | head -1)"
+[ -d "$NEO4J_HOME" ] || NEO4J_HOME="$(ls -d /opt/neo4j-community-* 2>/dev/null | head -1)"
 
 # Neo4j
-if ! neo4j status 2>/dev/null | grep -q "is running"; then
+if ! "$NEO4J_HOME/bin/neo4j" status 2>/dev/null | grep -q "is running"; then
     echo "[nihil] Starting Neo4j..."
-    neo4j start >/dev/null 2>&1
+    "$NEO4J_HOME/bin/neo4j" start >/dev/null 2>&1
     echo "[nihil] Waiting for Neo4j..."
     for i in $(seq 1 60); do
-        neo4j status 2>/dev/null | grep -q "is running" && break || sleep 2
+        "$NEO4J_HOME/bin/neo4j" status 2>/dev/null | grep -q "is running" && break || sleep 2
     done
 fi
 for i in $(seq 1 30); do
