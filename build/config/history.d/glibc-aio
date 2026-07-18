@@ -1,0 +1,9 @@
+glibc-aio mirror list
+glibc-aio search 2.31
+glibc-aio search 2.35
+glibc-aio download 2.31-0ubuntu9.9_amd64
+glibc-aio download 2.35-0ubuntu3.8_amd64
+glibc-aio identify /lib/x86_64-linux-gnu/libc.so.6
+glibc-aio identify ./libc.so.6
+glibc-aio diff ./libc_old.so.6 ./libc_new.so.6
+glibc-aio build 2.35

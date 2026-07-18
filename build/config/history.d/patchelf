@@ -1,0 +1,6 @@
+patchelf --print-interpreter ./binary
+patchelf --set-interpreter /path/to/ld.so ./binary
+patchelf --set-rpath /path/to/libc_dir ./binary
+patchelf --replace-needed libc.so.6 /path/to/libc.so.6 ./binary
+patchelf --print-needed ./binary
+patchelf --set-interpreter ./ld-2.35.so --set-rpath . ./binary
