@@ -695,6 +695,11 @@
             "description": "HTTP file server with upload (SimpleHTTPServer replacement)"
         },
         {
+            "name": "wsgidav",
+            "cmd": "wsgidav",
+            "description": "WebDAV server (serve files over WebDAV, e.g. for WebClient-based coercion/exfil)"
+        },
+        {
             "name": "phpggc",
             "cmd": "phpggc",
             "description": "PHP gadget chain generator"
