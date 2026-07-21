@@ -113,6 +113,8 @@ function install_dirsearch() {
 }
 
 function install_whatweb() {
+    # resolv-replace was removed from Ruby 3.4 default gems; whatweb requires it.
+    gem install resolv-replace --no-document 2>/dev/null || true
     install_git_tool "whatweb" "https://github.com/urbanadventurer/WhatWeb.git" "whatweb"
 }
 
