@@ -1,0 +1,1 @@
+wenum -u "http://$DOMAIN/index.php?x=FUZZ" -w `fzf-wordlists` --hc 404
