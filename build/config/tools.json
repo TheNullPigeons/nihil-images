@@ -465,6 +465,11 @@
             "description": "Web fuzzer"
         },
         {
+            "name": "wenum",
+            "cmd": "wenum",
+            "description": "Web enumeration and fuzzing tool"
+        },
+        {
             "name": "arjun",
             "cmd": "arjun",
             "description": "HTTP parameter discovery"
