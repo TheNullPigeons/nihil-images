@@ -43,6 +43,12 @@ function install_wfuzz() {
     install_pipx_tool_git "wfuzz" "https://github.com/xmendez/wfuzz.git"
 }
 
+function install_wenum() {
+    install_pipx_tool_git "wenum" "https://github.com/WebFuzzForge/wenum" || return 1
+    # wenum imports pkg_resources and the removed stdlib cgi module.
+    pipx inject wenum "setuptools<81" legacy-cgi
+}
+
 function install_arjun() {
     install_pipx_tool_git "arjun" "https://github.com/s0md3v/Arjun.git"
 }
@@ -539,6 +545,7 @@ function install_mod_web() {
 
     colorecho "  [pipx] Web fuzzers / scanners:"
     install_wfuzz
+    install_wenum
     install_arjun
     install_wafw00f
     install_gopherus
