@@ -302,7 +302,6 @@ function install_bloodyad() {
 
 function install_bloodhound_import() {
   install_pipx_tool "bloodhound-import" "git+https://github.com/fox-it/bloodhound-import.git"
-  add-history "bloodhound-import"
 }
 
 function install_bloodhound_quickwin() {
