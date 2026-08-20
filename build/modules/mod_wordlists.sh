@@ -57,6 +57,27 @@ function install_seclists() {
     colorecho "  ✓ seclists installed at $install_dir"
 }
 
+function install_fuzz_txt() {
+    local install_path="/opt/lists/fuzz.txt"
+    local url="https://raw.githubusercontent.com/Bo0oM/fuzz.txt/master/fuzz.txt"
+
+    _ensure_lists_dir
+
+    if [ -f "$install_path" ]; then
+        colorecho "  ✓ fuzz.txt already installed at $install_path"
+        return 0
+    fi
+
+    colorecho "  → Downloading fuzz.txt"
+    if ! curl -fsSL "$url" -o "$install_path"; then
+        rm -f "$install_path"
+        colorecho "  ✗ Warning: Failed to download fuzz.txt"
+        return 1
+    fi
+
+    colorecho "  ✓ fuzz.txt installed at $install_path"
+}
+
 function install_cewl() {
     install_git_tool_bundler "CeWL" "https://github.com/digininja/CeWL.git" "cewl.rb"
 }
@@ -88,6 +109,7 @@ function install_mod_wordlists() {
 
     colorecho "  [git] Wordlists:"
     install_seclists
+    install_fuzz_txt
 
     install_cewl
     install_crunch
