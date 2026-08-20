@@ -156,6 +156,10 @@ function install_graphqlmap() {
     install_pipx_tool_git "graphqlmap" "https://github.com/swisskyrepo/GraphQLmap.git"
 }
 
+function install_graphw00f() {
+    install_git_tool "graphw00f" "https://github.com/dolevf/graphw00f.git" "main.py"
+}
+
 function install_corsy() {
     install_git_tool "corsy" "https://github.com/s0md3v/Corsy" "corsy.py"
 }
@@ -564,6 +568,7 @@ function install_mod_web() {
 
     colorecho "  [pipx-git] Web scanners:"
     install_graphqlmap
+    install_graphw00f
 
     colorecho "  [go] Web scanners / discovery:"
     install_nuclei

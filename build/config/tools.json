@@ -590,6 +590,11 @@
             "description": "GraphQL exploitation"
         },
         {
+            "name": "graphw00f",
+            "cmd": "graphw00f",
+            "description": "GraphQL server fingerprinting"
+        },
+        {
             "name": "corsy",
             "cmd": "corsy",
             "description": "CORS misconfiguration scanner"
