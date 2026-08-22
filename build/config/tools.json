@@ -595,6 +595,11 @@
             "description": "GraphQL server fingerprinting"
         },
         {
+            "name": "graphql-cop",
+            "cmd": "graphql-cop",
+            "description": "GraphQL security auditing"
+        },
+        {
             "name": "corsy",
             "cmd": "corsy",
             "description": "CORS misconfiguration scanner"
