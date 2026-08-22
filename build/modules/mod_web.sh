@@ -154,6 +154,14 @@ function install_nosqlmap() {
 
 function install_graphqlmap() {
     install_pipx_tool_git "graphqlmap" "https://github.com/swisskyrepo/GraphQLmap.git"
+    # GraphQLmap does not declare requests and urllib3 in its package metadata.
+    pipx inject graphqlmap requests urllib3
+    # pipx's generated launcher uses python -E, which ignores PYTHONWARNINGS.
+    local graphqlmap_bin
+    graphqlmap_bin="$(command -v graphqlmap 2>/dev/null || true)"
+    if [ -n "$graphqlmap_bin" ]; then
+        sed -i '1s/ -E$//' "$graphqlmap_bin"
+    fi
 }
 
 function install_graphw00f() {
