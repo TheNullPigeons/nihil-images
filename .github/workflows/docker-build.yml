@@ -27,7 +27,7 @@ env:
 
 jobs:
   build-full:
-    if: "!contains(github.event.head_commit.message, '[audit]') && (github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'full')"
+    if: github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'full'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -87,7 +87,7 @@ jobs:
             BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
 
   build-ad:
-    if: "!contains(github.event.head_commit.message, '[audit]') && (github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'ad')"
+    if: github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'ad'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -147,7 +147,7 @@ jobs:
             BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
 
   build-web:
-    if: "!contains(github.event.head_commit.message, '[audit]') && (github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'web')"
+    if: github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'web'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -207,7 +207,7 @@ jobs:
             BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
 
   build-blueteam:
-    if: "!contains(github.event.head_commit.message, '[audit]') && (github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'blueteam')"
+    if: github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'blueteam'
     runs-on: ubuntu-latest
     permissions:
       contents: read
