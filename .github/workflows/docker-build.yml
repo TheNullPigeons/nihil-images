@@ -61,7 +61,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/thenullpigeons/full
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/full
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -121,7 +121,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/thenullpigeons/ad
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/ad
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -181,7 +181,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/thenullpigeons/web
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/web
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -241,7 +241,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/thenullpigeons/blueteam
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/blueteam
           tags: |
             type=ref,event=branch
             type=ref,event=pr
