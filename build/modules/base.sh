@@ -256,16 +256,19 @@ function package_base() {
     pacman -Sy --noconfirm
 
     
-    # Installer TOUS les paquets du dépôt nihil
-    colorecho "Listing all packages in Nihil repository"
-    # Récupère la liste des paquets du dépôt nihil
+    # Install only packages enabled for this image.
+    colorecho "Listing enabled packages in Nihil repository"
+    # Retrieve the package list from the Nihil repository.
     nihil_packages=$(pacman -Sl nihil | cut -d' ' -f2)
     
     if [ -n "$nihil_packages" ]; then
-        colorecho "Installing all Nihil packages: $nihil_packages"
-        # Convertir les nouvelles lignes en espaces pour la commande pacman
-        package_list=$(echo "$nihil_packages" | tr '\n' ' ')
-        pacman -S --noconfirm --needed $package_list || colorecho "Warning: Failed to install some packages"
+        package_list=$(tool_selection_filter_packages $nihil_packages)
+        if [ -n "$package_list" ]; then
+            colorecho "Installing enabled Nihil packages: $package_list"
+            pacman -S --noconfirm --needed $package_list || colorecho "Warning: Failed to install some packages"
+        else
+            colorecho "No enabled Nihil packages found"
+        fi
     else
         colorecho "No packages found in Nihil repository"
     fi

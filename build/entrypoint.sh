@@ -27,6 +27,10 @@ nihil::import modules/mod_dfir
 nihil::import modules/mod_wordlists
 nihil::import lib/healthcheck
 nihil::import modules/post_install
+nihil::import lib/tool_selection
+
+# Customization branches may disable individual installers.
+tool_selection_prepare
 
 if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"
