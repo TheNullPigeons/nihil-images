@@ -57,6 +57,10 @@ for tool in module:
         export PATH="/opt/tools/bin:/root/.local/bin:/root/.cargo/bin:/root/go/bin:${PATH}"
 
         while IFS='|' read -r name cmd check_path; do
+            if ! tool_selection_enabled_name "$name"; then
+                echo "  - $name (disabled by tool selection)"
+                continue
+            fi
             total=$((total + 1))
 
             if [ -n "$check_path" ] && [ -z "$cmd" ]; then
