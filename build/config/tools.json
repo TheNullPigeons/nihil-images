@@ -1043,6 +1043,11 @@
             "description": "IDA Free interactive disassembler"
         },
         {
+            "name": "binaryninja",
+            "cmd": "binaryninja",
+            "description": "Binary Ninja Free reverse engineering platform"
+        },
+        {
             "name": "angr",
             "cmd": "angr",
             "description": "Symbolic execution and binary analysis"
