@@ -59,13 +59,17 @@ function install_ida() {
     fi
     if [ -x /opt/tools/idafree/ida64 ]; then
         colorecho "  ✓ IDA Free already installed"
+        add-aliases "ida"
+        add-history "ida"
         return 0
     fi
     colorecho "  → Installing IDA Free (GUI)"
     if curl -sSLf -o /tmp/idafree.run "https://out7.hex-rays.com/files/idafree84_linux.run"; then
         chmod +x /tmp/idafree.run
         /tmp/idafree.run --mode unattended --prefix /opt/tools/idafree \
-            && ln -sf /opt/tools/idafree/ida64 /opt/tools/bin/ida64
+            && ln -sf /opt/tools/idafree/ida64 /opt/tools/bin/ida64 \
+            && add-aliases "ida" \
+            && add-history "ida"
         rm -f /tmp/idafree.run
     else
         colorecho "  ✗ Warning: Failed to download IDA Free"
