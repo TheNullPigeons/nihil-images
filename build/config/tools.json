@@ -1038,6 +1038,11 @@
             "description": "NSA reverse engineering suite"
         },
         {
+            "name": "ida",
+            "cmd": "ida64",
+            "description": "IDA Free interactive disassembler"
+        },
+        {
             "name": "angr",
             "cmd": "angr",
             "description": "Symbolic execution and binary analysis"
