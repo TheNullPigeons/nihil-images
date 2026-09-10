@@ -157,6 +157,20 @@ function install_nfs_utils() {
     install_pacman_tool "nfs-utils"
 }
 
+function install_snmpwalk() {
+    if command -v snmpwalk >/dev/null 2>&1; then
+        colorecho "  ✓ snmpwalk already installed (pacman)"
+    else
+        install_pacman_tool "net-snmp"
+    fi
+    add-aliases "snmpwalk"
+    add-history "snmpwalk"
+}
+
+function install_onesixtyone() {
+    install_git_tool "onesixtyone" "https://github.com/trailofbits/onesixtyone.git" "onesixtyone" "make"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -196,6 +210,8 @@ function install_mod_network() {
     install_tcpdump
     install_xfreerdp
     install_nfs_utils
+    install_snmpwalk
+    install_onesixtyone
 
     add-aliases "network"
 
