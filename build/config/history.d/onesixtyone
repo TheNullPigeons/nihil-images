@@ -1,0 +1,3 @@
+onesixtyone "$TARGET" public
+onesixtyone -c "$COMMUNITY_FILE" "$TARGET"
+onesixtyone -c "$COMMUNITY_FILE" -i "$TARGETS_FILE"
