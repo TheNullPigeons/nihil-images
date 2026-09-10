@@ -1,0 +1,5 @@
+adcheck -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --dc-ip "$DC_IP"
+adcheck -d "$DOMAIN" -u "$USER" -H "$NTLM_HASH" --dc-ip "$DC_IP"
+adcheck -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --dc-ip "$DC_IP" -o html -e -f
+adcheck -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --dc-ip "$DC_IP" -k --protocol ldap
+adcheck -d "$DOMAIN" --dc-ip "$DC_IP" -L

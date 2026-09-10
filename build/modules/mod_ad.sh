@@ -292,6 +292,10 @@ function install_adidnsdump() {
   install_pipx_tool "adidnsdump" "adidnsdump"
 }
 
+function install_adcheck() {
+  install_pipx_tool_git "adcheck" "https://github.com/CobblePot59/ADcheck.git"
+}
+
 function install_certipy() {
   install_pipx_tool "certipy" "certipy-ad"
 }
@@ -624,6 +628,7 @@ function install_mod_ad() {
   install_bloodhound_ce_python
   install_ldapdomaindump
   install_adidnsdump
+  install_adcheck
   install_certipy
   install_bloodyad
   install_bloodhound_import
