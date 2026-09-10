@@ -366,13 +366,15 @@ install_git_tool_bundler() {
         local cmd_name=$(basename "$entrypoint" .rb)
         local wrapper="${GIT_BIN_DIR}/${cmd_name}"
 
-        # Créer le wrapper qui exécute bundle exec ruby depuis le repo
+        # Créer le wrapper qui exécute le script depuis le repo. BUNDLE_GEMFILE
+        # suffit à trouver le Gemfile, mais le script lui-même doit utiliser un
+        # chemin absolu lorsque la commande est lancée depuis /workspace.
         # BUNDLE_GEMFILE lets bundler find its Gemfile without cd-ing away from the caller's CWD,
         # so relative paths passed by the user (e.g. msfvenom -o ./file.exe) resolve correctly.
         cat > "$wrapper" <<EOF
 #!/bin/sh
 export BUNDLE_GEMFILE="$repo_dir/Gemfile"
-exec bundle exec ruby $entrypoint "\$@"
+exec bundle exec ruby "$repo_dir/$entrypoint" "\$@"
 EOF
         chmod +x "$wrapper"
         colorecho "  ✓ Created wrapper: $cmd_name"
