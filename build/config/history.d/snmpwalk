@@ -1,0 +1,3 @@
+snmpwalk -v2c -c public "$TARGET"
+snmpwalk -v2c -c "$COMMUNITY" "$TARGET" 1.3.6.1.2.1
+snmpwalk -v3 -l authPriv -u "$USER" -a SHA -A "$PASSWORD" -x AES -X "$PRIV_PASSWORD" "$TARGET"
