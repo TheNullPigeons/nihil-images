@@ -30,7 +30,20 @@ function install_cmake() {
 }
 
 function install_pwntools() {
-    install_pipx_tool "pwn" "pwntools"
+    # Pwntools is commonly imported from exploit scripts with the system
+    # interpreter (`from pwn import ...`), so install it globally instead of
+    # isolating it in a pipx-only virtualenv.
+    if python3 -c 'import pwn' >/dev/null 2>&1; then
+        colorecho "  ✓ pwntools already installed (system Python)"
+        add-aliases "pwn"
+        add-history "pwn"
+        return 0
+    fi
+    colorecho "  → Installing pwntools globally (system Python)"
+    python3 -m pip install --break-system-packages --no-cache-dir pwntools \
+        && add-aliases "pwn" \
+        && add-history "pwn" \
+        || colorecho "  ✗ Warning: Failed to install pwntools globally"
 }
 
 function install_ropgadget() {
