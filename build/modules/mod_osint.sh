@@ -38,7 +38,7 @@ function install_spiderfoot() {
     fi
 
     colorecho "  → Installing spiderfoot"
-    git clone --depth 1 https://github.com/smicallef/spiderfoot "$install_dir" || {
+    git-clone-retry "https://github.com/smicallef/spiderfoot" "$install_dir" 1 || {
         colorecho "  ✗ Warning: Failed to clone spiderfoot"
         return 1
     }
@@ -50,11 +50,14 @@ function install_spiderfoot() {
     source "$venv_dir/bin/activate"
     # lxml pinned to 4.9.4 doesn't compile against Python 3.14+; skip it, the system
     # package installed via pacman is visible through --system-site-packages
-    grep -v '^lxml' "$install_dir/requirements.txt" | pip install --quiet -r /dev/stdin || {
+    grep -v '^lxml' "$install_dir/requirements.txt" > /tmp/spiderfoot-requirements.txt
+    retry-command 3 "pip install spiderfoot requirements" pip install --quiet -r /tmp/spiderfoot-requirements.txt || {
         colorecho "  ✗ Warning: Failed to install spiderfoot requirements"
+        rm -f /tmp/spiderfoot-requirements.txt
         deactivate
         return 1
     }
+    rm -f /tmp/spiderfoot-requirements.txt
     deactivate
 
     mkdir -p "$GIT_BIN_DIR"

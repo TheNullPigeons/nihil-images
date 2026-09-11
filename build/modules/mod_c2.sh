@@ -75,7 +75,7 @@ function install_metasploit() {
     # Install PEASS Ruby MSF module
     colorecho "  → Installing PEASS MSF module"
     mkdir -p "$repo_dir/modules/post/multi/gather"
-    wget -q https://raw.githubusercontent.com/peass-ng/PEASS-ng/master/metasploit/peass.rb -O "$repo_dir/modules/post/multi/gather/peass.rb" || {
+    download-retry "https://raw.githubusercontent.com/peass-ng/PEASS-ng/master/metasploit/peass.rb" "$repo_dir/modules/post/multi/gather/peass.rb" || {
         colorecho "  ✗ Warning: Failed to download PEASS module"
     }
 
@@ -115,7 +115,7 @@ function install_mythic_cli() {
 
     _ensure_go || return 0
 
-    git clone --depth 1 https://github.com/its-a-feature/Mythic.git "$repo_dir" 2>/dev/null || {
+    git-clone-retry "https://github.com/its-a-feature/Mythic.git" "$repo_dir" 1 || {
         colorecho "  ✗ Warning: Failed to clone Mythic"
         return 0
     }

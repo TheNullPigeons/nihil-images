@@ -8,7 +8,7 @@ nihil::import lib/registry/pacman
 nihil::import lib/registry/git
 
 _latest_tag() {
-    curl -Ls -o /dev/null -w '%{url_effective}' "https://github.com/$1/releases/latest" | sed 's:.*/::' || true
+    retry-command 3 "resolve $1 latest tag" curl -Ls -o /dev/null -w '%{url_effective}' "https://github.com/$1/releases/latest" | sed 's:.*/::' || true
 }
 
 # ===========================================================================
@@ -28,7 +28,7 @@ function install_capa() {
     fi
 
     colorecho "  → Installing capa (FLARE malware capability detection)"
-    pacman -S --noconfirm --needed unzip 2>/dev/null || true
+    install_pacman_tool unzip || true
 
     local tag url
     tag=$(_latest_tag "mandiant/capa")
@@ -41,7 +41,7 @@ function install_capa() {
     url="https://github.com/mandiant/capa/releases/download/${tag}/capa-${tag}-linux.zip"
 
     mkdir -p "$install_dir"
-    curl -fsSL "$url" -o /tmp/capa.zip || {
+    download-retry "$url" /tmp/capa.zip || {
         colorecho "  ✗ Warning: Failed to download capa"
         return 0
     }

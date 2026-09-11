@@ -24,7 +24,7 @@ function install_rsactftool() {
     colorecho "  → Installing RsaCtfTool via Git with venv ($git_url)"
 
     if [ ! -d "$repo_dir" ]; then
-        git clone --depth=1 "$git_url" "$repo_dir" || {
+        git-clone-retry "$git_url" "$repo_dir" 1 || {
             colorecho "  ✗ Warning: Failed to clone RsaCtfTool"
             return 1
         }
@@ -38,11 +38,11 @@ function install_rsactftool() {
     source "$venv_dir/bin/activate"
     # Try installing via setup.py/pyproject.toml first (handles repo restructuring)
     if [ -f "$repo_dir/setup.py" ] || [ -f "$repo_dir/pyproject.toml" ]; then
-        pip install --quiet "$repo_dir" 2>/dev/null || true
+        retry-command 3 "pip install RsaCtfTool" pip install --quiet "$repo_dir" 2>/dev/null || true
     fi
     # Fallback: install from requirements.txt
     if [ -f "$repo_dir/requirements.txt" ]; then
-        pip install --quiet -r "$repo_dir/requirements.txt" 2>/dev/null || true
+        retry-command 3 "pip install RsaCtfTool requirements" pip install --quiet -r "$repo_dir/requirements.txt" 2>/dev/null || true
     fi
     deactivate
 
@@ -81,8 +81,8 @@ function install_xortool() {
 function install_z3_solver() {
     colorecho "  → Installing z3-solver"
     if ! python3 -c "import z3" 2>/dev/null; then
-        python3 -m pip install --break-system-packages z3-solver --quiet 2>/dev/null || \
-            python3 -m pip install z3-solver --quiet 2>/dev/null || {
+        retry-command 3 "pip install z3-solver" python3 -m pip install --break-system-packages z3-solver --quiet 2>/dev/null || \
+            retry-command 3 "pip install z3-solver fallback" python3 -m pip install z3-solver --quiet 2>/dev/null || {
             colorecho "  ✗ Warning: Failed to install z3-solver"
             return 1
         }
@@ -98,8 +98,8 @@ EOF
 function install_pycryptodome() {
     colorecho "  → Installing pycryptodome"
     if ! python3 -c "import Crypto" 2>/dev/null; then
-        python3 -m pip install --break-system-packages pycryptodome --quiet 2>/dev/null || \
-            python3 -m pip install pycryptodome --quiet 2>/dev/null || {
+        retry-command 3 "pip install pycryptodome" python3 -m pip install --break-system-packages pycryptodome --quiet 2>/dev/null || \
+            retry-command 3 "pip install pycryptodome fallback" python3 -m pip install pycryptodome --quiet 2>/dev/null || {
             colorecho "  ✗ Warning: Failed to install pycryptodome"
             return 1
         }

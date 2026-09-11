@@ -37,14 +37,19 @@ function install_neo4j() {
   archlinux-java set java-11-openjdk
 
   # BloodHound requires Neo4j 4.4.x - Neo4j 5.x removed the db.indexes procedure
+  local neo4j_releases="/tmp/neo4j-releases.json"
   local neo4j_version
-  neo4j_version="$(curl -fsSL "https://api.github.com/repos/neo4j/neo4j/releases" |
+  download-retry "https://api.github.com/repos/neo4j/neo4j/releases" "$neo4j_releases" || true
+  neo4j_version="$(cat "$neo4j_releases" 2>/dev/null |
     jq -r 'first(.[] | select(.tag_name | startswith("4.4.")) | select(.prerelease | not) | .tag_name)' |
     sed 's/^4\.4\.//' | xargs -I{} echo "4.4.{}" 2>/dev/null)" || neo4j_version="4.4.40"
+  rm -f "$neo4j_releases"
   [ -z "${neo4j_version}" ] && neo4j_version="4.4.40"
   colorecho "  → Installing Neo4j ${neo4j_version}"
-  curl -fsSL "https://dist.neo4j.org/neo4j-community-${neo4j_version}-unix.tar.gz" |
-    tar -xz -C /opt/
+  local neo4j_archive="/tmp/neo4j-community-${neo4j_version}-unix.tar.gz"
+  download-retry "https://dist.neo4j.org/neo4j-community-${neo4j_version}-unix.tar.gz" "$neo4j_archive" || return 1
+  tar -xzf "$neo4j_archive" -C /opt/
+  rm -f "$neo4j_archive"
   # Wrappers exec plutot que des symlinks: les scripts Neo4j utilisent
   # dirname "$0" pour retrouver leur arborescence (jars, NEO4J_HOME).
   # Via un symlink, "$0" pointe vers /opt/tools/bin et la detection echoue
@@ -91,7 +96,7 @@ function install_bloodhound_ce_desktop() {
   mkdir -p "${install_root}" "${sharphound_path}" "${azurehound_path}"
   curl_tempfile="$(mktemp)"
 
-  if ! curl -fsSL "https://api.github.com/repos/SpecterOps/BloodHound/releases" -o "${curl_tempfile}"; then
+  if ! download-retry "https://api.github.com/repos/SpecterOps/BloodHound/releases" "${curl_tempfile}"; then
     colorecho "  ✗ Warning: Failed to fetch BloodHound releases"
     rm -f "${curl_tempfile}"
     return 1
@@ -105,7 +110,7 @@ function install_bloodhound_ce_desktop() {
   fi
 
   rm -rf "${src_dir}"
-  if ! git clone --depth 1 --branch "${tag_name}" "https://github.com/SpecterOps/BloodHound.git" "${src_dir}"; then
+  if ! git-clone-retry "https://github.com/SpecterOps/BloodHound.git" "${src_dir}" 1 3 "${tag_name}"; then
     colorecho "  ✗ Warning: Failed to clone BloodHound source"
     rm -f "${curl_tempfile}"
     return 1
@@ -146,18 +151,18 @@ function install_bloodhound_ce_desktop() {
 
   # SharpHound
   local sharphound_url sharphound_name
-  curl -fsSL "https://api.github.com/repos/BloodHoundAD/SharpHound/releases/latest" -o "${curl_tempfile}"
+  download-retry "https://api.github.com/repos/BloodHoundAD/SharpHound/releases/latest" "${curl_tempfile}" || true
   sharphound_url="$(jq -r '.assets[].browser_download_url | select(contains("debug") | not) | select(contains("sha256") | not)' "${curl_tempfile}")"
   sharphound_name="$(jq -r '.assets[].name | ascii_downcase | select(contains("debug") | not) | select(contains("sha256") | not)' "${curl_tempfile}")"
   if [ -n "${sharphound_url}" ]; then
-    wget -q --directory-prefix "${sharphound_path}" "${sharphound_url}"
+    download-retry "${sharphound_url}" "${sharphound_path}/$(basename "${sharphound_url}")" || true
     mv "${sharphound_path}/$(basename "${sharphound_url}")" "${sharphound_path}/${sharphound_name}" 2>/dev/null || true
     sha256sum "${sharphound_path}/${sharphound_name}" >"${sharphound_path}/${sharphound_name}.sha256"
   fi
 
   # AzureHound
   local azurehound_version azurehound_url_amd64 azurehound_url_amd64_sha256 azurehound_url_arm64 azurehound_url_arm64_sha256
-  curl -fsSL "https://api.github.com/repos/BloodHoundAD/AzureHound/releases/latest" -o "${curl_tempfile}"
+  download-retry "https://api.github.com/repos/BloodHoundAD/AzureHound/releases/latest" "${curl_tempfile}" || true
   azurehound_version="$(jq -r '.tag_name' "${curl_tempfile}")"
   azurehound_url_amd64="$(jq -r '.assets[].browser_download_url | select(endswith("_linux_amd64.zip"))' "${curl_tempfile}")"
   azurehound_url_amd64_sha256="$(jq -r '.assets[].browser_download_url | select(endswith("_linux_amd64.zip.sha256"))' "${curl_tempfile}")"
@@ -165,8 +170,10 @@ function install_bloodhound_ce_desktop() {
   azurehound_url_arm64_sha256="$(jq -r '.assets[].browser_download_url | select(endswith("_linux_arm64.zip.sha256"))' "${curl_tempfile}")"
   rm -f "${curl_tempfile}"
   if [ -n "${azurehound_url_amd64}" ]; then
-    wget -q --directory-prefix "${azurehound_path}" "${azurehound_url_amd64}" "${azurehound_url_amd64_sha256}"
-    wget -q --directory-prefix "${azurehound_path}" "${azurehound_url_arm64}" "${azurehound_url_arm64_sha256}"
+    download-retry "${azurehound_url_amd64}" "${azurehound_path}/$(basename "${azurehound_url_amd64}")" || true
+    download-retry "${azurehound_url_amd64_sha256}" "${azurehound_path}/$(basename "${azurehound_url_amd64_sha256}")" || true
+    download-retry "${azurehound_url_arm64}" "${azurehound_path}/$(basename "${azurehound_url_arm64}")" || true
+    download-retry "${azurehound_url_arm64_sha256}" "${azurehound_path}/$(basename "${azurehound_url_arm64_sha256}")" || true
     (cd "${azurehound_path}" && sha256sum --check --warn ./*.sha256) || return 1
     7z a -tzip -mx9 "${azurehound_path}/azurehound-${azurehound_version}.zip" "${azurehound_path}/azurehound-*"
     sha256sum "${azurehound_path}/azurehound-${azurehound_version}.zip" >"${azurehound_path}/azurehound-${azurehound_version}.zip.sha256"
@@ -229,7 +236,7 @@ function install_bloodhound_legacy_desktop() {
   mkdir -p "${install_root}"
   curl_tempfile="$(mktemp)"
 
-  if ! curl -fsSL "https://api.github.com/repos/BloodHoundAD/BloodHound/releases/latest" -o "${curl_tempfile}"; then
+  if ! download-retry "https://api.github.com/repos/BloodHoundAD/BloodHound/releases/latest" "${curl_tempfile}"; then
     colorecho "  ✗ Warning: Failed to fetch BloodHound legacy release"
     rm -f "${curl_tempfile}"
     return 1
@@ -245,7 +252,7 @@ function install_bloodhound_legacy_desktop() {
   fi
 
   zip_tempfile="$(mktemp --suffix=.zip)"
-  if ! curl -fsSL "${asset_url}" -o "${zip_tempfile}"; then
+  if ! download-retry "${asset_url}" "${zip_tempfile}"; then
     colorecho "  ✗ Warning: Failed to download BloodHound legacy ${tag_name}"
     rm -f "${zip_tempfile}"
     return 1
@@ -418,8 +425,7 @@ function install_teamsphisher() {
 function install_netexec() {
   # Ensure Rust is available (required to build NetExec native extensions)
   if ! command -v rustc >/dev/null 2>&1; then
-    pacman -Sy --noconfirm &&
-      pacman -S --noconfirm --needed rust || {
+    install_pacman_tool rust || {
       colorecho "  ✗ Warning: Failed to install rust for NetExec"
       return 1
     }

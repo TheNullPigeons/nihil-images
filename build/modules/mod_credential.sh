@@ -8,6 +8,7 @@ nihil::import lib/registry/cargo
 nihil::import lib/registry/pacman
 nihil::import lib/registry/aur
 nihil::import lib/registry/gem
+nihil::import lib/registry/git
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -32,8 +33,11 @@ function install_john() {
 function install_hashcat() {
     install_pacman_tool "hashcat"
     install_pacman_tool "hashcat-utils"
-    git clone --depth=1 https://github.com/hashcat/hashcat /tmp/hashcat-src
-    cp -r /tmp/hashcat-src/rules /usr/share/hashcat/rules
+    git-clone-retry "https://github.com/hashcat/hashcat" /tmp/hashcat-src 1 || {
+        colorecho "  ✗ Warning: Failed to clone hashcat rules"
+        return 0
+    }
+    cp -r /tmp/hashcat-src/rules /usr/share/hashcat/rules || true
     rm -rf /tmp/hashcat-src
 }
 
