@@ -64,7 +64,7 @@ function install_ligolo_ng() {
     esac
 
     # Resolve latest tag via redirect (no API, no rate limit)
-    tag=$(curl -Ls -o /dev/null -w '%{url_effective}' "https://github.com/nicocha30/ligolo-ng/releases/latest" | sed 's:.*/::' || true)
+    tag=$(retry-command 3 "resolve ligolo-ng latest tag" curl -Ls -o /dev/null -w '%{url_effective}' "https://github.com/nicocha30/ligolo-ng/releases/latest" | sed 's:.*/::' || true)
     if [ -z "$tag" ]; then
         colorecho "  ✗ Warning: Failed to resolve ligolo-ng latest tag"
         return 0
@@ -74,10 +74,13 @@ function install_ligolo_ng() {
     # Asset format: ligolo-ng_proxy_0.8.3_linux_amd64.tar.gz
     url="https://github.com/nicocha30/ligolo-ng/releases/download/${tag}/ligolo-ng_proxy_${version}_linux_${goarch}.tar.gz"
 
-    if ! curl -fsSL "$url" | tar -xz -C /tmp proxy 2>/dev/null; then
+    local archive="/tmp/ligolo-ng-proxy.tar.gz"
+    if ! download-retry "$url" "$archive" || ! tar -xzf "$archive" -C /tmp proxy 2>/dev/null; then
+        rm -f "$archive"
         colorecho "  ✗ Warning: Failed to download/extract ligolo-ng proxy"
         return 0
     fi
+    rm -f "$archive"
     mv /tmp/proxy /opt/tools/bin/ligolo-ng
     chmod +x /opt/tools/bin/ligolo-ng
     add-history "ligolo-ng"
@@ -103,7 +106,13 @@ function install_ngrok() {
         aarch64) equinox_arch="arm64" ;;
     esac
     url="https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-${equinox_arch}.tgz"
-    curl -fsSL "$url" | tar -xz -C /tmp ngrok
+    local archive="/tmp/ngrok.tgz"
+    if ! download-retry "$url" "$archive" || ! tar -xzf "$archive" -C /tmp ngrok 2>/dev/null; then
+        rm -f "$archive"
+        colorecho "  ✗ Warning: Failed to download/extract ngrok"
+        return 0
+    fi
+    rm -f "$archive"
     mv /tmp/ngrok /opt/tools/bin/ngrok
     chmod +x /opt/tools/bin/ngrok
     add-history "ngrok"

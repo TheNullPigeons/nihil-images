@@ -6,12 +6,12 @@
 
 nihil::import lib/common
 nihil::import lib/registry/pipx
+nihil::import lib/registry/pacman
 
 function install_core_tools() {
     colorecho "Installing core CLI tools (editors, tmux, fzf, etc.)"
 
-    pacman -Sy --noconfirm && \
-    pacman -S --noconfirm --needed \
+    install_pacman_tools \
     vim \
     nano \
     neovim \

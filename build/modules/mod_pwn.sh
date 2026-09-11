@@ -8,6 +8,7 @@ nihil::import lib/registry/cargo
 nihil::import lib/registry/pacman
 nihil::import lib/registry/aur
 nihil::import lib/registry/gem
+nihil::import lib/registry/git
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -40,7 +41,7 @@ function install_pwntools() {
         return 0
     fi
     colorecho "  → Installing pwntools globally (system Python)"
-    python3 -m pip install --break-system-packages --no-cache-dir pwntools \
+    retry-command 3 "pip install pwntools" python3 -m pip install --break-system-packages --no-cache-dir pwntools \
         && add-aliases "pwn" \
         && add-history "pwn" \
         || colorecho "  ✗ Warning: Failed to install pwntools globally"
@@ -61,9 +62,15 @@ function install_ropper() {
     colorecho "  → Installing ropper (patching filebytes for Python 3.12+)"
     local tmp_src="/tmp/filebytes-build"
     local wheel_dir="/tmp/filebytes-wheel"
-    curl -sSLf "https://files.pythonhosted.org/packages/source/f/filebytes/filebytes-0.10.2.tar.gz" \
-        | tar xz -C /tmp/ \
-        && mv /tmp/filebytes-0.10.2 "$tmp_src" || { colorecho "  ✗ Warning: Failed to download filebytes"; return 1; }
+    local archive="/tmp/filebytes-0.10.2.tar.gz"
+    download-retry "https://files.pythonhosted.org/packages/source/f/filebytes/filebytes-0.10.2.tar.gz" "$archive" \
+        && tar xzf "$archive" -C /tmp/ \
+        && mv /tmp/filebytes-0.10.2 "$tmp_src" || {
+            rm -f "$archive"
+            colorecho "  ✗ Warning: Failed to download filebytes"
+            return 1
+        }
+    rm -f "$archive"
 
     # Replace ast.Str (removed in 3.12) with ast.Constant in setup.py.
     cat > "$tmp_src/setup.py" << 'SETUP'
@@ -82,10 +89,10 @@ setup(version=extractMetaInfo(text)["VERSION"])
 SETUP
 
     mkdir -p "$wheel_dir"
-    pip wheel --no-build-isolation "$tmp_src" -w "$wheel_dir" --quiet \
+    retry-command 3 "pip wheel filebytes" pip wheel --no-build-isolation "$tmp_src" -w "$wheel_dir" --quiet \
         || { colorecho "  ✗ Warning: Failed to build filebytes wheel"; return 1; }
 
-    pipx install ropper --pip-args="--find-links $wheel_dir" \
+    retry-command 3 "pipx install ropper" pipx install ropper --pip-args="--find-links $wheel_dir" \
         && ln -sf /root/.local/bin/ropper /opt/tools/bin/ropper \
         || colorecho "  ✗ Warning: Failed to install ropper"
     rm -rf "$tmp_src" "$wheel_dir"
@@ -114,7 +121,7 @@ function install_pwndbg() {
             gdb_python=$(gdb -batch -q --nx -ex 'pi import sysconfig; print(sysconfig.get_config_vars().get("EXENAME", sysconfig.get_config_var("BINDIR")+"/python"+sysconfig.get_config_var("VERSION")+sysconfig.get_config_var("EXE")))')
             if ( cd /opt/tools/gdb/pwndbg \
                     && "$gdb_python" -m venv .venv \
-                    && .venv/bin/pip install -q uv \
+                    && retry-command 3 "pip install uv for pwndbg" .venv/bin/pip install -q uv \
                     && .venv/bin/uv sync ); then
                 colorecho "  ✓ pwndbg venv provisioned"
             else
@@ -143,7 +150,7 @@ function install_peda() {
         # That version's six.moves is incompatible with Python 3.14 and makes peda
         # fail to load with "No module named 'six.moves'". Refresh the vendored copy
         # with a current six so peda loads under GDB's modern Python.
-        if python3 -m pip install -q --break-system-packages --upgrade six; then
+        if retry-command 3 "pip install six for peda" python3 -m pip install -q --break-system-packages --upgrade six; then
             cp "$(python3 -c 'import six, sys; sys.stdout.write(six.__file__)')" \
                /opt/tools/gdb/peda/lib/six.py \
                && rm -rf /opt/tools/gdb/peda/lib/__pycache__
@@ -162,8 +169,7 @@ function install_gef() {
     fi
     colorecho "  → Installing gef GDB plugin"
     mkdir -p /opt/tools/gdb/gef
-    curl -sSLf "https://raw.githubusercontent.com/hugsy/gef/refs/heads/main/gef.py" \
-        -o /opt/tools/gdb/gef/gef.py \
+    download-retry "https://raw.githubusercontent.com/hugsy/gef/refs/heads/main/gef.py" /opt/tools/gdb/gef/gef.py \
         || colorecho "  ✗ Warning: Failed to install gef"
 }
 

@@ -38,8 +38,7 @@ function install_jd-gui() {
     fi
     colorecho "  → Installing jd-gui (Java decompiler)"
     mkdir -p "$jar_dir"
-    if curl -sSLf -o "$jar_file" \
-        "https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.jar"; then
+    if download-retry "https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.jar" "$jar_file"; then
         local java_bin
         java_bin=$(command -v java)
         printf '#!/bin/bash\nexec %s -jar %s "$@"\n' "$java_bin" "$jar_file" \
@@ -64,7 +63,7 @@ function install_ida() {
         return 0
     fi
     colorecho "  → Installing IDA Free (GUI)"
-    if curl -sSLf -o /tmp/idafree.run "https://out7.hex-rays.com/files/idafree84_linux.run"; then
+    if download-retry "https://out7.hex-rays.com/files/idafree84_linux.run" /tmp/idafree.run; then
         chmod +x /tmp/idafree.run
         /tmp/idafree.run --mode unattended --prefix /opt/tools/idafree \
             && ln -sf /opt/tools/idafree/ida64 /opt/tools/bin/ida64 \
@@ -88,7 +87,7 @@ function install_binaryninja() {
         return 0
     fi
     colorecho "  → Installing Binary Ninja Free (GUI, ~450 MB)"
-    if curl -sSLf -o /tmp/binja.zip "https://cdn.binary.ninja/installers/binaryninja_free_linux.zip"; then
+    if download-retry "https://cdn.binary.ninja/installers/binaryninja_free_linux.zip" /tmp/binja.zip; then
         unzip -q -o /tmp/binja.zip -d /opt/tools \
             && ln -sf /opt/tools/binaryninja/binaryninja /opt/tools/bin/binaryninja
         rm -f /tmp/binja.zip
@@ -110,8 +109,8 @@ function install_pycdc() {
     fi
 
     colorecho "  → Installing pycdc (Python bytecode decompiler)"
-    pacman -S --noconfirm --needed cmake || true
-    git clone --depth 1 https://github.com/zrax/pycdc.git "$install_dir" || {
+    install_pacman_tool cmake || true
+    git-clone-retry "https://github.com/zrax/pycdc.git" "$install_dir" 1 || {
         colorecho "  ✗ Warning: Failed to clone pycdc"
         return 1
     }

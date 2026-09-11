@@ -7,6 +7,10 @@ nihil::import lib/registry/pipx
 nihil::import lib/registry/pacman
 nihil::import lib/registry/go
 
+_latest_tag() {
+    retry-command 3 "resolve $1 latest tag" curl -Ls -o /dev/null -w '%{url_effective}' "https://github.com/$1/releases/latest" | sed 's:.*/::' || true
+}
+
 # ===========================================================================
 # Log Analysis / Threat Hunting
 # ===========================================================================
@@ -24,7 +28,7 @@ function install_chainsaw() {
     local url="https://github.com/WithSecureLabs/chainsaw/releases/latest/download/chainsaw_x86_64-unknown-linux-gnu.tar.gz"
 
     mkdir -p "$install_dir"
-    curl -fsSL "$url" -o /tmp/chainsaw.tar.gz || {
+    download-retry "$url" /tmp/chainsaw.tar.gz || {
         colorecho "  ✗ Warning: Failed to download chainsaw"
         return 0
     }
@@ -51,7 +55,7 @@ function install_hayabusa() {
     fi
 
     colorecho "  → Installing hayabusa (Windows DFIR timeline generator)"
-    pacman -S --noconfirm --needed unzip 2>/dev/null || true
+    install_pacman_tool unzip || true
 
     local tag version url
     tag=$(_latest_tag "Yamato-Security/hayabusa")
@@ -65,7 +69,7 @@ function install_hayabusa() {
     url="https://github.com/Yamato-Security/hayabusa/releases/download/${tag}/hayabusa-${version}-lin-x64-gnu.zip"
 
     mkdir -p "$install_dir"
-    curl -fsSL "$url" -o /tmp/hayabusa.zip || {
+    download-retry "$url" /tmp/hayabusa.zip || {
         colorecho "  ✗ Warning: Failed to download hayabusa"
         return 0
     }

@@ -69,7 +69,7 @@ function install_fuzz_txt() {
     fi
 
     colorecho "  → Downloading fuzz.txt"
-    if ! curl -fsSL "$url" -o "$install_path"; then
+    if ! download-retry "$url" "$install_path"; then
         rm -f "$install_path"
         colorecho "  ✗ Warning: Failed to download fuzz.txt"
         return 1
