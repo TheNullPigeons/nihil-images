@@ -43,8 +43,9 @@ module = data.get('$module', [])
 for tool in module:
     cmd = tool.get('cmd') or ''
     check_path = tool.get('check_path') or ''
+    optional = '1' if tool.get('optional') else '0'
     name = tool['name']
-    print(f'{name}|{cmd}|{check_path}')
+    print(f'{name}|{cmd}|{check_path}|{optional}')
 " 2>/dev/null)
 
         if [ -z "$tools_data" ]; then
@@ -56,19 +57,22 @@ for tool in module:
         # Add binary dirs to PATH for healthcheck since we're not running in a full login shell here
         export PATH="/opt/tools/bin:/root/.local/bin:/root/.cargo/bin:/root/go/bin:${PATH}"
 
-        while IFS='|' read -r name cmd check_path; do
+        while IFS='|' read -r name cmd check_path optional; do
             if ! tool_selection_enabled_name "$name"; then
                 echo "  - $name (disabled by tool selection)"
                 continue
             fi
-            total=$((total + 1))
 
             if [ -n "$check_path" ] && [ -z "$cmd" ]; then
                 # Check by path (for resources/wordlists)
                 if [ -e "$check_path" ]; then
+                    total=$((total + 1))
                     echo "  ✓ $name ($check_path)"
                     passed=$((passed + 1))
+                elif [ "$optional" = "1" ]; then
+                    echo "  - $name — optional path not found: $check_path"
                 else
+                    total=$((total + 1))
                     echo "  ✗ $name — path not found: $check_path"
                     failed=$((failed + 1))
                     failed_tools+=("$name")
@@ -76,9 +80,13 @@ for tool in module:
             elif [ -n "$cmd" ]; then
                 # Check by command
                 if command -v "$cmd" > /dev/null 2>&1; then
+                    total=$((total + 1))
                     echo "  ✓ $name ($cmd)"
                     passed=$((passed + 1))
+                elif [ "$optional" = "1" ]; then
+                    echo "  - $name — optional command not found: $cmd"
                 else
+                    total=$((total + 1))
                     echo "  ✗ $name — command not found: $cmd"
                     failed=$((failed + 1))
                     failed_tools+=("$name")
