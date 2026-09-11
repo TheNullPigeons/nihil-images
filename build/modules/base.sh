@@ -72,8 +72,7 @@ function package_base() {
         
         # Télécharger et installer chaotic-keyring
         cd /tmp
-        if curl -L -o chaotic-keyring.pkg.tar.zst 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 2>/dev/null || \
-           wget -O chaotic-keyring.pkg.tar.zst 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 2>/dev/null; then
+        if download-retry 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' chaotic-keyring.pkg.tar.zst; then
             if pacman -U --noconfirm chaotic-keyring.pkg.tar.zst 2>/dev/null; then
                 keyring_ok=1
                 colorecho "chaotic-keyring installed successfully"
@@ -87,8 +86,7 @@ function package_base() {
         
         # Télécharger et installer chaotic-mirrorlist
         if [ "$keyring_ok" -eq 1 ]; then
-            if curl -L -o chaotic-mirrorlist.pkg.tar.zst 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' 2>/dev/null || \
-               wget -O chaotic-mirrorlist.pkg.tar.zst 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' 2>/dev/null; then
+            if download-retry 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' chaotic-mirrorlist.pkg.tar.zst; then
                 if pacman -U --noconfirm chaotic-mirrorlist.pkg.tar.zst 2>/dev/null; then
                     mirrorlist_ok=1
                     colorecho "chaotic-mirrorlist installed successfully"
@@ -122,7 +120,7 @@ function package_base() {
     colorecho "Installing and configuring zsh with oh-my-zsh"
     export ZSH="/root/.oh-my-zsh"
     if [ ! -d "$ZSH" ]; then
-        git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$ZSH" || colorecho "Failed to clone oh-my-zsh"
+        git-clone-retry "https://github.com/ohmyzsh/ohmyzsh.git" "$ZSH" 1 || colorecho "Failed to clone oh-my-zsh"
     fi
 
     # Installer le fichier de configuration zsh par défaut
@@ -138,13 +136,13 @@ function package_base() {
     if [ -d "$ZSH/custom" ]; then
         # Autosuggestions
         if [ ! -d "$ZSH/custom/plugins/zsh-autosuggestions" ]; then
-            git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH/custom/plugins/zsh-autosuggestions" || \
+            git-clone-retry "https://github.com/zsh-users/zsh-autosuggestions" "$ZSH/custom/plugins/zsh-autosuggestions" 1 || \
                 colorecho "Warning: Failed to clone zsh-autosuggestions"
         fi
 
         # Syntax highlighting
         if [ ! -d "$ZSH/custom/plugins/zsh-syntax-highlighting" ]; then
-            git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH/custom/plugins/zsh-syntax-highlighting" || \
+            git-clone-retry "https://github.com/zsh-users/zsh-syntax-highlighting.git" "$ZSH/custom/plugins/zsh-syntax-highlighting" 1 || \
                 colorecho "Warning: Failed to clone zsh-syntax-highlighting"
         fi
 
@@ -232,7 +230,7 @@ function package_base() {
         useradd -m -s /bin/bash builder 2>/dev/null || true
         cd /tmp
         # Cloner les sources sous /tmp
-        git clone https://aur.archlinux.org/yay.git yay-build || colorecho "Warning: Failed to clone yay"
+        git-clone-retry "https://aur.archlinux.org/yay.git" yay-build 1 || colorecho "Warning: Failed to clone yay"
         if [ -d "yay-build" ]; then
             # Donner les droits à builder sur le dossier
             chown -R builder:builder yay-build || true

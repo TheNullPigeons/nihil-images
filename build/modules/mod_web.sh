@@ -270,7 +270,13 @@ function install_caido() {
     colorecho "  → Falling back to upstream release downloads"
     arch="$(uname -m)"
 
-    release_json="$(curl -fsSL https://api.caido.io/releases/latest 2>/dev/null)" || release_json=""
+    local release_file="/tmp/caido-release.json"
+    if download-retry "https://api.caido.io/releases/latest" "$release_file"; then
+        release_json="$(cat "$release_file")"
+        rm -f "$release_file"
+    else
+        release_json=""
+    fi
     if [ -z "$release_json" ]; then
         colorecho "  ✗ Warning: Failed to fetch Caido release metadata"
         return 0
@@ -332,7 +338,7 @@ print(cli[0])' <<<"$release_json")"
     if [ -n "$appimage_url" ]; then
         local appimage_name
         appimage_name="$(basename "$appimage_url")"
-        if curl -fsSL "$appimage_url" -o "/opt/tools/caido/${appimage_name}" 2>/dev/null; then
+        if download-retry "$appimage_url" "/opt/tools/caido/${appimage_name}"; then
             chmod +x "/opt/tools/caido/${appimage_name}" || true
             ln -sf "/opt/tools/caido/${appimage_name}" /opt/tools/bin/caido
         fi
@@ -341,7 +347,7 @@ print(cli[0])' <<<"$release_json")"
     if [ -n "$cli_url" ]; then
         local cli_archive
         cli_archive="/tmp/$(basename "$cli_url")"
-        if curl -fsSL "$cli_url" -o "$cli_archive" 2>/dev/null; then
+        if download-retry "$cli_url" "$cli_archive"; then
             if tar -xzf "$cli_archive" -C /opt/tools/bin 2>/dev/null; then
                 if [ -f /opt/tools/bin/caido-cli ]; then
                     chmod +x /opt/tools/bin/caido-cli || true
@@ -393,14 +399,14 @@ function install_eyewitness() {
     fi
 
     colorecho "  → Installing EyeWitness"
-    git clone --depth=1 "$git_url" "$repo_dir" || {
+    git-clone-retry "$git_url" "$repo_dir" 1 || {
         colorecho "  ✗ Warning: Failed to clone EyeWitness"
         return 1
     }
 
     python3 -m venv "$venv_dir" || return 1
     source "$venv_dir/bin/activate"
-    pip install --quiet selenium Pillow fuzzywuzzy python-Levenshtein requests netaddr || {
+    retry-command 3 "pip install EyeWitness requirements" pip install --quiet selenium Pillow fuzzywuzzy python-Levenshtein requests netaddr || {
         colorecho "  ✗ Warning: Failed to install EyeWitness requirements"
         deactivate
         return 1
@@ -427,8 +433,8 @@ function install_burpsuite() {
     install_pacman_tool "freetype2"
     local burp_dir="/opt/tools/BurpSuiteCommunity"
     mkdir -p "$burp_dir"
-    wget -q "https://portswigger.net/burp/releases/download?product=community&type=Jar" \
-        -O "${burp_dir}/BurpSuiteCommunity.jar"
+    download-retry "https://portswigger.net/burp/releases/download?product=community&type=Jar" \
+        "${burp_dir}/BurpSuiteCommunity.jar"
     file "${burp_dir}/BurpSuiteCommunity.jar" | grep -q "Java archive" \
         || { colorecho "  ✗ Downloaded file is not a valid JAR"; exit 1; }
     cp /opt/nihil/build/assets/burpsuite/conf.json "${burp_dir}/conf.json"
@@ -525,14 +531,13 @@ function install_ysoserial() {
     colorecho "  → Installing ysoserial"
     mkdir -p "$jar_dir"
     local tag
-    tag=$(curl -Ls -o /dev/null -w '%{url_effective}' \
+    tag=$(retry-command 3 "resolve ysoserial latest tag" curl -Ls -o /dev/null -w '%{url_effective}' \
         "https://github.com/frohoff/ysoserial/releases/latest" | sed 's:.*/::' || true)
     if [ -z "$tag" ]; then
         colorecho "  ✗ Warning: Failed to resolve ysoserial version"
         return 0
     fi
-    if ! curl -fsSL "https://github.com/frohoff/ysoserial/releases/download/${tag}/ysoserial-all.jar" \
-            -o "$jar_file" 2>/dev/null; then
+    if ! download-retry "https://github.com/frohoff/ysoserial/releases/download/${tag}/ysoserial-all.jar" "$jar_file"; then
         colorecho "  ✗ Warning: Failed to download ysoserial"
         return 0
     fi
