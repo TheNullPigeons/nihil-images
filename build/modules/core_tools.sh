@@ -33,6 +33,7 @@ function install_core_tools() {
     asciinema \
     whois \
     xclip \
+    wl-clipboard \
     gdb \
     rlwrap \
     bind \
@@ -106,4 +107,3 @@ function install_nihil_ntp() {
     add-history "nihil-ntp"
     colorecho "nihil-ntp installed"
 }
-
