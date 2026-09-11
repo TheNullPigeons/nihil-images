@@ -43,10 +43,22 @@ install_go_tool() {
     fi
 
     colorecho "  → Installing $bin_name via go install ($pkg_path)"
-    go install "$pkg_path" || {
-        colorecho "  ✗ Failed to install $bin_name via go"
-        return 1
-    }
+    local attempt max_attempts
+    max_attempts=3
+    for attempt in $(seq 1 "$max_attempts"); do
+        if go install "$pkg_path"; then
+            break
+        fi
+
+        if [ "$attempt" -eq "$max_attempts" ]; then
+            colorecho "  ✗ Failed to install $bin_name via go after $max_attempts attempts"
+            return 1
+        fi
+
+        colorecho "  ⟳ Retrying $bin_name via go install ($attempt/$max_attempts)"
+        go clean -modcache >/dev/null 2>&1 || true
+        sleep $((attempt * 5))
+    done
 
     if [ -f "$GO_BIN_DIR/$bin_name" ] && [ ! -f "/usr/bin/$bin_name" ]; then
         ln -sf "$GO_BIN_DIR/$bin_name" "/usr/bin/$bin_name" || true

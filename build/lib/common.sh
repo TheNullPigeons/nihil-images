@@ -89,6 +89,51 @@ function add-symlink() {
     ln -sf "$target" "$link_name" || colorecho "Warning: Failed to create symlink"
 }
 
+function retry-command() {
+    local attempts="$1"
+    local label="$2"
+    shift 2
+
+    local -i try=1
+    while (( try <= attempts )); do
+        if "$@"; then
+            return 0
+        fi
+
+        if (( try == attempts )); then
+            return 1
+        fi
+
+        colorecho "  ⟳ Retrying $label ($try/$attempts)"
+        sleep $((try * 5))
+        (( try++ ))
+    done
+}
+
+function download-retry() {
+    local url="$1"
+    local dest="$2"
+    local attempts="${3:-3}"
+
+    local -i try=1
+    while (( try <= attempts )); do
+        rm -f "$dest"
+
+        if curl -sSLf -L "$url" -o "$dest" 2>/dev/null || wget -q -O "$dest" "$url" 2>/dev/null; then
+            return 0
+        fi
+
+        if (( try == attempts )); then
+            rm -f "$dest"
+            return 1
+        fi
+
+        colorecho "  ⟳ Retrying download ($try/$attempts): $url"
+        sleep $((try * 5))
+        (( try++ ))
+    done
+}
+
 function git-clone-retry() {
     local repo_url="$1"
     local dest_dir="$2"

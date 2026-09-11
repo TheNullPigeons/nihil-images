@@ -67,7 +67,7 @@ install_gem_tool() {
     fi
 
     colorecho "  → Installing $cmd_name via gem ($gem_name)"
-    gem install "$gem_name" --no-document || {
+    retry-command 3 "gem install $gem_name" gem install "$gem_name" --no-document || {
         colorecho "  ✗ Warning: Failed to install $gem_name via gem"
         return 1
     }
