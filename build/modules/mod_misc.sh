@@ -125,6 +125,7 @@ function install_grc() {
     local grc_assets="/opt/nihil/build/assets/grc"
     cp "${grc_assets}/grc.conf" /etc/grc.conf
     cp "${grc_assets}"/conf.* /usr/share/grc/
+    add-aliases "grc"
 }
 
 function install_sqlitebrowser() {
