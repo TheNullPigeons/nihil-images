@@ -35,7 +35,7 @@ install_git_tool_symlink() {
     colorecho "  → Installing $cmd_name via Git ($git_url)"
     mkdir -p "$(dirname "$install_dir")"
     if [ ! -d "$install_dir" ]; then
-        git clone --depth 1 "$git_url" "$install_dir" || {
+        git-clone-retry "$git_url" "$install_dir" 1 || {
             colorecho "  ✗ Failed to clone $(basename "$install_dir")"
             return 1
         }
@@ -86,7 +86,7 @@ install_git_tool() {
 
     colorecho "  → Installing $cmd_name via Git ($git_url)"
     if [ ! -d "$repo_dir" ]; then
-        git clone --depth=1 "$git_url" "$repo_dir" || {
+        git-clone-retry "$git_url" "$repo_dir" 1 || {
             colorecho "  ✗ Warning: Failed to clone $cmd_name"
             return 1
         }
@@ -169,7 +169,7 @@ install_git_tool_venv() {
     
     # Cloner le repo
     if [ ! -d "$repo_dir" ]; then
-        git clone --depth=1 "$git_url" "$repo_dir" || {
+        git-clone-retry "$git_url" "$repo_dir" 1 || {
             colorecho "  ✗ Warning: Failed to clone $tool_name"
             return 1
         }
@@ -198,14 +198,14 @@ install_git_tool_venv() {
 
     if [ -n "$pip_packages" ]; then
         # Installer les packages spécifiés
-        pip install --quiet $pip_packages || {
+        retry-command 3 "pip install packages for $tool_name" pip install --quiet $pip_packages || {
             colorecho "  ✗ Warning: Failed to install pip packages for $tool_name"
             deactivate
             return 1
         }
     elif [ -f "$repo_dir/requirements.txt" ]; then
         # Utiliser requirements.txt si présent
-        pip install --quiet -r "$repo_dir/requirements.txt" || {
+        retry-command 3 "pip install requirements for $tool_name" pip install --quiet -r "$repo_dir/requirements.txt" || {
             colorecho "  ✗ Warning: Failed to install requirements.txt for $tool_name"
             deactivate
             return 1
@@ -293,7 +293,7 @@ install_git_tool_bundler() {
 
     # Cloner le repo
     if [ ! -d "$repo_dir" ]; then
-        git clone --depth=1 "$git_url" "$repo_dir" || {
+        git-clone-retry "$git_url" "$repo_dir" 1 || {
             colorecho "  ✗ Warning: Failed to clone $tool_name"
             return 1
         }
@@ -310,7 +310,7 @@ install_git_tool_bundler() {
     # Installer bundler si pas déjà installé
     if ! gem list -i bundler >/dev/null 2>&1; then
         colorecho "  → Installing bundler"
-        gem install bundler --no-document || {
+        retry-command 3 "gem install bundler" gem install bundler --no-document || {
             colorecho "  ✗ Warning: Failed to install bundler"
             return 1
         }
@@ -324,18 +324,18 @@ install_git_tool_bundler() {
             local without_val
             without_val=$(printf '%s' "$bundle_args" | sed 's/.*--without[[:space:]]*//')
             bundle config set --local without "$without_val" 2>/dev/null || true
-            bundle install || {
+            retry-command 3 "bundle install for $tool_name" bundle install || {
                 colorecho "  ✗ Warning: Failed to install Ruby dependencies"
                 return 1
             }
         else
-            bundle install $bundle_args || {
+            retry-command 3 "bundle install for $tool_name" bundle install $bundle_args || {
                 colorecho "  ✗ Warning: Failed to install Ruby dependencies"
                 return 1
             }
         fi
     else
-        bundle install || {
+        retry-command 3 "bundle install for $tool_name" bundle install || {
             colorecho "  ✗ Warning: Failed to install Ruby dependencies"
             return 1
         }

@@ -45,7 +45,7 @@ install_pipx_tool() {
     fi
 
     colorecho "  → Installing $cmd_name via pipx ($pkg_name)"
-    pipx install "$pkg_name" || {
+    retry-command 3 "pipx install $pkg_name" pipx install "$pkg_name" || {
         colorecho "  ✗ Warning: Failed to install $pkg_name via pipx"
         return 1
     }
@@ -85,7 +85,7 @@ install_pipx_tool_git() {
         eval "export $env_vars"
     fi
 
-    pipx install "$git_url" || {
+    retry-command 3 "pipx install $git_url" pipx install "$git_url" || {
         colorecho "  ✗ Warning: Failed to install $cmd_name via pipx from Git"
         return 1
     }
