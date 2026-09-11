@@ -1040,7 +1040,8 @@
         {
             "name": "ida",
             "cmd": "ida64",
-            "description": "IDA Free interactive disassembler"
+            "description": "IDA Free interactive disassembler",
+            "optional": true
         },
         {
             "name": "binaryninja",
