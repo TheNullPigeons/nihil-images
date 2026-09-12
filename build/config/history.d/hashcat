@@ -8,3 +8,40 @@ hashcat --hash-type 13100 --attack-mode 0 Kerberoastables.txt `fzf-wordlists`
 hashcat --hash-type 18200 --attack-mode 0 ASREProastables.txt `fzf-wordlists`
 hcat '$DCC2$10240#user#bb38628253e7681553b72e7da3adf305'
 hcat Kerberoastables.txt
+hashcat -a 0 -m 18200 asrep.txt /usr/share/wordlists/rockyou.txt
+hashcat -m 13100 -a 0 kerb.txt /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule
+hashcat -m 31300 -a 0 hash.txt `fzf-wordlists`
+hashcat -a 0 -m 5600 hash.txt /usr/share/wordlists/rockyou.txt
+hashcat -a 0 -m 16500 jwt.txt `fzf-wordlists`
+hashcat -b
+hashcat -a 0 -m 0 hash.txt `fzf-wordlists`                # MD5
+hashcat -a 0 -m 100 hash.txt `fzf-wordlists`              # SHA1
+hashcat -a 0 -m 1000 hash.txt `fzf-wordlists`             # NTLM
+hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/best64.rule
+hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/rockyou-30000.rule
+hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/d3ad0ne.rule
+hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/T0XlC.rule
+hashcat -a 0 -m 3000 hash.txt `fzf-wordlists`             # LM
+hashcat -a 0 -m 5500 hash.txt `fzf-wordlists`             # NetNTLMv1
+hashcat -a 0 -m 5600 hash.txt `fzf-wordlists`             # NetNTLMv2
+hashcat -a 0 -m 5300 hash.txt `fzf-wordlists`             # IKE PSK MD5
+hashcat -a 0 -m 5400 hash.txt `fzf-wordlists`             # IKE PSK SHA1
+hashcat -a 0 -m 7100 hash.txt `fzf-wordlists`             # macOS PBKDF2
+hashcat -a 0 -m 9600 hash.txt `fzf-wordlists`             # MS Office 2013
+hashcat -a 0 -m 10500 hash.txt `fzf-wordlists`            # PDF 1.4-1.6
+hashcat -a 0 -m 13100 hash.txt `fzf-wordlists`            # Kerberoast TGS-REP RC4
+hashcat -a 0 -m 13400 hash.txt `fzf-wordlists`            # KeePass
+hashcat -a 0 -m 16500 hash.txt `fzf-wordlists`            # "$JWT" HS256
+hashcat -a 0 -m 16800 dump.hashcat `fzf-wordlists`        # WPA-PMKID-PBKDF2
+hashcat -a 0 -m 17200 hash.txt `fzf-wordlists`            # PDF 1.4-1.6 compressed
+hashcat -a 0 -m 18200 hash.txt `fzf-wordlists`            # AS-REP roast
+hashcat -a 0 -m 22000 hash.hccapx `fzf-wordlists`         # WPA-PBKDF2
+hashcat -a 0 -m 31300 hash.txt `fzf-wordlists`            # MS-RPC NTP / Timeroast
+hashcat -a 3 -m 0 hash.txt '?u?l?l?l?l?d?s'         # bruteforce mask
+hashcat -a 3 -m 1000 hash.txt --increment --increment-min 6 --increment-max 12 ?a?a?a?a?a?a?a?a?a?a?a?a
+hashcat -a 6 -m 1000 hash.txt `fzf-wordlists` ?d?d?d?d
+hashcat -a 7 -m 1000 hash.txt ?d?d?d?d `fzf-wordlists`
+hashcat --stdout `fzf-wordlists` -r custom.rule | sort -u > mutated.txt
+hashcat --left -m 1000 hash.txt --potfile-path domain.pot
+hashcat --show -m 1000 hash.txt
+hashcat --force `fzf-wordlists` -r custom.rule --stdout | sort -u > mut.list

@@ -1,0 +1,2 @@
+goldencopy --password exegol4thewin --stealth --krbtgt "$KRBTGT_AES" "$TARGET\$"
+goldencopy --tools all --password exegol4thewin --stealth --krbtgt "$KRBTGT_AES" "$USER"

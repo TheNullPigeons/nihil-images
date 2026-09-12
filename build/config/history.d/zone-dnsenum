@@ -2,3 +2,7 @@ zone-dnsenum -d "$DOMAIN"
 zone-dnsenum -d "$DOMAIN" -r
 zone-dnsenum -d "$DOMAIN" --dc "$DC_IP"
 zone-dnsenum -d "$DOMAIN" -s "$DNS_SERVER_IP" -w "$SUBDOMAIN_WORDLIST_PATH" -o results.txt
+dnsrecon -d "$DOMAIN"
+dnsrecon -r "$CIDR" -n "$DC_IP"
+dnsenum --dnsserver "$DC_IP" --enum -f /opt/useful/seclists/Discovery/DNS/subdomains-top1million-5000.txt "$DOMAIN"
+dnsenum --dnsserver "$DC_IP" --enum -p 0 -s 0 -o subdomains.txt -f /opt/useful/seclists/Discovery/DNS/subdomains-top1million-110000.txt "$DOMAIN"

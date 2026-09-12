@@ -1,2 +1,4 @@
 adidnsdump -u "$DOMAIN"\\$USER ldap://"$DC_HOST"
 adidnsdump -u "$DOMAIN"\\$USER ldap://"$DC_HOST" -r
+adidnsdump -u "$DOMAIN\\$USER" -p "$PASSWORD" --print-zones "$TARGET"
+proxychains adidnsdump --dns-tcp -u "$DOMAIN\\$USER" -p "$PASSWORD" --print-zones "$TARGET"

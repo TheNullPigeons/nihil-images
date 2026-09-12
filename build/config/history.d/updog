@@ -3,3 +3,4 @@ updog -d /workspace -p 9090
 updog -d /workspace -p 443 --ssl --enable-uploads
 updog -d /workspace -p 9090 -P "$PASSWORD"
 updog -d /workspace -p 9090 --enable-uploads
+updog --ssl --port 9090 --password "exegol4thewin" --directory /opt/resources

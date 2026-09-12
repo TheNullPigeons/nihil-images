@@ -1,0 +1,2 @@
+cewl http://"$TARGET" -w cewl.txt
+cewl --depth 10 --with-numbers --write cewl.txt http://"$TARGET"

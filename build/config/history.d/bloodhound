@@ -1,3 +1,5 @@
 bloodhound-python -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -ns "$DC_IP" -c all
 bloodhound-python -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -ns "$DC_IP" -c all --zip
 bloodhound-python -u "$USER" --hashes :"$NT_HASH" -d "$DOMAIN" -ns "$DC_IP" -c all
+bloodhound-python -u "$USER" -p "$PASSWORD" -c all -d "$DOMAIN" -ns "$IP" --zip
+bloodhound &> /dev/null &

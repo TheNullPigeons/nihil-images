@@ -1,0 +1,2 @@
+git-dumper http://"$TARGET"/.git ./git-dump/
+gitdumper.sh http://"$TARGET"/.git ./git-dump/

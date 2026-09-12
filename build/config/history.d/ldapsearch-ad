@@ -11,3 +11,5 @@ ldapsearch-ad -l $DC_IP -d $DOMAIN -u $USER -p $PASSWORD -t search-spn
 ldapsearch-ad -l $DC_IP -d $DOMAIN -u $USER -p $PASSWORD -t gmsa
 ldapsearch-ad.py --server "$DC_HOST" --domain "$DOMAIN" --username "$USER" --password "$PASSWORD" --type all
 ldapsearch-ad.py --server "$DC_HOST" --type info
+ldapsearch-ad.py --server "$IP" --domain "$DOMAIN" --username "$USER" --password "$PASSWORD" --type all
+ldapsearch-ad.py --server "$IP" --type info

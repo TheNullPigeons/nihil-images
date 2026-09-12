@@ -1,3 +1,5 @@
 sublist3r -d "$DOMAIN"
 sublist3r -d "$DOMAIN" -o "$OUTPUT".txt
 sublist3r -d "$DOMAIN" -b -p 80,443
+sublist3r -d "$DOMAIN" -e google,yahoo
+sublist3r -d "$DOMAIN" -b -t 100 -o subs.txt

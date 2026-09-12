@@ -5,3 +5,31 @@ ldapsearch -H ldap://$TARGET -D "$USER@$DOMAIN" -w "$PASSWORD" -b "DC=DOMAIN,DC=
 ldapsearch -h "$DC_IP" -x -s "base" "namingcontexts"
 ldapsearch -h "$TARGET" -x -b "DC=DOMAIN,DC=LOCAL"
 ldapsearch -H ldap://$TARGET -x -b "DC=DOMAIN,DC=LOCAL"
+dig "$DOMAIN"
+dig "$DOMAIN" A
+dig "$DOMAIN" AAAA
+dig "$DOMAIN" MX
+dig "$DOMAIN" NS
+dig "$DOMAIN" TXT
+dig "$DOMAIN" CNAME
+dig "$DOMAIN" SOA
+dig "$DOMAIN" ANY
+dig @"$DC_IP" "$DOMAIN"
+dig +trace "$DOMAIN"
+dig +short "$DOMAIN"
+dig +noall +answer "$DOMAIN"
+dig -x "$IP"
+dig axfr "$DOMAIN" @"$DC_IP"
+dig any "$DOMAIN" @"$DC_IP"
+dig ns "$DOMAIN" @"$DC_IP"
+dig CH TXT version.bind "$IP"
+host -t MX "$DOMAIN"
+host -t A "$DOMAIN"
+nslookup -type=any -query=* "$DOMAIN" "$DC_IP"
+dig mx "$DOMAIN" | grep "MX" | grep -v ";"
+ldapsearch -h "$IP" -x -b "DC=$DOMAIN_DC1,DC=$DOMAIN_DC2" -s sub "(&(objectclass=user))" | grep sAMAccountName
+nslookup -type=srv _ldap._tcp."$DOMAIN"
+nslookup -type=srv _kerberos._tcp."$DOMAIN"
+nslookup -type=srv _kpasswd._tcp."$DOMAIN"
+nslookup -type=srv _gc._tcp."$DOMAIN"
+nslookup -type=srv _ldap._tcp.dc._msdcs."$DOMAIN"

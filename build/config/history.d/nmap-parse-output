@@ -1,0 +1,8 @@
+nmap-parse-output /path/to/nmap.xml all-hosts
+nmap-parse-output /path/to/nmap.xml hosts
+nmap-parse-output /path/to/nmap.xml http-info
+nmap-parse-output /path/to/nmap.xml service-names
+nmap-parse-output /path/to/nmap.xml service $service_name
+nmap-parse-output /path/to/nmap.xml hosts-to-port $port
+nmap-parse-output /path/to/nmap.xml to-json
+nmap-parse-output /path/to/nmap.xml html

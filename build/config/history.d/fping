@@ -2,3 +2,5 @@ fping $TARGET
 fping -a -g $SUBNET/24
 fping -a -g $SUBNET/24 2>/dev/null
 fping -c 1 -g $SUBNET/24 2>/dev/null | grep "1/1/0"
+fping -agq "$CIDR"
+fping -c 1 -g "$IP"/24 2>/dev/null | grep -v 254 |  grep "ms" | cut -d " " -f 1 > machine_up.txt

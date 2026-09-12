@@ -13,3 +13,8 @@ pwncat-vl -p $PORT $USER@$HOST
 
 pwncat-vl reconnect://$USER@$HOST
 pwncat-vl reconnect://$USER@$SESSION_ID
+pwncat-vl :"$LPORT"
+pwncat-vl -lp "$LPORT"
+pwncat-vl "$HOST":"$PORT"
+pwncat-vl ssh://"$USER":"$PASSWORD"@"$HOST"
+pwncat-vl -i id_rsa "$USER"@"$HOST"
