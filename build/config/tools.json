@@ -1421,6 +1421,11 @@
             "name": "theHarvester",
             "cmd": "theHarvester",
             "description": "Email and domain OSINT"
+        },
+        {
+            "name": "mailscout",
+            "cmd": "mailscout",
+            "description": "IMAP and POP3 mailbox enumeration"
         }
     ]
 }

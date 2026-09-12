@@ -80,6 +80,10 @@ function install_theharvester() {
     install_pipx_tool_git "theHarvester" "https://github.com/laramies/theHarvester"
 }
 
+function install_mailscout() {
+    install_pipx_tool_git "mailscout" "https://github.com/Goultarde/MailScout.git"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -99,6 +103,7 @@ function install_mod_osint() {
     install_spiderfoot
     install_sublist3r
     install_theharvester
+    install_mailscout
 
     colorecho "OSINT tools installation finished"
 }
