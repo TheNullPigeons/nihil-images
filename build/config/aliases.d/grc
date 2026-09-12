@@ -1,7 +1,7 @@
 alias rbcd='grc rbcd.py'
 alias describeTicket='grc describeTicket.py'
 alias ntlmrelayx='grc ntlmrelayx.py'
-alias krbrelayx='grc krbrelayx.py'
+alias krbrelayx='grc krbrelayx'
 alias dementor='grc dementor.py'
 alias configure='grc configure'
 alias ping='grc ping'
