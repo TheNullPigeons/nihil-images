@@ -28,6 +28,21 @@ function install_haiti() {
 
 function install_john() {
     install_pacman_tool "john"
+    add-history "john"
+}
+
+function install_xortool() {
+    install_pipx_tool "xortool" "xortool"
+    if command -v xortool-xor >/dev/null 2>&1; then
+        add-history "xortool"
+        return 0
+    fi
+    local pipx_bin_dir
+    pipx_bin_dir="$(pipx environment --value PIPX_BIN_DIR 2>/dev/null || printf '%s\n' /root/.local/bin)"
+    if [ -x "$pipx_bin_dir/xortool-xor" ]; then
+        ln -sf "$pipx_bin_dir/xortool-xor" /usr/bin/xortool-xor || true
+    fi
+    add-history "xortool"
 }
 
 function install_hashcat() {

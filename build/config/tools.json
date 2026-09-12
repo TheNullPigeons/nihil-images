@@ -83,6 +83,11 @@
             "description": "BloodHound legacy (4.x) desktop client"
         },
         {
+            "name": "bloodhound-import",
+            "cmd": "bloodhound-import",
+            "description": "Import BloodHound JSON/ZIP data into Neo4j"
+        },
+        {
             "name": "ldapdomaindump",
             "cmd": "ldapdomaindump",
             "description": "LDAP domain information dumper"
@@ -93,9 +98,19 @@
             "description": "AD integrated DNS dumper"
         },
         {
+            "name": "adcheck",
+            "cmd": "adcheck",
+            "description": "Active Directory security posture checker"
+        },
+        {
             "name": "certipy",
             "cmd": "certipy",
             "description": "ADCS enumeration and exploitation"
+        },
+        {
+            "name": "certipy-ad",
+            "cmd": "certipy-ad",
+            "description": "Compatibility alias for Certipy ADCS enumeration and exploitation"
         },
         {
             "name": "bloodyad",
@@ -223,6 +238,26 @@
             "description": "LLMNR/NBT-NS/mDNS poisoner"
         },
         {
+            "name": "responder-smb-on",
+            "cmd": "responder-smb-on",
+            "description": "Responder configuration helper"
+        },
+        {
+            "name": "responder-smb-off",
+            "cmd": "responder-smb-off",
+            "description": "Responder configuration helper"
+        },
+        {
+            "name": "responder-http-on",
+            "cmd": "responder-http-on",
+            "description": "Responder configuration helper"
+        },
+        {
+            "name": "responder-http-off",
+            "cmd": "responder-http-off",
+            "description": "Responder configuration helper"
+        },
+        {
             "name": "rusthound-ce",
             "cmd": "rusthound-ce",
             "description": "BloodHound CE collector (Rust)"
@@ -306,6 +341,11 @@
             "name": "smbclient",
             "cmd": "smbclient",
             "description": "SMB command-line client"
+        },
+        {
+            "name": "rpcclient",
+            "cmd": "rpcclient",
+            "description": "Samba MS-RPC command-line client"
         },
         {
             "name": "powershell",
@@ -535,6 +575,16 @@
             "description": "Passive subdomain enumeration"
         },
         {
+            "name": "dnsx",
+            "cmd": "dnsx",
+            "description": "Fast DNS resolver and toolkit"
+        },
+        {
+            "name": "alterx",
+            "cmd": "alterx",
+            "description": "Subdomain permutation generator"
+        },
+        {
             "name": "katana",
             "cmd": "katana",
             "description": "Web crawler (ProjectDiscovery)"
@@ -665,6 +715,11 @@
             "description": "WordPress vulnerability scanner"
         },
         {
+            "name": "wpprobe",
+            "cmd": "wpprobe",
+            "description": "WordPress plugin and vulnerability scanner"
+        },
+        {
             "name": "bbot",
             "cmd": "bbot",
             "description": "Automated recon and subdomain OSINT"
@@ -767,14 +822,34 @@
             "description": "Network protocol analyzer (CLI)"
         },
         {
+            "name": "wireshark",
+            "cmd": "wireshark",
+            "description": "Network protocol analyzer (GUI)"
+        },
+        {
             "name": "fping",
             "cmd": "fping",
             "description": "Fast ICMP host discovery"
         },
         {
+            "name": "netdiscover",
+            "cmd": "netdiscover",
+            "description": "Active/passive network address discovery"
+        },
+        {
             "name": "zone-dnsenum",
             "cmd": "zone-dnsenum",
             "description": "DNS zone enumeration and transfer"
+        },
+        {
+            "name": "dnsrecon",
+            "cmd": "dnsrecon",
+            "description": "DNS enumeration and zone transfer testing"
+        },
+        {
+            "name": "dnsenum",
+            "cmd": "dnsenum",
+            "description": "DNS enumeration script"
         },
         {
             "name": "ngrok",
@@ -837,9 +912,24 @@
             "description": "Packet capture"
         },
         {
+            "name": "snmpwalk",
+            "cmd": "snmpwalk",
+            "description": "SNMP tree walker"
+        },
+        {
+            "name": "onesixtyone",
+            "cmd": "onesixtyone",
+            "description": "SNMP community string scanner"
+        },
+        {
             "name": "xfreerdp",
             "cmd": "xfreerdp3",
             "description": "RDP client"
+        },
+        {
+            "name": "rdesktop",
+            "cmd": "rdesktop",
+            "description": "Legacy RDP client"
         },
         {
             "name": "nfs-utils",
@@ -862,6 +952,61 @@
             "name": "john",
             "cmd": "john",
             "description": "Password cracker (John the Ripper)"
+        },
+        {
+            "name": "zip2john",
+            "cmd": "zip2john",
+            "description": "Convert ZIP archives to John hashes"
+        },
+        {
+            "name": "rar2john",
+            "cmd": "rar2john",
+            "description": "Convert RAR archives to John hashes"
+        },
+        {
+            "name": "pdf2john",
+            "cmd": "pdf2john",
+            "description": "Convert PDF files to John hashes"
+        },
+        {
+            "name": "ssh2john",
+            "cmd": "ssh2john",
+            "description": "Convert SSH keys to John hashes"
+        },
+        {
+            "name": "keepass2john",
+            "cmd": "keepass2john",
+            "description": "Convert KeePass databases to John hashes"
+        },
+        {
+            "name": "keychain2john",
+            "cmd": "keychain2john",
+            "description": "Convert keychains to John hashes"
+        },
+        {
+            "name": "pfx2john",
+            "cmd": "pfx2john",
+            "description": "Convert PFX files to John hashes"
+        },
+        {
+            "name": "office2john",
+            "cmd": "office2john",
+            "description": "Convert Office documents to John hashes"
+        },
+        {
+            "name": "pwsafe2john",
+            "cmd": "pwsafe2john",
+            "description": "Convert Password Safe files to John hashes"
+        },
+        {
+            "name": "xortool",
+            "cmd": "xortool",
+            "description": "Analyze repeating-key XOR ciphers"
+        },
+        {
+            "name": "xortool-xor",
+            "cmd": "xortool-xor",
+            "description": "Apply XOR with a supplied key"
         },
         {
             "name": "hashcat",
@@ -954,6 +1099,16 @@
             "name": "checksec",
             "cmd": "checksec",
             "description": "Binary security property checker"
+        },
+        {
+            "name": "patchelf",
+            "cmd": "patchelf",
+            "description": "Patch ELF interpreters, rpaths and dependencies"
+        },
+        {
+            "name": "pwninit",
+            "cmd": "pwninit",
+            "description": "Initialize pwn challenges with matching libc/ld"
         }
     ],
     "mod_c2": [
@@ -1014,6 +1169,11 @@
             "name": "sqlitebrowser",
             "cmd": "sqlitebrowser",
             "description": "GUI SQLite database browser"
+        },
+        {
+            "name": "sqlite3",
+            "cmd": "sqlite3",
+            "description": "SQLite command-line client"
         },
         {
             "name": "keepassxc",

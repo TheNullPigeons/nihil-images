@@ -501,6 +501,8 @@ function install_smbclientng() {
 
 function install_smbclient() {
   install_pacman_tool "smbclient"
+  install_pacman_tool "samba"
+  add-history "smbclient"
 }
 
 function install_python_pcapy() {
@@ -509,6 +511,23 @@ function install_python_pcapy() {
 
 function install_responder() {
   install_aur_tool "responder" "responder"
+  cat > /usr/local/bin/responder-http-off <<'EOF'
+#!/bin/sh
+sed -i 's/^HTTP = On/HTTP = Off/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
+EOF
+  cat > /usr/local/bin/responder-http-on <<'EOF'
+#!/bin/sh
+sed -i 's/^HTTP = Off/HTTP = On/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
+EOF
+  cat > /usr/local/bin/responder-smb-off <<'EOF'
+#!/bin/sh
+sed -i 's/^SMB = On/SMB = Off/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
+EOF
+  cat > /usr/local/bin/responder-smb-on <<'EOF'
+#!/bin/sh
+sed -i 's/^SMB = Off/SMB = On/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
+EOF
+  chmod +x /usr/local/bin/responder-http-off /usr/local/bin/responder-http-on /usr/local/bin/responder-smb-off /usr/local/bin/responder-smb-on
 }
 
 function install_rusthound_ce() {

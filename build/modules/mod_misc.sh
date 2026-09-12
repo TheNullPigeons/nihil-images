@@ -135,6 +135,8 @@ function install_grc() {
 
 function install_sqlitebrowser() {
     install_pacman_tool "sqlitebrowser"
+    install_pacman_tool "sqlite"
+    add-history "sqlitebrowser"
 }
 
 function install_mongosh() {
