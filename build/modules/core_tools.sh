@@ -87,15 +87,22 @@ EOF
 # packages, both already pulled by package_base.
 function install_nihil_ntp() {
     colorecho "Installing nihil-ntp"
-    local assets="${NIHIL_BUILD}/lib/installers/nihil-ntp"
+    local repo="https://github.com/TheNullPigeons/nihil-ntp.git"
+    local ref="9f983a2128cf0e395a7fe093c9b483df5abc8a17"
+    local src_dir="/opt/tools/src/nihil-ntp"
     local hook_dir="/opt/nihil/config/nihil-ntp"
 
-    install -Dm755 "${assets}/nihil-ntp" /opt/tools/bin/nihil-ntp
-    install -Dm644 "${assets}/hook.sh" "${hook_dir}/hook.sh"
+    rm -rf "${src_dir}"
+    git clone --depth 1 "${repo}" "${src_dir}"
+    git -C "${src_dir}" fetch --depth 1 origin "${ref}"
+    git -C "${src_dir}" checkout --detach "${ref}"
+
+    install -Dm755 "${src_dir}/nihil-ntp" /opt/tools/bin/nihil-ntp
+    install -Dm644 "${src_dir}/hook.sh" "${hook_dir}/hook.sh"
 
     # zsh tab-completion: drop in the default site-functions fpath so the
     # compinit run by oh-my-zsh autoloads it at shell startup.
-    install -Dm644 "${assets}/_nihil-ntp" /usr/share/zsh/site-functions/_nihil-ntp
+    install -Dm644 "${src_dir}/completions/_nihil-ntp" /usr/share/zsh/site-functions/_nihil-ntp
 
     # Source the hook from every interactive shell. zsh reads the baked-in
     # /root/.zshrc (which already carries the source line); wire bash too.
