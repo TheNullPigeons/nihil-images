@@ -1,0 +1,5 @@
+alias cve-2020-1472-exploit.py='cve-2020-1472-exploit'
+alias restorepassword.py='restorepassword'
+alias set_empty_pw.py='set_empty_pw'
+alias zerologon-scan.py='zerologon-scan'
+alias zerologon-restore.py='zerologon-restore'
