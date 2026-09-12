@@ -1,0 +1,3 @@
+wafw00f -l
+wafw00f http://"$TARGET"
+wafw00f -a http://"$TARGET"

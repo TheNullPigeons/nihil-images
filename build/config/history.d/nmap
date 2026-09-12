@@ -1,0 +1,32 @@
+nmap -sn "$IP"/24
+nmap -sn "$CIDR" -oA discovery/hosts
+nmap -Pn -sS --top-ports 100 "$CIDR" -oA discovery/noping
+nmap 10.129.2.0/24 -sn -oA tnet
+nmap -sC -sV -O -T4 -oN scans/initial "$TARGET"
+nmap -p- -sS --min-rate 5000 "$TARGET" -oA scans/alltcp
+nmap -sC -sV -p"$PORTS" "$TARGET" -oA scans/targeted
+nmap -sU --top-ports 100 "$TARGET" -oA scans/udp
+nmap --script vuln -p"$PORTS" "$TARGET" -oA scans/vuln
+nmap -p 445 --script vuln -oA scans/nmap-smbvulns "$IP"
+nmap -sV -sC -p3389 --script rdp* "$IP"
+nmap --script ssh2-enum-algos -p22 "$TARGET"
+nmap --script rdp-enum-encryption -p3389 "$TARGET"
+nmap --script rdp-vuln-ms12-020 -p3389 "$TARGET"
+nmap --script smtp-open-relay -p25 "$TARGET"
+nmap --script ipmi-version -p 623 "$TARGET"
+nmap -sU -p 161 --script=snmp-info "$TARGET"
+nmap -p1521 -sV "$IP" --open --script oracle-sid-brute
+nmap --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=,mssql.instance-name=MSSQLSERVER -sV -p 1433 "$IP"
+nmap -p "$PORT" -sA -Pn -n --disable-arp-ping --packet-trace "$IP"
+nmap -p "$PORT" -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53 "$IP"
+nmap -n -Pn -p 445 -O -S "$SPOOF_IP" -e "$INTERFACE" "$IP"
+nmap -p 3389 --packet-trace --disable-arp-ping -n "$IP"
+proxychains nmap -sT -p "$PORTS" "$IP"
+sudo /usr/bin/nmap --script=/tmp/root.nse localhost
+nmap --script 'smb-enum*' --script-args unsafe=1 -T5 "$TARGET"
+nmap --script broadcast-dhcp-discover
+nmap --script dns-srv-enum --script-args dns-srv-enum.domain="$DOMAIN"
+nmap --script http-ntlm-info --script-args http-ntlm-info.root=/ews/ -p 443 mx."$DOMAIN"
+nmap --script smb-enum-shares -p 139,445 -T4 -Pn "$TARGET"
+nmap --script ldap-search -p 389 "$TARGET"
+nmap -p 5900 --script realvnc-auth-bypass "$TARGET"

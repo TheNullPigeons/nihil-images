@@ -1,3 +1,5 @@
 masscan "$CIDR" -p 80,443,22,445,3389,8080,8443
 masscan "$TARGET" -p 0-65535 --rate 10000
 masscan "$CIDR" -p 0-65535 --rate 1000 -oG "$OUTPUT"
+masscan -v -p 1-65535 --rate=10000 -e "$INTERFACE" "$CIDR"
+masscan -v -p 1-65535,U:1-65535 --rate=10000 -e "$INTERFACE" "$CIDR"

@@ -1,0 +1,8 @@
+sqlite3 "$FILE" ".tables"
+sqlite3 "$FILE" ".schema $TABLE"
+sqlite3 "$FILE" ".dump"
+sqlite3 "$FILE" ".dump $TABLE"
+sqlite3 "$FILE" "SELECT * FROM "$TABLE";"
+sqlite3 "$FILE" "SELECT name FROM sqlite_master WHERE type='table';"
+sqlite3 -header -column "$FILE" "SELECT * FROM "$TABLE";"
+sqlite3 -json "$FILE" "SELECT * FROM "$TABLE";"

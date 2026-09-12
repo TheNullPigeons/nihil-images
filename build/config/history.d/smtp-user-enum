@@ -2,3 +2,7 @@ smtp-user-enum -M VRFY -U $WORDLIST -t $TARGET
 smtp-user-enum -M EXPN -U $WORDLIST -t $TARGET
 smtp-user-enum -M RCPT -U $WORDLIST -t $TARGET -D $DOMAIN
 smtp-user-enum -M VRFY -u $USER -t $TARGET
+smtp-user-enum -M VRFY -U users.txt -t "$IP" -w 20
+smtp-user-enum -M EXPN -u "$USER" -t "$IP"
+smtp-user-enum -M RCPT -U users.txt -T mail-server-ips.txt
+smtp-user-enum -M EXPN -D "$DOMAIN" -U users.txt -t "$IP"

@@ -1,0 +1,2 @@
+hashid "$HASH" -m
+hashid -mj "$HASH"

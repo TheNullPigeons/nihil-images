@@ -1,0 +1,2 @@
+crunch MIN MAX CHARSET -o `fzf-wordlists`
+crunch 4 7 abcdefghijklmnopqrstuvwxyz1234567890 -o `fzf-wordlists`

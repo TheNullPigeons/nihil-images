@@ -10,3 +10,6 @@ responder-http-off
 responder-http-on
 responder-smb-off
 responder-smb-on
+responder -I "$INTERFACE" -v
+responder -I "$INTERFACE" -dwPv
+responder -wrf -v -I "$INTERFACE"

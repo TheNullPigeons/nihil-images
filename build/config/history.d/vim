@@ -1,0 +1,1 @@
+sudo vim -c ':!/bin/sh'

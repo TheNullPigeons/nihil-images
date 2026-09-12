@@ -1,0 +1,1 @@
+hakrawler -d 10 <<< http://"$TARGET"

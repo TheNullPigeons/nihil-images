@@ -1,0 +1,1 @@
+joomscan -u http://"$TARGET" --enumerate-components

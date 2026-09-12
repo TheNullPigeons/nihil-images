@@ -1,3 +1,4 @@
 rusthound -d "$DOMAIN" -u "$USER"@"$DOMAIN" -p "$PASSWORD" -o /workspace/ --zip
 rusthound -d "$DOMAIN" -u "$USER"@"$DOMAIN" -p "$PASSWORD" --zip --ldaps --adcs
 rusthound -d "$DOMAIN" -u "$USER"@"$DOMAIN" -H "$NT_HASH" -o /workspace/ --zip
+rusthound -d "$DOMAIN" -u "$USER@$DOMAIN" -p "$PASSWORD" -o ./loot/ --zip

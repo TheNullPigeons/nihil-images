@@ -1,0 +1,1 @@
+godap "$TARGET" --username "$USER" --password "$PASSWORD" --domain "$DOMAIN"
