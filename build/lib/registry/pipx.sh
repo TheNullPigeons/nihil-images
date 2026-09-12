@@ -16,6 +16,10 @@ _ensure_pipx() {
     fi
 }
 
+_pipx_bin_dir() {
+    pipx environment --value PIPX_BIN_DIR 2>/dev/null || printf '%s\n' /root/.local/bin
+}
+
 # Install a tool via pipx
 # Usage: install_pipx_tool "cmd_name" "package_name" ["check_cmd"]
 # Example: install_pipx_tool "bloodhound" "bloodhound"
@@ -51,8 +55,10 @@ install_pipx_tool() {
     }
 
     # Create global symlink if needed
-    if [ -f "/root/.local/bin/$cmd_name" ] && [ ! -f "/usr/bin/$cmd_name" ]; then
-        ln -sf "/root/.local/bin/$cmd_name" "/usr/bin/$cmd_name" || true
+    local pipx_bin_dir
+    pipx_bin_dir="$(_pipx_bin_dir)"
+    if [ -f "$pipx_bin_dir/$cmd_name" ] && [ ! -f "/usr/bin/$cmd_name" ]; then
+        ln -sf "$pipx_bin_dir/$cmd_name" "/usr/bin/$cmd_name" || true
     fi
 
     # Apply aliases and history if available
@@ -91,8 +97,15 @@ install_pipx_tool_git() {
     }
 
     # Create global symlinks if needed
-    if [ -f "/root/.local/bin/$cmd_name" ] && [ ! -f "/usr/bin/$cmd_name" ]; then
-        ln -sf "/root/.local/bin/$cmd_name" "/usr/bin/$cmd_name" || true
+    local pipx_bin_dir
+    pipx_bin_dir="$(_pipx_bin_dir)"
+    if [ -f "$pipx_bin_dir/$cmd_name" ] && [ ! -f "/usr/bin/$cmd_name" ]; then
+        ln -sf "$pipx_bin_dir/$cmd_name" "/usr/bin/$cmd_name" || true
+    fi
+
+    if ! command -v "$cmd_name" > /dev/null 2>&1; then
+        colorecho "  ✗ Warning: $cmd_name was installed via pipx but no matching command was found"
+        return 1
     fi
 
     # Apply aliases and history if available
