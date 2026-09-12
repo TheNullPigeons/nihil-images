@@ -1,0 +1,1 @@
+mitm6 -i "$INTERFACE" -d "$DOMAIN"

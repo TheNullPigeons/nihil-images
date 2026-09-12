@@ -1,1 +1,3 @@
 username-anarchy -i users.txt > users_usernameanarchy.txt
+./username-anarchy "$FIRSTNAME" "$LASTNAME" > usernames.txt
+username-anarchy "$FIRSTNAME" "$LASTNAME"

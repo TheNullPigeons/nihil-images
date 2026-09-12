@@ -3,3 +3,8 @@ evil-winrm -i "$TARGET" -u "$USER" -H "$NT_HASH"
 evil-winrm -i "$TARGET" -u "$USER" -p "$PASSWORD" -S
 evil-winrm -i "$TARGET" -u "$USER" -p "$PASSWORD" -c "$CERT" -k "$KEY"
 evil-winrm -i "$TARGET" -u "$USER" -k --realm "$DOMAIN"
+evil-winrm -i "$IP" -u "$USER" -H "$NT_HASH"
+evil-winrm -i "$IP" -u "$USER" -p "$PASSWORD"
+evil-winrm -c certificate.pem -k priv-key.pem -S -i "$IP"
+KRB5CCNAME="$CCACHE_PATH" evil-winrm -r "$DOMAIN" -i "$TARGET"
+proxychains evil-winrm -i "$IP" -u "$USER" -H "$NT_HASH"

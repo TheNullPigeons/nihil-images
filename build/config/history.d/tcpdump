@@ -2,3 +2,7 @@ tcpdump -i "$INTERFACE"
 tcpdump -i "$INTERFACE" -w "$OUTPUT".pcap
 tcpdump -i "$INTERFACE" host "$TARGET"
 tcpdump -i "$INTERFACE" port "$PORT" -w "$OUTPUT".pcap
+sudo tcpdump -i "$INTERFACE" -nn -s 0 -w capture.pcap
+sudo tcpdump -i "$INTERFACE" -nn 'port not 22 and not arp'
+sudo tcpdump -i "$INTERFACE" -A 'tcp port 80'
+sudo tcpdump -i "$INTERFACE" -nnXSs 0 'host $TARGET'

@@ -7,3 +7,5 @@ katana -list url_list.txt
 katana -u https://$TARGET
 katana -u https://$TARGET -headless -no-incognito
 katana -u https://$TARGET,https://$TARGET
+katana -u http://"$TARGET"
+katana -u http://"$TARGET" -headless -no-incognito

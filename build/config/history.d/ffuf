@@ -12,3 +12,6 @@ ffuf -fs 185 -c -w `fzf-wordlists` -H 'Host: FUZZ.org' -u "http://$TARGET/"
 ffuf -fs 185 -c -w `fzf-wordlists` -H 'Host: FUZZ.machine.org' -u "http://$TARGET/"
 ffuf -fs 185 -c -w `fzf-wordlists` -H "Host: FUZZ.$DOMAIN" -u "http://$TARGET/"
 ffuf -u https://$TARGET/FUZZ -w `fzf-wordlists` -ac
+ffuf -c -w `fzf-wordlists` -u http://"$TARGET"/FUZZ -e .php,.txt,.pl,.sh,.asp,.aspx,.html,.json,.py,.cfm,.rb,.cgi,.bak,.tar.gz,.tgz,.zip
+ffuf -u http://"$TARGET"/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-files.txt -mc all -fc 404,400,500 -t 50 -s
+ffuf -w `fzf-wordlists`:FUZZ -u http://"$TARGET"/ -H "Host: FUZZ.$DOMAIN" -fs "$SIZE_TO_FILTER"

@@ -2,3 +2,7 @@ rustscan -a "$TARGET"
 rustscan -a "$TARGET" -- -sV -sC
 rustscan -a "$TARGET" -r 1-65535
 rustscan -a "$CIDR" --ulimit 5000
+rustscan --addresses "$TARGET" --scripts custom --ulimit 5000
+rustscan --addresses "$TARGET" --greppable
+rustscan --addresses "$TARGET" --ports 80,443,8080
+rustscan --addresses "$TARGET" --top

@@ -1,0 +1,2 @@
+fcrackzip -u -D -p `fzf-wordlists` "$FILE".zip
+fcrackzip -u -v -D -p `fzf-wordlists` "$FILE".zip

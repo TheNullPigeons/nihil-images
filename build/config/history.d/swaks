@@ -3,3 +3,4 @@ swaks --to $TARGET_EMAIL --from $FROM_EMAIL --server $SMTP_SERVER --auth-user $U
 swaks --to $TARGET_EMAIL --from $FROM_EMAIL --server $SMTP_SERVER --tls
 swaks --to $TARGET_EMAIL --from $FROM_EMAIL --server $SMTP_SERVER --header "Subject: Test" --body "Hello"
 swaks --to $TARGET_EMAIL --from $FROM_EMAIL --server $SMTP_SERVER --attach $FILE
+swaks --from "$FROM_EMAIL" --to "$TARGET_EMAIL" --header "Subject: $SUBJECT" --body "$BODY" --server "$IP"

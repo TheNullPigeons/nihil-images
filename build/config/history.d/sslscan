@@ -1,3 +1,4 @@
 sslscan "$TARGET"
 sslscan "$TARGET":"$PORT"
 sslscan --no-colour "$TARGET" > "$OUTPUT".txt
+sslscan "$IP":443

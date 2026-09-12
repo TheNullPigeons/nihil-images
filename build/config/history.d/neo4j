@@ -1,0 +1,4 @@
+neo4j start
+neo4j console
+sudo neo4j stop
+sudo neo4j start

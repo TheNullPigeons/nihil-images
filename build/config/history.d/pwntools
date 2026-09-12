@@ -6,3 +6,4 @@ pwn shellcraft amd64.linux.sh
 pwn template ./binary --host remote.ctf.com --port 1337
 python3 -c "from pwn import *; p = process('./binary'); p.interactive()"
 python3 -c "from pwn import *; p = remote('host', 1337); p.sendline(payload); p.interactive()"
+pwninit

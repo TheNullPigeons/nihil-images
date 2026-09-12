@@ -14,3 +14,4 @@ volatility3 -f memory.dmp windows.netscan
 volatility3 -f memory.dmp windows.cmdline
 volatility3 -f memory.dmp windows.dlllist --pid $PID
 volatility3 -f memory.dmp windows.malfind
+volatility3 -f memory.dmp windows.dlllist --pid "$PID"

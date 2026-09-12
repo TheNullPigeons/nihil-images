@@ -1,3 +1,4 @@
 dirsearch -u http://$TARGET
 dirsearch -u http://$TARGET -e php,html,js,txt
 dirsearch -u http://$TARGET -w /usr/share/seclists/Discovery/Web-Content/common.txt
+dirsearch -r -w /usr/share/wordlists/seclists/Discovery/Web-Content/quickhits.txt -u http://"$TARGET"/

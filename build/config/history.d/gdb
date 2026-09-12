@@ -1,0 +1,2 @@
+gdb -nx -ex '!sh' -ex quit
+gdb "$FILE"

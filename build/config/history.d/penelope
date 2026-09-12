@@ -9,3 +9,5 @@ penelope --port 8888 --no-upgrade
 
 penelope --connect $HOST 8888
 penelope --address $ATTACKER_IP --port 8888
+penelope "$LPORT"
+penelope -i "$INTERFACE" "$LPORT"

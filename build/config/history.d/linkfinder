@@ -1,0 +1,1 @@
+linkfinder.py -i http://"$TARGET" -o cli

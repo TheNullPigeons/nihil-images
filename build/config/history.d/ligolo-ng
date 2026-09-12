@@ -1,1 +1,2 @@
 ligolo-ng -selfcert
+./proxy -laddr 0.0.0.0:443 -selfcert
