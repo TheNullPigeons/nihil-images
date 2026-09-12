@@ -145,7 +145,24 @@ function install_commix() {
 }
 
 function install_glpwnme() {
-    install_pipx_tool_git "glpwnme" "https://github.com/Orange-Cyberdefense/glpwnme.git"
+    if install_pipx_tool_git "glpwnme" "https://github.com/Orange-Cyberdefense/glpwnme.git"; then
+        return 0
+    fi
+
+    colorecho "  → Falling back to a python module wrapper for glpwnme"
+    python3 -m pip install --break-system-packages --quiet \
+        "git+https://github.com/Orange-Cyberdefense/glpwnme.git" || {
+        colorecho "  ✗ Warning: Failed to install glpwnme Python package"
+        return 1
+    }
+
+    mkdir -p /root/.local/bin
+    printf '%s\n' '#!/bin/sh' 'exec python3 -m glpwnme "$@"' > /root/.local/bin/glpwnme
+    chmod +x /root/.local/bin/glpwnme
+    ln -sf /root/.local/bin/glpwnme /usr/bin/glpwnme
+
+    add-aliases "glpwnme"
+    add-history "glpwnme"
 }
 
 function install_tplmap() {
@@ -578,6 +595,7 @@ function install_mod_web() {
     install_cmsmap
     install_dirsearch
     install_commix
+    install_glpwnme
     install_mitmproxy
     install_bbot
     install_git_dumper
