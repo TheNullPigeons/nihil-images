@@ -64,13 +64,20 @@ function install_dnsenum() {
     # upstream script and resolve its Perl dependencies through CPAN.
     install_pacman_tools "perl-net-dns" "perl-net-ip" "perl-xml-writer" \
         "perl-module-build" "perl-canary-stability" "perl-common-sense" "perl-anyevent"
-    PERL_MM_USE_DEFAULT=1 PERL_CANARY_STABILITY_NOPROMPT=1 \
-        PERL_MM_OPT="INSTALL_BASE=/usr/local" \
-        PERL_MB_OPT="--install_base /usr/local" \
-        cpan -T -i Net::Netmask String::Random >/dev/null 2>&1 || {
-        colorecho "  ✗ Warning: Failed to install dnsenum Perl dependencies"
-        return 1
-    }
+    local perl5lib="/usr/local/lib/perl5"
+    if ! retry-command 3 "CPAN dependencies for dnsenum" \
+        env PERL_MM_USE_DEFAULT=1 PERL_CANARY_STABILITY_NOPROMPT=1 \
+            PERL_MM_OPT="INSTALL_BASE=/usr/local" \
+            PERL_MB_OPT="--install_base /usr/local" \
+            cpan -T -i Net::Netmask String::Random; then
+        # CPAN can return a failure after completing the installation (for
+        # example when a test-only dependency cannot be resolved). Continue
+        # only when dnsenum's runtime modules are actually available.
+        if ! PERL5LIB="$perl5lib" perl -MNet::Netmask -MString::Random -e1 >/dev/null 2>&1; then
+            colorecho "  ✗ Warning: Failed to install dnsenum Perl dependencies"
+            return 1
+        fi
+    fi
     install_git_tool "dnsenum" \
         "https://github.com/fwaeytens/dnsenum.git" \
         "dnsenum.pl" \
