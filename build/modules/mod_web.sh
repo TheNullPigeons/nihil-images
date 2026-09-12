@@ -144,6 +144,10 @@ function install_commix() {
     install_pipx_tool_git "commix" "https://github.com/commixproject/commix.git"
 }
 
+function install_glpwnme() {
+    install_pipx_tool_git "glpwnme" "https://github.com/Orange-Cyberdefense/glpwnme.git"
+}
+
 function install_tplmap() {
     install_git_tool "tplmap" "https://github.com/epinna/tplmap" "tplmap.py"
 }
