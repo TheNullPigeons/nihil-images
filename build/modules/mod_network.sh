@@ -59,7 +59,29 @@ function install_dnsrecon() {
 }
 
 function install_dnsenum() {
-    install_pacman_tool "dnsenum"
+    # dnsenum is not available in the official repositories used by CI and
+    # its AUR package depends on BlackArch-only Perl modules. Install the
+    # upstream script and resolve its Perl dependencies through CPAN.
+    install_pacman_tools "perl-net-dns" "perl-net-ip" "perl-xml-writer" \
+        "perl-module-build" "perl-canary-stability" "perl-common-sense" "perl-anyevent"
+    PERL_MM_USE_DEFAULT=1 PERL_CANARY_STABILITY_NOPROMPT=1 \
+        PERL_MM_OPT="INSTALL_BASE=/usr/local" \
+        PERL_MB_OPT="--install_base /usr/local" \
+        cpan -T -i Net::Netmask String::Random >/dev/null 2>&1 || {
+        colorecho "  ✗ Warning: Failed to install dnsenum Perl dependencies"
+        return 1
+    }
+    install_git_tool "dnsenum" \
+        "https://github.com/fwaeytens/dnsenum.git" \
+        "dnsenum.pl" \
+        "chmod +x dnsenum.pl" || return 1
+    # CPAN's INSTALL_BASE is outside Perl's default @INC; preserve it in the
+    # command wrapper so dnsenum works from every shell.
+    printf '%s\n' '#!/bin/sh' \
+        'export PERL5LIB="/usr/local/lib/perl5:${PERL5LIB:-}"' \
+        'exec /usr/local/share/dnsenum/dnsenum.pl "$@"' \
+        > "${GIT_BIN_DIR}/dnsenum"
+    chmod +x "${GIT_BIN_DIR}/dnsenum"
 }
 
 function install_ligolo_ng() {

@@ -437,7 +437,7 @@ function install_netexec() {
 }
 
 function install_impacket() {
-  install_pipx_tool_git "impacket" "https://github.com/fortra/impacket.git"
+  install_pipx_tool_git "impacket" "https://github.com/fortra/impacket.git" "" "secretsdump.py"
 }
 
 function install_mitm6() {
