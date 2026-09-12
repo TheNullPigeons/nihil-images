@@ -67,19 +67,20 @@ install_pipx_tool() {
 }
 
 # Install a tool via pipx from a Git repository
-# Usage: install_pipx_tool_git "cmd_name" "url" [env_vars]
+# Usage: install_pipx_tool_git "cmd_name" "url" [env_vars] [check_cmd]
 # The URL is automatically prefixed with "git+" if absent.
 # Example: install_pipx_tool_git "netexec" "https://github.com/Pennyw0rth/NetExec" "PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1"
 install_pipx_tool_git() {
     local cmd_name="$1"
     local git_url="$2"
     local env_vars="${3:-}"   # optional environment variables
+    local check_cmd="${4:-$cmd_name}" # command exposed by the package
 
     [[ "$git_url" != git+* ]] && git_url="git+$git_url"
 
     _ensure_pipx || return 1
 
-    if command -v "$cmd_name" > /dev/null 2>&1; then
+    if command -v "$check_cmd" > /dev/null 2>&1; then
         colorecho "  ✓ $cmd_name already installed (pipx)"
         return 0
     fi
@@ -99,12 +100,12 @@ install_pipx_tool_git() {
     # Create global symlinks if needed
     local pipx_bin_dir
     pipx_bin_dir="$(_pipx_bin_dir)"
-    if [ -f "$pipx_bin_dir/$cmd_name" ] && [ ! -f "/usr/bin/$cmd_name" ]; then
-        ln -sf "$pipx_bin_dir/$cmd_name" "/usr/bin/$cmd_name" || true
+    if [ -f "$pipx_bin_dir/$check_cmd" ] && [ ! -f "/usr/bin/$check_cmd" ]; then
+        ln -sf "$pipx_bin_dir/$check_cmd" "/usr/bin/$check_cmd" || true
     fi
 
-    if ! command -v "$cmd_name" > /dev/null 2>&1; then
-        colorecho "  ✗ Warning: $cmd_name was installed via pipx but no matching command was found"
+    if ! command -v "$check_cmd" > /dev/null 2>&1; then
+        colorecho "  ✗ Warning: $cmd_name was installed via pipx but no matching command ($check_cmd) was found"
         return 1
     fi
 
