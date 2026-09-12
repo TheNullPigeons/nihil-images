@@ -505,6 +505,11 @@
             "description": "Web fuzzer"
         },
         {
+            "name": "webfuzz",
+            "cmd": "webfuzz",
+            "description": "HTTP web fuzzer"
+        },
+        {
             "name": "wenum",
             "cmd": "wenum",
             "description": "Web enumeration and fuzzing tool"
