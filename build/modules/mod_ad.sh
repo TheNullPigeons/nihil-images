@@ -621,6 +621,10 @@ function install_tdo_dump() {
   install_pipx_tool_git "tdo-dump" "https://github.com/Goultarde/tdo_dump"
 }
 
+function install_tombstone() {
+  install_pipx_tool_git "tombstone" "https://github.com/Goultarde/Tombstone.py.git"
+}
+
 function install_shadowcoerce() {
   install_git_tool "ShadowCoerce" "https://github.com/ShutdownRepo/ShadowCoerce" "shadowcoerce.py"
 }
@@ -700,6 +704,7 @@ function install_mod_ad() {
   install_pre2k
   install_powerview_py
   install_tdo_dump
+  install_tombstone
 
   colorecho "  [pacman] AD tools:"
   install_krb5

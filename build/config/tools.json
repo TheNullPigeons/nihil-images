@@ -481,6 +481,11 @@
             "name": "teamsphisher",
             "cmd": "teamsphisher",
             "description": "Teams external phishing"
+        },
+        {
+            "name": "tombstone",
+            "cmd": "tombstone",
+            "description": "Query and restore deleted Active Directory objects"
         }
     ],
     "mod_web": [
