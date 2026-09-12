@@ -54,6 +54,14 @@ function install_zone_dnsenum() {
     install_pipx_tool_git "zone-dnsenum" "https://github.com/Goultarde/Zone-DNSenum"
 }
 
+function install_dnsrecon() {
+    install_pipx_tool "dnsrecon" "dnsrecon"
+}
+
+function install_dnsenum() {
+    install_pacman_tool "dnsenum"
+}
+
 function install_ligolo_ng() {
     local arch goarch tag version url
     arch="$(uname -m)"
@@ -128,7 +136,11 @@ function install_masscan() {
 }
 
 function install_netdiscover() {
-    install_aur_tool "netdiscover" "netdiscover"
+    install_pacman_tools "autoconf" "automake" "make" "gcc" "libpcap"
+    install_git_tool "netdiscover" \
+        "https://github.com/netdiscover-scanner/netdiscover.git" \
+        "src/netdiscover" \
+        "./autogen.sh && ./configure && make"
 }
 
 function install_nmap_parse_output() {
@@ -160,6 +172,10 @@ function install_tcpdump() {
 
 function install_xfreerdp() {
     install_pacman_tool "freerdp"
+}
+
+function install_rdesktop() {
+    install_pacman_tool "rdesktop"
 }
 
 function install_nfs_utils() {
@@ -202,6 +218,7 @@ function install_mod_network() {
 
     colorecho "  [pipx] Network tools:"
     install_zone_dnsenum
+    install_dnsrecon
 
     colorecho "  [bin] Tunneling tools:"
     install_ligolo_ng
@@ -209,8 +226,7 @@ function install_mod_network() {
 
     install_chisel
     install_masscan
-    # install_netdiscover  # disabled: AUR build fails fetching the IEEE OUI db
-    # (http://standards-oui.ieee.org/oui/oui.txt) from CI, which aborts the build
+    install_netdiscover
     install_nmap_parse_output
     install_proxychains
     install_rustscan
@@ -218,7 +234,9 @@ function install_mod_network() {
     install_sshuttle
     install_tcpdump
     install_xfreerdp
+    install_rdesktop
     install_nfs_utils
+    install_dnsenum
     install_snmpwalk
     install_onesixtyone
 

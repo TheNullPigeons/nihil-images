@@ -106,6 +106,14 @@ function install_subfinder() {
     install_go_tool "github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"
 }
 
+function install_dnsx() {
+    install_go_tool "github.com/projectdiscovery/dnsx/cmd/dnsx@latest"
+}
+
+function install_alterx() {
+    install_go_tool "github.com/projectdiscovery/alterx/cmd/alterx@latest"
+}
+
 function install_katana() {
     install_go_tool "github.com/projectdiscovery/katana/cmd/katana@latest"
 }
@@ -407,6 +415,10 @@ function install_wpscan() {
     add-history "wpscan"
 }
 
+function install_wpprobe() {
+    install_go_tool "github.com/Chocapikk/wpprobe@latest"
+}
+
 
 function install_eyewitness() {
     local tool_name="EyeWitness"
@@ -614,6 +626,8 @@ function install_mod_web() {
     install_nuclei
     install_httpx_pd
     install_subfinder
+    install_dnsx
+    install_alterx
     install_katana
     install_ffuf
     install_hakrawler
@@ -626,6 +640,7 @@ function install_mod_web() {
 
     colorecho "  [gem] CMS scanners:"
     install_wpscan
+    install_wpprobe
 
     colorecho "  [git] Scripts (clone + requirements):"
     install_ssrfmap
