@@ -575,6 +575,11 @@
             "description": "OS command injection exploitation"
         },
         {
+            "name": "glpwnme",
+            "cmd": "glpwnme",
+            "description": "GLPI exploitation helper"
+        },
+        {
             "name": "tplmap",
             "cmd": "tplmap",
             "description": "Server-Side Template Injection"
