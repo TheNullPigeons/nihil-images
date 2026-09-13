@@ -305,11 +305,6 @@ function install_adcheck() {
 
 function install_certipy() {
   install_pipx_tool "certipy" "certipy-ad"
-  local pipx_bin_dir
-  pipx_bin_dir="$(_pipx_bin_dir)"
-  if [ -x "$pipx_bin_dir/certipy" ]; then
-    ln -sf "$pipx_bin_dir/certipy" /usr/bin/certipy-ad || true
-  fi
 }
 
 function install_bloodyad() {

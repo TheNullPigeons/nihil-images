@@ -109,7 +109,7 @@
         },
         {
             "name": "certipy-ad",
-            "cmd": "certipy-ad",
+            "cmd": "certipy",
             "description": "Compatibility alias for Certipy ADCS enumeration and exploitation"
         },
         {
