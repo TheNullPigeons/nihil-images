@@ -437,7 +437,37 @@ function install_netexec() {
 }
 
 function install_impacket() {
-  install_pipx_tool_git "impacket" "https://github.com/fortra/impacket.git" "" "secretsdump.py"
+  _ensure_pipx || return 1
+
+  colorecho "  → Installing impacket via pipx from Git"
+  retry-command 3 "pipx install impacket" pipx install "git+https://github.com/fortra/impacket.git" --force || {
+    colorecho "  ✗ Warning: Failed to install impacket via pipx"
+    return 1
+  }
+  pipx inject impacket "setuptools<81" >/dev/null 2>&1 || true
+
+  local pipx_home
+  pipx_home="$(pipx environment --value PIPX_HOME 2>/dev/null || printf '%s\n' /root/.local/share/pipx)"
+  local impacket_bin="${pipx_home}/venvs/impacket/bin"
+  local wrapper_dir="/opt/tools/bin"
+  mkdir -p "$wrapper_dir"
+
+  local script cmd base
+  for script in "$impacket_bin"/*.py; do
+    [ -x "$script" ] || continue
+    cmd="$(basename "$script")"
+    base="${cmd%.py}"
+    for name in "$cmd" "$base" "impacket-$base"; do
+      cat > "${wrapper_dir}/${name}" <<EOF
+#!/bin/sh
+exec "$script" "\$@"
+EOF
+      chmod +x "${wrapper_dir}/${name}"
+    done
+  done
+
+  add-aliases "impacket"
+  add-history "impacket"
 }
 
 function install_mitm6() {
@@ -551,7 +581,33 @@ function install_gofenrir() {
 }
 
 function install_krbrelayx() {
-  install_git_tool_venv "krbrelayx" "https://github.com/dirkjanm/krbrelayx.git" "krbrelayx.py addspn.py printerbug.py dnstool.py" "setuptools<81 dnspython ldap3 impacket dsinternals" "yes"
+  install_git_tool_venv "krbrelayx" "https://github.com/dirkjanm/krbrelayx.git" "krbrelayx.py addspn.py printerbug.py dnstool.py" "setuptools<81 dnspython ldap3 impacket dsinternals" "yes" || return 1
+
+  # krbrelayx still calls setAddComputerSMB(), while some Impacket versions no
+  # longer expose it on the inherited config class. Keep a no-op compatibility
+  # method so krbrelayx can start with the current Impacket shipped in Nihil.
+  local krbrelayx_config="${GIT_INSTALL_DIR:-/usr/local/share}/krbrelayx/lib/utils/config.py"
+  if [ -f "$krbrelayx_config" ] && ! grep -q "def setAddComputerSMB" "$krbrelayx_config"; then
+    python3 - "$krbrelayx_config" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+text = path.read_text()
+compat = (
+    "    def setAddComputerSMB(self, value):\n"
+    "        self.addComputerSMB = value\n\n"
+)
+if compat not in text:
+    marker = "    def setAuthOptions("
+    index = text.find(marker)
+    if index == -1:
+        raise SystemExit(f"setAuthOptions marker not found in {path}")
+    text = text[:index] + compat + text[index:]
+    path.write_text(text)
+PY
+    colorecho "  ✓ Patched krbrelayx Impacket config compatibility"
+  fi
 }
 
 function install_gmsadumper() {

