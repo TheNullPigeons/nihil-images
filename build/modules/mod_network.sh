@@ -70,7 +70,7 @@ function install_dnsenum() {
         env PERL_MM_USE_DEFAULT=1 PERL_CANARY_STABILITY_NOPROMPT=1 \
             PERL_MM_OPT="INSTALL_BASE=/usr/local" \
             PERL_MB_OPT="--install_base /usr/local" \
-            cpanm --notest --local-lib=/usr/local Net::Netmask String::Random; then
+            /usr/bin/vendor_perl/cpanm --notest --local-lib=/usr/local Net::Netmask String::Random; then
         # CPAN can return a failure after completing the installation (for
         # example when a test-only dependency cannot be resolved). Continue
         # only when dnsenum's runtime modules are actually available.
