@@ -82,6 +82,7 @@ function install_mod_credential() {
     colorecho "  [pipx] Credential tools:"
     install_pypykatz
     install_name_that_hash
+    install_xortool
 
     colorecho "  [gem] Credential tools:"
     install_haiti
