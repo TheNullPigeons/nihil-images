@@ -490,6 +490,7 @@ function install_burpsuite() {
     printf '#!/bin/bash\nexec %s -Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true -jar -Xmx4g /opt/tools/BurpSuiteCommunity/BurpSuiteCommunity.jar "$@"\n' "$java_bin" \
         > /opt/tools/bin/burpsuite
     chmod +x /opt/tools/bin/burpsuite
+    add-history "burpsuite"
     colorecho "  ✓ Burp Suite Community installed at ${burp_dir}"
 }
 
