@@ -41,6 +41,8 @@ install_cargo_tool() {
 
     if command -v "$tool_name" >/dev/null 2>&1; then
         colorecho "  ✓ $tool_name already installed (cargo)"
+        add-aliases "$tool_name"
+        add-history "$tool_name"
         return 0
     fi
 

@@ -125,6 +125,8 @@ function install_pycdc() {
 
     if command -v pycdc > /dev/null 2>&1; then
         colorecho "  ✓ pycdc already installed"
+        add-history "pycdc"
+        add-history "pycdas"
         return 0
     fi
 
@@ -141,6 +143,8 @@ function install_pycdc() {
     ln -sf "$install_dir/pycdc" /opt/tools/bin/pycdc
     ln -sf "$install_dir/pycdas" /opt/tools/bin/pycdas
     cd - > /dev/null
+    add-history "pycdc"
+    add-history "pycdas"
 
     colorecho "  ✓ pycdc installed"
 }

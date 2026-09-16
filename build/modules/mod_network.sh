@@ -20,6 +20,7 @@ function install_nmap() {
 
 function install_netcat() {
     install_pacman_tool "openbsd-netcat"
+    add-history "netcat"
 }
 
 function install_socat() {
@@ -182,6 +183,7 @@ function install_nmap_parse_output() {
 
 function install_proxychains() {
     install_pacman_tool "proxychains-ng"
+    add-history "proxychains"
 }
 
 function install_rustscan() {
@@ -202,6 +204,7 @@ function install_tcpdump() {
 
 function install_xfreerdp() {
     install_pacman_tool "freerdp"
+    add-history "xfreerdp"
 }
 
 function install_rdesktop() {

@@ -39,6 +39,8 @@ install_go_tool() {
 
     if command -v "$bin_name" >/dev/null 2>&1; then
         colorecho "  ✓ $bin_name already installed (go)"
+        add-aliases "$bin_name"
+        add-history "$bin_name"
         return 0
     fi
 

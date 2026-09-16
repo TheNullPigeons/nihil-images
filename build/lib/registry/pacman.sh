@@ -13,6 +13,8 @@ install_pacman_tool() {
 
     if command -v "$pkg_name" >/dev/null 2>&1; then
         colorecho "  ✓ $pkg_name already installed (pacman)"
+        add-aliases "$pkg_name"
+        add-history "$pkg_name"
         return 0
     fi
 
@@ -53,4 +55,10 @@ install_pacman_tools() {
             return 1
         }
     }
+
+    local pkg
+    for pkg in "${packages[@]}"; do
+        add-aliases "$pkg"
+        add-history "$pkg"
+    done
 }
