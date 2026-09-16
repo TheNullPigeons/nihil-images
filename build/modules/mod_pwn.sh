@@ -38,12 +38,14 @@ function install_pwntools() {
         colorecho "  ✓ pwntools already installed (system Python)"
         add-aliases "pwn"
         add-history "pwn"
+        add-history "pwntools"
         return 0
     fi
     colorecho "  → Installing pwntools globally (system Python)"
     retry-command 3 "pip install pwntools" python3 -m pip install --break-system-packages --no-cache-dir pwntools \
         && add-aliases "pwn" \
         && add-history "pwn" \
+        && add-history "pwntools" \
         || colorecho "  ✗ Warning: Failed to install pwntools globally"
 }
 
@@ -136,6 +138,8 @@ function install_pwndbg() {
     # the aliases (gdb, gdb-peda, gdb-gef) trigger the chosen one on launch.
     cp /opt/nihil/build/assets/gdb/gdbinit /root/.gdbinit
     add-aliases "gdb"
+    add-history "gdb"
+    add-history "pwndbg"
 }
 
 function install_peda() {

@@ -29,6 +29,7 @@ function install_bloodhound_ce_python() {
 function install_neo4j() {
   if command -v neo4j >/dev/null 2>&1; then
     colorecho "  ✓ neo4j already installed"
+    add-history "neo4j"
     return 0
   fi
 
@@ -64,6 +65,7 @@ function install_neo4j() {
   # Neo4j system db is created). Once that db exists this silently no-ops, so the
   # bloodhound-ce launcher self-heals the password at runtime instead.
   neo4j-admin set-initial-password fly2own1 >/dev/null 2>&1 || true
+  add-history "neo4j"
 }
 
 function install_bloodhound_ce_desktop() {
@@ -333,6 +335,7 @@ function install_evil_winrm() {
 
 function install_asrepcatcher() {
     install_pipx_tool_git "ASRepCatcher" "https://github.com/Yaxxine7/ASRepCatcher"
+    add-history "asrepcatcher"
 }
 
 function install_autobloody() {
@@ -374,6 +377,7 @@ function install_gpp_decrypt() {
 function install_keepwn() {
     # pipx registers the entry point as "KeePwn" (capital K+P), not "keepwn"
     install_pipx_tool_git "KeePwn" "https://github.com/Orange-Cyberdefense/KeePwn"
+    add-history "keepwn"
 }
 
 function install_krbjack() {
@@ -411,11 +415,13 @@ function install_pygpoabuse() {
 function install_sccmhunter() {
     if command -v sccmhunter > /dev/null 2>&1 || command -v sccmhunter.py > /dev/null 2>&1; then
         colorecho "  ✓ sccmhunter already installed (pipx)"
+        add-history "sccmhunter"
         return 0
     fi
     # pipx registers the entry point as "sccmhunter.py" (from pyproject.toml console_scripts)
     install_pipx_tool_git "sccmhunter.py" "https://github.com/garrettfoster13/sccmhunter.git" || return 1
     ln -sf "/root/.local/bin/sccmhunter.py" "/usr/bin/sccmhunter" 2>/dev/null || true
+    add-history "sccmhunter"
 }
 
 function install_teamsphisher() {
@@ -586,6 +592,7 @@ function install_kerbrute() {
 
 function install_gofenrir() {
   install_go_tool "github.com/0xbbuddha/GoFenrir/cmd/gf@latest"
+  add-history "gofenrir"
 }
 
 function install_krbrelayx() {
@@ -635,6 +642,7 @@ function install_powershell() {
 function install_ldapsearch_ad() {
   install_pipx_tool "ldapsearch-ad.py" "ldapsearchad"
   add-symlink "/root/.local/bin/ldapsearch-ad.py" "ldapsearch-ad"
+  add-history "ldapsearch-ad"
 }
 
 function install_windapsearch() {
@@ -679,6 +687,7 @@ function install_pre2k() {
 
 function install_powerview_py() {
   install_pipx_tool_git "powerview" "https://github.com/aniqfakhrul/powerview.py"
+  add-history "powerview.py"
 }
 
 function install_tdo_dump() {

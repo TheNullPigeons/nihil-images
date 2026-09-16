@@ -563,6 +563,7 @@ function install_ysoserial() {
 
     if command -v ysoserial >/dev/null 2>&1; then
         colorecho "  ✓ ysoserial already installed"
+        add-history "ysoserial"
         return 0
     fi
 
@@ -583,6 +584,7 @@ function install_ysoserial() {
     java_bin=$(command -v java 2>/dev/null || echo "java")
     printf '#!/bin/bash\nexec %s -jar %s "$@"\n' "$java_bin" "$jar_file" > /opt/tools/bin/ysoserial
     chmod +x /opt/tools/bin/ysoserial
+    add-history "ysoserial"
     colorecho "  ✓ ysoserial installed (${tag})"
 }
 
