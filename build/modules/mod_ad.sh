@@ -452,12 +452,20 @@ function install_impacket() {
   local wrapper_dir="/opt/tools/bin"
   mkdir -p "$wrapper_dir"
 
-  local script cmd base
+  local script cmd base name
   for script in "$impacket_bin"/*.py; do
     [ -x "$script" ] || continue
     cmd="$(basename "$script")"
     base="${cmd%.py}"
     for name in "$cmd" "$base" "impacket-$base"; do
+      case "$name" in
+        ping|ping6)
+          # Keep the system ping commands available under their normal names.
+          # Impacket remains available as ping.py/ping6.py and impacket-ping/impacket-ping6.
+          rm -f "${wrapper_dir}/${name}"
+          continue
+          ;;
+      esac
       cat > "${wrapper_dir}/${name}" <<EOF
 #!/bin/sh
 exec "$script" "\$@"
