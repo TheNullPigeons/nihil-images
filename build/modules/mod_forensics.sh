@@ -15,6 +15,7 @@ nihil::import lib/registry/git
 
 function install_volatility3() {
     install_pipx_tool "vol" "volatility3"
+    add-history "volatility3"
 }
 
 function install_foremost() {
@@ -87,6 +88,7 @@ function install_stegseek() {
 
     if command -v stegseek > /dev/null 2>&1; then
         colorecho "  ✓ stegseek already installed"
+        add-history "stegseek"
         return 0
     fi
 
@@ -103,6 +105,7 @@ function install_stegseek() {
     }
     ln -sf "$install_dir/build/src/stegseek" /usr/local/bin/stegseek
     cd - > /dev/null
+    add-history "stegseek"
 
     colorecho "  ✓ stegseek installed"
 }

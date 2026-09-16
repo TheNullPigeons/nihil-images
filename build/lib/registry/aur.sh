@@ -16,6 +16,8 @@ install_aur_tool() {
 
     if command -v "$check_cmd" >/dev/null 2>&1; then
         colorecho "  ✓ $check_cmd already installed (AUR)"
+        add-aliases "$check_cmd"
+        add-history "$check_cmd"
         return 0
     fi
 

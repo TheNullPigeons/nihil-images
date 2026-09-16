@@ -17,6 +17,8 @@ install_download_tool() {
 
     if command -v "$cmd_name" >/dev/null 2>&1; then
         colorecho "  ✓ $cmd_name already installed (download)"
+        add-aliases "$cmd_name"
+        add-history "$cmd_name"
         return 0
     fi
 
@@ -24,6 +26,8 @@ install_download_tool() {
     mkdir -p "$INSTALL_DIR"
     if download-retry "$url" "$dest"; then
         chmod +x "$dest"
+        add-aliases "$cmd_name"
+        add-history "$cmd_name"
         colorecho "  ✓ $cmd_name installed"
         return 0
     fi

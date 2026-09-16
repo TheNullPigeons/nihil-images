@@ -79,7 +79,7 @@ function install_fuzz_txt() {
 }
 
 function install_cewl() {
-    install_git_tool_bundler "CeWL" "https://github.com/digininja/CeWL.git" "cewl.rb"
+    install_git_tool_bundler "CeWL" "https://github.com/digininja/CeWL.git" "cewl.rb" "ruby ruby-bundler" "" "" "cewl"
 }
 
 function install_crunch() {
