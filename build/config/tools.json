@@ -1204,6 +1204,11 @@
             "name": "gitleaks",
             "cmd": "gitleaks",
             "description": "Git secrets scanner"
+        },
+        {
+            "name": "aws-cli",
+            "cmd": "aws",
+            "description": "AWS CLI (cloud recon, S3 bucket enumeration/access)"
         }
     ],
     "mod_reverse": [
