@@ -293,6 +293,29 @@ function install_bloodhound_legacy_desktop() {
   colorecho "  ✓ bloodhound-legacy installed (${tag_name})"
 }
 
+# Authenticode signer for Windows PE/MSI files (needs a PFX, no Windows/signtool
+# required). Pairs with certipy/pkinittools: once AD CS hands out a code-signing
+# cert, this is what actually signs the payload that a deployment pipeline
+# (MDT/SCCM/custom MSI portal, cf. sccmhunter) will trust. Not packaged for
+# Arch and AUR needs systemd we don't have in the container, so build from
+# upstream source via CMake.
+function install_osslsigncode() {
+  if command -v osslsigncode >/dev/null 2>&1; then
+    colorecho "  ✓ osslsigncode already installed"
+    add-aliases "osslsigncode"
+    add-history "osslsigncode"
+    return 0
+  fi
+
+  colorecho "  → Installing osslsigncode from source (CMake build)"
+  install_pacman_tools cmake openssl curl || return 1
+
+  install_git_tool "osslsigncode" \
+    "https://github.com/mtrojnar/osslsigncode.git" \
+    "" \
+    "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j\$(nproc) && cmake --install build"
+}
+
 function install_ldapdomaindump() {
   install_pipx_tool "ldapdomaindump" "ldapdomaindump"
 }
@@ -790,6 +813,7 @@ function install_mod_ad() {
   colorecho "  [source-build] AD tools:"
   install_bloodhound_ce_desktop
   install_bloodhound_legacy_desktop
+  install_osslsigncode
 
   colorecho "  [AUR] AD tools:"
   install_responder
