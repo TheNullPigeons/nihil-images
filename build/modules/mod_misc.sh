@@ -201,6 +201,21 @@ function install_gitleaks() {
     colorecho "  ✓ gitleaks installed"
 }
 
+function install_aws_cli() {
+    if command -v aws >/dev/null 2>&1; then
+        colorecho "  ✓ aws already installed"
+        add-aliases "aws"
+        add-history "aws"
+        return 0
+    fi
+
+    # Package is aws-cli-v2 (extra repo); it ships the "aws" binary.
+    install_pacman_tool "aws-cli-v2" || return 1
+
+    add-aliases "aws"
+    add-history "aws"
+}
+
 function install_rdate() {
     install_pacman_tools libbsd autoconf automake make gcc
     local tmpdir
@@ -238,6 +253,7 @@ function install_mod_misc() {
     install_rsync
     install_wes
     install_gitleaks
+    install_aws_cli
 
     colorecho "Misc red-team tools installation finished"
 }
