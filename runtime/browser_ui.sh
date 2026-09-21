@@ -241,7 +241,11 @@ start_browser_ui() {
         chmod 600 "$VNC_PASSWORD_FILE" /opt/nihil/.session_password
         x11vnc -storepasswd "$PASSWORD" "$VNC_RFBAUTH_FILE" 2>/dev/null
         sync
-        x11vnc -display :99 -rfbport 5901 -rfbauth "$VNC_RFBAUTH_FILE" -forever -shared >/tmp/nihil_x11vnc.log 2>&1 &
+        # -localhost: x11vnc is only ever meant to be reached through the websockify/noVNC
+        # proxy below, never directly. Without this it also listens on every interface,
+        # which is a second, unauthenticated-looking raw VNC port exposed alongside noVNC
+        # (worse in --network host, where "every interface" means the host's).
+        x11vnc -display :99 -rfbport 5901 -rfbauth "$VNC_RFBAUTH_FILE" -forever -shared -localhost >/tmp/nihil_x11vnc.log 2>&1 &
     else
         PASSWORD="$(cat /opt/nihil/.session_password 2>/dev/null || echo '???')"
     fi
@@ -290,8 +294,13 @@ INDEXEOF
     fi
 
     if command -v websockify >/dev/null 2>&1 && [[ -d "$NOVNC_DIR" ]]; then
-        websockify --web "$NOVNC_DIR" "$PORT" localhost:5901 >/tmp/nihil_websockify_ui.log 2>&1 &
-        echo "[NIHIL] Browser UI on port $PORT (noVNC)."
+        # In --network host, this bind address is the host's: NIHIL_BROWSER_UI_BIND is set
+        # by the nihil wrapper to 127.0.0.1 in that case so noVNC isn't reachable from the
+        # whole LAN. Defaults to every interface, needed for Docker's own port publishing
+        # to work in bridge mode, and when run outside the wrapper.
+        BIND="${NIHIL_BROWSER_UI_BIND:-0.0.0.0}"
+        websockify --web "$NOVNC_DIR" "${BIND}:${PORT}" localhost:5901 >/tmp/nihil_websockify_ui.log 2>&1 &
+        echo "[NIHIL] Browser UI on port $PORT (noVNC, bound to $BIND)."
     else
         echo "[NIHIL] browser-ui: websockify or noVNC missing."
     fi
