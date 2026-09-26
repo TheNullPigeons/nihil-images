@@ -1,0 +1,3 @@
+trufflehog git "file://$(pwd)" --results=verified
+trufflehog filesystem "$WORKSPACE" --results=verified
+trufflehog github --org "$DOMAIN" --results=verified

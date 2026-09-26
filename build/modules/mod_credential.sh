@@ -22,6 +22,21 @@ function install_defaultcreds_cheat_sheet() {
     install_pipx_tool "creds" "defaultcreds-cheat-sheet"
 }
 
+function install_trufflehog() {
+    if command -v trufflehog >/dev/null 2>&1; then
+        colorecho "  ✓ trufflehog already installed"
+        add-history "trufflehog"
+        return 0
+    fi
+
+    colorecho "  → Installing trufflehog"
+    curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh | sh -s -- -b /usr/local/bin || {
+        colorecho "  ✗ Warning: Failed to install trufflehog"
+        return 1
+    }
+    add-history "trufflehog"
+}
+
 function install_binwalk() {
     install_pacman_tool "binwalk"
 }
@@ -88,6 +103,9 @@ function install_mod_credential() {
     install_defaultcreds_cheat_sheet
     install_name_that_hash
     install_xortool
+
+    colorecho "  [binary] Secret scanners:"
+    install_trufflehog
 
     colorecho "  [gem] Credential tools:"
     install_haiti
