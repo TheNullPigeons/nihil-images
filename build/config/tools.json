@@ -954,6 +954,11 @@
             "description": "LSASS minidump parser (Python)"
         },
         {
+            "name": "defaultcreds-cheat-sheet",
+            "cmd": "creds",
+            "description": "Search vendor default credentials"
+        },
+        {
             "name": "binwalk",
             "cmd": "binwalk",
             "description": "Binary analysis / extraction"
