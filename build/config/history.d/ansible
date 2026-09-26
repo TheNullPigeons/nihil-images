@@ -1,0 +1,4 @@
+ansible-inventory -i inventory.ini --graph
+ansible all -i "$IP," -m ping -u "$USER" --ask-pass
+ansible all -i "$IP," -m shell -a "whoami" -u "$USER" --ask-pass
+ansible-playbook -i inventory.ini playbook.yml
