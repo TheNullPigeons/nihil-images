@@ -488,9 +488,9 @@ function install_impacket() {
     base="${cmd%.py}"
     for name in "$cmd" "$base" "impacket-$base"; do
       case "$name" in
-        ping|ping6)
-          # Keep the system ping commands available under their normal names.
-          # Impacket remains available as ping.py/ping6.py and impacket-ping/impacket-ping6.
+        net|ping|ping6|smbclient|split)
+          # Keep system commands available under their normal names. Impacket
+          # remains available through its .py and impacket- prefixed wrappers.
           rm -f "${wrapper_dir}/${name}"
           continue
           ;;
