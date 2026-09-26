@@ -1165,6 +1165,11 @@
             "description": "Exploit database search"
         },
         {
+            "name": "ansible",
+            "cmd": "ansible",
+            "description": "Infrastructure automation and remote execution"
+        },
+        {
             "name": "CyberChef",
             "cmd": null,
             "description": "Data transformation toolkit (offline)",

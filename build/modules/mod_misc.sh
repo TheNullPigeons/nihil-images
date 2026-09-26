@@ -23,6 +23,11 @@ function install_searchsploit() {
     fi
 }
 
+function install_ansible() {
+    install_pacman_tool "ansible"
+    add-history "ansible"
+}
+
 
 # ---------------------------------------------------------------------------
 # Module entry point
@@ -240,6 +245,7 @@ function install_mod_misc() {
     colorecho "Installing misc red-team tools"
 
     install_searchsploit
+    install_ansible
     install_cyberchef
     install_firefox
     install_chromium
