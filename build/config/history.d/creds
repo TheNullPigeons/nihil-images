@@ -1,0 +1,4 @@
+creds search "$TARGET"
+creds search "$TARGET" export
+creds version
+creds update

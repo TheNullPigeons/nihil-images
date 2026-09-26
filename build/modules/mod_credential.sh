@@ -18,6 +18,10 @@ function install_pypykatz() {
     install_pipx_tool "pypykatz" "pypykatz"
 }
 
+function install_defaultcreds_cheat_sheet() {
+    install_pipx_tool "creds" "defaultcreds-cheat-sheet"
+}
+
 function install_binwalk() {
     install_pacman_tool "binwalk"
 }
@@ -81,6 +85,7 @@ function install_mod_credential() {
 
     colorecho "  [pipx] Credential tools:"
     install_pypykatz
+    install_defaultcreds_cheat_sheet
     install_name_that_hash
     install_xortool
 
