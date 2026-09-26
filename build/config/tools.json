@@ -959,6 +959,11 @@
             "description": "Search vendor default credentials"
         },
         {
+            "name": "trufflehog",
+            "cmd": "trufflehog",
+            "description": "Scan Git repositories and files for secrets"
+        },
+        {
             "name": "binwalk",
             "cmd": "binwalk",
             "description": "Binary analysis / extraction"
