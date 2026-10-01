@@ -342,7 +342,7 @@ jobs:
         shell: bash
         run: |
           for variant in full ad web blueteam; do
-            image="${{ env.REGISTRY }}/${{ github.repository_owner }}/$variant"
+            image="${{ env.REGISTRY }}/${GITHUB_REPOSITORY_OWNER,,}/$variant"
             docker buildx imagetools inspect "$image:dev-${{ steps.source.outputs.sha }}" >/dev/null
           done
 
@@ -352,7 +352,7 @@ jobs:
           for pair in full:flock ad:nest web:beak blueteam:coo; do
             variant=${pair%%:*}
             alias=${pair#*:}
-            image="${{ env.REGISTRY }}/${{ github.repository_owner }}/$variant"
+            image="${{ env.REGISTRY }}/${GITHUB_REPOSITORY_OWNER,,}/$variant"
             docker buildx imagetools create \
               -t "$image:main" -t "$image:latest" -t "$image:$alias" \
               "$image:dev-${{ steps.source.outputs.sha }}"
