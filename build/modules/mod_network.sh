@@ -229,6 +229,58 @@ function install_onesixtyone() {
     install_git_tool "onesixtyone" "https://github.com/trailofbits/onesixtyone.git" "onesixtyone" "make"
 }
 
+function install_beanshooter() {
+    local tool_dir="/opt/tools/beanshooter"
+    local jar_file="${tool_dir}/beanshooter.jar"
+    if command -v beanshooter >/dev/null 2>&1; then
+        colorecho "  ✓ beanshooter already installed"
+        add-history "beanshooter"
+        return 0
+    fi
+    command -v java >/dev/null 2>&1 || install_pacman_tools "jre-openjdk-headless" || return 1
+    local tag version
+    tag=$(retry-command 3 "resolve beanshooter latest tag" curl -Ls -o /dev/null -w '%{url_effective}' \
+        "https://github.com/qtc-de/beanshooter/releases/latest" | sed 's:.*/::' || true)
+    version="${tag#v}"
+    [ -n "$version" ] || { colorecho "  ✗ Warning: Failed to resolve beanshooter version"; return 0; }
+    mkdir -p "$tool_dir"
+    download-retry "https://github.com/qtc-de/beanshooter/releases/download/${tag}/beanshooter-${version}-jar-with-dependencies.jar" "$jar_file" || {
+        colorecho "  ✗ Warning: Failed to download beanshooter"
+        return 0
+    }
+    printf '%s\n' '#!/bin/sh' 'exec java -jar /opt/tools/beanshooter/beanshooter.jar "$@"' > /opt/tools/bin/beanshooter
+    chmod +x /opt/tools/bin/beanshooter
+    ln -sf /opt/tools/bin/beanshooter /usr/local/bin/beanshooter
+    add-history "beanshooter"
+    colorecho "  ✓ beanshooter installed (${tag})"
+}
+
+function install_jmxterm() {
+    local tool_dir="/opt/tools/jmxterm"
+    local jar_file="${tool_dir}/jmxterm.jar"
+    if command -v jmxterm >/dev/null 2>&1; then
+        colorecho "  ✓ jmxterm already installed"
+        add-history "jmxterm"
+        return 0
+    fi
+    command -v java >/dev/null 2>&1 || install_pacman_tools "jre-openjdk-headless" || return 1
+    local tag version
+    tag=$(retry-command 3 "resolve jmxterm latest tag" curl -Ls -o /dev/null -w '%{url_effective}' \
+        "https://github.com/jiaqi/jmxterm/releases/latest" | sed 's:.*/::' || true)
+    version="${tag#v}"
+    [ -n "$version" ] || { colorecho "  ✗ Warning: Failed to resolve jmxterm version"; return 0; }
+    mkdir -p "$tool_dir"
+    download-retry "https://github.com/jiaqi/jmxterm/releases/download/${tag}/jmxterm-${version}-uber.jar" "$jar_file" || {
+        colorecho "  ✗ Warning: Failed to download jmxterm"
+        return 0
+    }
+    printf '%s\n' '#!/bin/sh' 'exec java -jar /opt/tools/jmxterm/jmxterm.jar "$@"' > /opt/tools/bin/jmxterm
+    chmod +x /opt/tools/bin/jmxterm
+    ln -sf /opt/tools/bin/jmxterm /usr/local/bin/jmxterm
+    add-history "jmxterm"
+    colorecho "  ✓ jmxterm installed (${tag})"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------
@@ -272,6 +324,8 @@ function install_mod_network() {
     install_dnsenum
     install_snmpwalk
     install_onesixtyone
+    install_beanshooter
+    install_jmxterm
 
     add-aliases "network"
 

@@ -1,0 +1,2 @@
+beanshooter enum $RHOST $RPORT
+beanshooter info $RHOST $RPORT

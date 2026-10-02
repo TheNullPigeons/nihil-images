@@ -221,6 +221,10 @@ function install_aws_cli() {
     add-history "aws"
 }
 
+function install_pacu() {
+    install_pipx_tool "pacu" "pacu"
+}
+
 function install_rdate() {
     install_pacman_tools libbsd autoconf automake make gcc
     local tmpdir
@@ -260,6 +264,7 @@ function install_mod_misc() {
     install_wes
     install_gitleaks
     install_aws_cli
+    install_pacu
 
     colorecho "Misc red-team tools installation finished"
 }

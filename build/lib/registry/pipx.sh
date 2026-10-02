@@ -82,6 +82,8 @@ install_pipx_tool_git() {
 
     if command -v "$check_cmd" > /dev/null 2>&1; then
         colorecho "  ✓ $cmd_name already installed (pipx)"
+        add-aliases "$cmd_name"
+        add-history "$cmd_name"
         return 0
     fi
 
