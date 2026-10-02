@@ -1,0 +1,2 @@
+EVENmonitor --dc-ip "$DC_IP" -u "$USER" -p "$PASSWORD" -d "$DOMAIN"
+EVENmonitor --dc-ip "$DC_IP" -u "$USER" -H "$NT_HASH" -d "$DOMAIN"

@@ -65,6 +65,10 @@ function install_wafw00f() {
     install_pipx_tool "wafw00f" "wafw00f"
 }
 
+function install_badsecrets() {
+    install_pipx_tool "badsecrets" "badsecrets"
+}
+
 function install_gopherus() {
     install_pipx_tool_git "gopherus3" "https://github.com/Esonhugh/Gopherus3.git"
     add-symlink "/root/.local/bin/gopherus3" "gopherus"
@@ -616,6 +620,7 @@ function install_ysoserial() {
     java_bin=$(command -v java 2>/dev/null || echo "java")
     printf '#!/bin/bash\nexec %s -jar %s "$@"\n' "$java_bin" "$jar_file" > /opt/tools/bin/ysoserial
     chmod +x /opt/tools/bin/ysoserial
+    ln -sf /opt/tools/bin/ysoserial /usr/local/bin/ysoserial
     add-history "ysoserial"
     colorecho "  ✓ ysoserial installed (${tag})"
 }
@@ -642,6 +647,7 @@ function install_mod_web() {
     install_wenum
     install_arjun
     install_wafw00f
+    install_badsecrets
     install_gopherus
     install_droopescan
     install_cmsmap

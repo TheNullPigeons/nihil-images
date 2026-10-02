@@ -273,6 +273,41 @@
             "description": "BloodHound-based offensive automation"
         },
         {
+            "name": "adwsdomaindump",
+            "cmd": "adwsdomaindump",
+            "description": "Dump Active Directory data through AD Web Services"
+        },
+        {
+            "name": "EVENmonitor",
+            "cmd": "EVENmonitor",
+            "description": "Monitor and filter remote Windows event logs"
+        },
+        {
+            "name": "gpoParser",
+            "cmd": "gpoParser",
+            "description": "Extract and analyze Active Directory Group Policy Objects"
+        },
+        {
+            "name": "pyGoldenGMSA",
+            "cmd": "pyGoldenGMSA",
+            "description": "GoldenGMSA attack implementation for gMSA accounts"
+        },
+        {
+            "name": "RelayInformer",
+            "cmd": "relayinformer",
+            "description": "Identify EPA enforcement on NTLM relay targets"
+        },
+        {
+            "name": "snaffler-ng",
+            "cmd": "snaffler",
+            "description": "Find credentials and sensitive files on SMB shares"
+        },
+        {
+            "name": "SOAPy",
+            "cmd": "SOAPy",
+            "description": "Interact offensively with AD Web Services through SOCKS5"
+        },
+        {
             "name": "kerbrute",
             "cmd": "kerbrute",
             "description": "Kerberos brute-force / user enumeration"
@@ -528,6 +563,11 @@
             "name": "wafw00f",
             "cmd": "wafw00f",
             "description": "WAF detection"
+        },
+        {
+            "name": "badsecrets",
+            "cmd": "badsecrets",
+            "description": "Detect known or weak cryptographic secrets"
         },
         {
             "name": "gopherus",
@@ -945,6 +985,16 @@
             "name": "nfs-utils",
             "cmd": "showmount",
             "description": "NFS client utilities (showmount, nfsstat, rpcinfo)"
+        },
+        {
+            "name": "beanshooter",
+            "cmd": "beanshooter",
+            "description": "JMX enumeration and attack tool"
+        },
+        {
+            "name": "jmxterm",
+            "cmd": "jmxterm",
+            "description": "Interactive command-line JMX client"
         }
     ],
     "mod_credential": [
@@ -1224,6 +1274,11 @@
             "name": "aws-cli",
             "cmd": "aws",
             "description": "AWS CLI (cloud recon, S3 bucket enumeration/access)"
+        },
+        {
+            "name": "pacu",
+            "cmd": "pacu",
+            "description": "AWS exploitation framework"
         }
     ],
     "mod_reverse": [

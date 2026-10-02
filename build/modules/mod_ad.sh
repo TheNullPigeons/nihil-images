@@ -613,6 +613,70 @@ function install_bloodbash() {
   install_pipx_tool_git "bloodbash" "https://github.com/DotNetRussell/BloodBash"
 }
 
+function install_adwsdomaindump() {
+  install_pipx_tool_git "adwsdomaindump" "https://github.com/mverschu/adwsdomaindump"
+}
+
+function install_evenmonitor() {
+  install_pipx_tool_git "EVENmonitor" "https://github.com/NeffIsBack/EVENmonitor"
+  add-history "evenmonitor"
+}
+
+function install_gpoparser() {
+  install_pipx_tool_git "gpoParser" "https://github.com/synacktiv/gpoParser"
+}
+
+function install_pygoldengmsa() {
+  local repo_dir="${GIT_INSTALL_DIR}/pyGoldenGMSA"
+  local venv_dir="${repo_dir}/venv"
+
+  if command -v pyGoldenGMSA >/dev/null 2>&1; then
+    colorecho "  ✓ pyGoldenGMSA already installed"
+    add-history "pyGoldenGMSA"
+    return 0
+  fi
+
+  git-clone-retry "https://github.com/felixbillieres/pyGoldenGMSA.git" "$repo_dir" 1 || return 1
+  python3 -m venv --system-site-packages "$venv_dir" || return 1
+  retry-command 3 "pip install pyGoldenGMSA requirements" \
+    "$venv_dir/bin/pip" install --quiet -r "$repo_dir/requirements.txt" || return 1
+  mkdir -p "$GIT_BIN_DIR"
+  printf '#!/bin/sh\nexec "%s/bin/python" "%s/main.py" "$@"\n' "$venv_dir" "$repo_dir" > "$GIT_BIN_DIR/pyGoldenGMSA"
+  chmod +x "$GIT_BIN_DIR/pyGoldenGMSA"
+  add-history "pyGoldenGMSA"
+}
+
+function install_relayinformer() {
+  local repo_dir="${GIT_INSTALL_DIR}/RelayInformer"
+  local python_dir="${repo_dir}/Python"
+  local venv_dir="${python_dir}/venv"
+
+  if command -v relayinformer >/dev/null 2>&1; then
+    colorecho "  ✓ RelayInformer already installed"
+    add-history "relayinformer"
+    return 0
+  fi
+
+  git-clone-retry "https://github.com/zyn3rgy/RelayInformer.git" "$repo_dir" 1 || return 1
+  python3 -m venv --system-site-packages "$venv_dir" || return 1
+  retry-command 3 "pip install RelayInformer" \
+    "$venv_dir/bin/pip" install --quiet --no-deps "$python_dir" || return 1
+  retry-command 3 "pip install RelayInformer dependencies" \
+    "$venv_dir/bin/pip" install --quiet typer msldap requests-ntlm \
+    "oscrypto @ git+https://github.com/wbond/oscrypto.git@d5f3437ed24257895ae1edd9e503cfb352e635a8" || return 1
+  mkdir -p "$GIT_BIN_DIR"
+  ln -sf "$venv_dir/bin/relayinformer" "$GIT_BIN_DIR/relayinformer"
+  add-history "relayinformer"
+}
+
+function install_snaffler_ng() {
+  install_pipx_tool "snaffler" "snaffler-ng[socks]" "snaffler"
+}
+
+function install_soapy() {
+  install_pipx_tool_git "SOAPy" "https://github.com/logangoins/SOAPy"
+}
+
 function install_kerbrute() {
   install_go_tool "github.com/ropnop/kerbrute@latest"
 }
@@ -771,6 +835,13 @@ function install_mod_ad() {
   install_netexec
   install_impacket
   install_bloodbash
+  install_adwsdomaindump
+  install_evenmonitor
+  install_gpoparser
+  install_pygoldengmsa
+  install_relayinformer
+  install_snaffler_ng
+  install_soapy
   install_mitm6
   install_aclpwn
   install_abuseacl

@@ -1,0 +1,2 @@
+printf '%s\n' "open service:jmx:rmi:///jndi/rmi://$RHOST:$RPORT/jmxrmi" 'domains' 'beans' | jmxterm -n
+printf '%s\n' "open service:jmx:rmi:///jndi/rmi://$RHOST:$RPORT/org.opends.server.protocols.jmx.client-unknown" 'domains' 'beans' | jmxterm -n
