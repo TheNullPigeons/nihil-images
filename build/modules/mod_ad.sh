@@ -424,6 +424,8 @@ function install_nbtscan() {
 }
 
 function install_passthecert() {
+    # Impacket still imports pkg_resources, removed from setuptools 81+.
+    python3 -m pip install --break-system-packages --quiet "setuptools<81" || return 1
     install_git_tool "passthecert" "https://github.com/AlmondOffSec/PassTheCert.git" "Python/passthecert.py"
 }
 
@@ -513,6 +515,8 @@ function install_mitm6() {
 
 function install_aclpwn() {
     install_pipx_tool_git "aclpwn" "https://github.com/fox-it/aclpwn.py"
+    # aclpwn uses the legacy neo4j.v1 API and pkg_resources.
+    pipx inject --force aclpwn "neo4j<2" "setuptools<81"
 }
 
 function install_abuseacl() {
@@ -690,6 +694,7 @@ function install_pkinittools() {
 
 function install_nopac() {
   install_git_tool_venv "noPac" "https://github.com/Ridter/noPac" "noPac.py scanner.py" "" "yes"
+  /usr/local/share/noPac/venv/bin/python -m pip install --quiet "setuptools<81" "impacket==0.9.24"
 }
 
 function install_petitpotam() {
@@ -722,6 +727,8 @@ function install_tombstone() {
 }
 
 function install_shadowcoerce() {
+  # Impacket still imports pkg_resources, removed from setuptools 81+.
+  python3 -m pip install --break-system-packages --quiet "setuptools<81" || return 1
   install_git_tool "ShadowCoerce" "https://github.com/ShutdownRepo/ShadowCoerce" "shadowcoerce.py"
 }
 

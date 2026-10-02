@@ -41,6 +41,10 @@ function install_nikto() {
 
 function install_wfuzz() {
     install_pipx_tool_git "wfuzz" "https://github.com/xmendez/wfuzz.git"
+    pipx inject --force wfuzz "setuptools<81" legacy-cgi
+    # Python 3.14 removed imp; wfuzz only uses its import helpers.
+    sed -i -e 's/^import imp$/import importlib as imp/' \
+        /root/.local/share/pipx/venvs/wfuzz/lib/python*/site-packages/wfuzz/externals/moduleman/loader.py
 }
 
 function install_webfuzz() {
@@ -68,6 +72,15 @@ function install_gopherus() {
 
 function install_droopescan() {
     install_pipx_tool_git "droopescan" "https://github.com/SamJoan/droopescan.git"
+    pipx inject --force droopescan "setuptools<81"
+    local cement_dir="/root/.local/share/pipx/venvs/droopescan/lib/python*/site-packages/cement"
+    sed -i 's/from imp import reload/from importlib import reload/' \
+        $cement_dir/core/extension.py $cement_dir/core/foundation.py
+    sed -i \
+        -e 's/^import imp$/import importlib.util/' \
+        -e 's/f, path, desc = imp.find_module(plugin_name, \[plugin_dir\])/path = full_path/' \
+        -e 's/mod = imp.load_module(plugin_name, f, path, desc)/spec = importlib.util.spec_from_file_location(plugin_name, path)\n        mod = importlib.util.module_from_spec(spec)\n        spec.loader.exec_module(mod)/' \
+        $cement_dir/ext/ext_plugin.py
 }
 
 function install_cmsmap() {
@@ -431,6 +444,7 @@ function install_eyewitness() {
     local venv_dir="${repo_dir}/venv"
 
     if command -v EyeWitness > /dev/null 2>&1; then
+        "${venv_dir}/bin/python" -m pip install --quiet psutil || return 1
         colorecho "  ✓ EyeWitness already installed"
         return 0
     fi
@@ -443,7 +457,7 @@ function install_eyewitness() {
 
     python3 -m venv "$venv_dir" || return 1
     source "$venv_dir/bin/activate"
-    retry-command 3 "pip install EyeWitness requirements" pip install --quiet selenium Pillow fuzzywuzzy python-Levenshtein requests netaddr || {
+    retry-command 3 "pip install EyeWitness requirements" pip install --quiet selenium Pillow fuzzywuzzy python-Levenshtein requests netaddr psutil || {
         colorecho "  ✗ Warning: Failed to install EyeWitness requirements"
         deactivate
         return 1
@@ -516,10 +530,13 @@ function install_httpmethods() {
 
 function install_joomscan() {
     install_pacman_tool "perl"
+    install_pacman_tool "perl-libwww"
     install_git_tool_symlink "/opt/tools/joomscan" \
         "https://github.com/OWASP/joomscan.git" \
         "joomscan.pl" \
         "joomscan"
+    # Upstream ships this script with a CRLF shebang, which Linux cannot exec.
+    sed -i 's/\r$//' /opt/tools/joomscan/joomscan.pl
 }
 
 function install_linkfinder() {
@@ -555,6 +572,21 @@ function install_xxeinjector() {
         "https://github.com/enjoiz/XXEinjector.git" \
         "XXEinjector.rb" \
         "xxeinjector"
+    chmod +x /opt/tools/XXEinjector/XXEinjector.rb
+    # Upstream prints usage with status 1 and has no dedicated help option.
+    # Provide conventional successful help without changing real scan exits.
+    rm -f "${GIT_BIN_DIR}/xxeinjector"
+    cat > "${GIT_BIN_DIR}/xxeinjector" <<'EOF'
+#!/bin/sh
+case "${1:-}" in
+    -h|--help|--version|version)
+        ruby /opt/tools/XXEinjector/XXEinjector.rb "$@"
+        exit 0
+        ;;
+esac
+exec ruby /opt/tools/XXEinjector/XXEinjector.rb "$@"
+EOF
+    chmod +x "${GIT_BIN_DIR}/xxeinjector"
 }
 
 function install_ysoserial() {
