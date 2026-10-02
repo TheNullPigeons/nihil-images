@@ -40,7 +40,9 @@ function install_nikto() {
 }
 
 function install_wfuzz() {
-    install_pipx_tool_git "wfuzz" "https://github.com/xmendez/wfuzz.git"
+    install_pipx_tool_git "wfuzz" "https://github.com/xmendez/wfuzz.git" || return 1
+    # Restore APIs used by wfuzz but removed from modern Python/setuptools.
+    pipx inject wfuzz "setuptools<81" zombie-imp legacy-cgi
 }
 
 function install_webfuzz() {
@@ -67,7 +69,9 @@ function install_gopherus() {
 }
 
 function install_droopescan() {
-    install_pipx_tool_git "droopescan" "https://github.com/SamJoan/droopescan.git"
+    install_pipx_tool_git "droopescan" "https://github.com/SamJoan/droopescan.git" || return 1
+    # Cement 2 uses imp; dscan uses distutils, supplied by setuptools.
+    pipx inject droopescan zombie-imp "setuptools<81"
 }
 
 function install_cmsmap() {
@@ -431,6 +435,7 @@ function install_eyewitness() {
     local venv_dir="${repo_dir}/venv"
 
     if command -v EyeWitness > /dev/null 2>&1; then
+        "$venv_dir/bin/python" -m pip install --quiet psutil || return 1
         colorecho "  ✓ EyeWitness already installed"
         return 0
     fi
@@ -443,7 +448,7 @@ function install_eyewitness() {
 
     python3 -m venv "$venv_dir" || return 1
     source "$venv_dir/bin/activate"
-    retry-command 3 "pip install EyeWitness requirements" pip install --quiet selenium Pillow fuzzywuzzy python-Levenshtein requests netaddr || {
+    retry-command 3 "pip install EyeWitness requirements" pip install --quiet selenium Pillow fuzzywuzzy python-Levenshtein requests netaddr psutil || {
         colorecho "  ✗ Warning: Failed to install EyeWitness requirements"
         deactivate
         return 1
@@ -515,11 +520,15 @@ function install_httpmethods() {
 }
 
 function install_joomscan() {
-    install_pacman_tool "perl"
+    install_pacman_tool "perl" || return 1
+    install_pacman_tool "perl-libwww" || return 1
+    install_pacman_tool "perl-lwp-protocol-https" || return 1
     install_git_tool_symlink "/opt/tools/joomscan" \
         "https://github.com/OWASP/joomscan.git" \
         "joomscan.pl" \
-        "joomscan"
+        "joomscan" || return 1
+    # Upstream ships CRLF, including the shebang interpreted by the kernel.
+    sed -i 's/\r$//' /opt/tools/joomscan/joomscan.pl
 }
 
 function install_linkfinder() {

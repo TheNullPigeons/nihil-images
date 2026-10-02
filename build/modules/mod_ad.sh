@@ -424,7 +424,16 @@ function install_nbtscan() {
 }
 
 function install_passthecert() {
-    install_git_tool "passthecert" "https://github.com/AlmondOffSec/PassTheCert.git" "Python/passthecert.py"
+    install_git_tool "passthecert" "https://github.com/AlmondOffSec/PassTheCert.git" "Python/passthecert.py" || return 1
+    # The system Impacket still imports pkg_resources. Supply its legacy
+    # dependency locally without downgrading the system setuptools package.
+    local repo_dir="${GIT_INSTALL_DIR:-/usr/local/share}/passthecert"
+    local venv_dir="${repo_dir}/venv"
+    python3 -m venv --system-site-packages "$venv_dir" || return 1
+    "$venv_dir/bin/python" -m pip install "setuptools<81" || return 1
+    printf '#!/bin/sh\nexec "%s/bin/python" "%s/Python/passthecert.py" "$@"\n' \
+        "$venv_dir" "$repo_dir" > "${GIT_BIN_DIR:-/root/.local/bin}/passthecert"
+    chmod +x "${GIT_BIN_DIR:-/root/.local/bin}/passthecert"
 }
 
 function install_pcredz() {
