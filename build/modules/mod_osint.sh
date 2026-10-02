@@ -33,6 +33,7 @@ function install_spiderfoot() {
     local venv_dir="${install_dir}/venv"
 
     if command -v spiderfoot > /dev/null 2>&1; then
+        "${venv_dir}/bin/python" -m pip install --quiet --upgrade cryptography pyOpenSSL || return 1
         colorecho "  ✓ spiderfoot already installed"
         return 0
     fi
@@ -54,6 +55,13 @@ function install_spiderfoot() {
     retry-command 3 "pip install spiderfoot requirements" pip install --quiet -r /tmp/spiderfoot-requirements.txt || {
         colorecho "  ✗ Warning: Failed to install spiderfoot requirements"
         rm -f /tmp/spiderfoot-requirements.txt
+        deactivate
+        return 1
+    }
+    # Avoid mixing Arch's current service-identity with SpiderFoot's old
+    # cryptography/pyOpenSSL pins through --system-site-packages.
+    pip install --quiet --upgrade cryptography pyOpenSSL || {
+        colorecho "  ✗ Warning: Failed to install compatible SpiderFoot TLS dependencies"
         deactivate
         return 1
     }
