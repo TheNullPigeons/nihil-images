@@ -43,15 +43,15 @@ function install_spiderfoot() {
         return 1
     }
 
-    python3 -m venv --system-site-packages "$venv_dir" || {
+    python3 -m venv "$venv_dir" || {
         colorecho "  ✗ Warning: Failed to create venv for spiderfoot"
         return 1
     }
     source "$venv_dir/bin/activate"
-    # lxml pinned to 4.9.4 doesn't compile against Python 3.14+; skip it, the system
-    # package installed via pacman is visible through --system-site-packages
+    # Keep dependencies isolated: system aioquic requires newer cryptography
+    # than SpiderFoot supports. Use a current lxml wheel for Python 3.14+.
     grep -v '^lxml' "$install_dir/requirements.txt" > /tmp/spiderfoot-requirements.txt
-    retry-command 3 "pip install spiderfoot requirements" pip install --quiet -r /tmp/spiderfoot-requirements.txt || {
+    retry-command 3 "pip install spiderfoot requirements" pip install --quiet -r /tmp/spiderfoot-requirements.txt "lxml>=5" || {
         colorecho "  ✗ Warning: Failed to install spiderfoot requirements"
         rm -f /tmp/spiderfoot-requirements.txt
         deactivate

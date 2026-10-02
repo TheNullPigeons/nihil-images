@@ -474,6 +474,8 @@ function install_impacket() {
     return 1
   }
   pipx inject impacket "setuptools<81" >/dev/null 2>&1 || true
+  # Git-installed tools also import the system Impacket, which uses pkg_resources.
+  python3 -m pip install --break-system-packages "setuptools<81" || return 1
 
   local pipx_home
   pipx_home="$(pipx environment --value PIPX_HOME 2>/dev/null || printf '%s\n' /root/.local/share/pipx)"
@@ -512,7 +514,9 @@ function install_mitm6() {
 }
 
 function install_aclpwn() {
-    install_pipx_tool_git "aclpwn" "https://github.com/fox-it/aclpwn.py"
+    install_pipx_tool_git "aclpwn" "https://github.com/fox-it/aclpwn.py" || return 1
+    # aclpwn imports neo4j.v1, removed in driver 2.x.
+    pipx inject aclpwn "neo4j<2"
 }
 
 function install_abuseacl() {
