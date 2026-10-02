@@ -1,0 +1,16 @@
+kerbrute_users_dump() {
+    if [[ $# -ne 2 || ! -f "$1" || "$1" -ef "$2" ]]; then
+        print -u2 'Usage: kerbrute_users_dump <kerbrute-output> <users-file>'
+        return 2
+    fi
+
+    awk '
+        /\[\+\] VALID USERNAME:/ {
+            sub(/^.*\[\+\] VALID USERNAME:[[:space:]]*/, "")
+            sub(/[[:space:]]+$/, "")
+            sub(/@[^@]*$/, "")
+            user = tolower($0)
+            if (user != "" && !seen[user]++) print user
+        }
+    ' "$1" > "$2"
+}
