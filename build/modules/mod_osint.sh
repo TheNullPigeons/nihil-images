@@ -49,9 +49,11 @@ function install_spiderfoot() {
     }
     source "$venv_dir/bin/activate"
     # lxml pinned to 4.9.4 doesn't compile against Python 3.14+; skip it, the system
-    # package installed via pacman is visible through --system-site-packages
-    grep -v '^lxml' "$install_dir/requirements.txt" > /tmp/spiderfoot-requirements.txt
-    retry-command 3 "pip install spiderfoot requirements" pip install --quiet -r /tmp/spiderfoot-requirements.txt || {
+    # package installed via pacman is visible through --system-site-packages.
+    # Keep TLS packages current together: inherited service_identity requires
+    # a newer cryptography than upstream's legacy <4 pin.
+    grep -Ev '^(lxml|cryptography|pyOpenSSL)' "$install_dir/requirements.txt" > /tmp/spiderfoot-requirements.txt
+    retry-command 3 "pip install spiderfoot requirements" pip install --quiet -r /tmp/spiderfoot-requirements.txt cryptography pyOpenSSL || {
         colorecho "  ✗ Warning: Failed to install spiderfoot requirements"
         rm -f /tmp/spiderfoot-requirements.txt
         deactivate

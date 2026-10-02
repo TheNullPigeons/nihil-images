@@ -18,6 +18,10 @@ function post_install() {
     colorecho "Running post-install cleanup"
     install_list_tools
 
+    # System Python consumers still import pkg_resources; keep the same
+    # compatibility bound used by isolated environments after package upgrades.
+    python3 -m pip install --break-system-packages "setuptools<81" || return 1
+
     rm -rf /var/cache/pacman/pkg/ /var/lib/pacman/sync/
 
     # Language/tool caches

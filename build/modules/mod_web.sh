@@ -40,7 +40,10 @@ function install_nikto() {
 }
 
 function install_wfuzz() {
-    install_pipx_tool_git "wfuzz" "https://github.com/xmendez/wfuzz.git"
+    install_pipx_tool_git "wfuzz" "https://github.com/xmendez/wfuzz.git" || return 1
+    # pkg_resources was removed from recent setuptools releases.
+    pipx inject wfuzz "setuptools<81" legacy-cgi || return 1
+    python3 /opt/nihil/build/assets/wfuzz-compat.py "$(pipx environment --value PIPX_HOME)/venvs/wfuzz"
 }
 
 function install_webfuzz() {
@@ -67,7 +70,10 @@ function install_gopherus() {
 }
 
 function install_droopescan() {
-    install_pipx_tool_git "droopescan" "https://github.com/SamJoan/droopescan.git"
+    install_pipx_tool_git "droopescan" "https://github.com/SamJoan/droopescan.git" || return 1
+    # Cement also uses distutils, provided by setuptools on current Python.
+    pipx inject droopescan "setuptools<81" || return 1
+    python3 /opt/nihil/build/assets/droopescan-compat.py "$(pipx environment --value PIPX_HOME)/venvs/droopescan"
 }
 
 function install_cmsmap() {
@@ -443,7 +449,7 @@ function install_eyewitness() {
 
     python3 -m venv "$venv_dir" || return 1
     source "$venv_dir/bin/activate"
-    retry-command 3 "pip install EyeWitness requirements" pip install --quiet selenium Pillow fuzzywuzzy python-Levenshtein requests netaddr || {
+    retry-command 3 "pip install EyeWitness requirements" pip install --quiet selenium Pillow fuzzywuzzy python-Levenshtein requests netaddr psutil || {
         colorecho "  ✗ Warning: Failed to install EyeWitness requirements"
         deactivate
         return 1
@@ -454,8 +460,7 @@ function install_eyewitness() {
     cat > "${GIT_BIN_DIR}/EyeWitness" << EOF
 #!/bin/sh
 cd "$repo_dir/Python" || exit 1
-source "$venv_dir/bin/activate"
-exec python3 "$repo_dir/Python/EyeWitness.py" "\$@"
+exec "$venv_dir/bin/python3" "$repo_dir/Python/EyeWitness.py" "\$@"
 EOF
     chmod +x "${GIT_BIN_DIR}/EyeWitness"
     add-history "EyeWitness"
@@ -515,11 +520,13 @@ function install_httpmethods() {
 }
 
 function install_joomscan() {
-    install_pacman_tool "perl"
+    install_pacman_tools perl perl-libwww || return 1
     install_git_tool_symlink "/opt/tools/joomscan" \
         "https://github.com/OWASP/joomscan.git" \
         "joomscan.pl" \
-        "joomscan"
+        "joomscan" || return 1
+    # Upstream uses CRLF, including the interpreter path in its shebang.
+    sed -i 's/\r$//' /opt/tools/joomscan/joomscan.pl
 }
 
 function install_linkfinder() {
