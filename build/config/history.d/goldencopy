@@ -1,2 +1,2 @@
-goldencopy --password nihil4thewin --stealth --krbtgt "$KRBTGT_AES" "$TARGET\$"
-goldencopy --tools all --password nihil4thewin --stealth --krbtgt "$KRBTGT_AES" "$USER"
+goldencopy --password "$PASSWORD" --stealth --krbtgt "$KRBTGT_AES" "$TARGET\$"
+goldencopy --tools all --password "$PASSWORD" --stealth --krbtgt "$KRBTGT_AES" "$USER"
