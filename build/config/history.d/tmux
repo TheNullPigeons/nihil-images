@@ -1,6 +1,7 @@
 tmux -S /shareds new -s debugsess
 tmux -S /shareds attach
 tmux new -A -s pentest
+tmux new -s $(pwd | awk -F/ '{ print $NF }')
 tmux ls
 tmux a -t pentest
 tmux kill-session -t pentest

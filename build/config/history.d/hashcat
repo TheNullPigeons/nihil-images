@@ -9,7 +9,7 @@ hashcat --hash-type 18200 --attack-mode 0 ASREProastables.txt `fzf-wordlists`
 hcat '$DCC2$10240#user#bb38628253e7681553b72e7da3adf305'
 hcat Kerberoastables.txt
 hashcat -a 0 -m 18200 asrep.txt /usr/share/wordlists/rockyou.txt
-hashcat -m 13100 -a 0 kerb.txt /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule
+hashcat -m 13100 -a 0 kerb.txt /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best66.rule
 hashcat -m 31300 -a 0 hash.txt `fzf-wordlists`
 hashcat -a 0 -m 5600 hash.txt /usr/share/wordlists/rockyou.txt
 hashcat -a 0 -m 16500 jwt.txt `fzf-wordlists`
@@ -25,7 +25,7 @@ hashcat --left -m 1000 hash.txt --potfile-path domain.pot
 hashcat --show -m 1000 hash.txt
 hashcat --force `fzf-wordlists` -r custom.rule --stdout | sort -u > mut.list
 hashcat -a 0 -m 1000 hash.txt `fzf-wordlists`             # NTLM
-hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/best64.rule
+hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/best66.rule
 hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/rockyou-30000.rule
 hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/d3ad0ne.rule
 hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/T0XlC.rule
