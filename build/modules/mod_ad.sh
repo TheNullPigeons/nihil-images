@@ -58,7 +58,7 @@ function install_neo4j() {
   # garde "$0" sur le vrai chemin dans /opt/neo4j-community-*.
   local neo4j_home="/opt/neo4j-community-${neo4j_version}"
   for bin in neo4j neo4j-admin cypher-shell; do
-    printf '#!/bin/bash\nexec "%s/bin/%s" "$@"\n' "${neo4j_home}" "${bin}" > "/opt/tools/bin/${bin}"
+    printf '#!/bin/bash\nexec "%s/bin/%s" "$@"\n' "${neo4j_home}" "${bin}" >"/opt/tools/bin/${bin}"
     chmod +x "/opt/tools/bin/${bin}"
   done
   # Best-effort pre-seed: only takes effect on a pristine data dir (before the
@@ -226,9 +226,15 @@ function install_bloodhound_legacy_desktop() {
   colorecho "  → Installing bloodhound-legacy (BloodHound 4.x Electron GUI)"
 
   case "$(uname -m)" in
-    x86_64) arch_label="linux-x64" ;;
-    aarch64) arch_label="linux-arm64"; install_pacman_tool "mesa" || true ;;
-    *) colorecho "  ✗ Warning: unsupported architecture $(uname -m) for bloodhound-legacy"; return 1 ;;
+  x86_64) arch_label="linux-x64" ;;
+  aarch64)
+    arch_label="linux-arm64"
+    install_pacman_tool "mesa" || true
+    ;;
+  *)
+    colorecho "  ✗ Warning: unsupported architecture $(uname -m) for bloodhound-legacy"
+    return 1
+    ;;
   esac
 
   install_pacman_tool "jq" || return 1
@@ -357,100 +363,100 @@ function install_evil_winrm() {
 }
 
 function install_asrepcatcher() {
-    install_pipx_tool_git "ASRepCatcher" "https://github.com/Yaxxine7/ASRepCatcher"
-    add-history "asrepcatcher"
+  install_pipx_tool_git "ASRepCatcher" "https://github.com/Yaxxine7/ASRepCatcher"
+  add-history "asrepcatcher"
 }
 
 function install_autobloody() {
-    install_pipx_tool "autobloody" "autobloody"
+  install_pipx_tool "autobloody" "autobloody"
 }
 
 function install_certsync() {
-    install_pipx_tool "certsync" "certsync"
+  install_pipx_tool "certsync" "certsync"
 }
 
 function install_crackhound() {
-    install_git_tool "crackhound" "https://github.com/trustedsec/crackhound.git" "crackhound.py"
+  install_git_tool "crackhound" "https://github.com/trustedsec/crackhound.git" "crackhound.py"
 }
 
 function install_godap() {
-    install_go_tool "github.com/Macmod/godap@latest"
+  install_go_tool "github.com/Macmod/godap@latest"
 }
 
 function install_goexec() {
-    install_go_tool "github.com/FalconOpsLLC/goexec@latest"
+  install_go_tool "github.com/FalconOpsLLC/goexec@latest"
 }
 
 function install_goldencopy() {
-    install_pipx_tool "goldencopy" "goldencopy"
+  install_pipx_tool "goldencopy" "goldencopy"
 }
 
 function install_gosecretsdump() {
-    install_go_tool "github.com/C-Sto/gosecretsdump@latest"
+  install_go_tool "github.com/C-Sto/gosecretsdump@latest"
 }
 
 function install_gpoddity() {
-    install_pipx_tool_git "gpoddity" "https://github.com/synacktiv/GPOddity.git"
+  install_pipx_tool_git "gpoddity" "https://github.com/synacktiv/GPOddity.git"
 }
 
 function install_gpp_decrypt() {
-    install_git_tool_venv "gpp-decrypt" "https://github.com/t0thkr1s/gpp-decrypt" "gpp-decrypt.py" "pycryptodome colorama" "yes"
+  install_git_tool_venv "gpp-decrypt" "https://github.com/t0thkr1s/gpp-decrypt" "gpp-decrypt.py" "pycryptodome colorama" "yes"
 }
 
 function install_keepwn() {
-    # pipx registers the entry point as "KeePwn" (capital K+P), not "keepwn"
-    install_pipx_tool_git "KeePwn" "https://github.com/Orange-Cyberdefense/KeePwn"
-    add-history "keepwn"
+  # pipx registers the entry point as "KeePwn" (capital K+P), not "keepwn"
+  install_pipx_tool_git "KeePwn" "https://github.com/Orange-Cyberdefense/KeePwn"
+  add-history "keepwn"
 }
 
 function install_krbjack() {
-    install_pipx_tool "krbjack" "krbjack"
+  install_pipx_tool "krbjack" "krbjack"
 }
 
 function install_ldaprelayscan() {
-    install_git_tool "ldaprelayscan" "https://github.com/zyn3rgy/LdapRelayScan.git" "LdapRelayScan.py"
+  install_git_tool "ldaprelayscan" "https://github.com/zyn3rgy/LdapRelayScan.git" "LdapRelayScan.py"
 }
 
 function install_ldeep() {
-    install_pipx_tool "ldeep" "ldeep"
+  install_pipx_tool "ldeep" "ldeep"
 }
 
 function install_ldapwordlistharvester() {
-    install_git_tool "LDAPWordlistHarvester" "https://github.com/p0dalirius/pyLDAPWordlistHarvester.git" "LDAPWordlistHarvester.py"
+  install_git_tool "LDAPWordlistHarvester" "https://github.com/p0dalirius/pyLDAPWordlistHarvester.git" "LDAPWordlistHarvester.py"
 }
 
 function install_nbtscan() {
-    install_pacman_tool "nbtscan"
+  install_pacman_tool "nbtscan"
 }
 
 function install_passthecert() {
-    # Impacket still imports pkg_resources, removed from setuptools 81+.
-    python3 -m pip install --break-system-packages --quiet "setuptools<81" || return 1
-    install_git_tool "passthecert" "https://github.com/AlmondOffSec/PassTheCert.git" "Python/passthecert.py"
+  # Impacket still imports pkg_resources, removed from setuptools 81+.
+  python3 -m pip install --break-system-packages --quiet "setuptools<81" || return 1
+  install_git_tool "passthecert" "https://github.com/AlmondOffSec/PassTheCert.git" "Python/passthecert.py"
 }
 
 function install_pcredz() {
-    install_git_tool_venv "PCredz" "https://github.com/lgandx/PCredz.git" "Pcredz" "Crypto scapy" "yes"
+  install_git_tool_venv "PCredz" "https://github.com/lgandx/PCredz.git" "Pcredz" "Crypto scapy" "yes"
 }
 
 function install_pygpoabuse() {
-    install_pipx_tool_git "pygpoabuse" "https://github.com/Hackndo/pyGPOAbuse.git"
+  install_pipx_tool_git "pygpoabuse" "https://github.com/Hackndo/pyGPOAbuse.git"
 }
 
 function install_sccmhunter() {
-    if command -v sccmhunter > /dev/null 2>&1 || command -v sccmhunter.py > /dev/null 2>&1; then
-        colorecho "  ✓ sccmhunter already installed (pipx)"
-        add-history "sccmhunter"
-        return 0
-    fi
-    # pipx registers the entry point as "sccmhunter.py" (from pyproject.toml console_scripts)
-    install_pipx_tool_git "sccmhunter.py" "https://github.com/garrettfoster13/sccmhunter.git" || return 1
-    ln -sf "/root/.local/bin/sccmhunter.py" "/usr/bin/sccmhunter" 2>/dev/null || true
+  if command -v sccmhunter >/dev/null 2>&1 || command -v sccmhunter.py >/dev/null 2>&1; then
+    colorecho "  ✓ sccmhunter already installed (pipx)"
     add-history "sccmhunter"
+    return 0
+  fi
+  # pipx registers the entry point as "sccmhunter.py" (from pyproject.toml console_scripts)
+  install_pipx_tool_git "sccmhunter.py" "https://github.com/garrettfoster13/sccmhunter.git" || return 1
+  ln -sf "/root/.local/bin/sccmhunter.py" "/usr/bin/sccmhunter" 2>/dev/null || true
+  add-history "sccmhunter"
 }
 
 function install_teamsphisher() {
-    install_git_tool_venv "teamsphisher" "https://github.com/Octoberfest7/TeamsPhisher.git" "teamsphisher.py" "msal colorama requests" "yes"
+  install_git_tool_venv "teamsphisher" "https://github.com/Octoberfest7/TeamsPhisher.git" "teamsphisher.py" "msal colorama requests" "yes"
 }
 
 function install_netexec() {
@@ -490,14 +496,14 @@ function install_impacket() {
     base="${cmd%.py}"
     for name in "$cmd" "$base" "impacket-$base"; do
       case "$name" in
-        net|ping|ping6|smbclient|split)
-          # Keep system commands available under their normal names. Impacket
-          # remains available through its .py and impacket- prefixed wrappers.
-          rm -f "${wrapper_dir}/${name}"
-          continue
-          ;;
+      net | ping | ping6 | smbclient | split)
+        # Keep system commands available under their normal names. Impacket
+        # remains available through its .py and impacket- prefixed wrappers.
+        rm -f "${wrapper_dir}/${name}"
+        continue
+        ;;
       esac
-      cat > "${wrapper_dir}/${name}" <<EOF
+      cat >"${wrapper_dir}/${name}" <<EOF
 #!/bin/sh
 exec "$script" "\$@"
 EOF
@@ -514,9 +520,9 @@ function install_mitm6() {
 }
 
 function install_aclpwn() {
-    install_pipx_tool_git "aclpwn" "https://github.com/fox-it/aclpwn.py"
-    # aclpwn uses the legacy neo4j.v1 API and pkg_resources.
-    pipx inject --force aclpwn "neo4j<2" "setuptools<81"
+  install_pipx_tool_git "aclpwn" "https://github.com/fox-it/aclpwn.py"
+  # aclpwn uses the legacy neo4j.v1 API and pkg_resources.
+  pipx inject --force aclpwn "neo4j<2" "setuptools<81"
 }
 
 function install_abuseacl() {
@@ -556,14 +562,14 @@ function install_krb5() {
 }
 
 function install_openldap() {
-    install_pacman_tool "openldap"
-    add-history "ldapsearch"
+  install_pacman_tool "openldap"
+  add-history "ldapsearch"
 }
 
 # GSSAPI SASL plugin: enables Kerberos auth over LDAP/SASL (ldapsearch -Y GSSAPI,
 # ldap3 / certipy / bloodyAD / netexec with -k). Library only, no binary.
 function install_cyrus_sasl_gssapi() {
-    install_pacman_tool "cyrus-sasl-gssapi"
+  install_pacman_tool "cyrus-sasl-gssapi"
 }
 
 function install_smbclientng() {
@@ -582,19 +588,19 @@ function install_python_pcapy() {
 
 function install_responder() {
   install_aur_tool "responder" "responder"
-  cat > /usr/local/bin/responder-http-off <<'EOF'
+  cat >/usr/local/bin/responder-http-off <<'EOF'
 #!/bin/sh
 sed -i 's/^HTTP = On/HTTP = Off/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
 EOF
-  cat > /usr/local/bin/responder-http-on <<'EOF'
+  cat >/usr/local/bin/responder-http-on <<'EOF'
 #!/bin/sh
 sed -i 's/^HTTP = Off/HTTP = On/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
 EOF
-  cat > /usr/local/bin/responder-smb-off <<'EOF'
+  cat >/usr/local/bin/responder-smb-off <<'EOF'
 #!/bin/sh
 sed -i 's/^SMB = On/SMB = Off/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
 EOF
-  cat > /usr/local/bin/responder-smb-on <<'EOF'
+  cat >/usr/local/bin/responder-smb-on <<'EOF'
 #!/bin/sh
 sed -i 's/^SMB = Off/SMB = On/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
 EOF
@@ -641,7 +647,7 @@ function install_pygoldengmsa() {
   retry-command 3 "pip install pyGoldenGMSA requirements" \
     "$venv_dir/bin/pip" install --quiet -r "$repo_dir/requirements.txt" || return 1
   mkdir -p "$GIT_BIN_DIR"
-  printf '#!/bin/sh\nexec "%s/bin/python" "%s/main.py" "$@"\n' "$venv_dir" "$repo_dir" > "$GIT_BIN_DIR/pyGoldenGMSA"
+  printf '#!/bin/sh\nexec "%s/bin/python" "%s/main.py" "$@"\n' "$venv_dir" "$repo_dir" >"$GIT_BIN_DIR/pyGoldenGMSA"
   chmod +x "$GIT_BIN_DIR/pyGoldenGMSA"
   add-history "pyGoldenGMSA"
 }
@@ -684,6 +690,11 @@ function install_kerbrute() {
 function install_gofenrir() {
   install_go_tool "github.com/0xbbuddha/GoFenrir/cmd/gf@latest"
   add-history "gofenrir"
+}
+
+function install_rpcclient-ng() {
+  install_go_tool "github.com/0xbbuddha/rpcclient-ng@latest"
+  add-history "rpcclient-ng"
 }
 
 function install_krbrelayx() {
@@ -903,6 +914,7 @@ function install_mod_ad() {
   colorecho "  [go] AD tools:"
   install_kerbrute
   install_gofenrir
+  install_rpcclient-ng
   install_windapsearch
   install_godap
   install_goexec
