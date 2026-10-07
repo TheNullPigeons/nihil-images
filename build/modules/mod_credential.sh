@@ -42,7 +42,7 @@ function install_binwalk() {
 }
 
 function install_haiti() {
-    install_gem_tool "haiti" "haiti-hash"
+    install_git_tool_bundler "haiti" "https://github.com/noraj/haiti.git" "bin/haiti" "" "" "--without development test lint docs install"
 }
 
 function install_john() {
@@ -107,7 +107,7 @@ function install_mod_credential() {
     colorecho "  [binary] Secret scanners:"
     install_trufflehog
 
-    colorecho "  [gem] Credential tools:"
+    colorecho "  [git] Credential tools:"
     install_haiti
 
     colorecho "  [pacman] Credential tools:"
