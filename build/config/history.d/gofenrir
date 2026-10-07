@@ -1,2 +1,15 @@
-gf php-sources
-gf -save php-serialized -HnrE '(a:[0-9]+:{|O:[0-9]+:"|s:[0-9]+:")'
+gf ldap -t $TARGET -u $USER -p $PASSWORD
+gf ldap -t $TARGET -u $USER -H $NTHASH
+gf ldap -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
+gf ldap -t $TARGET -u $USER -p $PASSWORD --users
+gf ldap -t $TARGET -u $USER -p $PASSWORD --asreproast
+gf ldap -t $TARGET -u $USER -p $PASSWORD --kerberoastable
+gf ldap -t $TARGET -u $USER -p $PASSWORD --adcs
+gf ldap -t $TARGET -u $USER -p $PASSWORD --weak-accounts
+gf smb -t $TARGET -u $USER -p $PASSWORD
+gf smb -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
+gf smb -t $TARGET -u $USER -p $PASSWORD --gpp-passwords
+gf smb -t $TARGET --null-session
+gf smb -t $TARGET -u $USER -p $PASSWORD --shares
+gf smb -t $TARGET -u $USER -p $PASSWORD --who-has-priv all
+gf smb -t $TARGET -u $USER -p $PASSWORD --enum-rpc
