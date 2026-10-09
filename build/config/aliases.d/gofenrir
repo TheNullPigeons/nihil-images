@@ -1,0 +1,4 @@
+# oh-my-zsh's git plugin defines `gf='git fetch'`, which shadows the gf
+# binary (GoFenrir). Nihil's aliases are sourced after oh-my-zsh, so this
+# removes the collision and lets `gf` resolve to the real binary via PATH.
+unalias gf 2>/dev/null
