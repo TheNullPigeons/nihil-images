@@ -689,6 +689,7 @@ function install_kerbrute() {
 
 function install_gofenrir() {
   install_go_tool "github.com/0xbbuddha/GoFenrir/cmd/gf@latest"
+  add-aliases "gofenrir"
   add-history "gofenrir"
 }
 
