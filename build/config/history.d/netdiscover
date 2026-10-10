@@ -1,3 +1,3 @@
 netdiscover -r "$CIDR"
-netdiscover -i "$INTERFACE"
+netdiscover -i "$(fzf-interface)"
 netdiscover -r "$CIDR" -p

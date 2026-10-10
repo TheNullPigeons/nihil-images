@@ -1,6 +1,3 @@
 cp $(fzf-resources) .
 cp $(fzf-wordlists) .
 fzf-tools
-export LHOST=$(fzf-ip)
-export ATTACKER_IP=$(fzf-ip)
-export INTERFACE=$(fzf-interface)

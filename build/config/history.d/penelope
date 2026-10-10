@@ -1,10 +1,10 @@
 penelope -a
-penelope -p "$PORT"
+penelope -p "$(fzf-port)"
 
-penelope -p "$PORT" --ssl
-penelope -p "$PORT" --no-upgrade
+penelope -p "$(fzf-port)" --ssl
+penelope -p "$(fzf-port)" --no-upgrade
 
-penelope --connect "$IP" "$PORT"
-penelope --address "$ATTACKER_IP" --port "$LPORT"
-penelope "$LPORT"
-penelope -i "$INTERFACE" -p "$LPORT"
+penelope --connect "$IP" "$(fzf-port)"
+penelope --address "$(fzf-ip)" --port "$(fzf-lport)"
+penelope "$(fzf-lport)"
+penelope -i "$(fzf-interface)" -p "$(fzf-lport)"

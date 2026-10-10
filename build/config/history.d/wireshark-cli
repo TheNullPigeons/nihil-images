@@ -4,7 +4,7 @@ tshark -r capture.pcap -Y "tcp.port == 80" -T fields -e http.request.uri
 tshark -r capture.pcap -Y "dns" -T fields -e dns.qry.name
 tshark -r capture.pcap -qz io,stat,1
 tshark -r capture.pcap -Y "http" -T fields -e http.file_data | xxd -r -p
-tshark -i "$INTERFACE" -w capture.pcap
+tshark -i "$(fzf-interface)" -w capture.pcap
 tshark -F pcap -r capture.pcapng -w capture.pcap
 tshark -r capture.pcap -Y "http.request"
 tshark -r capture.pcap -T fields -e ip.src -e ip.dst | sort -u

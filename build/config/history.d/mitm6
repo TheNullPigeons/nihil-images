@@ -1,1 +1,1 @@
-mitm6 -i "$INTERFACE" -d "$DOMAIN"
+mitm6 -i "$(fzf-interface)" -d "$DOMAIN"

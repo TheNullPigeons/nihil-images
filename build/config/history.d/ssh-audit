@@ -1,4 +1,4 @@
 ssh-audit "$TARGET"
-ssh-audit "$TARGET":"$PORT"
+ssh-audit "$TARGET":"$(fzf-port)"
 ssh-audit -l warn "$TARGET"
 ssh-audit "$IP"
