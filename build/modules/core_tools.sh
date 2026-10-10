@@ -17,6 +17,7 @@ function install_core_tools() {
     neovim \
     less \
     tmux \
+    terminator \
     fzf \
     zoxide \
     yazi \

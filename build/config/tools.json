@@ -21,6 +21,11 @@
             "description": "Terminal multiplexer"
         },
         {
+            "name": "terminator",
+            "cmd": "terminator",
+            "description": "Graphical terminal emulator with split panes"
+        },
+        {
             "name": "fzf",
             "cmd": "fzf",
             "description": "Fuzzy finder"
