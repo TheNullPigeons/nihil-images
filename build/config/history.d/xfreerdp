@@ -7,5 +7,6 @@ xfreerdp3 /v:"$IP" /u:"$USER" /p:"$PASSWORD" /cert-ignore /dynamic-resolution
 xfreerdp3 /v:"$IP" /u:"$USER" /pth:"$NT_HASH" /cert-ignore
 xfreerdp3 /v:"$IP" /u:"$USER" /p:"$PASSWORD" /drive:home,/home/$LOCAL_USER /cert-ignore
 xfreerdp3 /d:"$DOMAIN" /u:"$USER" /pth:"$NT_HASH" /v:"$TARGET" /cert-ignore /drive:NIHIL,/workspace /dynamic-resolution
+xfreerdp3 /v:"$IP" /u:"$USER" /p:"$PASSWORD" /f /sound
 rdesktop "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -r disk:linux=/home/$LOCAL_USER
 rdesktop -u "$USER" -p "$PASSWORD" -r disk:NIHIL=/workspace "$IP"
