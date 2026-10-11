@@ -14,7 +14,7 @@ install_aur_tool() {
     local check_cmd="${2:-$pkg_name}"
     local build_dir="/tmp/aur-build-${pkg_name}"
 
-    if command -v "$check_cmd" >/dev/null 2>&1; then
+    if pacman -Q "$pkg_name" >/dev/null 2>&1; then
         colorecho "  ✓ $check_cmd already installed (AUR)"
         add-aliases "$check_cmd"
         add-history "$check_cmd"
@@ -55,7 +55,7 @@ install_aur_tool() {
             esac
         done
         if [ "${#pkg_files[@]}" -gt 0 ]; then
-            if ! pacman -U --noconfirm "${pkg_files[@]}"; then
+            if ! yes | pacman -U --confirm "${pkg_files[@]}"; then
                 colorecho "  ✗ Warning: Failed to install $pkg_name (pacman -U)"
                 rm -rf "$build_dir"
                 rm -f "$SUDOERS_AUR"
