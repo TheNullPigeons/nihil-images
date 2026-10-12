@@ -10,6 +10,7 @@ function package_base() {
     base \
     base-devel \
     dialog \
+    xorg-server-xvfb \
     python \
     python-pip \
     python-wheel \
