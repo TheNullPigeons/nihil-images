@@ -56,7 +56,15 @@ function install_zone_dnsenum() {
 }
 
 function install_dnsrecon() {
-    install_pipx_tool "dnsrecon" "dnsrecon"
+    # DNSRecon still uses urllib APIs removed in Python 3.14.
+    install_pipx_tool_git "dnsrecon" "https://github.com/darkoperator/dnsrecon.git"
+    local dnsrecon_enum_sources="/root/.local/share/pipx/venvs/dnsrecon/lib/python"*/site-packages/dnsrecon/lib/*enum.py
+    if grep -q 'urllib.request.FancyURLopener' $dnsrecon_enum_sources 2>/dev/null; then
+        sed -i \
+            -e 's/url_opener = urllib.request.FancyURLopener/url_opener = object/' \
+            -e 's/    urllib\._urlopener = AppURLopener()/    opener = urllib.request.build_opener()\n    opener.addheaders = [("User-Agent", AppURLopener.version)]\n    urllib.request.install_opener(opener)/' \
+            $dnsrecon_enum_sources
+    fi
 }
 
 function install_dnsenum() {
@@ -221,6 +229,8 @@ function install_snmpwalk() {
     else
         install_pacman_tool "net-snmp"
     fi
+    # snmpcheck ships with net-snmp and imports both optional modules at startup.
+    install_pacman_tools "perl-tk" "perl-term-readkey"
     add-aliases "snmpwalk"
     add-history "snmpwalk"
 }

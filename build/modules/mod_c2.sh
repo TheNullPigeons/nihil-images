@@ -120,6 +120,12 @@ function install_mythic_cli() {
         return 0
     }
 
+    git -C "$repo_dir" apply /opt/nihil/build/patches/mythic-cli-lazy-manager.patch || {
+        colorecho "  ✗ Warning: Failed to apply mythic-cli startup patch"
+        rm -rf "$repo_dir"
+        return 0
+    }
+
     mkdir -p "$install_dir"
     (cd "$repo_dir/Mythic_CLI/src" && go build -o "$install_dir/mythic-cli" .) || {
         colorecho "  ✗ Warning: Failed to build mythic-cli"

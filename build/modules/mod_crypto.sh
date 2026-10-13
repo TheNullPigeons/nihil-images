@@ -89,7 +89,7 @@ function install_z3_solver() {
     fi
     cat > /usr/local/bin/z3-solver <<'EOF'
 #!/bin/sh
-exec python3 -c "import z3, sys; print('z3-solver', z3.__version__)"
+exec python3 -c "import z3; print('z3-solver', z3.get_version_string())"
 EOF
     chmod +x /usr/local/bin/z3-solver
     colorecho "  ✓ z3-solver installed"
