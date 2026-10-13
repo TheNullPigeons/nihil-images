@@ -46,6 +46,9 @@ function install_haiti() {
 }
 
 function install_john() {
+    # pfx2john imports this at startup, but john does not declare it as a
+    # package dependency.
+    install_pacman_tool "python-asn1crypto"
     install_pacman_tool "john"
     add-history "john"
 }
