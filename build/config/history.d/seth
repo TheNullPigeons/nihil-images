@@ -1,0 +1,2 @@
+seth "$(fzf-interface)" "$(fzf-ip)" "$IP" "$RHOST"
+seth "$(fzf-interface)" "$(fzf-ip)" "$IP" "$RHOST" "$COMMAND"

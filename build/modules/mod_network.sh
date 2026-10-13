@@ -210,6 +210,17 @@ function install_tcpdump() {
     install_pacman_tool "tcpdump"
 }
 
+function install_seth() {
+    install_pacman_tools "dsniff" "iptables" "tcpdump" "openssl" || return 1
+    install_git_tool_symlink "/usr/local/share/seth" \
+        "https://github.com/SySS-Research/Seth.git" \
+        "seth.sh" "seth"
+}
+
+function install_wifit3() {
+    install_pipx_tool_git "wifit3" "https://github.com/derv82/wifit3.git"
+}
+
 function install_xfreerdp() {
     install_pacman_tool "freerdp"
     add-history "xfreerdp"
@@ -328,6 +339,8 @@ function install_mod_network() {
     install_ssh_audit
     install_sshuttle
     install_tcpdump
+    install_seth
+    install_wifit3
     install_xfreerdp
     install_rdesktop
     install_nfs_utils
