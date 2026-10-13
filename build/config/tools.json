@@ -967,6 +967,16 @@
             "description": "Packet capture"
         },
         {
+            "name": "seth",
+            "cmd": "seth",
+            "description": "RDP downgrade and credential interception"
+        },
+        {
+            "name": "wifit3",
+            "cmd": "wifit3",
+            "description": "USB wireless network auditor"
+        },
+        {
             "name": "snmpwalk",
             "cmd": "snmpwalk",
             "description": "SNMP tree walker"
