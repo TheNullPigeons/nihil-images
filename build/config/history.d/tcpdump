@@ -1,8 +1,8 @@
-tcpdump -i "$INTERFACE"
-tcpdump -i "$INTERFACE" -w "$OUTPUT".pcap
-tcpdump -i "$INTERFACE" host "$TARGET"
-tcpdump -i "$INTERFACE" port "$PORT" -w "$OUTPUT".pcap
-sudo tcpdump -i "$INTERFACE" -nn -s 0 -w capture.pcap
-sudo tcpdump -i "$INTERFACE" -nn 'port not 22 and not arp'
-sudo tcpdump -i "$INTERFACE" -A 'tcp port 80'
-sudo tcpdump -i "$INTERFACE" -nnXSs 0 'host $TARGET'
+tcpdump -i "$(fzf-interface)"
+tcpdump -i "$(fzf-interface)" -w "$OUTPUT".pcap
+tcpdump -i "$(fzf-interface)" host "$TARGET"
+tcpdump -i "$(fzf-interface)" port "$(fzf-port)" -w "$OUTPUT".pcap
+sudo tcpdump -i "$(fzf-interface)" -nn -s 0 -w capture.pcap
+sudo tcpdump -i "$(fzf-interface)" -nn 'port not 22 and not arp'
+sudo tcpdump -i "$(fzf-interface)" -A 'tcp port 80'
+sudo tcpdump -i "$(fzf-interface)" -nnXSs 0 'host $TARGET'

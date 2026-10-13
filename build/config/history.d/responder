@@ -1,15 +1,15 @@
-Responder.py --interface "$INTERFACE" --analyze --lm --disable-ess
-Responder.py --interface "$INTERFACE" --analyze --disable-ess
-Responder.py --interface "$INTERFACE" --wpad --lm --ProxyAuth --disable-ess
-Responder.py --interface "$INTERFACE" --wpad --lm --disable-ess
-responder --interface "$INTERFACE" --analyze --lm --disable-ess
-responder --interface "$INTERFACE" --analyze --disable-ess
-responder --interface "$INTERFACE" --wpad --lm --ProxyAuth --disable-ess
-responder --interface "$INTERFACE" --wpad --lm --disable-ess
+Responder.py --interface "$(fzf-interface)" --analyze --lm --disable-ess
+Responder.py --interface "$(fzf-interface)" --analyze --disable-ess
+Responder.py --interface "$(fzf-interface)" --wpad --lm --ProxyAuth --disable-ess
+Responder.py --interface "$(fzf-interface)" --wpad --lm --disable-ess
+responder --interface "$(fzf-interface)" --analyze --lm --disable-ess
+responder --interface "$(fzf-interface)" --analyze --disable-ess
+responder --interface "$(fzf-interface)" --wpad --lm --ProxyAuth --disable-ess
+responder --interface "$(fzf-interface)" --wpad --lm --disable-ess
 responder-http-off
 responder-http-on
 responder-smb-off
 responder-smb-on
-responder -I "$INTERFACE" -v
-responder -I "$INTERFACE" -dwPv
-responder -wrf -v -I "$INTERFACE"
+responder -I "$(fzf-interface)" -v
+responder -I "$(fzf-interface)" -dwPv
+responder -wrf -v -I "$(fzf-interface)"

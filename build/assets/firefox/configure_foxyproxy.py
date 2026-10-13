@@ -6,7 +6,7 @@ Firefox must be running with:
   --headless --marionette --remote-allow-system-access --profile <dir>
 
 FoxyProxy must already be installed (force_installed via policies.json).
-The script polls until FoxyProxy is active, then sets mode + proxy.
+The script polls until FoxyProxy is loaded, then adds the proxy disabled.
 
 Technical note: browser.storage.local Promises live in the extension's privileged
 sandbox and cannot be awaited from the marionette content sandbox. We use
@@ -30,7 +30,7 @@ BURP_PROXY = {
     "password": "",
     "cc": "",
     "city": "",
-    "color": "#FF6633",
+    "color": "#33D17A",
     "pac": "",
     "pacString": "",
     "proxyDNS": False,
@@ -109,7 +109,7 @@ def configure_foxyproxy(client, uuid):
                 data.push(burp);
             }}
             return b.storage.local.set({{
-                mode:        burp.hostname + ':' + burp.port,
+                mode:        'disable',
                 sync:        current.sync        || false,
                 autoBackup:  current.autoBackup  || false,
                 passthrough: current.passthrough || '',

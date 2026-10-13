@@ -42,10 +42,13 @@ function install_binwalk() {
 }
 
 function install_haiti() {
-    install_gem_tool "haiti" "haiti-hash"
+    install_git_tool_bundler "haiti" "https://github.com/noraj/haiti.git" "bin/haiti" "" "" "--without development test lint docs install"
 }
 
 function install_john() {
+    # pfx2john imports this at startup, but john does not declare it as a
+    # package dependency.
+    install_pacman_tool "python-asn1crypto"
     install_pacman_tool "john"
     add-history "john"
 }
@@ -107,7 +110,7 @@ function install_mod_credential() {
     colorecho "  [binary] Secret scanners:"
     install_trufflehog
 
-    colorecho "  [gem] Credential tools:"
+    colorecho "  [git] Credential tools:"
     install_haiti
 
     colorecho "  [pacman] Credential tools:"

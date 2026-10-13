@@ -101,7 +101,7 @@ SETUP
 }
 
 function install_pwndbg() {
-    # Install pwndbg from source (Nihil-style) into /opt/tools/gdb/pwndbg.
+    # Install pwndbg from source into /opt/tools/gdb/pwndbg.
     # Its own setup.sh provisions a venv with pinned deps, which sidesteps the Arch
     # package dep-skew (capstone6pwndbg) that breaks a pacman install:
     #   ImportError: cannot import name 'CS_MODE_RISCVC' from 'capstone6pwndbg'
@@ -133,7 +133,7 @@ function install_pwndbg() {
             colorecho "  ✗ Warning: Failed to clone pwndbg"
         fi
     fi
-    # Make `gdb` start pwndbg by default (Nihil-style):
+    # Make `gdb` start pwndbg by default:
     # ~/.gdbinit defines the init-pwndbg/init-peda/init-gef commands,
     # the aliases (gdb, gdb-peda, gdb-gef) trigger the chosen one on launch.
     cp /opt/nihil/build/assets/gdb/gdbinit /root/.gdbinit

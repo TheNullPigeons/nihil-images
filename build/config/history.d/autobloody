@@ -1,1 +1,1 @@
-autobloody --dbuser neo4j --dbpassword nihil4thewin --dbsource "$OWNED_USER" --dbtarget "$TARGET_USER" --domain "$DOMAIN" --username "$USER" --password "$PASSWORD" --host "$IP"
+autobloody --dbuser neo4j --dbpassword fly2own1 --dbsource "$OWNED_USER" --dbtarget "$TARGET_USER" --domain "$DOMAIN" --username "$USER" --password "$PASSWORD" --host "$IP"

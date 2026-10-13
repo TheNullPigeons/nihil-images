@@ -12,7 +12,7 @@ POLICY_PATH = "/usr/lib/firefox/distribution/policies.json"
 EXTENSIONS = [
     {"slug": "foxyproxy-standard", "pin": True,  "mode": "force_installed"},
     {"slug": "cookie-editor",      "pin": True,  "mode": "normal_installed"},
-    {"slug": "wappalyzer",         "pin": False, "mode": "normal_installed"},
+    {"slug": "wappalyzer",         "pin": True,  "mode": "normal_installed"},
     {"slug": "multi-account-containers", "pin": False, "mode": "normal_installed"},
     {"slug": "uaswitcher",         "pin": False, "mode": "normal_installed"},
 ]

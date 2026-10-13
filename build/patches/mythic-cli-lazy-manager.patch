@@ -1,0 +1,25 @@
+diff --git a/Mythic_CLI/src/cmd/rootCmd.go b/Mythic_CLI/src/cmd/rootCmd.go
+index 8058106..7b96fe8 100644
+--- a/Mythic_CLI/src/cmd/rootCmd.go
++++ b/Mythic_CLI/src/cmd/rootCmd.go
+@@ -2,6 +2,7 @@ package cmd
+ 
+ import (
+ 	"fmt"
++	"slices"
+ 	"github.com/MythicMeta/Mythic_CLI/cmd/config"
+ 	"github.com/MythicMeta/Mythic_CLI/cmd/internal"
+ 	"github.com/MythicMeta/Mythic_CLI/cmd/manager"
+@@ -36,6 +37,10 @@ func Execute() {
+ func init() {
+ 	// Create or parse the Docker ``.env`` file
+ 	config.Initialize()
+-	manager.Initialize()
++	// Cobra's help path must not require a running Docker daemon. Operational
++	// commands still initialize the manager exactly as before.
++	if !slices.Contains(os.Args[1:], "--help") && !slices.Contains(os.Args[1:], "-h") {
++		manager.Initialize()
++		internal.Initialize()
++	}
+-	internal.Initialize()
+ }

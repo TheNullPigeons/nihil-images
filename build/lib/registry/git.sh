@@ -274,7 +274,7 @@ install_git_tool_bundler() {
 
     # Vérifier si déjà installé (vérifier le premier entrypoint)
     local first_entrypoint=$(echo "$entrypoints" | awk '{print $1}')
-    if command -v "$first_entrypoint" >/dev/null 2>&1; then
+    if command -v "$(basename "$first_entrypoint" .rb)" >/dev/null 2>&1; then
         colorecho "  ✓ $tool_name already installed (git+bundler)"
         add-aliases "$alias_name"
         add-history "$alias_name"
