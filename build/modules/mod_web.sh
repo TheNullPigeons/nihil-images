@@ -96,7 +96,7 @@ function install_ssrfmap() {
 }
 
 function install_jwt_tool() {
-    install_git_tool "jwt-tool" "https://github.com/ticarpi/jwt_tool.git" "jwt-tool.py"
+    install_git_tool "jwt-tool" "https://github.com/ticarpi/jwt_tool.git" "jwt_tool.py"
 }
 
 function install_xsstrike() {
@@ -199,7 +199,11 @@ function install_tplmap() {
 }
 
 function install_nosqlmap() {
-    install_git_tool_venv "nosqlmap" "https://github.com/codingo/NoSQLMap" "nosqlmap.py" "" "yes"
+    install_git_tool_venv "nosqlmap" "https://github.com/codingo/NoSQLMap" "nosqlmap.py" \
+        "CouchDB httplib2 ipcalc pbkdf2 pymongo requests fissix" "yes"
+    # Upstream still ships Python 2 syntax. Convert the installed checkout so
+    # the launcher remains usable on current images, which only provide Python 3.
+    /usr/local/share/nosqlmap/venv/bin/python -m fissix -w -n /usr/local/share/nosqlmap/*.py
 }
 
 function install_graphqlmap() {
@@ -432,6 +436,7 @@ print("")')"
 # ---------------------------------------------------------------------------
 
 function install_wpscan() {
+    install_pacman_tool "ruby-erb"
     install_gem_tool "wpscan"
     add-history "wpscan"
 }
