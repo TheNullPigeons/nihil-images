@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Generate Firefox policies.json from template, fetching extension GUIDs from addons.mozilla.org."""
+"""Generate Firefox policies.json using extension GUIDs from the Mozilla Add-ons API."""
 
 import json
 import os
-import re
 import urllib.request
 
 TEMPLATE_PATH = "/opt/nihil/build/assets/firefox/policies.json.template"
@@ -19,14 +18,13 @@ EXTENSIONS = [
 
 
 def get_extension_guid(slug: str) -> str:
-    url = f"https://addons.mozilla.org/en-US/firefox/addon/{slug}/"
+    url = f"https://addons.mozilla.org/api/v5/addons/addon/{slug}/"
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=30) as resp:
-        html = resp.read().decode()
-    m = re.search(r'"guid":"([^"]+)"', html)
-    if not m:
+        guid = json.load(resp)["guid"]
+    if not isinstance(guid, str) or not guid.strip():
         raise RuntimeError(f"GUID not found for {slug}")
-    return m.group(1)
+    return guid
 
 
 def main():
@@ -37,12 +35,8 @@ def main():
 
     for ext in EXTENSIONS:
         slug = ext["slug"]
-        try:
-            guid = get_extension_guid(slug)
-            print(f"[+] {slug}: {guid}")
-        except Exception as e:
-            print(f"[!] Failed to get GUID for {slug}: {e}")
-            continue
+        guid = get_extension_guid(slug)
+        print(f"[+] {slug}: {guid}")
 
         cfg = {
             "installation_mode": ext["mode"],
