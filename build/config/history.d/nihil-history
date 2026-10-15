@@ -20,3 +20,4 @@ nhi export json -o report.json
 nhi export markdown -o report.md --include-secrets
 nhi tui
 nhit
+nhitf
