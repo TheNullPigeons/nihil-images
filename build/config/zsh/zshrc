@@ -137,6 +137,11 @@ nhit() {
   [ -f ~/.nihil-history/env.sh ] && source ~/.nihil-history/env.sh
 }
 
+nhitf() {
+  command nhitf "$@"
+  [ -f ~/.nihil-history/env.sh ] && source ~/.nihil-history/env.sh
+}
+
 nihil-history() {
   command nihil-history "$@"
   [ -f ~/.nihil-history/env.sh ] && source ~/.nihil-history/env.sh
