@@ -1,0 +1,6 @@
+wifite
+wifite --daemon
+wifite -i "$INTERFACE" -c 6
+wifite --wps-only
+wifite --pmkid
+wifite --crack --dict "$WORDLIST"

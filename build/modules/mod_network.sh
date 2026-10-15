@@ -221,6 +221,14 @@ function install_wifit3() {
     install_pipx_tool_git "wifit3" "https://github.com/derv82/wifit3.git"
 }
 
+function install_wifite2() {
+    # pip may leave an unowned chardetect that blocks python-chardet installation.
+    if [[ -e /usr/bin/chardetect ]] && ! pacman -Qo /usr/bin/chardetect >/dev/null 2>&1; then
+        rm -f /usr/bin/chardetect
+    fi
+    install_pacman_tool "wifite"
+}
+
 function install_xfreerdp() {
     install_pacman_tool "freerdp"
     add-history "xfreerdp"
@@ -340,6 +348,7 @@ function install_mod_network() {
     install_sshuttle
     install_tcpdump
     install_seth
+    install_wifite2
     install_wifit3
     install_xfreerdp
     install_rdesktop
