@@ -114,7 +114,9 @@ function install_firefox() {
 }
 function install_chromium() {
     install_pacman_tool "chromium"
-    printf '#!/bin/bash\nexec /usr/sbin/chromium --no-sandbox "$@"\n' > /opt/tools/bin/chromium
+    # Keep the caller's first argument intact: Arch's Chromium launcher handles
+    # --help itself only when it precedes browser flags.
+    printf '#!/bin/bash\nexec /usr/sbin/chromium "$@" --no-sandbox\n' > /opt/tools/bin/chromium
     chmod +x /opt/tools/bin/chromium
     # Force-install extensions via policy (downloaded on first launch)
     mkdir -p /etc/chromium/policies/managed

@@ -443,6 +443,9 @@ function install_wpscan() {
 
 function install_wpprobe() {
     install_go_tool "github.com/Chocapikk/wpprobe@latest"
+    # WPProbe installs without its vulnerability data and otherwise starts in
+    # a degraded state where scans cannot report known plugin CVEs.
+    wpprobe update-db
 }
 
 
