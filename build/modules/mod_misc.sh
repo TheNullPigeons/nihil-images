@@ -170,6 +170,7 @@ function install_gitleaks() {
     # causing a module path mismatch. Use the prebuilt binary instead.
     if command -v gitleaks > /dev/null 2>&1; then
         colorecho "  ✓ gitleaks already installed"
+        add-history "gitleaks"
         return 0
     fi
 
@@ -184,8 +185,14 @@ function install_gitleaks() {
         colorecho "  ✗ Warning: Failed to fetch gitleaks release metadata"
         return 0
     fi
-    url=$(grep "browser_download_url.*gitleaks.*linux_${arch}.*tar\.gz" "$release_json" \
-        | grep -o 'https://[^"]*' | head -1)
+    url=$(python3 -c '
+import json, sys
+with open(sys.argv[1]) as stream:
+    assets = json.load(stream)["assets"]
+suffix = "_linux_" + sys.argv[2] + ".tar.gz"
+print(next((asset["browser_download_url"] for asset in assets
+            if asset["name"].endswith(suffix)), ""))
+' "$release_json" "$arch")
     rm -f "$release_json"
 
     if [ -z "$url" ]; then
