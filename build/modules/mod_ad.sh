@@ -183,16 +183,18 @@ function install_bloodhound_ce_desktop() {
 
   mkdir -p /run/postgresql
   chown postgres:postgres /run/postgresql
+  # su invokes PAM, which rejects the intentionally locked postgres system account.
+  as_postgres() { setpriv --reuid=postgres --regid=postgres --init-groups -- "$@"; }
   if [ ! -f /var/lib/postgres/data/PG_VERSION ]; then
-    su -s /bin/bash postgres -c "initdb -D /var/lib/postgres/data" >/dev/null
+    as_postgres initdb -D /var/lib/postgres/data >/dev/null
   fi
-  su -s /bin/bash postgres -c "pg_ctl -D /var/lib/postgres/data -l /tmp/postgres.log start" >/dev/null
+  as_postgres pg_ctl -D /var/lib/postgres/data -l /tmp/postgres.log start >/dev/null
   for i in $(seq 1 15); do pg_isready -q 2>/dev/null && break || sleep 1; done
-  cd /tmp && su -s /bin/bash postgres -c "psql -c \"CREATE USER bloodhound WITH PASSWORD 'nihil4thewin';\""
-  cd /tmp && su -s /bin/bash postgres -c "psql -c \"CREATE DATABASE bloodhound;\""
-  cd /tmp && su -s /bin/bash postgres -c "psql -c \"ALTER DATABASE bloodhound OWNER TO bloodhound;\""
+  cd /tmp && as_postgres psql -c "CREATE USER bloodhound WITH PASSWORD 'nihil4thewin';"
+  cd /tmp && as_postgres psql -c "CREATE DATABASE bloodhound;"
+  cd /tmp && as_postgres psql -c "ALTER DATABASE bloodhound OWNER TO bloodhound;"
   python3 "${NIHIL_BUILD}/assets/bloodhound-ce-import-queries.py" || true
-  su -s /bin/bash postgres -c "pg_ctl -D /var/lib/postgres/data stop" >/dev/null
+  as_postgres pg_ctl -D /var/lib/postgres/data stop >/dev/null
 
   local assets="${NIHIL_BUILD}/lib/installers/bloodhound-ce"
 
