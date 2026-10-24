@@ -6,6 +6,7 @@ nihil::import lib/registry/git
 nihil::import lib/registry/aur
 nihil::import lib/registry/go
 nihil::import lib/registry/pacman
+nihil::import lib/registry/pipx
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -274,6 +275,7 @@ function install_mod_misc() {
     install_gitleaks
     install_aws_cli
     install_pacu
+    install_pipx_tool_git "tvmux" "https://github.com/bitplane/tvmux.git" || return 1
 
     colorecho "Misc red-team tools installation finished"
 }

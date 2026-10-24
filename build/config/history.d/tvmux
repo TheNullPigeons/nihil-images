@@ -1,0 +1,4 @@
+tvmux rec
+tvmux rec ls
+tvmux rec stop
+tvmux server status
