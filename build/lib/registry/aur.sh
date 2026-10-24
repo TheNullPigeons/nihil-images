@@ -36,7 +36,7 @@ install_aur_tool() {
     chown -R builder:builder "$build_dir"
     # Disable debug split packages to avoid cross-package debug file conflicts
     # (e.g. caido-desktop-debug vs caido-cli-debug in the same image).
-    if ! su builder -c "cd $build_dir && OPTIONS=(!debug) makepkg -s --noconfirm"; then
+    if ! su builder -c "cd $build_dir && OPTIONS=(!debug) makepkg -s --noconfirm --nosign"; then
         colorecho "  ✗ Warning: Failed to build $pkg_name (makepkg)"
         rm -rf "$build_dir"
         rm -f "$SUDOERS_AUR"
