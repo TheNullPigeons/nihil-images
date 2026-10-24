@@ -4,7 +4,7 @@ gf ldap -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN
 gf ldap -t $TARGET -u $USER -p $PASSWORD --users
 gf ldap -t $TARGET -u $USER -p $PASSWORD --asreproast
 gf ldap -t $TARGET -u $USER -p $PASSWORD --kerberoastable
-gf ldap -t $TARGET -u $USER -p $PASSWORD --adcs
+gf ldap -t "${ADCS_HOST:-$TARGET}" -u $USER -p $PASSWORD --adcs
 gf ldap -t $TARGET -u $USER -p $PASSWORD --weak-accounts
 gf smb -t $TARGET -u $USER -p $PASSWORD
 gf smb -t $TARGET -u $USER -p $PASSWORD -d $DOMAIN

