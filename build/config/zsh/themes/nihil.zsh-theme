@@ -25,5 +25,18 @@ _nihil_cred_info() {
   fi
 }
 
-PROMPT='$(_nihil_cred_info)%F{red}[%D{%d/%m/%Y %H:%M:%S %Z}]%f %B%F{green}%n@%m%f%b %F{blue}%~%f$(git_prompt_info) > '
+_nihil_recording_info() {
+  [[ "$NIHIL_SESSION_RECORDING" == "1" ]] && echo "%F{red}%B⏺%b%f "
+}
+
+_nihil_expand_line() {
+  BUFFER="${(e)BUFFER}"
+  zle redisplay
+}
+
+zle -N _nihil_expand_line
+bindkey -M emacs '^X^E' _nihil_expand_line
+bindkey -M viins '^X^E' _nihil_expand_line
+
+PROMPT='$(_nihil_recording_info)$(_nihil_cred_info)%F{red}[%D{%d/%m/%Y %H:%M:%S %Z}]%f %B%F{green}%n@%m%f%b %F{blue}%~%f$(git_prompt_info) > '
 RPROMPT=''

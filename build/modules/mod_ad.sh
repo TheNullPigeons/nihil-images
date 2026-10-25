@@ -345,7 +345,9 @@ function install_bloodyad() {
 }
 
 function install_bloodhound_import() {
-  install_pipx_tool "bloodhound-import" "git+https://github.com/fox-it/bloodhound-import.git"
+  install_pipx_tool "bloodhound-import" "git+https://github.com/Goultarde/bloodhound-import.git"
+  add-aliases "bloodhound"
+  add-history "bloodhound"
 }
 
 function install_bloodhound_quickwin() {

