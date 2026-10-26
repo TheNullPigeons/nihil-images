@@ -230,8 +230,7 @@ install_git_tool_venv() {
         cat > "$wrapper" <<EOF
 #!/bin/sh
 cd "$repo_dir" || exit 1
-source "$venv_dir/bin/activate"
-exec python3 "$full_path" "\$@"
+exec "$venv_dir/bin/python" "$full_path" "\$@"
 EOF
         chmod +x "$wrapper"
         colorecho "  ✓ Created wrapper: $cmd_name"

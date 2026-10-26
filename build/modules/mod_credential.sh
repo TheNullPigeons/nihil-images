@@ -46,10 +46,13 @@ function install_haiti() {
 }
 
 function install_john() {
-    # pfx2john imports this at startup, but john does not declare it as a
-    # package dependency.
+    # Several bundled *2john converters import these at startup, but john-git
+    # does not declare them as package dependencies.
     install_pacman_tool "python-asn1crypto"
-    install_pacman_tool "john"
+    install_pacman_tool "python-olefile"
+    retry-command 3 "pip install pyhanko" \
+        python3 -m pip install --break-system-packages --no-cache-dir --quiet pyhanko || return 1
+    install_aur_tool "john-git" "john"
     add-history "john"
 }
 

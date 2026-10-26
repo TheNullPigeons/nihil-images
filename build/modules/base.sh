@@ -237,7 +237,7 @@ function package_base() {
             chown -R builder:builder yay-build || true
             cd yay-build
             # Compiler en tant que builder (makepkg refusera le root)
-            su builder -c "cd /tmp/yay-build && makepkg -s --noconfirm" || colorecho "Warning: Failed to build yay"
+            su builder -c "cd /tmp/yay-build && makepkg -s --noconfirm --nosign" || colorecho "Warning: Failed to build yay"
             # Installer le paquet compilé en root
             if ls /tmp/yay-build/*.pkg.tar.zst 1> /dev/null 2>&1; then
                 pacman -U --noconfirm /tmp/yay-build/*.pkg.tar.zst || colorecho "Warning: Failed to install yay"

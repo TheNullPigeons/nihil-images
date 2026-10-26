@@ -1,0 +1,6 @@
+function bloodhound-db-clear() {
+  printf 'Delete every node and relationship from the BloodHound Neo4j database? Type yes: '
+  read -r confirm
+  [[ "$confirm" == yes ]] || return 1
+  cypher-shell -u neo4j -p "${NEO4J_PASSWORD:-fly2own1}" 'MATCH (n) DETACH DELETE n'
+}

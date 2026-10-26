@@ -6,6 +6,7 @@ nihil::import lib/registry/git
 nihil::import lib/registry/aur
 nihil::import lib/registry/go
 nihil::import lib/registry/pacman
+nihil::import lib/registry/pipx
 
 # ---------------------------------------------------------------------------
 # Individual install functions
@@ -114,7 +115,9 @@ function install_firefox() {
 }
 function install_chromium() {
     install_pacman_tool "chromium"
-    printf '#!/bin/bash\nexec /usr/sbin/chromium --no-sandbox "$@"\n' > /opt/tools/bin/chromium
+    # Keep the caller's first argument intact: Arch's Chromium launcher handles
+    # --help itself only when it precedes browser flags.
+    printf '#!/bin/bash\nexec /usr/sbin/chromium "$@" --no-sandbox\n' > /opt/tools/bin/chromium
     chmod +x /opt/tools/bin/chromium
     # Force-install extensions via policy (downloaded on first launch)
     mkdir -p /etc/chromium/policies/managed
@@ -170,6 +173,7 @@ function install_gitleaks() {
     # causing a module path mismatch. Use the prebuilt binary instead.
     if command -v gitleaks > /dev/null 2>&1; then
         colorecho "  ✓ gitleaks already installed"
+        add-history "gitleaks"
         return 0
     fi
 
@@ -184,8 +188,14 @@ function install_gitleaks() {
         colorecho "  ✗ Warning: Failed to fetch gitleaks release metadata"
         return 0
     fi
-    url=$(grep "browser_download_url.*gitleaks.*linux_${arch}.*tar\.gz" "$release_json" \
-        | grep -o 'https://[^"]*' | head -1)
+    url=$(python3 -c '
+import json, sys
+with open(sys.argv[1]) as stream:
+    assets = json.load(stream)["assets"]
+suffix = "_linux_" + sys.argv[2] + ".tar.gz"
+print(next((asset["browser_download_url"] for asset in assets
+            if asset["name"].endswith(suffix)), ""))
+' "$release_json" "$arch")
     rm -f "$release_json"
 
     if [ -z "$url" ]; then
@@ -265,6 +275,7 @@ function install_mod_misc() {
     install_gitleaks
     install_aws_cli
     install_pacu
+    install_pipx_tool_git "tvmux" "https://github.com/bitplane/tvmux.git" || return 1
 
     colorecho "Misc red-team tools installation finished"
 }

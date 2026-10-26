@@ -36,6 +36,11 @@ if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"
 else
     if declare -f "$1" > /dev/null; then
+        case "$1" in
+            package_base|install_*|healthcheck|filter_tools_json|post_install)
+                colorecho "Starting build step: $1"
+                ;;
+        esac
         if [[ "${NIHIL_AUDIT:-0}" == "1" ]]; then
             # Audit mode: run in a subshell so exit 1 / set -e failures are absorbed.
             # The build always completes; the healthcheck output reveals all missing tools.

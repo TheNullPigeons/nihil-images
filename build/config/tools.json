@@ -967,6 +967,21 @@
             "description": "Packet capture"
         },
         {
+            "name": "seth",
+            "cmd": "seth",
+            "description": "RDP downgrade and credential interception"
+        },
+        {
+            "name": "wifite2",
+            "cmd": "wifite",
+            "description": "Automated wireless network auditor"
+        },
+        {
+            "name": "wifit3",
+            "cmd": "wifit3",
+            "description": "USB wireless network auditor"
+        },
+        {
             "name": "snmpwalk",
             "cmd": "snmpwalk",
             "description": "SNMP tree walker"
@@ -1214,6 +1229,11 @@
         }
     ],
     "mod_misc": [
+        {
+            "name": "tvmux",
+            "cmd": "tvmux",
+            "description": "Record tmux sessions with asciinema"
+        },
         {
             "name": "searchsploit",
             "cmd": "searchsploit",

@@ -7,7 +7,7 @@ gf ldap -t $TARGET -u $USER -p $PASSWORD --users
 gf ldap -t $TARGET -u $USER -p $PASSWORD --privileged-groups
 gf ldap -t $TARGET -u $USER -p $PASSWORD --kerberoastable
 gf ldap -t $TARGET -u $USER -p $PASSWORD --asresproast
-gf ldap -t $TARGET -u $USER -p $PASSWORD --adcs
+gf ldap -t "${ADCS_HOST:-$TARGET}" -u $USER -p $PASSWORD --adcs
 gf ldap -t $TARGET -u $USER -p $PASSWORD --users --log ldap-users.log
 gf smb -t $TARGET -u $USER -p $PASSWORD --shares
 gf smb -t $TARGET -u $USER -p $PASSWORD --gpp-passwords
