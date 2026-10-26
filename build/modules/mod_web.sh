@@ -285,6 +285,30 @@ function install_kiterunner() {
         "kr kiterunner" \
         "" \
         "1.0.2"
+
+    local wordlist_dir="/opt/lists/kiterunner"
+    local wordlist_path="${wordlist_dir}/routes-large.kite"
+    if [ ! -f "$wordlist_path" ]; then
+        local wordlist_archive="/tmp/routes-large.kite.tar.gz"
+        mkdir -p "$wordlist_dir"
+        download-retry \
+            "https://wordlists-cdn.assetnote.io/data/kiterunner/routes-large.kite.tar.gz" \
+            "$wordlist_archive" || {
+            rm -f "$wordlist_archive"
+            colorecho "  ✗ Warning: Failed to download Kiterunner wordlist"
+            return 1
+        }
+        tar -xzf "$wordlist_archive" -C "$wordlist_dir" || {
+            rm -f "$wordlist_archive"
+            colorecho "  ✗ Warning: Failed to extract Kiterunner wordlist"
+            return 1
+        }
+        rm -f "$wordlist_archive"
+        [ -s "$wordlist_path" ] || {
+            colorecho "  ✗ Warning: Kiterunner wordlist was not found after extraction"
+            return 1
+        }
+    fi
 }
 
 function install_httpie() {
