@@ -206,6 +206,35 @@ function install_nosqlmap() {
     /usr/local/share/nosqlmap/venv/bin/python -m fissix -w -n /usr/local/share/nosqlmap/*.py
 }
 
+function install_odat() {
+    # Standalone release: bundles Python + Oracle Instant Client (no cx_Oracle/pip pain).
+    if command -v odat >/dev/null 2>&1; then
+        colorecho "  ✓ odat already installed"
+        add-history "odat"
+        return 0
+    fi
+    [ "$(uname -m)" = "x86_64" ] || { colorecho "  ✗ Warning: odat release is x86_64 only"; return 0; }
+    local tag
+    tag=$(retry-command 3 "resolve odat latest tag" curl -Ls -o /dev/null -w '%{url_effective}' \
+        "https://github.com/quentinhardy/odat/releases/latest" | sed 's:.*/::' || true)
+    [ -n "$tag" ] || { colorecho "  ✗ Warning: Failed to resolve odat latest tag"; return 0; }
+    local url="https://github.com/quentinhardy/odat/releases/download/${tag}/odat-linux-libc2.17-x86_64.tar.gz"
+    local archive="/tmp/odat.tar.gz"
+    rm -rf /opt/tools/odat
+    mkdir -p /opt/tools/odat
+    if ! download-retry "$url" "$archive" || ! tar -xzf "$archive" -C /opt/tools/odat --strip-components=1 2>/dev/null; then
+        rm -f "$archive"; rm -rf /opt/tools/odat
+        colorecho "  ✗ Warning: Failed to download/extract odat"
+        return 0
+    fi
+    rm -f "$archive"
+    printf '%s\n' '#!/bin/sh' 'exec /opt/tools/odat/odat-libc2.17-x86_64 "$@"' > /opt/tools/bin/odat
+    chmod +x /opt/tools/bin/odat
+    ln -sf /opt/tools/bin/odat /usr/local/bin/odat
+    add-history "odat"
+    colorecho "  ✓ odat installed (${tag})"
+}
+
 function install_graphqlmap() {
     install_pipx_tool_git "graphqlmap" "https://github.com/swisskyrepo/GraphQLmap.git"
     # GraphQLmap does not declare requests and urllib3 in its package metadata.
@@ -702,6 +731,7 @@ function install_mod_web() {
     install_xsstrike
     install_tplmap
     install_nosqlmap
+    install_odat
     install_corsy
     install_whatweb
     install_eyewitness

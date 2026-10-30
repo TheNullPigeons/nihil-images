@@ -535,6 +535,11 @@
             "description": "SQL injection testing"
         },
         {
+            "name": "odat",
+            "cmd": "odat",
+            "description": "Oracle Database Attacking Tool"
+        },
+        {
             "name": "gobuster",
             "cmd": "gobuster",
             "description": "Directory/subdomain brute-force"

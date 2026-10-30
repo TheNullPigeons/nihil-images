@@ -1,0 +1,4 @@
+odat all -s "$TARGET"
+odat sidguesser -s "$TARGET" -p 1521
+odat passwordguesser -s "$TARGET" -p 1521 -d "$SID"
+odat all -s "$TARGET" -p 1521 -U "$USER" -P "$PASSWORD" -d "$SID"
