@@ -228,7 +228,9 @@ function install_odat() {
         return 0
     fi
     rm -f "$archive"
-    printf '%s\n' '#!/bin/sh' 'exec /opt/tools/odat/odat-libc2.17-x86_64 "$@"' > /opt/tools/bin/odat
+    printf '%s\n' '#!/bin/sh' \
+        'cd /opt/tools/odat/odat-libc2.17-x86_64 || exit 1' \
+        'exec ./odat-libc2.17-x86_64 "$@"' > /opt/tools/bin/odat
     chmod +x /opt/tools/bin/odat
     ln -sf /opt/tools/bin/odat /usr/local/bin/odat
     add-history "odat"
