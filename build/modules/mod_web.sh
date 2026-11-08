@@ -309,6 +309,9 @@ function install_kiterunner() {
             return 1
         }
     fi
+
+    mkdir -p /root/.oh-my-zsh/custom/completions
+    kr completion zsh | sed 's/_kite/_kr/g; s/kite/kr/g' > /root/.oh-my-zsh/custom/completions/_kr
 }
 
 function install_httpie() {
