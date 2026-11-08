@@ -550,8 +550,20 @@ function install_burpsuite() {
     install_pacman_tool "ttf-dejavu"
     install_pacman_tool "freetype2"
     local burp_dir="/opt/tools/BurpSuiteCommunity"
+    local latest_version
+    latest_version=$(curl -fsSL --retry 3 "https://portswigger.net/burp/releases" \
+        | grep -oE 'professional-community-[0-9]+-[0-9]+(-[0-9]+)?' \
+        | head -1 \
+        | sed 's/^professional-community-//; s/-/./g') || {
+        colorecho "  ✗ Failed to determine the latest Burp Suite version"
+        return 1
+    }
+    [[ -n "$latest_version" ]] || {
+        colorecho "  ✗ Burp Suite latest version was empty"
+        return 1
+    }
     mkdir -p "$burp_dir"
-    download-retry "https://portswigger.net/burp/releases/download?product=community&type=Jar" \
+    download-retry "https://portswigger.net/burp/releases/startdownload?product=desktop&version=${latest_version}&type=jar" \
         "${burp_dir}/BurpSuiteCommunity.jar"
     file "${burp_dir}/BurpSuiteCommunity.jar" | grep -q "Java archive" \
         || { colorecho "  ✗ Downloaded file is not a valid JAR"; exit 1; }
