@@ -108,7 +108,7 @@ function install_feroxbuster() {
 }
 
 function install_testssl() {
-    install_download_tool "testssl.sh" "https://raw.githubusercontent.com/drwetter/testssl.sh/v3.2.2/testssl.sh"
+    install_download_tool "testssl.sh" "https://raw.githubusercontent.com/testssl/testssl.sh/v3.2.2/testssl.sh"
 }
 
 # ---------------------------------------------------------------------------
