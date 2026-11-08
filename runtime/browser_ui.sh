@@ -4,7 +4,7 @@
 set -e
 
 PORT="${NIHIL_BROWSER_UI_PORT:-6901}"
-MARKER="/opt/nihil/.browser_ui_installed_v8"
+MARKER="/opt/nihil/.browser_ui_installed_v10"
 NOVNC_DIR="/opt/nihil/novnc"
 NOVNC_VERSION="v1.6.0"
 XFCE_CONF="/root/.config/xfce4/xfconf/xfce-perchannel-xml"
@@ -39,8 +39,10 @@ install_browser_ui_deps() {
                 xfce4-appfinder \
                 thunar \
                 firefox \
+                noto-fonts-cjk \
                 dbus \
                 python-pip || true
+            fc-cache -f >/dev/null 2>&1 || true
             rm -f /tmp/pacman_no_chaotic.conf
         fi
     else
