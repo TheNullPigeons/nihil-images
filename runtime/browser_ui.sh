@@ -6,18 +6,29 @@ set -e
 PORT="${NIHIL_BROWSER_UI_PORT:-6901}"
 MARKER="/opt/nihil/.browser_ui_installed_v8"
 NOVNC_DIR="/opt/nihil/novnc"
+NOVNC_VERSION="v1.6.0"
 XFCE_CONF="/root/.config/xfce4/xfconf/xfce-perchannel-xml"
 XFCE_PANEL_CONF="/root/.config/xfce4/panel"
+
+# Retry a check for up to 10s instead of sleeping a fixed time.
+wait_for() {
+    for _ in $(seq 100); do
+        "$@" >/dev/null 2>&1 && return 0
+        sleep 0.1
+    done
+    return 1
+}
 
 install_browser_ui_deps() {
     echo "[NIHIL] Ensuring browser UI dependencies (XFCE4 + Docklike)..."
     if command -v pacman >/dev/null 2>&1; then
         if [[ ! -f "$MARKER" ]]; then
-            pacman -Sy --noconfirm
             # xfce4-panel-compiz (chaotic-aur) peut avoir une signature inconnue et
             # conflicte avec xfce4-panel. On utilise une config sans chaotic-aur pour
             # forcer l'install du xfce4-panel standard.
             grep -v 'chaotic' /etc/pacman.conf > /tmp/pacman_no_chaotic.conf || cp /etc/pacman.conf /tmp/pacman_no_chaotic.conf
+            # Pas de -Syu : sur l'image full, une mise à jour complète bute sur les fichiers
+            # installés hors pacman (règles hashcat, paquets pip) et n'installe rien.
             pacman -Sy --config /tmp/pacman_no_chaotic.conf --noconfirm 2>/dev/null || true
             pacman -S --config /tmp/pacman_no_chaotic.conf --noconfirm --needed \
                 xorg-server-xvfb \
@@ -29,8 +40,7 @@ install_browser_ui_deps() {
                 thunar \
                 firefox \
                 dbus \
-                python-pip \
-                python-pipx || true
+                python-pip || true
             rm -f /tmp/pacman_no_chaotic.conf
         fi
     else
@@ -48,14 +58,7 @@ install_browser_ui_deps() {
         fi
     fi
 
-    if ! command -v websockify >/dev/null 2>&1; then
-        pacman -S --noconfirm --needed websockify python-websockify >/tmp/nihil_websockify.log 2>&1 || true
-    fi
-    if ! command -v websockify >/dev/null 2>&1; then
-        if command -v pipx >/dev/null 2>&1; then
-            pipx install websockify >/tmp/nihil_websockify_pipx.log 2>&1 || true
-        fi
-    fi
+    # websockify et noVNC ne sont pas dans les dépôts officiels Arch.
     if ! command -v websockify >/dev/null 2>&1; then
         pip install --no-cache-dir --break-system-packages websockify >/tmp/nihil_websockify_pip.log 2>&1 || \
             echo "[NIHIL] browser-ui: websockify install failed"
@@ -63,7 +66,7 @@ install_browser_ui_deps() {
 
     if [[ ! -d "$NOVNC_DIR" ]]; then
         echo "[NIHIL] Fetching noVNC..."
-        git clone --depth=1 https://github.com/novnc/noVNC.git "$NOVNC_DIR" >/tmp/nihil_novnc.log 2>&1 || true
+        git clone --depth=1 --branch "$NOVNC_VERSION" https://github.com/novnc/noVNC.git "$NOVNC_DIR" >/tmp/nihil_novnc.log 2>&1 || true
     fi
 
     # Panel XFCE: barre en haut (menu + horloge) + barre en bas (docklike uniquement)
@@ -90,10 +93,10 @@ install_browser_ui_deps() {
       </property>
       <property name="background-style" type="uint" value="1"/>
       <property name="background-rgba" type="array">
-        <value type="double" value="0.082353"/>
-        <value type="double" value="0.082353"/>
-        <value type="double" value="0.082353"/>
-        <value type="double" value="0.9"/>
+        <value type="double" value="0.043"/>
+        <value type="double" value="0.090"/>
+        <value type="double" value="0.188"/>
+        <value type="double" value="0.92"/>
       </property>
     </property>
     <property name="panel-2" type="empty">
@@ -106,15 +109,19 @@ install_browser_ui_deps() {
       <property name="position-locked" type="bool" value="true"/>
       <property name="background-style" type="uint" value="1"/>
       <property name="background-rgba" type="array">
-        <value type="double" value="0.082353"/>
-        <value type="double" value="0.082353"/>
-        <value type="double" value="0.082353"/>
+        <value type="double" value="0.043"/>
+        <value type="double" value="0.090"/>
+        <value type="double" value="0.188"/>
         <value type="double" value="0.85"/>
       </property>
     </property>
   </property>
   <property name="plugins" type="empty">
-    <property name="plugin-1" type="string" value="applicationsmenu"/>
+    <property name="plugin-1" type="string" value="applicationsmenu">
+      <property name="button-icon" type="string" value="/usr/share/pixmaps/nihil.png"/>
+      <property name="button-title" type="string" value="Nihil"/>
+      <property name="show-button-title" type="bool" value="true"/>
+    </property>
     <property name="plugin-3" type="string" value="separator">
       <property name="expand" type="bool" value="true"/>
     </property>
@@ -132,11 +139,11 @@ PANELXML
     cat > "$XFCE_PANEL_CONF/docklike-2.rc" <<'DOCKRC'
 [user]
 indicatorStyle=0
-indicatorColor=rgb(76,166,230)
+indicatorColor=rgb(56,189,248)
 pinned=/usr/share/applications/xfce4-appfinder.desktop;/usr/share/applications/xfce4-terminal.desktop;/usr/share/applications/thunar.desktop;/usr/share/applications/firefox.desktop;
 indicatorOrientation=1
 inactiveIndicatorStyle=0
-inactiveColor=rgb(26,95,180)
+inactiveColor=rgb(29,78,216)
 indicatorColorFromTheme=false
 forceIconSize=true
 iconSize=32
@@ -195,6 +202,53 @@ DOCKRC
 </channel>'
     } > "$XFCE_CONF/xfce4-desktop.xml"
 
+    cp -f /opt/nihil/runtime/logo.png /usr/share/pixmaps/nihil.png 2>/dev/null || true
+
+    # Terminal aux couleurs de TheNullPigeons (fond slate-950, curseur cyan)
+    cat > "$XFCE_CONF/xfce4-terminal.xml" <<'TERMXML'
+<?xml version="1.0" encoding="UTF-8"?>
+<channel name="xfce4-terminal" version="1.0">
+  <property name="color-use-theme" type="bool" value="false"/>
+  <property name="color-background" type="string" value="#020617"/>
+  <property name="color-foreground" type="string" value="#e2e8f0"/>
+  <property name="color-cursor-use-default" type="bool" value="false"/>
+  <property name="color-cursor" type="string" value="#38bdf8"/>
+  <property name="color-selection-use-default" type="bool" value="false"/>
+  <property name="color-selection-background" type="string" value="#1d4ed8"/>
+  <property name="color-palette" type="string" value="#0f172a;#f87171;#4ade80;#facc15;#3b82f6;#c084fc;#22d3ee;#cbd5e1;#475569;#fca5a5;#86efac;#fde047;#60a5fa;#d8b4fe;#67e8f9;#f8fafc"/>
+</channel>
+TERMXML
+
+    # Sélection et éléments actifs en bleu dans les applis GTK3
+    mkdir -p /root/.config/gtk-3.0
+    cat > /root/.config/gtk-3.0/gtk.css <<'GTKCSS'
+@define-color theme_selected_bg_color #2563eb;
+@define-color theme_selected_fg_color #ffffff;
+GTKCSS
+
+    # Thème GTK sombre (Adwaita-dark est fourni par gtk3, installé avec xfce4)
+    cat > "$XFCE_CONF/xsettings.xml" <<'XSETTINGS'
+<?xml version="1.0" encoding="UTF-8"?>
+<channel name="xsettings" version="1.0">
+  <property name="Net" type="empty">
+    <property name="ThemeName" type="string" value="Adwaita-dark"/>
+  </property>
+  <property name="Gtk" type="empty">
+    <property name="ApplicationPreferDarkTheme" type="bool" value="true"/>
+  </property>
+</channel>
+XSETTINGS
+
+    # Le marqueur n'est posé que si tout est en place, sinon on réessaie au prochain démarrage.
+    local missing=()
+    for cmd in Xvfb x11vnc startxfce4 websockify; do
+        command -v "$cmd" >/dev/null 2>&1 || missing+=("$cmd")
+    done
+    [[ -f "$NOVNC_DIR/vnc.html" ]] || missing+=("noVNC")
+    if (( ${#missing[@]} )); then
+        echo "[NIHIL] browser-ui: missing ${missing[*]}, will retry on next start."
+        return 1
+    fi
     mkdir -p "$(dirname "$MARKER")"
     touch "$MARKER"
 }
@@ -212,7 +266,7 @@ start_browser_ui() {
     # Xvfb (stable)
     if ! pgrep -x Xvfb >/dev/null 2>&1; then
         Xvfb :99 -screen 0 1280x720x24 >/tmp/nihil_xvfb.log 2>&1 &
-        sleep 2
+        wait_for test -S /tmp/.X11-unix/X99
     fi
 
     # Bus D-Bus session explicite pour que xfce4-settings-daemon puisse se connecter
@@ -220,7 +274,7 @@ start_browser_ui() {
         rm -rf /tmp/dbus-session
         mkdir -p /tmp/dbus-session
         dbus-daemon --session --address=unix:path=/tmp/dbus-session/bus --nofork --print-pid >/tmp/dbus-session/pid 2>/dev/null &
-        sleep 0.5
+        wait_for test -S /tmp/dbus-session/bus
         export DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/dbus-session/bus
     fi
 
@@ -231,14 +285,12 @@ start_browser_ui() {
         [[ -f /usr/share/backgrounds/xfce/xfce-x.svg ]] && cp -f /opt/nihil/runtime/wallpaper.png /usr/share/backgrounds/xfce/xfce-x.svg
     fi
 
-    # Mot de passe de session (affiché sur la page de connexion HTML + récap wrapper)
-    VNC_PASSWORD_FILE="/tmp/nihil_vnc_password"
+    # Mot de passe de session : affiché par le wrapper (nihil start / nihil info), jamais
+    # sur la page web, qui est servie sans authentification.
     VNC_RFBAUTH_FILE="/tmp/nihil_x11vnc_rfbauth"
     if ! pgrep -x x11vnc >/dev/null 2>&1; then
         PASSWORD="${NIHIL_BROWSER_UI_PASSWORD:-$(openssl rand -base64 12)}"
-        echo "$PASSWORD" > "$VNC_PASSWORD_FILE"
-        echo "$PASSWORD" > /opt/nihil/.session_password
-        chmod 600 "$VNC_PASSWORD_FILE" /opt/nihil/.session_password
+        (umask 077; echo "$PASSWORD" > /opt/nihil/.session_password)
         x11vnc -storepasswd "$PASSWORD" "$VNC_RFBAUTH_FILE" 2>/dev/null
         sync
         # -localhost: x11vnc is only ever meant to be reached through the websockify/noVNC
@@ -246,51 +298,22 @@ start_browser_ui() {
         # which is a second, unauthenticated-looking raw VNC port exposed alongside noVNC
         # (worse in --network host, where "every interface" means the host's).
         x11vnc -display :99 -rfbport 5901 -rfbauth "$VNC_RFBAUTH_FILE" -forever -shared -localhost >/tmp/nihil_x11vnc.log 2>&1 &
-    else
-        PASSWORD="$(cat /opt/nihil/.session_password 2>/dev/null || echo '???')"
     fi
 
-    # Page de connexion HTML : mot de passe injecte directement (heredoc sans guillemets = interpolation)
+    # Ouvre directement le bureau. Le titre "Nihil" sert au wrapper pour savoir que la page est prête.
     if [[ -d "$NOVNC_DIR" ]]; then
-        cat > "$NOVNC_DIR/index.html" << INDEXEOF
+        cat > "$NOVNC_DIR/index.html" << 'INDEXEOF'
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nihil - Connexion</title>
-  <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; background: #1a1a1a; color: #e0e0e0; font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; }
-    .card { background: #252525; padding: 2rem 2.5rem; border-radius: 8px; text-align: center; min-width: 320px; }
-    h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
-    .sub { color: #a0a0a0; margin-bottom: 1.5rem; font-size: 0.95rem; }
-    .row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: 0.75rem 0; padding: 0.5rem 0; border-bottom: 1px solid #333; }
-    .label { color: #a0a0a0; }
-    .value { font-family: monospace; font-size: 0.95rem; }
-    .hint { color: #808080; font-size: 0.85rem; margin-top: 0.5rem; }
-    a.btn { display: inline-block; margin-top: 1.5rem; padding: 0.6rem 1.5rem; background: #3d6ba3; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 500; }
-    a.btn:hover { background: #4a7ab8; }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>Nihil</h1>
-    <p class="sub">Connexion à la session</p>
-    <div class="row"><span class="label">Utilisateur</span><span class="value">root</span></div>
-    <div class="row"><span class="label">Mot de passe</span><span class="value">${PASSWORD}</span></div>
-    <p class="hint">Ce mot de passe est unique à cette session. Il est régénéré à chaque démarrage du conteneur.</p>
-    <a href="vnc.html?autoconnect=1&amp;resize=scale" class="btn">Ouvrir le bureau</a>
-  </div>
-</body>
-</html>
+<html><head><meta charset="utf-8"><title>Nihil</title>
+<meta http-equiv="refresh" content="0; url=vnc.html?autoconnect=1&amp;resize=scale">
+</head><body></body></html>
 INDEXEOF
     fi
 
     # XFCE4 (panel + docklike): demarrage direct, pas de greeter tk
     if ! pgrep -x xfce4-session >/dev/null 2>&1; then
         startxfce4 >/tmp/nihil_xfce.log 2>&1 &
-        sleep 5
+        wait_for pgrep -x xfdesktop
     fi
 
     if command -v websockify >/dev/null 2>&1 && [[ -d "$NOVNC_DIR" ]]; then
