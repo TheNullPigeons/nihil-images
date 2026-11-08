@@ -16,6 +16,13 @@ function install_ghidra() {
     install_pacman_tool "ghidra"
 }
 
+function install_vscodium() {
+    install_aur_tool "vscodium-bin" "codium" || return 1
+    # Electron requires a dedicated profile and --no-sandbox when the container runs as root.
+    mkdir -p /root/.config/VSCodium-nihil
+    printf '%s\n' '--no-sandbox' '--user-data-dir=/root/.config/VSCodium-nihil' > /root/.config/codium-flags.conf
+}
+
 function install_wabt() {
     # WebAssembly Binary Toolkit: wat2wasm, wasm2wat, wasm-objdump, etc.
     # (the package name differs from its binaries, so the helper's command
@@ -168,6 +175,9 @@ function install_mod_reverse() {
     install_ghidra
     install_nasm
     install_wabt
+
+    colorecho "  [aur] GUI editor:"
+    install_vscodium
 
     colorecho "  [pipx] Reverse tools:"
     install_angr

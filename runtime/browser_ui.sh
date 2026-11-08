@@ -1,9 +1,10 @@
 #!/bin/bash
-# Browser UI: XFCE4 + dock en bas (docklike), connexion Xvfb + x11vnc
+# Browser UI: XFCE4 + dock en bas (docklike), bureau VNC TigerVNC
 
 set -e
 
 PORT="${NIHIL_BROWSER_UI_PORT:-6901}"
+RESOLUTION="${NIHIL_BROWSER_UI_RESOLUTION:-1280x720}"
 MARKER="/opt/nihil/.browser_ui_installed_v10"
 NOVNC_DIR="/opt/nihil/novnc"
 NOVNC_VERSION="v1.6.0"
@@ -31,9 +32,12 @@ install_browser_ui_deps() {
             # installés hors pacman (règles hashcat, paquets pip) et n'installe rien.
             pacman -Sy --config /tmp/pacman_no_chaotic.conf --noconfirm 2>/dev/null || true
             pacman -S --config /tmp/pacman_no_chaotic.conf --noconfirm --needed \
-                xorg-server-xvfb \
-                x11vnc \
-                xfce4 \
+                tigervnc \
+                xfce4-session \
+                xfce4-panel \
+                xfce4-settings \
+                xfdesktop \
+                xfwm4 \
                 xfce4-docklike-plugin \
                 xfce4-terminal \
                 xfce4-appfinder \
@@ -137,12 +141,16 @@ install_browser_ui_deps() {
 </channel>
 PANELXML
 
-    # Docklike: applis épinglées (menu, terminal, fichiers, navigateur)
-    cat > "$XFCE_PANEL_CONF/docklike-2.rc" <<'DOCKRC'
+    # Docklike: applis épinglées présentes dans cette variante d'image.
+    DOCK_PINNED="/usr/share/applications/xfce4-appfinder.desktop;/usr/share/applications/xfce4-terminal.desktop;/usr/share/applications/thunar.desktop;/usr/share/applications/firefox.desktop;"
+    for app in burpsuite codium; do
+        [[ -f "/usr/share/applications/${app}.desktop" ]] && DOCK_PINNED+="/usr/share/applications/${app}.desktop;"
+    done
+    cat > "$XFCE_PANEL_CONF/docklike-2.rc" <<DOCKRC
 [user]
 indicatorStyle=0
 indicatorColor=rgb(56,189,248)
-pinned=/usr/share/applications/xfce4-appfinder.desktop;/usr/share/applications/xfce4-terminal.desktop;/usr/share/applications/thunar.desktop;/usr/share/applications/firefox.desktop;
+pinned=${DOCK_PINNED}
 indicatorOrientation=1
 inactiveIndicatorStyle=0
 inactiveColor=rgb(29,78,216)
@@ -243,7 +251,7 @@ XSETTINGS
 
     # Le marqueur n'est posé que si tout est en place, sinon on réessaie au prochain démarrage.
     local missing=()
-    for cmd in Xvfb x11vnc startxfce4 websockify; do
+    for cmd in Xvnc vncpasswd startxfce4 websockify; do
         command -v "$cmd" >/dev/null 2>&1 || missing+=("$cmd")
     done
     [[ -f "$NOVNC_DIR/vnc.html" ]] || missing+=("noVNC")
@@ -265,9 +273,18 @@ start_browser_ui() {
     mkdir -p "$XDG_RUNTIME_DIR" /tmp/dbus-session
     chmod 700 "$XDG_RUNTIME_DIR" /tmp/dbus-session 2>/dev/null || true
 
-    # Xvfb (stable)
-    if ! pgrep -x Xvfb >/dev/null 2>&1; then
-        Xvfb :99 -screen 0 1280x720x24 >/tmp/nihil_xvfb.log 2>&1 &
+    # TigerVNC changes the X server framebuffer when noVNC's viewport changes.
+    # Migrate containers that still have the previous Xvfb/x11vnc server running.
+    if pgrep -x Xvfb >/dev/null 2>&1; then
+        pkill -x xfce4-session || true
+        pkill -x x11vnc || true
+        pkill -x Xvfb || true
+    fi
+    if ! pgrep -x Xvnc >/dev/null 2>&1; then
+        PASSWORD="${NIHIL_BROWSER_UI_PASSWORD:-$(openssl rand -base64 12)}"
+        (umask 077; echo "$PASSWORD" > /opt/nihil/.session_password)
+        (umask 077; printf '%s\n' "$PASSWORD" | vncpasswd -f > /tmp/nihil_vnc_rfbauth)
+        Xvnc :99 -geometry "$RESOLUTION" -depth 24 -rfbport 5901 -localhost -rfbauth /tmp/nihil_vnc_rfbauth >/tmp/nihil_xvnc.log 2>&1 &
         wait_for test -S /tmp/.X11-unix/X99
     fi
 
@@ -289,25 +306,15 @@ start_browser_ui() {
 
     # Mot de passe de session : affiché par le wrapper (nihil start / nihil info), jamais
     # sur la page web, qui est servie sans authentification.
-    VNC_RFBAUTH_FILE="/tmp/nihil_x11vnc_rfbauth"
-    if ! pgrep -x x11vnc >/dev/null 2>&1; then
-        PASSWORD="${NIHIL_BROWSER_UI_PASSWORD:-$(openssl rand -base64 12)}"
-        (umask 077; echo "$PASSWORD" > /opt/nihil/.session_password)
-        x11vnc -storepasswd "$PASSWORD" "$VNC_RFBAUTH_FILE" 2>/dev/null
-        sync
-        # -localhost: x11vnc is only ever meant to be reached through the websockify/noVNC
-        # proxy below, never directly. Without this it also listens on every interface,
-        # which is a second, unauthenticated-looking raw VNC port exposed alongside noVNC
-        # (worse in --network host, where "every interface" means the host's).
-        x11vnc -display :99 -rfbport 5901 -rfbauth "$VNC_RFBAUTH_FILE" -forever -shared -localhost >/tmp/nihil_x11vnc.log 2>&1 &
-    fi
-
     # Ouvre directement le bureau. Le titre "Nihil" sert au wrapper pour savoir que la page est prête.
     if [[ -d "$NOVNC_DIR" ]]; then
+        cp -f /opt/nihil/runtime/logo.png "$NOVNC_DIR/nihil-favicon.png"
+        sed -i '/href="nihil-favicon.png"/d; s#<title>noVNC</title>#<title>Nihil</title>#; s#<link rel="icon" type="image/x-icon" href="app/images/icons/novnc.ico">#<link rel="icon" type="image/png" href="nihil-favicon.png">#' "$NOVNC_DIR/vnc.html"
+        sed -i 's/const PAGE_TITLE = "noVNC";/const PAGE_TITLE = "Nihil";/' "$NOVNC_DIR/app/ui.js"
         cat > "$NOVNC_DIR/index.html" << 'INDEXEOF'
 <!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>Nihil</title>
-<meta http-equiv="refresh" content="0; url=vnc.html?autoconnect=1&amp;resize=scale">
+<meta http-equiv="refresh" content="0; url=vnc.html?autoconnect=1&amp;resize=remote">
 </head><body></body></html>
 INDEXEOF
     fi

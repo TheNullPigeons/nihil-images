@@ -1313,6 +1313,11 @@
     ],
     "mod_reverse": [
         {
+            "name": "vscodium",
+            "cmd": "codium",
+            "description": "Open-source graphical code editor"
+        },
+        {
             "name": "ghidra",
             "cmd": "ghidra",
             "description": "NSA reverse engineering suite"

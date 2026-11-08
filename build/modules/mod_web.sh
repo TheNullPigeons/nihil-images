@@ -586,6 +586,23 @@ function install_burpsuite() {
     printf '#!/bin/bash\nexec %s -Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true -jar -Xmx4g /opt/tools/BurpSuiteCommunity/BurpSuiteCommunity.jar "$@"\n' "$java_bin" \
         > /opt/tools/bin/burpsuite
     chmod +x /opt/tools/bin/burpsuite
+    if unzip -p "${burp_dir}/BurpSuiteCommunity.jar" resources/Browser/ChromiumExtension/images/BurpSuite-Container-128.png > /tmp/burpsuite.png \
+        && file /tmp/burpsuite.png | grep -q 'PNG image data'; then
+        install -Dm644 /tmp/burpsuite.png /usr/share/icons/hicolor/128x128/apps/burpsuite.png
+    else
+        colorecho "  ✗ Warning: Burp Suite icon was not found in its JAR"
+    fi
+    rm -f /tmp/burpsuite.png
+    cat > /usr/share/applications/burpsuite.desktop <<'DESKTOP'
+[Desktop Entry]
+Type=Application
+Name=Burp Suite Community
+Exec=burpsuite
+Icon=/usr/share/icons/hicolor/128x128/apps/burpsuite.png
+Terminal=false
+Categories=Development;
+StartupWMClass=burp-StartBurp
+DESKTOP
     add-history "burpsuite"
     colorecho "  ✓ Burp Suite Community installed at ${burp_dir}"
 }
