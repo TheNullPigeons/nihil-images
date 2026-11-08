@@ -45,7 +45,11 @@ ensure_neo4j_password() {
 
     echo "[nihil] Neo4j password not aligned with BloodHound config, fixing..."
     local conf="$NEO4J_HOME/conf/neo4j.conf"
-    neo4j stop >/dev/null 2>&1
+    "$NEO4J_HOME/bin/neo4j" stop >/dev/null 2>&1 || true
+    for i in $(seq 1 30); do
+        "$NEO4J_HOME/bin/neo4j" status 2>/dev/null | grep -q "is running" || break
+        sleep 1
+    done
 
     # Temporarily disable auth: bypasses both the unknown password and the
     # failed-attempt rate limiter, so we can ALTER the user in the system db.
@@ -53,18 +57,30 @@ ensure_neo4j_password() {
     sed -i '/^#\?dbms\.security\.auth_enabled/d' "$conf"
     echo 'dbms.security.auth_enabled=false' >> "$conf"
 
-    neo4j start >/dev/null 2>&1
-    for i in $(seq 1 30); do ss -tlnp 2>/dev/null | grep -q ':7687' && break || sleep 2; done
+    "$NEO4J_HOME/bin/neo4j" start >/dev/null 2>&1
+    for i in $(seq 1 60); do
+        ss -tlnp 2>/dev/null | grep -q ':7687' && break
+        sleep 2
+    done
 
     # CHANGE NOT REQUIRED so BloodHound (non-interactive) is not forced to rotate it.
-    "$cs" -a bolt://127.0.0.1:7687 -d system \
-        "ALTER USER $user SET PASSWORD '$pass' CHANGE NOT REQUIRED;" >/dev/null 2>&1 </dev/null
+    if ! "$cs" -a bolt://127.0.0.1:7687 -d system \
+        "ALTER USER $user SET PASSWORD '$pass' CHANGE NOT REQUIRED;" >/dev/null 2>&1 </dev/null; then
+        echo "[nihil] Warning: could not update the Neo4j password." >&2
+    fi
 
     # Restore the original conf (auth re-enabled) and restart.
-    neo4j stop >/dev/null 2>&1
+    "$NEO4J_HOME/bin/neo4j" stop >/dev/null 2>&1 || true
+    for i in $(seq 1 30); do
+        "$NEO4J_HOME/bin/neo4j" status 2>/dev/null | grep -q "is running" || break
+        sleep 1
+    done
     mv "$conf.nihilbak" "$conf"
-    neo4j start >/dev/null 2>&1
-    for i in $(seq 1 30); do ss -tlnp 2>/dev/null | grep -q ':7687' && break || sleep 2; done
+    "$NEO4J_HOME/bin/neo4j" start >/dev/null 2>&1
+    for i in $(seq 1 60); do
+        ss -tlnp 2>/dev/null | grep -q ':7687' && break
+        sleep 2
+    done
 
     if "$cs" -a bolt://127.0.0.1:7687 -u "$user" -p "$pass" "RETURN 1;" >/dev/null 2>&1 </dev/null; then
         echo "[nihil] Neo4j password aligned."
