@@ -1,5 +1,4 @@
 # ffuf — Fast web fuzzer
-ffuf -u https://$TARGET/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt
 ffuf -u https://$TARGET/FUZZ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -mc 200,301,302
 ffuf -u https://$TARGET/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-large-files.txt -e .php,.html,.txt,.bak
 ffuf -u https://$TARGET -H "Host: FUZZ.$DOMAIN" -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -fs 0
@@ -15,3 +14,4 @@ ffuf -u https://$TARGET/FUZZ -w `fzf-wordlists` -ac
 ffuf -c -w `fzf-wordlists` -u http://"$TARGET"/FUZZ -e .php,.txt,.pl,.sh,.asp,.aspx,.html,.json,.py,.cfm,.rb,.cgi,.bak,.tar.gz,.tgz,.zip
 ffuf -u http://"$TARGET"/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-files.txt -mc all -fc 404,400,500 -t 50 -s
 ffuf -w `fzf-wordlists`:FUZZ -u http://"$TARGET"/ -H "Host: FUZZ.$DOMAIN" -fs "$SIZE_TO_FILTER"
+ffuf -u https://$TARGET/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt

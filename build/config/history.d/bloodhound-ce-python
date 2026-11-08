@@ -1,4 +1,3 @@
-bloodhound-ce-python -u "$USER"@"$DOMAIN" -p "$PASSWORD" -d "$DOMAIN" -c All
 bloodhound-ce-python -u "$USER"@"$DOMAIN" -p "$PASSWORD" -d "$DOMAIN" -c DCOnly
 bloodhound-ce-python -u "$USER"@"$DOMAIN" -p "$PASSWORD" -d "$DOMAIN" -c Group,LocalAdmin,Session
 bloodhound-ce-python -u "$USER"@"$DOMAIN" -p "$PASSWORD" -d "$DOMAIN" -c Group,Acl,Trusts
@@ -8,3 +7,4 @@ bloodhound-ce-python -u "$USER"@"$DOMAIN" -p "$PASSWORD" -d "$DOMAIN" -gc "$GC_H
 bloodhound-ce-python -u "$USER"@"$DOMAIN" -hashes :"$NT_HASH" -d "$DOMAIN" -c All
 bloodhound-ce-python -u "$USER"@"$DOMAIN" -k -d "$DOMAIN" -c All
 bloodhound-ce-python -u "$USER"@"$DOMAIN" -p "$PASSWORD" -d "$DOMAIN" -c All --zip
+bloodhound-ce-python -u "$USER"@"$DOMAIN" -p "$PASSWORD" -d "$DOMAIN" -c All

@@ -1,4 +1,3 @@
-Responder.py --interface "$(fzf-interface)" --analyze --lm --disable-ess
 Responder.py --interface "$(fzf-interface)" --analyze --disable-ess
 Responder.py --interface "$(fzf-interface)" --wpad --lm --ProxyAuth --disable-ess
 Responder.py --interface "$(fzf-interface)" --wpad --lm --disable-ess
@@ -13,3 +12,4 @@ responder-smb-on
 responder -I "$(fzf-interface)" -v
 responder -I "$(fzf-interface)" -dwPv
 responder -wrf -v -I "$(fzf-interface)"
+Responder.py --interface "$(fzf-interface)" --analyze --lm --disable-ess

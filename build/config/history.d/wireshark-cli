@@ -1,4 +1,3 @@
-tshark -r capture.pcap
 tshark -r capture.pcap -Y "http"
 tshark -r capture.pcap -Y "tcp.port == 80" -T fields -e http.request.uri
 tshark -r capture.pcap -Y "dns" -T fields -e dns.qry.name
@@ -13,3 +12,4 @@ tshark -r capture.pcap -Y 'kerberos.CNameString' -T fields -e kerberos.CNameStri
 tshark -r capture.pcap -Y 'ntlmssp' -V | grep -i 'NTLMSSP_NEGOTIATE\|NTLMSSP_CHALLENGE\|NTLMSSP_AUTH'
 tshark -r capture.pcap -Y 'smb2' -T fields -e smb2.cmd -e smb2.filename | sort -u
 wireshark
+tshark -r capture.pcap

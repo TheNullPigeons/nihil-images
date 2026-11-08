@@ -1,4 +1,3 @@
-xfreerdp3 /v:"$TARGET" /u:"$USER" /p:"$PASSWORD"
 xfreerdp3 /v:"$TARGET" /u:"$USER" /p:"$PASSWORD" /cert:ignore /dynamic-resolution
 xfreerdp3 /v:"$TARGET" /u:"$USER" /pth:"$NT_HASH" /cert:ignore
 xfreerdp3 /v:"$TARGET" /u:"$USER" /p:"$PASSWORD" /drive:"$LOCAL_PATH",share
@@ -10,3 +9,4 @@ xfreerdp3 /d:"$DOMAIN" /u:"$USER" /pth:"$NT_HASH" /v:"$TARGET" /cert-ignore /dri
 xfreerdp3 /v:"$IP" /u:"$USER" /p:"$PASSWORD" /f /sound
 rdesktop "$IP" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -r disk:linux=/home/$LOCAL_USER
 rdesktop -u "$USER" -p "$PASSWORD" -r disk:NIHIL=/workspace "$IP"
+xfreerdp3 /v:"$TARGET" /u:"$USER" /p:"$PASSWORD"

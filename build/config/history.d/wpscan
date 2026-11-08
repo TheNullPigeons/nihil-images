@@ -1,4 +1,3 @@
-wpscan --url http://"$DOMAIN" --plugins-detection aggressive -v
 wpscan --url http://"$DOMAIN" -e u
 wpscan --url http://"$DOMAIN" -U `fzf-wordlists` -t 20
 wpscan --url http://"$DOMAIN" -P `fzf-wordlists` -t 20
@@ -12,3 +11,4 @@ wpprobe update
 wpprobe update-db
 wpprobe scan -u http://"$TARGET"
 wpprobe scan -f "$TARGET_FILE" -t "$THREADS"
+wpscan --url http://"$DOMAIN" --plugins-detection aggressive -v

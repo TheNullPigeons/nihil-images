@@ -1,5 +1,5 @@
-gowitness scan single --url "$URL"
 gowitness scan file -f "$URLS_FILE"
 gowitness scan nmap --file "$NMAP_XML"
 gowitness report serve
 gowitness scan nmap -f nmap.xml --open-only --service-contains http --delay 5 --timeout 5
+gowitness scan single --url "$URL"

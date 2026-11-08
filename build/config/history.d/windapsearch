@@ -1,5 +1,4 @@
 # windapsearch — Go LDAP enumeration
-windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m users
 windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m computers
 windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m groups
 windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m privileged-users
@@ -11,3 +10,4 @@ windapsearch --dc "$DC_HOST" --module users
 windapsearch.py --dc-ip "$IP" -u "" -U
 windapsearch --dc "$IP" --module users
 windapsearch --dc "$IP" --module metadata
+windapsearch -d $DOMAIN --dc $DC_IP -u $USER@$DOMAIN -p $PASSWORD -m users

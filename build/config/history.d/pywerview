@@ -1,5 +1,4 @@
 # pywerview — Python PowerView port
-pywerview get-netuser -u $USER -p $PASSWORD -t $DC_IP --username $TARGET_USER
 pywerview get-netgroup -u $USER -p $PASSWORD -t $DC_IP --groupname "Domain Admins"
 pywerview get-netcomputer -u $USER -p $PASSWORD -t $DC_IP --full-data
 pywerview get-netgpo -u $USER -p $PASSWORD -t $DC_IP
@@ -15,3 +14,4 @@ pywerview get-netgmsa --dc-ip "$DC_IP" --user "$USER" --hashes "$NT_HASH" --reso
 pywerview get-netgmsa --dc-ip "$DC_IP" --tls --user "$USER" --hashes "$NT_HASH" --resolve-sids
 pywerview get-netuser --workgroup "$DOMAIN" --dc-ip "$DC_IP" --tls --cert cert.crt --key cert.key --username "$USER" --attributes distinguishedname useraccountcontrol
 pywerview get-netuser --workgroup "$DOMAIN" --dc-ip "$IP" --user "$USER" --hashes "$NT_HASH"
+pywerview get-netuser -u $USER -p $PASSWORD -t $DC_IP --username $TARGET_USER
