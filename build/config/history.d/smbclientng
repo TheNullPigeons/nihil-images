@@ -4,3 +4,4 @@ smbclientng --host "$TARGET" --no-pass
 smbclientng -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$DC_IP"
 smbclientng -d "$DOMAIN" -u "$USER" -p "$PASSWORD" --host "$IP"
 smbclientng --host "$TARGET" --domain "$DOMAIN" --username "$USER" --password "$PASSWORD"
+smbclientng -u "$USER" --ccache-file "$USER".ccache -H "$DC_HOST" -d "$DOMAIN"
