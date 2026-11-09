@@ -8,6 +8,7 @@ VNC_PORT="${NIHIL_BROWSER_UI_VNC_PORT:-$((PORT - 1000))}"
 DISPLAY_NUM="${NIHIL_BROWSER_UI_DISPLAY:-$((PORT - 6700))}"
 RESOLUTION="${NIHIL_BROWSER_UI_RESOLUTION:-1280x720}"
 MARKER="/opt/nihil/.browser_ui_installed_v10"
+STATUS_FILE="/tmp/nihil_browser_ui_status"
 NOVNC_DIR="/opt/nihil/novnc"
 NOVNC_VERSION="v1.6.0"
 XFCE_CONF="/root/.config/xfce4/xfconf/xfce-perchannel-xml"
@@ -22,10 +23,16 @@ wait_for() {
     return 1
 }
 
+set_browser_ui_status() {
+    printf '%s\n' "$1" > "$STATUS_FILE"
+}
+
 install_browser_ui_deps() {
+    set_browser_ui_status "Checking Browser UI dependencies"
     echo "[NIHIL] Ensuring browser UI dependencies (XFCE4 + Docklike)..."
     if command -v pacman >/dev/null 2>&1; then
         if [[ ! -f "$MARKER" ]]; then
+            set_browser_ui_status "Installing XFCE desktop packages (pacman)"
             # xfce4-panel-compiz (chaotic-aur) peut avoir une signature inconnue et
             # conflicte avec xfce4-panel. On utilise une config sans chaotic-aur pour
             # forcer l'install du xfce4-panel standard.
@@ -68,15 +75,18 @@ install_browser_ui_deps() {
 
     # websockify et noVNC ne sont pas dans les dépôts officiels Arch.
     if ! command -v websockify >/dev/null 2>&1; then
+        set_browser_ui_status "Installing websockify"
         pip install --no-cache-dir --break-system-packages websockify >/tmp/nihil_websockify_pip.log 2>&1 || \
             echo "[NIHIL] browser-ui: websockify install failed"
     fi
 
     if [[ ! -d "$NOVNC_DIR" ]]; then
+        set_browser_ui_status "Downloading noVNC"
         echo "[NIHIL] Fetching noVNC..."
         git clone --depth=1 --branch "$NOVNC_VERSION" https://github.com/novnc/noVNC.git "$NOVNC_DIR" >/tmp/nihil_novnc.log 2>&1 || true
     fi
 
+    set_browser_ui_status "Configuring XFCE desktop"
     # Panel XFCE: barre en haut (menu + horloge) + barre en bas (docklike uniquement)
     mkdir -p "$XFCE_CONF" "$XFCE_PANEL_CONF"
     cat > "$XFCE_CONF/xfce4-panel.xml" <<'PANELXML'
@@ -266,6 +276,7 @@ XSETTINGS
 }
 
 start_browser_ui() {
+    set_browser_ui_status "Starting virtual display"
     export DISPLAY=":${DISPLAY_NUM}"
     export USER=root
     export HOME=/root
@@ -326,6 +337,7 @@ INDEXEOF
 
     # XFCE4 (panel + docklike): demarrage direct, pas de greeter tk
     if ! pgrep -x xfce4-session >/dev/null 2>&1; then
+        set_browser_ui_status "Starting XFCE desktop"
         startxfce4 >/tmp/nihil_xfce.log 2>&1 &
         wait_for pgrep -x xfdesktop
     fi
@@ -336,8 +348,10 @@ INDEXEOF
         # whole LAN. Defaults to every interface, needed for Docker's own port publishing
         # to work in bridge mode, and when run outside the wrapper.
         BIND="${NIHIL_BROWSER_UI_BIND:-0.0.0.0}"
+        set_browser_ui_status "Starting noVNC web server"
         websockify --web "$NOVNC_DIR" "${BIND}:${PORT}" "localhost:${VNC_PORT}" >/tmp/nihil_websockify_ui.log 2>&1 &
         echo "[NIHIL] Browser UI on port $PORT (noVNC, bound to $BIND)."
+        set_browser_ui_status "Browser UI ready"
     else
         echo "[NIHIL] browser-ui: websockify or noVNC missing."
     fi
