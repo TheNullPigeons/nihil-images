@@ -4,6 +4,8 @@
 set -e
 
 PORT="${NIHIL_BROWSER_UI_PORT:-6901}"
+VNC_PORT="${NIHIL_BROWSER_UI_VNC_PORT:-$((PORT - 1000))}"
+DISPLAY_NUM="${NIHIL_BROWSER_UI_DISPLAY:-$((PORT - 6700))}"
 RESOLUTION="${NIHIL_BROWSER_UI_RESOLUTION:-1280x720}"
 MARKER="/opt/nihil/.browser_ui_installed_v10"
 NOVNC_DIR="/opt/nihil/novnc"
@@ -264,7 +266,7 @@ XSETTINGS
 }
 
 start_browser_ui() {
-    export DISPLAY=:99
+    export DISPLAY=":${DISPLAY_NUM}"
     export USER=root
     export HOME=/root
     export NO_AT_BRIDGE=1
@@ -280,12 +282,15 @@ start_browser_ui() {
         pkill -x x11vnc || true
         pkill -x Xvfb || true
     fi
-    if ! pgrep -x Xvnc >/dev/null 2>&1; then
+    if [[ ! -S "/tmp/.X11-unix/X${DISPLAY_NUM}" ]]; then
         PASSWORD="${NIHIL_BROWSER_UI_PASSWORD:-$(openssl rand -base64 12)}"
         (umask 077; echo "$PASSWORD" > /opt/nihil/.session_password)
         (umask 077; printf '%s\n' "$PASSWORD" | vncpasswd -f > /tmp/nihil_vnc_rfbauth)
-        Xvnc :99 -geometry "$RESOLUTION" -depth 24 -rfbport 5901 -localhost -rfbauth /tmp/nihil_vnc_rfbauth >/tmp/nihil_xvnc.log 2>&1 &
-        wait_for test -S /tmp/.X11-unix/X99
+        Xvnc "$DISPLAY" -geometry "$RESOLUTION" -depth 24 -rfbport "$VNC_PORT" -localhost -rfbauth /tmp/nihil_vnc_rfbauth >/tmp/nihil_xvnc.log 2>&1 &
+        if ! wait_for test -S "/tmp/.X11-unix/X${DISPLAY_NUM}"; then
+            echo "[NIHIL] browser-ui: Xvnc failed to start on display $DISPLAY / port $VNC_PORT."
+            return 1
+        fi
     fi
 
     # Bus D-Bus session explicite pour que xfce4-settings-daemon puisse se connecter
@@ -331,7 +336,7 @@ INDEXEOF
         # whole LAN. Defaults to every interface, needed for Docker's own port publishing
         # to work in bridge mode, and when run outside the wrapper.
         BIND="${NIHIL_BROWSER_UI_BIND:-0.0.0.0}"
-        websockify --web "$NOVNC_DIR" "${BIND}:${PORT}" localhost:5901 >/tmp/nihil_websockify_ui.log 2>&1 &
+        websockify --web "$NOVNC_DIR" "${BIND}:${PORT}" "localhost:${VNC_PORT}" >/tmp/nihil_websockify_ui.log 2>&1 &
         echo "[NIHIL] Browser UI on port $PORT (noVNC, bound to $BIND)."
     else
         echo "[NIHIL] browser-ui: websockify or noVNC missing."
