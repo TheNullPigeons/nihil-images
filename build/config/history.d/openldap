@@ -23,6 +23,10 @@ dig axfr "$DOMAIN" @"$DC_IP"
 dig any "$DOMAIN" @"$DC_IP"
 dig ns "$DOMAIN" @"$DC_IP"
 dig CH TXT version.bind "$IP"
+dig $DOMAIN ANY +noall +answer
+dig $DOMAIN MX +short; dig $DOMAIN TXT +short; dig $DOMAIN NS +short
+dig _dmarc.$DOMAIN TXT +short
+dig axfr $DOMAIN @$(dig +short NS $DOMAIN | head -1)
 host -t MX "$DOMAIN"
 host -t A "$DOMAIN"
 nslookup -type=any -query=* "$DOMAIN" "$DC_IP"
