@@ -623,7 +623,11 @@ DESKTOP
 }
 
 function install_bbot() {
-    install_pipx_tool "bbot" "bbot"
+    # bbot hard-depends on yara-python, which has no wheel for the base image's
+    # Python 3.14 and fails to build from sdist. Reuse Arch's python-yara via
+    # --system-site-packages instead of compiling it (same as badsecrets).
+    install_pacman_tool "python-yara"
+    install_pipx_tool "bbot" "bbot" "" "--system-site-packages"
 }
 
 function install_byp4xx() {
