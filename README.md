@@ -47,3 +47,25 @@ Run the selection regression tests without installing packages:
 ```bash
 python3 -m unittest discover -s tests -v
 ```
+
+## Building with tool failures
+
+Builds stop on errors by default. To keep building after failures of non-core
+tool installers, pass `--build-arg NIHIL_AUDIT=1` to Docker, or use the CLI:
+
+```bash
+nihil build full --source . --allow-tool-failures
+nihil image build full --allow-tool-failures --wait
+```
+
+Manual GitHub Actions builds expose the same `allow_tool_failures` checkbox.
+Each non-core installer runs in a subshell with error checking enabled; a failure
+ends that installer and the build continues with the next one. Failed installers
+and missing tools are listed in the logs and retained in the image at
+`/opt/nihil/build/config/build-failures.log`. The healthcheck still checks selected
+commands and paths, including tools whose installer failed.
+
+Base system setup, core tools, invalid configuration, and final cleanup remain
+blocking. This replaces the old `NIHIL_AUDIT` behaviour that ignored whole-step
+errors. Some installers already handle errors internally; command/path checks
+cannot guarantee that a tool is fully functional.

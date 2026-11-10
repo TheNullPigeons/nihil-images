@@ -43,14 +43,10 @@ else
                 colorecho "Starting build step: $1"
                 ;;
         esac
-        if [[ "${NIHIL_AUDIT:-0}" == "1" ]]; then
-            # Audit mode: run in a subshell so exit 1 / set -e failures are absorbed.
-            # The build always completes; the healthcheck output reveals all missing tools.
-            ("$@") || true
-            exit 0
-        else
-            "$@"
+        if [[ "$1" == package_base ]]; then
+            : > "${NIHIL_BUILD}/config/build-failures.log"
         fi
+        "$@"
     else
         echo "Unknown function: '$1'" >&2
         exit 1

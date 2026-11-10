@@ -39,7 +39,7 @@ function install_core_environment() {
     rlwrap \
     bind \
     xcb-util-cursor && \
-    pacman -Scc --noconfirm
+    pacman -Scc --noconfirm || return 1
 
     # D-Bus machine-id: GTK/Qt apps like thunar fail to start in a container
     # without it ("Cannot spawn a message bus without a machine-id").

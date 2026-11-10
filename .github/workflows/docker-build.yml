@@ -20,6 +20,10 @@ on:
           - ad
           - web
           - blueteam
+      allow_tool_failures:
+        description: Continue when non-core tools fail and keep a failure report
+        type: boolean
+        default: false
   repository_dispatch:
     types: [packages-updated]
 
@@ -98,6 +102,7 @@ jobs:
             TAG=${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref_name }}
             VERSION=${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref_name }}
             BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
+            NIHIL_AUDIT=${{ inputs.allow_tool_failures && '1' || '0' }}
 
   build-ad:
     if: (github.event_name != 'push' || github.ref != 'refs/heads/main') && (github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'ad')
@@ -170,6 +175,7 @@ jobs:
             TAG=${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref_name }}
             VERSION=${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref_name }}
             BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
+            NIHIL_AUDIT=${{ inputs.allow_tool_failures && '1' || '0' }}
 
   build-web:
     if: (github.event_name != 'push' || github.ref != 'refs/heads/main') && (github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'web')
@@ -242,6 +248,7 @@ jobs:
             TAG=${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref_name }}
             VERSION=${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref_name }}
             BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
+            NIHIL_AUDIT=${{ inputs.allow_tool_failures && '1' || '0' }}
 
   build-blueteam:
     if: (github.event_name != 'push' || github.ref != 'refs/heads/main') && (github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'blueteam')
@@ -314,6 +321,7 @@ jobs:
             TAG=${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref_name }}
             VERSION=${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref_name }}
             BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
+            NIHIL_AUDIT=${{ inputs.allow_tool_failures && '1' || '0' }}
 
   promote:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'

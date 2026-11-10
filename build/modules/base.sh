@@ -45,7 +45,7 @@ function package_base() {
     tree \
     && \
     pacman -Syu --noconfirm && \
-    pacman -Scc --noconfirm
+    pacman -Scc --noconfirm || return 1
     
     colorecho "Adding Nihil repository to pacman.conf"
     # Ajouter le dépôt nihil à pacman.conf

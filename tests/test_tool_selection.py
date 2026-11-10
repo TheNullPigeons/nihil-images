@@ -82,6 +82,59 @@ echo SHOULD_NOT_RUN
         self.assertNotEqual(result.returncode, 0)
         self.assertNotIn('SHOULD_NOT_RUN', result.stdout)
 
+    def test_audit_stops_failed_installer_but_continues_with_next_tool(self):
+        for failure in ('false', 'exit 9'):
+            with self.subTest(failure=failure):
+                result = self.run_shell({'enabled_tools': ['wesng', 'gitleaks']}, f"""
+NIHIL_AUDIT=1
+install_wes() {{ {failure}; echo SHOULD_NOT_RUN; }}
+install_gitleaks() {{ echo NEXT_TOOL; }}
+install_selected_tools mod_misc
+cat "$NIHIL_BUILD/config/build-failures.log"
+""")
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertNotIn('SHOULD_NOT_RUN', result.stdout)
+                self.assertIn('NEXT_TOOL', result.stdout)
+                self.assertIn('Installer failed: mod_misc/install_wes (exit ', result.stdout)
+
+    def test_audit_keeps_core_installers_and_bad_configuration_fatal(self):
+        for script in (
+            'install_core_environment() { false; echo SHOULD_NOT_RUN; }; install_selected_tools core_tools',
+            'pacman() { return 1; }; package_base',
+            'install_pacman_tools() { return 1; }; install_core_environment',
+            'printf "{" > "$NIHIL_BUILD/config/tool-selection.json"; tool_selection_prepare',
+        ):
+            with self.subTest(script=script):
+                result = self.run_shell(None, 'NIHIL_AUDIT=1\n' + script + '\necho SHOULD_NOT_RUN')
+                self.assertNotEqual(result.returncode, 0)
+                self.assertNotIn('SHOULD_NOT_RUN', result.stdout)
+
+    def test_audit_healthcheck_tolerates_only_non_core_missing_tools(self):
+        manifest = {
+            'core_tools': [{'name': 'mandatory', 'cmd': 'nihil-test-missing-core',
+                            'installer': 'install_core_environment'}],
+            'mod_misc': [{'name': 'missing', 'cmd': 'nihil-test-missing-tool', 'installer': 'install_wes'}],
+        }
+        for audit, module, expected in ((0, 'mod_misc', 1), (1, 'mod_misc', 0), (1, 'core_tools', 1)):
+            with self.subTest(audit=audit, module=module):
+                result = self.run_shell(None, f'NIHIL_AUDIT={audit}\nhealthcheck {module}', manifest)
+                self.assertEqual(result.returncode, expected, result.stderr)
+                if audit:
+                    self.assertIn('Build report:', result.stdout)
+                    self.assertIn('Missing tool:', result.stdout)
+
+    def test_audit_reports_installer_failure_even_when_command_exists(self):
+        manifest = {'mod_misc': [{'name': 'wesng', 'cmd': 'bash', 'installer': 'install_wes'}]}
+        result = self.run_shell(None, """
+NIHIL_AUDIT=1
+install_wes() { false; }
+install_selected_tools mod_misc
+healthcheck mod_misc
+""", manifest)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('review the tool failure report', result.stdout)
+        self.assertNotIn('All tools OK', result.stdout)
+
     def test_empty_selection_keeps_only_core_and_legacy_disable_still_works(self):
         plan = selection.plan_tools(MANIFEST, {'enabled_tools': []})
         self.assertTrue(all(active == (module == 'core_tools') for module, _, _, active in plan))

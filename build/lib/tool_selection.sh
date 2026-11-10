@@ -44,16 +44,40 @@ tool_selection_prepare() {
     done <<< "$plan"
 }
 
+record_build_failure() {
+    [[ "${NIHIL_AUDIT:-0}" == 1 ]] || return 0
+    printf '%s\n' "$*" >> "${NIHIL_BUILD}/config/build-failures.log"
+    echo "[NIHIL AUDIT] $*"
+}
+
+show_build_failures() {
+    local report="${NIHIL_BUILD}/config/build-failures.log" line
+    [[ -s "$report" ]] || return 0
+    echo "[NIHIL AUDIT] Build report: /opt/nihil/build/config/build-failures.log"
+    while IFS= read -r line; do
+        echo "[NIHIL AUDIT] $line"
+    done < "$report"
+}
+
 install_selected_tools() {
-    local module="$1" installer
+    local module="$1" installer status
     local -A installed=()
     while IFS= read -r installer; do
         [[ -n "$installer" ]] || continue
         [[ -z "${installed[$installer]:-}" ]] || continue
         colorecho "Installing $module: $installer"
-        # Keep this a plain call: testing a function with `if`/`||` disables
-        # Bash errexit inside it and can hide a failed dependency.
-        "$installer"
+        if [[ "${NIHIL_AUDIT:-0}" == 1 && "$module" != core_tools ]]; then
+            # A tested subshell would disable errexit inside the installer too.
+            set +e
+            (set -e; "$installer")
+            status=$?
+            set -e
+            if ((status != 0)); then
+                record_build_failure "Installer failed: $module/$installer (exit $status)"
+            fi
+        else
+            "$installer"
+        fi
         installed["$installer"]=1
     done <<< "${NIHIL_MODULE_INSTALLERS[$module]:-}"
 }
