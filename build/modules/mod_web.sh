@@ -111,9 +111,14 @@ function install_testssl() {
     # Clone the full repo (not just the script): testssl.sh >=3.2 needs its
     # etc/ data files (cipher mapping, TLS data) found via the script's real
     # path, so the git wrapper lets it locate TESTSSL_INSTALL_DIR on its own.
-    # Default branch is 3.3dev, so pin the stable v3.2.2 tag on the clone.
+    # Default branch is 3.3dev; releases/latest resolves to the newest stable
+    # tag (prerelease snapshots excluded), so pin that instead of a fixed one.
+    local tag
+    tag=$(retry-command 3 "resolve testssl latest tag" curl -Ls -o /dev/null -w '%{url_effective}' \
+        "https://github.com/testssl/testssl.sh/releases/latest" | sed 's:.*/::' || true)
+    [ -n "$tag" ] || tag="v3.2.5"   # fallback if GitHub is unreachable at build time
     install_git_tool "testssl.sh" "https://github.com/testssl/testssl.sh.git" "testssl.sh" \
-        "git fetch --depth 1 origin tag v3.2.2 && git checkout -q v3.2.2"
+        "git fetch --depth 1 origin tag $tag && git checkout -q $tag"
 }
 
 # ---------------------------------------------------------------------------
