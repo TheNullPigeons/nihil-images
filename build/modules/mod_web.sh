@@ -108,7 +108,12 @@ function install_feroxbuster() {
 }
 
 function install_testssl() {
-    install_download_tool "testssl.sh" "https://raw.githubusercontent.com/testssl/testssl.sh/v3.2.2/testssl.sh"
+    # Clone the full repo (not just the script): testssl.sh >=3.2 needs its
+    # etc/ data files (cipher mapping, TLS data) found via the script's real
+    # path, so the git wrapper lets it locate TESTSSL_INSTALL_DIR on its own.
+    # Default branch is 3.3dev, so pin the stable v3.2.2 tag on the clone.
+    install_git_tool "testssl.sh" "https://github.com/testssl/testssl.sh.git" "testssl.sh" \
+        "git fetch --depth 1 origin tag v3.2.2 && git checkout -q v3.2.2"
 }
 
 # ---------------------------------------------------------------------------
