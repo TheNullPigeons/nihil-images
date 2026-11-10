@@ -1,1 +1,2 @@
+whois $(dig +short $DOMAIN | head -1)
 whois "$DOMAIN"
