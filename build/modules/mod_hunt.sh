@@ -107,15 +107,5 @@ function install_wazuh_cli() {
 # ===========================================================================
 
 function install_mod_hunt() {
-    colorecho "Installing threat hunting and detection tools"
-
-    colorecho "  [log] Log analysis and threat hunting:"
-    install_chainsaw
-    install_hayabusa
-    install_sigma_cli
-
-    colorecho "  [siem] SIEM tools:"
-    install_wazuh_cli
-
-    colorecho "Threat hunting tools installation finished"
+    install_selected_tools "mod_hunt"
 }

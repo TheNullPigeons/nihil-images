@@ -8,7 +8,7 @@ nihil::import lib/common
 nihil::import lib/registry/pipx
 nihil::import lib/registry/pacman
 
-function install_core_tools() {
+function install_core_environment() {
     colorecho "Installing core CLI tools (editors, tmux, fzf, etc.)"
 
     install_pacman_tools \
@@ -114,4 +114,8 @@ function install_nihil_ntp() {
 
     add-history "nihil-ntp"
     colorecho "nihil-ntp installed"
+}
+
+function install_core_tools() {
+    install_selected_tools "core_tools"
 }

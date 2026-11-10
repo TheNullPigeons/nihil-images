@@ -78,15 +78,5 @@ function install_sleuthkit() {
 # ===========================================================================
 
 function install_mod_dfir() {
-    colorecho "Installing DFIR and malware analysis tools"
-
-    colorecho "  [malware] Malware triage:"
-    install_yara
-    install_capa
-    install_loki
-
-    colorecho "  [disk] Disk forensics:"
-    install_sleuthkit
-
-    colorecho "DFIR tools installation finished"
+    install_selected_tools "mod_dfir"
 }

@@ -114,6 +114,8 @@ function filter_tools_json() {
     local modules=("$@")
     python3 - "$TOOLS_JSON" "${modules[@]}" << 'PYEOF'
 import json, sys
+from pathlib import Path
+
 path = sys.argv[1]
 keep = set(sys.argv[2:])
 with open(path) as f:
@@ -122,6 +124,15 @@ filtered = {k: v for k, v in data.items() if k in keep}
 with open(path, 'w') as f:
     json.dump(filtered, f, indent=4)
     f.write('\n')
+# The next build step reads the filtered catalogue in a new process.
+selection_path = Path(path).with_name('tool-selection.json')
+if selection_path.exists():
+    selection = json.loads(selection_path.read_text())
+    known = {t['name'].lower().replace('_', '-') for tools in filtered.values() for t in tools}
+    for field in ('enabled_tools', 'disabled_tools'):
+        if field in selection:
+            selection[field] = [n for n in selection[field] if n.lower().replace('_', '-') in known]
+    selection_path.write_text(json.dumps(selection, indent=4) + '\n')
 PYEOF
     colorecho "tools.json filtered to: ${modules[*]}"
 }

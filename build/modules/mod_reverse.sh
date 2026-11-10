@@ -169,30 +169,5 @@ function install_nasm() {
 # ---------------------------------------------------------------------------
 
 function install_mod_reverse() {
-    colorecho "Installing Reverse Engineering red-team tools"
-
-    colorecho "  [pacman] Reverse tools:"
-    install_ghidra
-    install_nasm
-    install_wabt
-
-    colorecho "  [aur] GUI editor:"
-    install_vscodium
-
-    colorecho "  [pipx] Reverse tools:"
-    install_angr
-    install_uncompyle6
-
-    colorecho "  [git] Reverse tools:"
-    install_pycdc
-
-    colorecho "  [go] Reverse tools:"
-    install_vt
-
-    colorecho "  [download] Reverse / decompilers (GUI, need X):"
-    install_jd-gui
-    install_ida
-    install_binaryninja
-
-    colorecho "Reverse Engineering tools installation finished"
+    install_selected_tools "mod_reverse"
 }

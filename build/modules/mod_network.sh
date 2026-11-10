@@ -317,51 +317,6 @@ function install_jmxterm() {
 # ---------------------------------------------------------------------------
 
 function install_mod_network() {
-    colorecho "Installing Network red-team tools"
-
-    colorecho "  [pacman] Network tools:"
-    install_nmap
-    install_netcat
-    install_socat
-    install_wireshark_cli
-    install_wireshark
-    install_bettercap
-    install_fping
-#   install_bettercap_ui
-
-    colorecho "  [go] Network tools:"
-    install_udpx
-
-    colorecho "  [pipx] Network tools:"
-    install_zone_dnsenum
-    install_dnsrecon
-
-    colorecho "  [bin] Tunneling tools:"
-    install_ligolo_ng
-    install_ngrok
-
-    install_chisel
-    install_masscan
-    install_netdiscover
-    install_nmap_parse_output
-    install_proxychains
-    install_rustscan
-    install_ssh_audit
-    install_sshuttle
-    install_tcpdump
-    install_seth
-    install_wifite2
-    install_wifit3
-    install_xfreerdp
-    install_rdesktop
-    install_nfs_utils
-    install_dnsenum
-    install_snmpwalk
-    install_onesixtyone
-    install_beanshooter
-    install_jmxterm
-
+    install_selected_tools "mod_network"
     add-aliases "network"
-
-    colorecho "Network tools installation finished"
 }

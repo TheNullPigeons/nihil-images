@@ -256,26 +256,9 @@ function install_rdate() {
 # ---------------------------------------------------------------------------
 
 function install_mod_misc() {
-    colorecho "Installing misc red-team tools"
+    install_selected_tools "mod_misc"
+}
 
-    install_searchsploit
-    install_ansible
-    install_cyberchef
-    install_firefox
-    install_chromium
-    install_chrony
-    install_rdate
-    install_grc
-    install_sqlitebrowser
-    install_mongosh
-
-    install_keepassxc
-    install_rsync
-    install_wes
-    install_gitleaks
-    install_aws_cli
-    install_pacu
-    install_pipx_tool_git "tvmux" "https://github.com/bitplane/tvmux.git" || return 1
-
-    colorecho "Misc red-team tools installation finished"
+function install_tvmux() {
+    install_pipx_tool_git "tvmux" "https://github.com/bitplane/tvmux.git"
 }

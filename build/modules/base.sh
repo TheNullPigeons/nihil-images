@@ -254,24 +254,6 @@ function package_base() {
     colorecho "Synchronizing Nihil repository"
     pacman -Sy --noconfirm
 
-    
-    # Install only packages enabled for this image.
-    colorecho "Listing enabled packages in Nihil repository"
-    # Retrieve the package list from the Nihil repository.
-    nihil_packages=$(pacman -Sl nihil | cut -d' ' -f2)
-    
-    if [ -n "$nihil_packages" ]; then
-        package_list=$(tool_selection_filter_packages $nihil_packages)
-        if [ -n "$package_list" ]; then
-            colorecho "Installing enabled Nihil packages: $package_list"
-            pacman -S --noconfirm --needed $package_list || colorecho "Warning: Failed to install some packages"
-        else
-            colorecho "No enabled Nihil packages found"
-        fi
-    else
-        colorecho "No packages found in Nihil repository"
-    fi
-    
     # Nettoyage final du cache pacman pour réduire la taille
     colorecho "Cleaning pacman cache"
     pacman -Scc --noconfirm

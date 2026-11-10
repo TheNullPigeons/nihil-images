@@ -149,18 +149,5 @@ function install_mythic_cli() {
 # ---------------------------------------------------------------------------
 
 function install_mod_c2() {
-    colorecho "Installing Command & Control red-team tools"
-
-    colorecho "  [git] C2 tools:"
-    install_metasploit
-    install_sliver_c2
-
-    colorecho "  [pipx] C2 tools:"
-    install_penelope
-    install_pwncat_vl
-
-    colorecho "  [bin] C2 management:"
-    install_mythic_cli
-
-    colorecho "Command & Control tools installation finished"
+    install_selected_tools "mod_c2"
 }

@@ -3,1429 +3,1782 @@
         {
             "name": "vim",
             "cmd": "vim",
-            "description": "Text editor"
+            "description": "Text editor",
+            "installer": "install_core_environment"
         },
         {
             "name": "nano",
             "cmd": "nano",
-            "description": "Text editor"
+            "description": "Text editor",
+            "installer": "install_core_environment"
         },
         {
             "name": "neovim",
             "cmd": "nvim",
-            "description": "Text editor"
+            "description": "Text editor",
+            "installer": "install_core_environment"
         },
         {
             "name": "tmux",
             "cmd": "tmux",
-            "description": "Terminal multiplexer"
+            "description": "Terminal multiplexer",
+            "installer": "install_core_environment"
         },
         {
             "name": "terminator",
             "cmd": "terminator",
-            "description": "Graphical terminal emulator with split panes"
+            "description": "Graphical terminal emulator with split panes",
+            "installer": "install_core_environment"
         },
         {
             "name": "fzf",
             "cmd": "fzf",
-            "description": "Fuzzy finder"
+            "description": "Fuzzy finder",
+            "installer": "install_core_environment"
         },
         {
             "name": "gdb",
             "cmd": "gdb",
-            "description": "GNU debugger"
+            "description": "GNU debugger",
+            "installer": "install_core_environment"
         },
         {
             "name": "asciinema",
             "cmd": "asciinema",
-            "description": "Terminal recorder"
+            "description": "Terminal recorder",
+            "installer": "install_core_environment"
         },
         {
             "name": "whois",
             "cmd": "whois",
-            "description": "WHOIS lookup"
+            "description": "WHOIS lookup",
+            "installer": "install_core_environment"
         },
         {
             "name": "nihil-history",
             "cmd": "nhi",
-            "description": "Pentest engagement knowledge manager"
+            "description": "Pentest engagement knowledge manager",
+            "installer": "install_core_environment"
         },
         {
             "name": "zoxide",
             "cmd": "zoxide",
-            "description": "Smart directory navigation (z)"
+            "description": "Smart directory navigation (z)",
+            "installer": "install_core_environment"
         },
         {
             "name": "yazi",
             "cmd": "yazi",
-            "description": "TUI file manager (browse and open files, alias: y)"
+            "description": "TUI file manager (browse and open files, alias: y)",
+            "installer": "install_core_environment"
         },
         {
             "name": "nihil-ntp",
             "cmd": "nihil-ntp",
-            "description": "Sync the container clock to a target NTP server (DC) for Kerberos"
+            "description": "Sync the container clock to a target NTP server (DC) for Kerberos",
+            "installer": "install_core_environment"
         }
     ],
     "mod_ad": [
         {
             "name": "bloodhound",
             "cmd": "bloodhound-python",
-            "description": "AD attack path visualization (ingestor)"
+            "description": "AD attack path visualization (ingestor)",
+            "installer": "install_bloodhound_python"
         },
         {
             "name": "bloodhound-ce-python",
             "cmd": "bloodhound-ce-python",
-            "description": "BloodHound CE Python ingestor"
-        },
-        {
-            "name": "bloodhound-ce",
-            "cmd": "bloodhound-ce",
-            "description": "BloodHound CE desktop client"
-        },
-        {
-            "name": "bloodhound-legacy",
-            "cmd": "bloodhound-legacy",
-            "description": "BloodHound legacy (4.x) desktop client"
-        },
-        {
-            "name": "bloodhound-import",
-            "cmd": "bloodhound-import",
-            "description": "Import BloodHound JSON/ZIP data into Neo4j"
+            "description": "BloodHound CE Python ingestor",
+            "installer": "install_bloodhound_ce_python"
         },
         {
             "name": "ldapdomaindump",
             "cmd": "ldapdomaindump",
-            "description": "LDAP domain information dumper"
+            "description": "LDAP domain information dumper",
+            "installer": "install_ldapdomaindump"
         },
         {
             "name": "adidnsdump",
             "cmd": "adidnsdump",
-            "description": "AD integrated DNS dumper"
+            "description": "AD integrated DNS dumper",
+            "installer": "install_adidnsdump"
         },
         {
             "name": "adcheck",
             "cmd": "adcheck",
-            "description": "Active Directory security posture checker"
+            "description": "Active Directory security posture checker",
+            "installer": "install_adcheck"
         },
         {
             "name": "certipy",
             "cmd": "certipy",
-            "description": "ADCS enumeration and exploitation"
+            "description": "ADCS enumeration and exploitation",
+            "installer": "install_certipy"
         },
         {
             "name": "certipy-ad",
             "cmd": "certipy",
-            "description": "Compatibility alias for Certipy ADCS enumeration and exploitation"
+            "description": "Compatibility alias for Certipy ADCS enumeration and exploitation",
+            "installer": "install_certipy"
         },
         {
             "name": "bloodyad",
             "cmd": "bloodyAD",
-            "description": "AD privilege escalation framework"
+            "description": "AD privilege escalation framework",
+            "installer": "install_bloodyad"
+        },
+        {
+            "name": "bloodhound-import",
+            "cmd": "bloodhound-import",
+            "description": "Import BloodHound JSON/ZIP data into Neo4j",
+            "installer": "install_bloodhound_import"
+        },
+        {
+            "name": "bloodhound-quickwin",
+            "cmd": "bhqc",
+            "description": "BloodHound quick win queries",
+            "installer": "install_bloodhound_quickwin"
         },
         {
             "name": "evil-winrm-py",
             "cmd": "evil-winrm-py",
-            "description": "WinRM shell (Python)"
+            "description": "WinRM shell (Python)",
+            "installer": "install_evil_winrm_py"
         },
         {
             "name": "evil-winrm",
             "cmd": "evil-winrm",
-            "description": "WinRM shell (Ruby, original)"
-        },
-        {
-            "name": "netexec",
-            "cmd": "netexec",
-            "description": "SMB/LDAP/WinRM/SSH exploitation framework"
-        },
-        {
-            "name": "impacket",
-            "cmd": "secretsdump.py",
-            "description": "Windows protocol library (Fortra)"
-        },
-        {
-            "name": "Get-GPPPassword",
-            "cmd": "Get-GPPPassword.py",
-            "description": "Extract plaintext credentials from GPP (impacket)"
-        },
-        {
-            "name": "mitm6",
-            "cmd": "mitm6",
-            "description": "DHCPv6 spoofing for NTLM relay"
-        },
-        {
-            "name": "aclpwn",
-            "cmd": "aclpwn",
-            "description": "AD ACL exploitation"
-        },
-        {
-            "name": "abuseACL",
-            "cmd": "abuseACL",
-            "description": "AD ACL abuse and privilege escalation"
-        },
-        {
-            "name": "lsassy",
-            "cmd": "lsassy",
-            "description": "Remote LSASS credential dumper"
-        },
-        {
-            "name": "donpapi",
-            "cmd": "DonPAPI",
-            "description": "DPAPI credential extraction"
-        },
-        {
-            "name": "coercer",
-            "cmd": "coercer",
-            "description": "NTLM authentication coercion"
-        },
-        {
-            "name": "pywhisker",
-            "cmd": "pywhisker",
-            "description": "Shadow credentials manipulation"
-        },
-        {
-            "name": "enum4linux-ng",
-            "cmd": "enum4linux-ng",
-            "description": "SMB/RPC/LDAP enumeration"
-        },
-        {
-            "name": "smbmap",
-            "cmd": "smbmap",
-            "description": "SMB share enumeration"
-        },
-        {
-            "name": "smbclientng",
-            "cmd": "smbclientng",
-            "description": "Interactive SMB client with modern UX"
-        },
-        {
-            "name": "sprayhound",
-            "cmd": "sprayhound",
-            "description": "Password spraying with BloodHound"
-        },
-        {
-            "name": "ldapsearch-ad",
-            "cmd": "ldapsearch-ad.py",
-            "description": "LDAP enumeration wrapper for AD"
-        },
-        {
-            "name": "pywerview",
-            "cmd": "pywerview",
-            "description": "Python port of PowerView"
-        },
-        {
-            "name": "powerview.py",
-            "cmd": "powerview",
-            "description": "Interactive PowerView for Linux (LDAP enum/abuse)"
-        },
-        {
-            "name": "tdo-dump",
-            "cmd": "tdo-dump",
-            "description": "Dump trusted domain objects and secrets via DRS replication"
-        },
-        {
-            "name": "masky",
-            "cmd": "masky",
-            "description": "ADCS-based credential extraction"
-        },
-        {
-            "name": "manspider",
-            "cmd": "manspider",
-            "description": "Search sensitive files across SMB shares"
-        },
-        {
-            "name": "pre2k",
-            "cmd": "pre2k",
-            "description": "Pre-Windows 2000 computer account exploitation"
-        },
-        {
-            "name": "responder",
-            "cmd": "responder",
-            "description": "LLMNR/NBT-NS/mDNS poisoner"
-        },
-        {
-            "name": "responder-smb-on",
-            "cmd": "responder-smb-on",
-            "description": "Responder configuration helper"
-        },
-        {
-            "name": "responder-smb-off",
-            "cmd": "responder-smb-off",
-            "description": "Responder configuration helper"
-        },
-        {
-            "name": "responder-http-on",
-            "cmd": "responder-http-on",
-            "description": "Responder configuration helper"
-        },
-        {
-            "name": "responder-http-off",
-            "cmd": "responder-http-off",
-            "description": "Responder configuration helper"
-        },
-        {
-            "name": "rusthound-ce",
-            "cmd": "rusthound-ce",
-            "description": "BloodHound CE collector (Rust)"
-        },
-        {
-            "name": "rusthound",
-            "cmd": "rusthound",
-            "description": "BloodHound legacy collector (Rust)"
-        },
-        {
-            "name": "bloodbash",
-            "cmd": "bloodbash",
-            "description": "BloodHound-based offensive automation"
-        },
-        {
-            "name": "adwsdomaindump",
-            "cmd": "adwsdomaindump",
-            "description": "Dump Active Directory data through AD Web Services"
-        },
-        {
-            "name": "EVENmonitor",
-            "cmd": "EVENmonitor",
-            "description": "Monitor and filter remote Windows event logs"
-        },
-        {
-            "name": "gpoParser",
-            "cmd": "gpoParser",
-            "description": "Extract and analyze Active Directory Group Policy Objects"
-        },
-        {
-            "name": "pyGoldenGMSA",
-            "cmd": "pyGoldenGMSA",
-            "description": "GoldenGMSA attack implementation for gMSA accounts"
-        },
-        {
-            "name": "RelayInformer",
-            "cmd": "relayinformer",
-            "description": "Identify EPA enforcement on NTLM relay targets"
-        },
-        {
-            "name": "snaffler-ng",
-            "cmd": "snaffler",
-            "description": "Find credentials and sensitive files on SMB shares"
-        },
-        {
-            "name": "SOAPy",
-            "cmd": "SOAPy",
-            "description": "Interact offensively with AD Web Services through SOCKS5"
-        },
-        {
-            "name": "kerbrute",
-            "cmd": "kerbrute",
-            "description": "Kerberos brute-force / user enumeration"
-        },
-        {
-            "name": "windapsearch",
-            "cmd": "windapsearch",
-            "description": "LDAP enumeration (Go)"
-        },
-        {
-            "name": "krbrelayx",
-            "cmd": "krbrelayx",
-            "description": "Kerberos relay attacks"
-        },
-        {
-            "name": "gmsadumper",
-            "cmd": "gmsadumper",
-            "description": "gMSA credential extraction"
-        },
-        {
-            "name": "FindUncommonShares",
-            "cmd": "FindUncommonShares",
-            "description": "Discover non-standard SMB shares"
-        },
-        {
-            "name": "targetedKerberoast",
-            "cmd": "targetedKerberoast",
-            "description": "Kerberoast via ACL abuse"
-        },
-        {
-            "name": "PKINITtools",
-            "cmd": "gettgtpkinit",
-            "description": "PKINIT exploitation (shadow creds, UnPAC-the-hash)"
-        },
-        {
-            "name": "noPac",
-            "cmd": "noPac",
-            "description": "CVE-2021-42278/42287 Sam-Account-Name spoofing"
-        },
-        {
-            "name": "PetitPotam",
-            "cmd": "PetitPotam",
-            "description": "NTLM relay via EFS (CVE-2021-36942)"
-        },
-        {
-            "name": "zerologon",
-            "cmd": "cve-2020-1472-exploit",
-            "description": "CVE-2020-1472 Netlogon exploit"
-        },
-        {
-            "name": "ShadowCoerce",
-            "cmd": "ShadowCoerce",
-            "description": "Coercion via MS-FSRVP"
-        },
-        {
-            "name": "DFSCoerce",
-            "cmd": "DFSCoerce",
-            "description": "Coercion via MS-DFSNM"
-        },
-        {
-            "name": "openldap",
-            "cmd": "ldapsearch",
-            "description": "LDAP command-line utilities"
-        },
-        {
-            "name": "smbclient",
-            "cmd": "smbclient",
-            "description": "SMB command-line client"
-        },
-        {
-            "name": "rpcclient",
-            "cmd": "rpcclient",
-            "description": "Samba MS-RPC command-line client"
-        },
-        {
-            "name": "powershell",
-            "cmd": "pwsh",
-            "description": "PowerShell 7"
-        },
-        {
-            "name": "ntlm_theft",
-            "cmd": "ntlm_theft",
-            "description": "Generate files to steal NTLM hashes via UNC paths"
-        },
-        {
-            "name": "smtp-user-enum",
-            "cmd": "smtp-user-enum",
-            "description": "SMTP user enumeration via VRFY, EXPN and RCPT"
-        },
-        {
-            "name": "neo4j",
-            "cmd": "neo4j",
-            "description": "Neo4j graph database (BloodHound CE backend)"
-        },
-        {
-            "name": "cypher-shell",
-            "cmd": "cypher-shell",
-            "description": "Neo4j Cypher query shell"
-        },
-        {
-            "name": "gofenrir",
-            "cmd": "gf",
-            "description": "Fast AD user/group enumeration (Go)"
-        },
-        {
-            "name": "asrepcatcher",
-            "cmd": "ASRepCatcher",
-            "description": "AS-REP Roasting listener"
-        },
-        {
-            "name": "autobloody",
-            "cmd": "autobloody",
-            "description": "BloodyAD automation wrapper"
-        },
-        {
-            "name": "certsync",
-            "cmd": "certsync",
-            "description": "Sync ADCS certs for PKINIT"
-        },
-        {
-            "name": "crackhound",
-            "cmd": "crackhound",
-            "description": "BloodHound + hashcat path cracking"
-        },
-        {
-            "name": "godap",
-            "cmd": "godap",
-            "description": "Interactive LDAP client (TUI)"
-        },
-        {
-            "name": "goexec",
-            "cmd": "goexec",
-            "description": "Remote code execution via SMB/WMI"
-        },
-        {
-            "name": "goldencopy",
-            "cmd": "goldencopy",
-            "description": "Copy/forge Kerberos tickets"
-        },
-        {
-            "name": "gosecretsdump",
-            "cmd": "gosecretsdump",
-            "description": "Pure Go secretsdump"
-        },
-        {
-            "name": "GPOddity",
-            "cmd": "gpoddity",
-            "description": "GPO abuse automation"
+            "description": "WinRM shell (Ruby, original)",
+            "installer": "install_evil_winrm"
         },
         {
             "name": "gpp-decrypt",
             "cmd": "gpp-decrypt",
-            "description": "Decrypt GPP passwords"
+            "description": "Decrypt GPP passwords",
+            "installer": "install_gpp_decrypt"
+        },
+        {
+            "name": "netexec",
+            "cmd": "netexec",
+            "description": "SMB/LDAP/WinRM/SSH exploitation framework",
+            "installer": "install_netexec"
+        },
+        {
+            "name": "impacket",
+            "cmd": "secretsdump.py",
+            "description": "Windows protocol library (Fortra)",
+            "installer": "install_impacket"
+        },
+        {
+            "name": "Get-GPPPassword",
+            "cmd": "Get-GPPPassword.py",
+            "description": "Extract plaintext credentials from GPP (impacket)",
+            "installer": "install_impacket"
+        },
+        {
+            "name": "bloodbash",
+            "cmd": "bloodbash",
+            "description": "BloodHound-based offensive automation",
+            "installer": "install_bloodbash"
+        },
+        {
+            "name": "adwsdomaindump",
+            "cmd": "adwsdomaindump",
+            "description": "Dump Active Directory data through AD Web Services",
+            "installer": "install_adwsdomaindump"
+        },
+        {
+            "name": "EVENmonitor",
+            "cmd": "EVENmonitor",
+            "description": "Monitor and filter remote Windows event logs",
+            "installer": "install_evenmonitor"
+        },
+        {
+            "name": "gpoParser",
+            "cmd": "gpoParser",
+            "description": "Extract and analyze Active Directory Group Policy Objects",
+            "installer": "install_gpoparser"
+        },
+        {
+            "name": "pyGoldenGMSA",
+            "cmd": "pyGoldenGMSA",
+            "description": "GoldenGMSA attack implementation for gMSA accounts",
+            "installer": "install_pygoldengmsa"
+        },
+        {
+            "name": "RelayInformer",
+            "cmd": "relayinformer",
+            "description": "Identify EPA enforcement on NTLM relay targets",
+            "installer": "install_relayinformer"
+        },
+        {
+            "name": "snaffler-ng",
+            "cmd": "snaffler",
+            "description": "Find credentials and sensitive files on SMB shares",
+            "installer": "install_snaffler_ng"
+        },
+        {
+            "name": "SOAPy",
+            "cmd": "SOAPy",
+            "description": "Interact offensively with AD Web Services through SOCKS5",
+            "installer": "install_soapy"
+        },
+        {
+            "name": "mitm6",
+            "cmd": "mitm6",
+            "description": "DHCPv6 spoofing for NTLM relay",
+            "installer": "install_mitm6"
+        },
+        {
+            "name": "aclpwn",
+            "cmd": "aclpwn",
+            "description": "AD ACL exploitation",
+            "installer": "install_aclpwn"
+        },
+        {
+            "name": "abuseACL",
+            "cmd": "abuseACL",
+            "description": "AD ACL abuse and privilege escalation",
+            "installer": "install_abuseacl"
+        },
+        {
+            "name": "lsassy",
+            "cmd": "lsassy",
+            "description": "Remote LSASS credential dumper",
+            "installer": "install_lsassy"
+        },
+        {
+            "name": "donpapi",
+            "cmd": "DonPAPI",
+            "description": "DPAPI credential extraction",
+            "installer": "install_donpapi"
+        },
+        {
+            "name": "coercer",
+            "cmd": "coercer",
+            "description": "NTLM authentication coercion",
+            "installer": "install_coercer"
+        },
+        {
+            "name": "pywhisker",
+            "cmd": "pywhisker",
+            "description": "Shadow credentials manipulation",
+            "installer": "install_pywhisker"
+        },
+        {
+            "name": "enum4linux-ng",
+            "cmd": "enum4linux-ng",
+            "description": "SMB/RPC/LDAP enumeration",
+            "installer": "install_enum4linux_ng"
+        },
+        {
+            "name": "smbmap",
+            "cmd": "smbmap",
+            "description": "SMB share enumeration",
+            "installer": "install_smbmap"
+        },
+        {
+            "name": "smbclientng",
+            "cmd": "smbclientng",
+            "description": "Interactive SMB client with modern UX",
+            "installer": "install_smbclientng"
+        },
+        {
+            "name": "sprayhound",
+            "cmd": "sprayhound",
+            "description": "Password spraying with BloodHound",
+            "installer": "install_sprayhound"
+        },
+        {
+            "name": "ldapsearch-ad",
+            "cmd": "ldapsearch-ad.py",
+            "description": "LDAP enumeration wrapper for AD",
+            "installer": "install_ldapsearch_ad"
+        },
+        {
+            "name": "pywerview",
+            "cmd": "pywerview",
+            "description": "Python port of PowerView",
+            "installer": "install_pywerview"
+        },
+        {
+            "name": "masky",
+            "cmd": "masky",
+            "description": "ADCS-based credential extraction",
+            "installer": "install_masky"
+        },
+        {
+            "name": "manspider",
+            "cmd": "manspider",
+            "description": "Search sensitive files across SMB shares",
+            "installer": "install_manspider"
+        },
+        {
+            "name": "smtp-user-enum",
+            "cmd": "smtp-user-enum",
+            "description": "SMTP user enumeration via VRFY, EXPN and RCPT",
+            "installer": "install_smtp_user_enum"
+        },
+        {
+            "name": "autobloody",
+            "cmd": "autobloody",
+            "description": "BloodyAD automation wrapper",
+            "installer": "install_autobloody"
+        },
+        {
+            "name": "certsync",
+            "cmd": "certsync",
+            "description": "Sync ADCS certs for PKINIT",
+            "installer": "install_certsync"
+        },
+        {
+            "name": "goldencopy",
+            "cmd": "goldencopy",
+            "description": "Copy/forge Kerberos tickets",
+            "installer": "install_goldencopy"
         },
         {
             "name": "keepwn",
             "cmd": "KeePwn",
-            "description": "KeePass trigger attack"
-        },
-        {
-            "name": "krbjack",
-            "cmd": "krbjack",
-            "description": "Kerberos pre-auth hijack"
-        },
-        {
-            "name": "ldaprelayscan",
-            "cmd": "ldaprelayscan",
-            "description": "LDAP relay attack scanner"
+            "description": "KeePass trigger attack",
+            "installer": "install_keepwn"
         },
         {
             "name": "ldeep",
             "cmd": "ldeep",
-            "description": "Deep LDAP enumeration"
+            "description": "Deep LDAP enumeration",
+            "installer": "install_ldeep"
+        },
+        {
+            "name": "GPOddity",
+            "cmd": "gpoddity",
+            "description": "GPO abuse automation",
+            "installer": "install_gpoddity"
+        },
+        {
+            "name": "asrepcatcher",
+            "cmd": "ASRepCatcher",
+            "description": "AS-REP Roasting listener",
+            "installer": "install_asrepcatcher"
+        },
+        {
+            "name": "ldaprelayscan",
+            "cmd": "ldaprelayscan",
+            "description": "LDAP relay attack scanner",
+            "installer": "install_ldaprelayscan"
         },
         {
             "name": "LDAPWordlistHarvester",
             "cmd": "LDAPWordlistHarvester",
-            "description": "Build wordlists from LDAP"
-        },
-        {
-            "name": "nbtscan",
-            "cmd": "nbtscan",
-            "description": "NBT-NS scanner"
+            "description": "Build wordlists from LDAP",
+            "installer": "install_ldapwordlistharvester"
         },
         {
             "name": "PassTheCert",
             "cmd": "passthecert",
-            "description": "Pass-the-cert LDAP/LDAPS auth"
+            "description": "Pass-the-cert LDAP/LDAPS auth",
+            "installer": "install_passthecert"
         },
         {
             "name": "PCredz",
             "cmd": "Pcredz",
-            "description": "Network credential capture"
+            "description": "Network credential capture",
+            "installer": "install_pcredz"
         },
         {
             "name": "pygpoabuse",
             "cmd": "pygpoabuse",
-            "description": "GPO immediate task abuse"
+            "description": "GPO immediate task abuse",
+            "installer": "install_pygpoabuse"
         },
         {
             "name": "sccmhunter",
             "cmd": "sccmhunter",
-            "description": "SCCM attack framework"
+            "description": "SCCM attack framework",
+            "installer": "install_sccmhunter"
         },
         {
             "name": "teamsphisher",
             "cmd": "teamsphisher",
-            "description": "Teams external phishing"
+            "description": "Teams external phishing",
+            "installer": "install_teamsphisher"
+        },
+        {
+            "name": "crackhound",
+            "cmd": "crackhound",
+            "description": "BloodHound + hashcat path cracking",
+            "installer": "install_crackhound"
+        },
+        {
+            "name": "pre2k",
+            "cmd": "pre2k",
+            "description": "Pre-Windows 2000 computer account exploitation",
+            "installer": "install_pre2k"
+        },
+        {
+            "name": "powerview.py",
+            "cmd": "powerview",
+            "description": "Interactive PowerView for Linux (LDAP enum/abuse)",
+            "installer": "install_powerview_py"
+        },
+        {
+            "name": "tdo-dump",
+            "cmd": "tdo-dump",
+            "description": "Dump trusted domain objects and secrets via DRS replication",
+            "installer": "install_tdo_dump"
         },
         {
             "name": "tombstone",
             "cmd": "tombstone",
-            "description": "Query and restore deleted Active Directory objects"
+            "description": "Query and restore deleted Active Directory objects",
+            "installer": "install_tombstone"
+        },
+        {
+            "name": "krb5",
+            "cmd": "kinit",
+            "description": "Kerberos client utilities",
+            "installer": "install_krb5"
+        },
+        {
+            "name": "openldap",
+            "cmd": "ldapsearch",
+            "description": "LDAP command-line utilities",
+            "installer": "install_openldap"
+        },
+        {
+            "name": "smbclient",
+            "cmd": "smbclient",
+            "description": "SMB command-line client",
+            "installer": "install_smbclient"
+        },
+        {
+            "name": "rpcclient",
+            "cmd": "rpcclient",
+            "description": "Samba MS-RPC command-line client",
+            "installer": "install_smbclient"
+        },
+        {
+            "name": "nbtscan",
+            "cmd": "nbtscan",
+            "description": "NBT-NS scanner",
+            "installer": "install_nbtscan"
+        },
+        {
+            "name": "bloodhound-ce",
+            "cmd": "bloodhound-ce",
+            "description": "BloodHound CE desktop client",
+            "installer": "install_bloodhound_ce_desktop"
+        },
+        {
+            "name": "bloodhound-legacy",
+            "cmd": "bloodhound-legacy",
+            "description": "BloodHound legacy (4.x) desktop client",
+            "installer": "install_bloodhound_legacy_desktop"
+        },
+        {
+            "name": "responder",
+            "cmd": "responder",
+            "description": "LLMNR/NBT-NS/mDNS poisoner",
+            "installer": "install_responder"
+        },
+        {
+            "name": "responder-smb-on",
+            "cmd": "responder-smb-on",
+            "description": "Responder configuration helper",
+            "installer": "install_responder"
+        },
+        {
+            "name": "responder-smb-off",
+            "cmd": "responder-smb-off",
+            "description": "Responder configuration helper",
+            "installer": "install_responder"
+        },
+        {
+            "name": "responder-http-on",
+            "cmd": "responder-http-on",
+            "description": "Responder configuration helper",
+            "installer": "install_responder"
+        },
+        {
+            "name": "responder-http-off",
+            "cmd": "responder-http-off",
+            "description": "Responder configuration helper",
+            "installer": "install_responder"
+        },
+        {
+            "name": "rusthound-ce",
+            "cmd": "rusthound-ce",
+            "description": "BloodHound CE collector (Rust)",
+            "installer": "install_rusthound_ce"
+        },
+        {
+            "name": "rusthound",
+            "cmd": "rusthound",
+            "description": "BloodHound legacy collector (Rust)",
+            "installer": "install_rusthound"
+        },
+        {
+            "name": "kerbrute",
+            "cmd": "kerbrute",
+            "description": "Kerberos brute-force / user enumeration",
+            "installer": "install_kerbrute"
+        },
+        {
+            "name": "gofenrir",
+            "cmd": "gf",
+            "description": "Fast AD user/group enumeration (Go)",
+            "installer": "install_gofenrir"
+        },
+        {
+            "name": "windapsearch",
+            "cmd": "windapsearch",
+            "description": "LDAP enumeration (Go)",
+            "installer": "install_windapsearch"
+        },
+        {
+            "name": "godap",
+            "cmd": "godap",
+            "description": "Interactive LDAP client (TUI)",
+            "installer": "install_godap"
+        },
+        {
+            "name": "goexec",
+            "cmd": "goexec",
+            "description": "Remote code execution via SMB/WMI",
+            "installer": "install_goexec"
+        },
+        {
+            "name": "gosecretsdump",
+            "cmd": "gosecretsdump",
+            "description": "Pure Go secretsdump",
+            "installer": "install_gosecretsdump"
+        },
+        {
+            "name": "krbjack",
+            "cmd": "krbjack",
+            "description": "Kerberos pre-auth hijack",
+            "installer": "install_krbjack"
+        },
+        {
+            "name": "krbrelayx",
+            "cmd": "krbrelayx",
+            "description": "Kerberos relay attacks",
+            "installer": "install_krbrelayx"
+        },
+        {
+            "name": "gmsadumper",
+            "cmd": "gmsadumper",
+            "description": "gMSA credential extraction",
+            "installer": "install_gmsadumper"
+        },
+        {
+            "name": "FindUncommonShares",
+            "cmd": "FindUncommonShares",
+            "description": "Discover non-standard SMB shares",
+            "installer": "install_finduncommonshares"
+        },
+        {
+            "name": "targetedKerberoast",
+            "cmd": "targetedKerberoast",
+            "description": "Kerberoast via ACL abuse",
+            "installer": "install_targetedkerberoast"
+        },
+        {
+            "name": "PKINITtools",
+            "cmd": "gettgtpkinit",
+            "description": "PKINIT exploitation (shadow creds, UnPAC-the-hash)",
+            "installer": "install_pkinittools"
+        },
+        {
+            "name": "noPac",
+            "cmd": "noPac",
+            "description": "CVE-2021-42278/42287 Sam-Account-Name spoofing",
+            "installer": "install_nopac"
+        },
+        {
+            "name": "PetitPotam",
+            "cmd": "PetitPotam",
+            "description": "NTLM relay via EFS (CVE-2021-36942)",
+            "installer": "install_petitpotam"
+        },
+        {
+            "name": "zerologon",
+            "cmd": "cve-2020-1472-exploit",
+            "description": "CVE-2020-1472 Netlogon exploit",
+            "installer": "install_zerologon"
+        },
+        {
+            "name": "ShadowCoerce",
+            "cmd": "ShadowCoerce",
+            "description": "Coercion via MS-FSRVP",
+            "installer": "install_shadowcoerce"
+        },
+        {
+            "name": "DFSCoerce",
+            "cmd": "DFSCoerce",
+            "description": "Coercion via MS-DFSNM",
+            "installer": "install_dfscoerce"
+        },
+        {
+            "name": "ntlm_theft",
+            "cmd": "ntlm_theft",
+            "description": "Generate files to steal NTLM hashes via UNC paths",
+            "installer": "install_ntlm_theft"
+        },
+        {
+            "name": "powershell",
+            "cmd": "pwsh",
+            "description": "PowerShell 7",
+            "installer": "install_powershell"
+        },
+        {
+            "name": "neo4j",
+            "cmd": "neo4j",
+            "description": "Neo4j graph database (BloodHound CE backend)",
+            "installer": "install_neo4j"
+        },
+        {
+            "name": "cypher-shell",
+            "cmd": "cypher-shell",
+            "description": "Neo4j Cypher query shell",
+            "installer": "install_neo4j"
         }
     ],
     "mod_web": [
         {
             "name": "sqlmap",
             "cmd": "sqlmap",
-            "description": "SQL injection testing"
-        },
-        {
-            "name": "odat",
-            "cmd": "odat",
-            "description": "Oracle Database Attacking Tool"
+            "description": "SQL injection testing",
+            "installer": "install_sqlmap"
         },
         {
             "name": "gobuster",
             "cmd": "gobuster",
-            "description": "Directory/subdomain brute-force"
+            "description": "Directory/subdomain brute-force",
+            "installer": "install_gobuster"
         },
         {
             "name": "nikto",
             "cmd": "nikto",
-            "description": "Web server vulnerability scanner"
-        },
-        {
-            "name": "wfuzz",
-            "cmd": "wfuzz",
-            "description": "Web fuzzer"
-        },
-        {
-            "name": "webfuzz",
-            "cmd": "webfuzz",
-            "description": "HTTP web fuzzer"
-        },
-        {
-            "name": "wenum",
-            "cmd": "wenum",
-            "description": "Web enumeration and fuzzing tool"
-        },
-        {
-            "name": "arjun",
-            "cmd": "arjun",
-            "description": "HTTP parameter discovery"
-        },
-        {
-            "name": "wafw00f",
-            "cmd": "wafw00f",
-            "description": "WAF detection"
-        },
-        {
-            "name": "badsecrets",
-            "cmd": "badsecrets",
-            "description": "Detect known or weak cryptographic secrets"
-        },
-        {
-            "name": "gopherus",
-            "cmd": "gopherus3",
-            "description": "SSRF exploitation via Gopher"
-        },
-        {
-            "name": "droopescan",
-            "cmd": "droopescan",
-            "description": "Drupal/CMS scanner"
-        },
-        {
-            "name": "cmsmap",
-            "cmd": "cmsmap",
-            "description": "CMS exploitation"
-        },
-        {
-            "name": "ssrfmap",
-            "cmd": "ssrfmap",
-            "description": "SSRF exploitation framework"
-        },
-        {
-            "name": "jwt-tool",
-            "cmd": "jwt-tool",
-            "description": "JWT manipulation and attacks"
-        },
-        {
-            "name": "xsstrike",
-            "cmd": "xsstrike",
-            "description": "XSS detection and exploitation"
-        },
-        {
-            "name": "feroxbuster",
-            "cmd": "feroxbuster",
-            "description": "Fast content discovery (Rust)"
-        },
-        {
-            "name": "testssl.sh",
-            "cmd": "testssl.sh",
-            "description": "TLS/SSL configuration testing"
-        },
-        {
-            "name": "nuclei",
-            "cmd": "nuclei",
-            "description": "Template-based vulnerability scanner"
-        },
-        {
-            "name": "httpx",
-            "cmd": "httpx",
-            "description": "HTTP probe and technology fingerprinting"
-        },
-        {
-            "name": "subfinder",
-            "cmd": "subfinder",
-            "description": "Passive subdomain enumeration"
-        },
-        {
-            "name": "dnsx",
-            "cmd": "dnsx",
-            "description": "Fast DNS resolver and toolkit"
-        },
-        {
-            "name": "alterx",
-            "cmd": "alterx",
-            "description": "Subdomain permutation generator"
-        },
-        {
-            "name": "katana",
-            "cmd": "katana",
-            "description": "Web crawler (ProjectDiscovery)"
-        },
-        {
-            "name": "ffuf",
-            "cmd": "ffuf",
-            "description": "Fast web fuzzer"
-        },
-        {
-            "name": "dirsearch",
-            "cmd": "dirsearch",
-            "description": "Directory brute-force"
-        },
-        {
-            "name": "whatweb",
-            "cmd": "whatweb",
-            "description": "Web technology fingerprinting"
-        },
-        {
-            "name": "hakrawler",
-            "cmd": "hakrawler",
-            "description": "Web crawler for endpoint discovery"
-        },
-        {
-            "name": "gau",
-            "cmd": "gau",
-            "description": "Get All URLs (Wayback, Common Crawl)"
-        },
-        {
-            "name": "waybackurls",
-            "cmd": "waybackurls",
-            "description": "Fetch URLs from Wayback Machine"
-        },
-        {
-            "name": "commix",
-            "cmd": "commix",
-            "description": "OS command injection exploitation"
-        },
-        {
-            "name": "glpwnme",
-            "cmd": "glpwnme",
-            "description": "GLPI exploitation helper"
-        },
-        {
-            "name": "tplmap",
-            "cmd": "tplmap",
-            "description": "Server-Side Template Injection"
-        },
-        {
-            "name": "nosqlmap",
-            "cmd": "nosqlmap",
-            "description": "NoSQL injection exploitation"
-        },
-        {
-            "name": "graphqlmap",
-            "cmd": "graphqlmap",
-            "description": "GraphQL exploitation"
-        },
-        {
-            "name": "graphw00f",
-            "cmd": "graphw00f",
-            "description": "GraphQL server fingerprinting"
-        },
-        {
-            "name": "graphql-cop",
-            "cmd": "graphql-cop",
-            "description": "GraphQL security auditing"
-        },
-        {
-            "name": "corsy",
-            "cmd": "corsy",
-            "description": "CORS misconfiguration scanner"
-        },
-        {
-            "name": "crlfuzz",
-            "cmd": "crlfuzz",
-            "description": "CRLF injection testing"
-        },
-        {
-            "name": "mitmproxy",
-            "cmd": "mitmproxy",
-            "description": "HTTP/HTTPS interception proxy"
-        },
-        {
-            "name": "kiterunner",
-            "cmd": "kr",
-            "description": "API endpoint discovery"
+            "description": "Web server vulnerability scanner",
+            "installer": "install_nikto"
         },
         {
             "name": "httpie",
             "cmd": "http",
-            "description": "User-friendly HTTP client"
-        },
-        {
-            "name": "caido",
-            "cmd": "caido",
-            "description": "Web security desktop toolkit"
-        },
-        {
-            "name": "caido-cli",
-            "cmd": "caido-cli",
-            "description": "Caido command-line interface"
+            "description": "User-friendly HTTP client",
+            "installer": "install_httpie"
         },
         {
             "name": "swaks",
             "cmd": "swaks",
-            "description": "SMTP test tool (Swiss Army Knife for SMTP)"
+            "description": "SMTP test tool (Swiss Army Knife for SMTP)",
+            "installer": "install_swaks"
         },
         {
             "name": "mail",
             "cmd": "mail",
-            "description": "Command-line email client (mailutils + msmtp)"
-        },
-        {
-            "name": "burpsuite",
-            "cmd": "burpsuite",
-            "description": "Web application security testing platform"
-        },
-        {
-            "name": "EyeWitness",
-            "cmd": "EyeWitness",
-            "description": "Web screenshot and service enumeration tool"
-        },
-        {
-            "name": "wpscan",
-            "cmd": "wpscan",
-            "description": "WordPress vulnerability scanner"
-        },
-        {
-            "name": "wpprobe",
-            "cmd": "wpprobe",
-            "description": "WordPress plugin and vulnerability scanner"
-        },
-        {
-            "name": "bbot",
-            "cmd": "bbot",
-            "description": "Automated recon and subdomain OSINT"
-        },
-        {
-            "name": "byp4xx",
-            "cmd": "byp4xx",
-            "description": "HTTP 40x bypass"
-        },
-        {
-            "name": "git-dumper",
-            "cmd": "git-dumper",
-            "description": "Dump exposed .git directories"
-        },
-        {
-            "name": "gowitness",
-            "cmd": "gowitness",
-            "description": "Web screenshot tool (Go)"
-        },
-        {
-            "name": "httpmethods",
-            "cmd": "httpmethods",
-            "description": "HTTP method enumeration"
-        },
-        {
-            "name": "joomscan",
-            "cmd": "joomscan",
-            "description": "Joomla vulnerability scanner"
-        },
-        {
-            "name": "linkfinder",
-            "cmd": "linkfinder",
-            "description": "Endpoint discovery in JS files"
-        },
-        {
-            "name": "naabu",
-            "cmd": "naabu",
-            "description": "Fast port scanner (ProjectDiscovery)"
-        },
-        {
-            "name": "patator",
-            "cmd": "patator",
-            "description": "Multi-purpose brute-forcer"
-        },
-        {
-            "name": "updog",
-            "cmd": "updog",
-            "description": "HTTP file server with upload (SimpleHTTPServer replacement)"
-        },
-        {
-            "name": "wsgidav",
-            "cmd": "wsgidav",
-            "description": "WebDAV server (serve files over WebDAV, e.g. for WebClient-based coercion/exfil)"
-        },
-        {
-            "name": "phpggc",
-            "cmd": "phpggc",
-            "description": "PHP gadget chain generator"
-        },
-        {
-            "name": "smuggler",
-            "cmd": "smuggler",
-            "description": "HTTP request smuggling tester"
+            "description": "Command-line email client (mailutils + msmtp)",
+            "installer": "install_mail"
         },
         {
             "name": "sslscan",
             "cmd": "sslscan",
-            "description": "SSL/TLS configuration scanner"
+            "description": "SSL/TLS configuration scanner",
+            "installer": "install_sslscan"
+        },
+        {
+            "name": "wfuzz",
+            "cmd": "wfuzz",
+            "description": "Web fuzzer",
+            "installer": "install_wfuzz"
+        },
+        {
+            "name": "webfuzz",
+            "cmd": "webfuzz",
+            "description": "HTTP web fuzzer",
+            "installer": "install_webfuzz"
+        },
+        {
+            "name": "wenum",
+            "cmd": "wenum",
+            "description": "Web enumeration and fuzzing tool",
+            "installer": "install_wenum"
+        },
+        {
+            "name": "arjun",
+            "cmd": "arjun",
+            "description": "HTTP parameter discovery",
+            "installer": "install_arjun"
+        },
+        {
+            "name": "wafw00f",
+            "cmd": "wafw00f",
+            "description": "WAF detection",
+            "installer": "install_wafw00f"
+        },
+        {
+            "name": "badsecrets",
+            "cmd": "badsecrets",
+            "description": "Detect known or weak cryptographic secrets",
+            "installer": "install_badsecrets"
+        },
+        {
+            "name": "gopherus",
+            "cmd": "gopherus3",
+            "description": "SSRF exploitation via Gopher",
+            "installer": "install_gopherus"
+        },
+        {
+            "name": "droopescan",
+            "cmd": "droopescan",
+            "description": "Drupal/CMS scanner",
+            "installer": "install_droopescan"
+        },
+        {
+            "name": "cmsmap",
+            "cmd": "cmsmap",
+            "description": "CMS exploitation",
+            "installer": "install_cmsmap"
+        },
+        {
+            "name": "dirsearch",
+            "cmd": "dirsearch",
+            "description": "Directory brute-force",
+            "installer": "install_dirsearch"
+        },
+        {
+            "name": "commix",
+            "cmd": "commix",
+            "description": "OS command injection exploitation",
+            "installer": "install_commix"
+        },
+        {
+            "name": "glpwnme",
+            "cmd": "glpwnme",
+            "description": "GLPI exploitation helper",
+            "installer": "install_glpwnme"
+        },
+        {
+            "name": "mitmproxy",
+            "cmd": "mitmproxy",
+            "description": "HTTP/HTTPS interception proxy",
+            "installer": "install_mitmproxy"
+        },
+        {
+            "name": "bbot",
+            "cmd": "bbot",
+            "description": "Automated recon and subdomain OSINT",
+            "installer": "install_bbot"
+        },
+        {
+            "name": "git-dumper",
+            "cmd": "git-dumper",
+            "description": "Dump exposed .git directories",
+            "installer": "install_git_dumper"
+        },
+        {
+            "name": "httpmethods",
+            "cmd": "httpmethods",
+            "description": "HTTP method enumeration",
+            "installer": "install_httpmethods"
+        },
+        {
+            "name": "linkfinder",
+            "cmd": "linkfinder",
+            "description": "Endpoint discovery in JS files",
+            "installer": "install_linkfinder"
+        },
+        {
+            "name": "patator",
+            "cmd": "patator",
+            "description": "Multi-purpose brute-forcer",
+            "installer": "install_patator"
+        },
+        {
+            "name": "updog",
+            "cmd": "updog",
+            "description": "HTTP file server with upload (SimpleHTTPServer replacement)",
+            "installer": "install_updog"
+        },
+        {
+            "name": "wsgidav",
+            "cmd": "wsgidav",
+            "description": "WebDAV server (serve files over WebDAV, e.g. for WebClient-based coercion/exfil)",
+            "installer": "install_wsgidav"
+        },
+        {
+            "name": "graphqlmap",
+            "cmd": "graphqlmap",
+            "description": "GraphQL exploitation",
+            "installer": "install_graphqlmap"
+        },
+        {
+            "name": "graphw00f",
+            "cmd": "graphw00f",
+            "description": "GraphQL server fingerprinting",
+            "installer": "install_graphw00f"
+        },
+        {
+            "name": "graphql-cop",
+            "cmd": "graphql-cop",
+            "description": "GraphQL security auditing",
+            "installer": "install_graphql_cop"
+        },
+        {
+            "name": "nuclei",
+            "cmd": "nuclei",
+            "description": "Template-based vulnerability scanner",
+            "installer": "install_nuclei"
+        },
+        {
+            "name": "httpx",
+            "cmd": "httpx",
+            "description": "HTTP probe and technology fingerprinting",
+            "installer": "install_httpx_pd"
+        },
+        {
+            "name": "subfinder",
+            "cmd": "subfinder",
+            "description": "Passive subdomain enumeration",
+            "installer": "install_subfinder"
+        },
+        {
+            "name": "dnsx",
+            "cmd": "dnsx",
+            "description": "Fast DNS resolver and toolkit",
+            "installer": "install_dnsx"
+        },
+        {
+            "name": "alterx",
+            "cmd": "alterx",
+            "description": "Subdomain permutation generator",
+            "installer": "install_alterx"
+        },
+        {
+            "name": "katana",
+            "cmd": "katana",
+            "description": "Web crawler (ProjectDiscovery)",
+            "installer": "install_katana"
+        },
+        {
+            "name": "ffuf",
+            "cmd": "ffuf",
+            "description": "Fast web fuzzer",
+            "installer": "install_ffuf"
+        },
+        {
+            "name": "hakrawler",
+            "cmd": "hakrawler",
+            "description": "Web crawler for endpoint discovery",
+            "installer": "install_hakrawler"
+        },
+        {
+            "name": "gau",
+            "cmd": "gau",
+            "description": "Get All URLs (Wayback, Common Crawl)",
+            "installer": "install_gau"
+        },
+        {
+            "name": "waybackurls",
+            "cmd": "waybackurls",
+            "description": "Fetch URLs from Wayback Machine",
+            "installer": "install_waybackurls"
+        },
+        {
+            "name": "crlfuzz",
+            "cmd": "crlfuzz",
+            "description": "CRLF injection testing",
+            "installer": "install_crlfuzz"
+        },
+        {
+            "name": "byp4xx",
+            "cmd": "byp4xx",
+            "description": "HTTP 40x bypass",
+            "installer": "install_byp4xx"
+        },
+        {
+            "name": "gowitness",
+            "cmd": "gowitness",
+            "description": "Web screenshot tool (Go)",
+            "installer": "install_gowitness"
+        },
+        {
+            "name": "naabu",
+            "cmd": "naabu",
+            "description": "Fast port scanner (ProjectDiscovery)",
+            "installer": "install_naabu"
+        },
+        {
+            "name": "wpscan",
+            "cmd": "wpscan",
+            "description": "WordPress vulnerability scanner",
+            "installer": "install_wpscan"
+        },
+        {
+            "name": "wpprobe",
+            "cmd": "wpprobe",
+            "description": "WordPress plugin and vulnerability scanner",
+            "installer": "install_wpprobe"
+        },
+        {
+            "name": "ssrfmap",
+            "cmd": "ssrfmap",
+            "description": "SSRF exploitation framework",
+            "installer": "install_ssrfmap"
+        },
+        {
+            "name": "jwt-tool",
+            "cmd": "jwt-tool",
+            "description": "JWT manipulation and attacks",
+            "installer": "install_jwt_tool"
+        },
+        {
+            "name": "xsstrike",
+            "cmd": "xsstrike",
+            "description": "XSS detection and exploitation",
+            "installer": "install_xsstrike"
+        },
+        {
+            "name": "tplmap",
+            "cmd": "tplmap",
+            "description": "Server-Side Template Injection",
+            "installer": "install_tplmap"
+        },
+        {
+            "name": "nosqlmap",
+            "cmd": "nosqlmap",
+            "description": "NoSQL injection exploitation",
+            "installer": "install_nosqlmap"
+        },
+        {
+            "name": "odat",
+            "cmd": "odat",
+            "description": "Oracle Database Attacking Tool",
+            "installer": "install_odat"
+        },
+        {
+            "name": "corsy",
+            "cmd": "corsy",
+            "description": "CORS misconfiguration scanner",
+            "installer": "install_corsy"
+        },
+        {
+            "name": "whatweb",
+            "cmd": "whatweb",
+            "description": "Web technology fingerprinting",
+            "installer": "install_whatweb"
+        },
+        {
+            "name": "EyeWitness",
+            "cmd": "EyeWitness",
+            "description": "Web screenshot and service enumeration tool",
+            "installer": "install_eyewitness"
+        },
+        {
+            "name": "joomscan",
+            "cmd": "joomscan",
+            "description": "Joomla vulnerability scanner",
+            "installer": "install_joomscan"
+        },
+        {
+            "name": "phpggc",
+            "cmd": "phpggc",
+            "description": "PHP gadget chain generator",
+            "installer": "install_phpggc"
+        },
+        {
+            "name": "smuggler",
+            "cmd": "smuggler",
+            "description": "HTTP request smuggling tester",
+            "installer": "install_smuggler"
         },
         {
             "name": "xxeinjector",
             "cmd": "xxeinjector",
-            "description": "XXE injection automation"
+            "description": "XXE injection automation",
+            "installer": "install_xxeinjector"
+        },
+        {
+            "name": "feroxbuster",
+            "cmd": "feroxbuster",
+            "description": "Fast content discovery (Rust)",
+            "installer": "install_feroxbuster"
+        },
+        {
+            "name": "testssl.sh",
+            "cmd": "testssl.sh",
+            "description": "TLS/SSL configuration testing",
+            "installer": "install_testssl"
+        },
+        {
+            "name": "kiterunner",
+            "cmd": "kr",
+            "description": "API endpoint discovery",
+            "installer": "install_kiterunner"
+        },
+        {
+            "name": "caido",
+            "cmd": "caido",
+            "description": "Web security desktop toolkit",
+            "installer": "install_caido"
+        },
+        {
+            "name": "caido-cli",
+            "cmd": "caido-cli",
+            "description": "Caido command-line interface",
+            "installer": "install_caido"
+        },
+        {
+            "name": "burpsuite",
+            "cmd": "burpsuite",
+            "description": "Web application security testing platform",
+            "installer": "install_burpsuite"
         },
         {
             "name": "ysoserial",
             "cmd": "ysoserial",
-            "description": "Java deserialization exploit payloads"
+            "description": "Java deserialization exploit payloads",
+            "installer": "install_ysoserial"
         }
     ],
     "mod_network": [
         {
             "name": "nmap",
             "cmd": "nmap",
-            "description": "Network scanner"
+            "description": "Network scanner",
+            "installer": "install_nmap"
         },
         {
             "name": "netcat",
             "cmd": "nc",
-            "description": "Network utility (OpenBSD)"
+            "description": "Network utility (OpenBSD)",
+            "installer": "install_netcat"
         },
         {
             "name": "socat",
             "cmd": "socat",
-            "description": "Multipurpose network relay"
+            "description": "Multipurpose network relay",
+            "installer": "install_socat"
         },
         {
             "name": "wireshark-cli",
             "cmd": "tshark",
-            "description": "Network protocol analyzer (CLI)"
+            "description": "Network protocol analyzer (CLI)",
+            "installer": "install_wireshark_cli"
         },
         {
             "name": "wireshark",
             "cmd": "wireshark",
-            "description": "Network protocol analyzer (GUI)"
-        },
-        {
-            "name": "fping",
-            "cmd": "fping",
-            "description": "Fast ICMP host discovery"
-        },
-        {
-            "name": "netdiscover",
-            "cmd": "netdiscover",
-            "description": "Active/passive network address discovery"
-        },
-        {
-            "name": "zone-dnsenum",
-            "cmd": "zone-dnsenum",
-            "description": "DNS zone enumeration and transfer"
-        },
-        {
-            "name": "dnsrecon",
-            "cmd": "dnsrecon",
-            "description": "DNS enumeration and zone transfer testing"
-        },
-        {
-            "name": "dnsenum",
-            "cmd": "dnsenum",
-            "description": "DNS enumeration script"
-        },
-        {
-            "name": "ngrok",
-            "cmd": "ngrok",
-            "description": "Reverse tunnel for exposing local ports"
-        },
-        {
-            "name": "udpx",
-            "cmd": "udpx",
-            "description": "Fast UDP port scanner"
+            "description": "Network protocol analyzer (GUI)",
+            "installer": "install_wireshark"
         },
         {
             "name": "bettercap",
             "cmd": "bettercap",
-            "description": "Network attack and monitoring framework"
+            "description": "Network attack and monitoring framework",
+            "installer": "install_bettercap"
+        },
+        {
+            "name": "fping",
+            "cmd": "fping",
+            "description": "Fast ICMP host discovery",
+            "installer": "install_fping"
+        },
+        {
+            "name": "udpx",
+            "cmd": "udpx",
+            "description": "Fast UDP port scanner",
+            "installer": "install_udpx"
+        },
+        {
+            "name": "zone-dnsenum",
+            "cmd": "zone-dnsenum",
+            "description": "DNS zone enumeration and transfer",
+            "installer": "install_zone_dnsenum"
+        },
+        {
+            "name": "dnsrecon",
+            "cmd": "dnsrecon",
+            "description": "DNS enumeration and zone transfer testing",
+            "installer": "install_dnsrecon"
         },
         {
             "name": "ligolo-ng",
             "cmd": "ligolo-ng",
-            "description": "Tunneling via TUN interface (proxy)"
+            "description": "Tunneling via TUN interface (proxy)",
+            "installer": "install_ligolo_ng"
+        },
+        {
+            "name": "ngrok",
+            "cmd": "ngrok",
+            "description": "Reverse tunnel for exposing local ports",
+            "installer": "install_ngrok"
         },
         {
             "name": "chisel",
             "cmd": "chisel",
-            "description": "TCP/UDP tunnel over HTTP"
+            "description": "TCP/UDP tunnel over HTTP",
+            "installer": "install_chisel"
         },
         {
             "name": "masscan",
             "cmd": "masscan",
-            "description": "Fast port scanner"
+            "description": "Fast port scanner",
+            "installer": "install_masscan"
+        },
+        {
+            "name": "netdiscover",
+            "cmd": "netdiscover",
+            "description": "Active/passive network address discovery",
+            "installer": "install_netdiscover"
         },
         {
             "name": "nmap-parse-output",
             "cmd": "nmap-parse-output",
-            "description": "Nmap XML output parser"
+            "description": "Nmap XML output parser",
+            "installer": "install_nmap_parse_output"
         },
         {
             "name": "proxychains",
             "cmd": "proxychains",
-            "description": "SOCKS/HTTP proxy chain"
+            "description": "SOCKS/HTTP proxy chain",
+            "installer": "install_proxychains"
         },
         {
             "name": "rustscan",
             "cmd": "rustscan",
-            "description": "Fast port scanner (Rust)"
+            "description": "Fast port scanner (Rust)",
+            "installer": "install_rustscan"
         },
         {
             "name": "ssh-audit",
             "cmd": "ssh-audit",
-            "description": "SSH server configuration audit"
+            "description": "SSH server configuration audit",
+            "installer": "install_ssh_audit"
         },
         {
             "name": "sshuttle",
             "cmd": "sshuttle",
-            "description": "VPN over SSH"
+            "description": "VPN over SSH",
+            "installer": "install_sshuttle"
         },
         {
             "name": "tcpdump",
             "cmd": "tcpdump",
-            "description": "Packet capture"
+            "description": "Packet capture",
+            "installer": "install_tcpdump"
         },
         {
             "name": "seth",
             "cmd": "seth",
-            "description": "RDP downgrade and credential interception"
+            "description": "RDP downgrade and credential interception",
+            "installer": "install_seth"
         },
         {
             "name": "wifite2",
             "cmd": "wifite",
-            "description": "Automated wireless network auditor"
+            "description": "Automated wireless network auditor",
+            "installer": "install_wifite2"
         },
         {
             "name": "wifit3",
             "cmd": "wifit3",
-            "description": "USB wireless network auditor"
-        },
-        {
-            "name": "snmpwalk",
-            "cmd": "snmpwalk",
-            "description": "SNMP tree walker"
-        },
-        {
-            "name": "onesixtyone",
-            "cmd": "onesixtyone",
-            "description": "SNMP community string scanner"
+            "description": "USB wireless network auditor",
+            "installer": "install_wifit3"
         },
         {
             "name": "xfreerdp",
             "cmd": "xfreerdp3",
-            "description": "RDP client"
+            "description": "RDP client",
+            "installer": "install_xfreerdp"
         },
         {
             "name": "rdesktop",
             "cmd": "rdesktop",
-            "description": "Legacy RDP client"
+            "description": "Legacy RDP client",
+            "installer": "install_rdesktop"
         },
         {
             "name": "nfs-utils",
             "cmd": "showmount",
-            "description": "NFS client utilities (showmount, nfsstat, rpcinfo)"
+            "description": "NFS client utilities (showmount, nfsstat, rpcinfo)",
+            "installer": "install_nfs_utils"
+        },
+        {
+            "name": "dnsenum",
+            "cmd": "dnsenum",
+            "description": "DNS enumeration script",
+            "installer": "install_dnsenum"
+        },
+        {
+            "name": "snmpwalk",
+            "cmd": "snmpwalk",
+            "description": "SNMP tree walker",
+            "installer": "install_snmpwalk"
+        },
+        {
+            "name": "onesixtyone",
+            "cmd": "onesixtyone",
+            "description": "SNMP community string scanner",
+            "installer": "install_onesixtyone"
         },
         {
             "name": "beanshooter",
             "cmd": "beanshooter",
-            "description": "JMX enumeration and attack tool"
+            "description": "JMX enumeration and attack tool",
+            "installer": "install_beanshooter"
         },
         {
             "name": "jmxterm",
             "cmd": "jmxterm",
-            "description": "Interactive command-line JMX client"
+            "description": "Interactive command-line JMX client",
+            "installer": "install_jmxterm"
         }
     ],
     "mod_credential": [
         {
             "name": "pypykatz",
             "cmd": "pypykatz",
-            "description": "LSASS minidump parser (Python)"
+            "description": "LSASS minidump parser (Python)",
+            "installer": "install_pypykatz"
         },
         {
             "name": "defaultcreds-cheat-sheet",
             "cmd": "creds",
-            "description": "Search vendor default credentials"
-        },
-        {
-            "name": "trufflehog",
-            "cmd": "trufflehog",
-            "description": "Scan Git repositories and files for secrets"
-        },
-        {
-            "name": "binwalk",
-            "cmd": "binwalk",
-            "description": "Binary analysis / extraction"
-        },
-        {
-            "name": "john",
-            "cmd": "john",
-            "description": "Password cracker (John the Ripper)"
-        },
-        {
-            "name": "zip2john",
-            "cmd": "zip2john",
-            "description": "Convert ZIP archives to John hashes"
-        },
-        {
-            "name": "rar2john",
-            "cmd": "rar2john",
-            "description": "Convert RAR archives to John hashes"
-        },
-        {
-            "name": "pdf2john",
-            "cmd": "pdf2john",
-            "description": "Convert PDF files to John hashes"
-        },
-        {
-            "name": "ssh2john",
-            "cmd": "ssh2john",
-            "description": "Convert SSH keys to John hashes"
-        },
-        {
-            "name": "keepass2john",
-            "cmd": "keepass2john",
-            "description": "Convert KeePass databases to John hashes"
-        },
-        {
-            "name": "keychain2john",
-            "cmd": "keychain2john",
-            "description": "Convert keychains to John hashes"
-        },
-        {
-            "name": "pfx2john",
-            "cmd": "pfx2john",
-            "description": "Convert PFX files to John hashes"
-        },
-        {
-            "name": "office2john",
-            "cmd": "office2john",
-            "description": "Convert Office documents to John hashes"
-        },
-        {
-            "name": "pwsafe2john",
-            "cmd": "pwsafe2john",
-            "description": "Convert Password Safe files to John hashes"
-        },
-        {
-            "name": "xortool",
-            "cmd": "xortool",
-            "description": "Analyze repeating-key XOR ciphers"
-        },
-        {
-            "name": "xortool-xor",
-            "cmd": "xortool-xor",
-            "description": "Apply XOR with a supplied key"
-        },
-        {
-            "name": "hashcat",
-            "cmd": "hashcat",
-            "description": "GPU password cracker"
-        },
-        {
-            "name": "haiti",
-            "cmd": "haiti",
-            "description": "Hash type identifier"
-        },
-        {
-            "name": "fcrackzip",
-            "cmd": "fcrackzip",
-            "description": "ZIP password cracker"
-        },
-        {
-            "name": "hydra",
-            "cmd": "hydra",
-            "description": "Multi-protocol brute-forcer"
+            "description": "Search vendor default credentials",
+            "installer": "install_defaultcreds_cheat_sheet"
         },
         {
             "name": "name-that-hash",
             "cmd": "nth",
-            "description": "Hash identifier"
+            "description": "Hash identifier",
+            "installer": "install_name_that_hash"
+        },
+        {
+            "name": "xortool",
+            "cmd": "xortool",
+            "description": "Analyze repeating-key XOR ciphers",
+            "installer": "install_xortool"
+        },
+        {
+            "name": "xortool-xor",
+            "cmd": "xortool-xor",
+            "description": "Apply XOR with a supplied key",
+            "installer": "install_xortool"
+        },
+        {
+            "name": "trufflehog",
+            "cmd": "trufflehog",
+            "description": "Scan Git repositories and files for secrets",
+            "installer": "install_trufflehog"
+        },
+        {
+            "name": "haiti",
+            "cmd": "haiti",
+            "description": "Hash type identifier",
+            "installer": "install_haiti"
+        },
+        {
+            "name": "binwalk",
+            "cmd": "binwalk",
+            "description": "Binary analysis / extraction",
+            "installer": "install_binwalk"
+        },
+        {
+            "name": "john",
+            "cmd": "john",
+            "description": "Password cracker (John the Ripper)",
+            "installer": "install_john"
+        },
+        {
+            "name": "zip2john",
+            "cmd": "zip2john",
+            "description": "Convert ZIP archives to John hashes",
+            "installer": "install_john"
+        },
+        {
+            "name": "rar2john",
+            "cmd": "rar2john",
+            "description": "Convert RAR archives to John hashes",
+            "installer": "install_john"
+        },
+        {
+            "name": "pdf2john",
+            "cmd": "pdf2john",
+            "description": "Convert PDF files to John hashes",
+            "installer": "install_john"
+        },
+        {
+            "name": "ssh2john",
+            "cmd": "ssh2john",
+            "description": "Convert SSH keys to John hashes",
+            "installer": "install_john"
+        },
+        {
+            "name": "keepass2john",
+            "cmd": "keepass2john",
+            "description": "Convert KeePass databases to John hashes",
+            "installer": "install_john"
+        },
+        {
+            "name": "keychain2john",
+            "cmd": "keychain2john",
+            "description": "Convert keychains to John hashes",
+            "installer": "install_john"
+        },
+        {
+            "name": "pfx2john",
+            "cmd": "pfx2john",
+            "description": "Convert PFX files to John hashes",
+            "installer": "install_john"
+        },
+        {
+            "name": "office2john",
+            "cmd": "office2john",
+            "description": "Convert Office documents to John hashes",
+            "installer": "install_john"
+        },
+        {
+            "name": "pwsafe2john",
+            "cmd": "pwsafe2john",
+            "description": "Convert Password Safe files to John hashes",
+            "installer": "install_john"
+        },
+        {
+            "name": "hashcat",
+            "cmd": "hashcat",
+            "description": "GPU password cracker",
+            "installer": "install_hashcat"
+        },
+        {
+            "name": "fcrackzip",
+            "cmd": "fcrackzip",
+            "description": "ZIP password cracker",
+            "installer": "install_fcrackzip"
+        },
+        {
+            "name": "hydra",
+            "cmd": "hydra",
+            "description": "Multi-protocol brute-forcer",
+            "installer": "install_hydra"
         },
         {
             "name": "pdfcrack",
             "cmd": "pdfcrack",
-            "description": "PDF password cracker"
+            "description": "PDF password cracker",
+            "installer": "install_pdfcrack"
         }
     ],
     "mod_pwn": [
         {
             "name": "radare2",
             "cmd": "r2",
-            "description": "Reverse engineering framework"
+            "description": "Reverse engineering framework",
+            "installer": "install_radare2"
         },
         {
             "name": "strace",
             "cmd": "strace",
-            "description": "System call tracer"
+            "description": "System call tracer",
+            "installer": "install_strace"
         },
         {
             "name": "ltrace",
             "cmd": "ltrace",
-            "description": "Library call tracer"
+            "description": "Library call tracer",
+            "installer": "install_ltrace"
         },
         {
             "name": "cmake",
             "cmd": "cmake",
-            "description": "Build system generator"
-        },
-        {
-            "name": "pwntools",
-            "cmd": "pwn",
-            "description": "CTF/exploit development library"
-        },
-        {
-            "name": "ROPgadget",
-            "cmd": "ROPgadget",
-            "description": "ROP gadget finder"
-        },
-        {
-            "name": "pwndbg",
-            "check_path": "/opt/tools/gdb/pwndbg/gdbinit.py",
-            "description": "GDB plugin for exploit dev"
-        },
-        {
-            "name": "peda",
-            "check_path": "/opt/tools/gdb/peda/peda.py",
-            "description": "Python Exploit Development Assistance for GDB"
-        },
-        {
-            "name": "gef",
-            "check_path": "/opt/tools/gdb/gef/gef.py",
-            "description": "GDB Enhanced Features for exploit devs and reverse engineers"
-        },
-        {
-            "name": "one_gadget",
-            "cmd": "one_gadget",
-            "description": "One-gadget RCE finder for libc"
-        },
-        {
-            "name": "seccomp-tools",
-            "cmd": "seccomp-tools",
-            "description": "Seccomp filter analyzer"
+            "description": "Build system generator",
+            "installer": "install_cmake"
         },
         {
             "name": "checksec",
             "cmd": "checksec",
-            "description": "Binary security property checker"
+            "description": "Binary security property checker",
+            "installer": "install_checksec"
         },
         {
-            "name": "patchelf",
-            "cmd": "patchelf",
-            "description": "Patch ELF interpreters, rpaths and dependencies"
+            "name": "pwndbg",
+            "check_path": "/opt/tools/gdb/pwndbg/gdbinit.py",
+            "description": "GDB plugin for exploit dev",
+            "installer": "install_pwndbg"
+        },
+        {
+            "name": "peda",
+            "check_path": "/opt/tools/gdb/peda/peda.py",
+            "description": "Python Exploit Development Assistance for GDB",
+            "installer": "install_peda"
+        },
+        {
+            "name": "gef",
+            "check_path": "/opt/tools/gdb/gef/gef.py",
+            "description": "GDB Enhanced Features for exploit devs and reverse engineers",
+            "installer": "install_gef"
+        },
+        {
+            "name": "pwntools",
+            "cmd": "pwn",
+            "description": "CTF/exploit development library",
+            "installer": "install_pwntools"
+        },
+        {
+            "name": "ROPgadget",
+            "cmd": "ROPgadget",
+            "description": "ROP gadget finder",
+            "installer": "install_ropgadget"
+        },
+        {
+            "name": "ropper",
+            "cmd": "ropper",
+            "description": "ROP gadget search",
+            "installer": "install_ropper"
+        },
+        {
+            "name": "glibc-all-in-one",
+            "cmd": "glibc-aio",
+            "description": "Download and manage glibc versions",
+            "installer": "install_glibc_all_in_one"
+        },
+        {
+            "name": "qemu-user",
+            "cmd": "qemu-aarch64-static",
+            "description": "User mode emulation",
+            "installer": "install_qemu_user"
+        },
+        {
+            "name": "cross-binutils",
+            "cmd": "aarch64-linux-gnu-as",
+            "description": "Cross architecture assemblers",
+            "installer": "install_cross_binutils"
         },
         {
             "name": "pwninit",
             "cmd": "pwninit",
-            "description": "Initialize pwn challenges with matching libc/ld"
+            "description": "Initialize pwn challenges with matching libc/ld",
+            "installer": "install_pwninit"
+        },
+        {
+            "name": "one_gadget",
+            "cmd": "one_gadget",
+            "description": "One-gadget RCE finder for libc",
+            "installer": "install_one_gadget"
+        },
+        {
+            "name": "seccomp-tools",
+            "cmd": "seccomp-tools",
+            "description": "Seccomp filter analyzer",
+            "installer": "install_seccomp_tools"
+        },
+        {
+            "name": "patchelf",
+            "cmd": "patchelf",
+            "description": "Patch ELF interpreters, rpaths and dependencies",
+            "installer": "install_patchelf"
         }
     ],
     "mod_c2": [
         {
             "name": "metasploit",
             "cmd": "msfconsole",
-            "description": "Exploitation framework"
+            "description": "Exploitation framework",
+            "installer": "install_metasploit"
         },
         {
             "name": "sliver",
             "cmd": "sliver-server",
-            "description": "C2 framework"
+            "description": "C2 framework",
+            "installer": "install_sliver_c2"
         },
         {
             "name": "penelope",
             "cmd": "penelope",
-            "description": "Advanced reverse shell handler"
+            "description": "Advanced reverse shell handler",
+            "installer": "install_penelope"
         },
         {
             "name": "pwncat-vl",
             "cmd": "pwncat-vl",
-            "description": "Maintained fork of pwncat-cs with reverse/bind shell automation"
+            "description": "Maintained fork of pwncat-cs with reverse/bind shell automation",
+            "installer": "install_pwncat_vl"
         },
         {
             "name": "mythic-cli",
             "cmd": "mythic-cli",
-            "description": "Mythic C2 framework management CLI"
+            "description": "Mythic C2 framework management CLI",
+            "installer": "install_mythic_cli"
         }
     ],
     "mod_misc": [
         {
-            "name": "tvmux",
-            "cmd": "tvmux",
-            "description": "Record tmux sessions with asciinema"
-        },
-        {
             "name": "searchsploit",
             "cmd": "searchsploit",
-            "description": "Exploit database search"
+            "description": "Exploit database search",
+            "installer": "install_searchsploit"
         },
         {
             "name": "ansible",
             "cmd": "ansible",
-            "description": "Infrastructure automation and remote execution"
+            "description": "Infrastructure automation and remote execution",
+            "installer": "install_ansible"
         },
         {
             "name": "CyberChef",
             "cmd": null,
             "description": "Data transformation toolkit (offline)",
-            "check_path": "/opt/tools/CyberChef"
+            "check_path": "/opt/tools/CyberChef",
+            "installer": "install_cyberchef"
         },
         {
             "name": "firefox",
             "cmd": "firefox",
-            "description": "Web browser"
+            "description": "Web browser",
+            "installer": "install_firefox"
         },
         {
             "name": "chromium",
             "cmd": "chromium",
-            "description": "Web browser (no-sandbox wrapper)"
+            "description": "Web browser (no-sandbox wrapper)",
+            "installer": "install_chromium"
+        },
+        {
+            "name": "chrony",
+            "cmd": "chronyc",
+            "description": "NTP client utilities",
+            "installer": "install_chrony"
+        },
+        {
+            "name": "rdate",
+            "cmd": "rdate",
+            "description": "Query remote time",
+            "installer": "install_rdate"
         },
         {
             "name": "grc",
             "cmd": "grc",
-            "description": "Generic log colorizer"
+            "description": "Generic log colorizer",
+            "installer": "install_grc"
         },
         {
             "name": "sqlitebrowser",
             "cmd": "sqlitebrowser",
-            "description": "GUI SQLite database browser"
+            "description": "GUI SQLite database browser",
+            "installer": "install_sqlitebrowser"
         },
         {
             "name": "sqlite3",
             "cmd": "sqlite3",
-            "description": "SQLite command-line client"
+            "description": "SQLite command-line client",
+            "installer": "install_sqlitebrowser"
+        },
+        {
+            "name": "mongosh",
+            "cmd": "mongosh",
+            "description": "MongoDB shell",
+            "installer": "install_mongosh"
         },
         {
             "name": "keepassxc",
             "cmd": "keepassxc",
-            "description": "KeePass password manager"
+            "description": "KeePass password manager",
+            "installer": "install_keepassxc"
         },
         {
             "name": "rsync",
             "cmd": "rsync",
-            "description": "File sync utility"
+            "description": "File sync utility",
+            "installer": "install_rsync"
         },
         {
             "name": "wesng",
             "cmd": "wes",
-            "description": "Windows Exploit Suggester NG"
+            "description": "Windows Exploit Suggester NG",
+            "installer": "install_wes"
         },
         {
             "name": "gitleaks",
             "cmd": "gitleaks",
-            "description": "Git secrets scanner"
+            "description": "Git secrets scanner",
+            "installer": "install_gitleaks"
         },
         {
             "name": "aws-cli",
             "cmd": "aws",
-            "description": "AWS CLI (cloud recon, S3 bucket enumeration/access)"
+            "description": "AWS CLI (cloud recon, S3 bucket enumeration/access)",
+            "installer": "install_aws_cli"
         },
         {
             "name": "pacu",
             "cmd": "pacu",
-            "description": "AWS exploitation framework"
+            "description": "AWS exploitation framework",
+            "installer": "install_pacu"
+        },
+        {
+            "name": "tvmux",
+            "cmd": "tvmux",
+            "description": "Record tmux sessions with asciinema",
+            "installer": "install_tvmux"
         }
     ],
     "mod_reverse": [
         {
-            "name": "vscodium",
-            "cmd": "codium",
-            "description": "Open-source graphical code editor"
-        },
-        {
             "name": "ghidra",
             "cmd": "ghidra",
-            "description": "NSA reverse engineering suite"
+            "description": "NSA reverse engineering suite",
+            "installer": "install_ghidra"
+        },
+        {
+            "name": "nasm",
+            "cmd": "nasm",
+            "description": "x86/x64 assembler",
+            "installer": "install_nasm"
+        },
+        {
+            "name": "wabt",
+            "cmd": "wat2wasm",
+            "description": "WebAssembly Binary Toolkit",
+            "installer": "install_wabt"
+        },
+        {
+            "name": "vscodium",
+            "cmd": "codium",
+            "description": "Open-source graphical code editor",
+            "installer": "install_vscodium"
+        },
+        {
+            "name": "angr",
+            "cmd": "angr",
+            "description": "Symbolic execution and binary analysis",
+            "installer": "install_angr"
+        },
+        {
+            "name": "uncompyle6",
+            "cmd": "uncompyle6",
+            "description": "Python 2/3 bytecode decompiler",
+            "installer": "install_uncompyle6"
+        },
+        {
+            "name": "pycdc",
+            "cmd": "pycdc",
+            "description": "Python bytecode decompiler",
+            "installer": "install_pycdc"
+        },
+        {
+            "name": "pycdas",
+            "cmd": "pycdas",
+            "description": "Python bytecode disassembler",
+            "installer": "install_pycdc"
+        },
+        {
+            "name": "vt",
+            "cmd": "vt",
+            "description": "VirusTotal CLI",
+            "installer": "install_vt"
+        },
+        {
+            "name": "jd-gui",
+            "cmd": "jd-gui",
+            "description": "Java decompiler GUI",
+            "installer": "install_jd-gui"
         },
         {
             "name": "ida",
             "cmd": "ida64",
             "description": "IDA Free interactive disassembler",
-            "optional": true
+            "optional": true,
+            "installer": "install_ida"
         },
         {
             "name": "binaryninja",
             "cmd": "binaryninja",
-            "description": "Binary Ninja Free reverse engineering platform"
-        },
-        {
-            "name": "angr",
-            "cmd": "angr",
-            "description": "Symbolic execution and binary analysis"
-        },
-        {
-            "name": "pycdc",
-            "cmd": "pycdc",
-            "description": "Python bytecode decompiler"
-        },
-        {
-            "name": "uncompyle6",
-            "cmd": "uncompyle6",
-            "description": "Python 2/3 bytecode decompiler"
-        },
-        {
-            "name": "pycdas",
-            "cmd": "pycdas",
-            "description": "Python bytecode disassembler"
-        },
-        {
-            "name": "nasm",
-            "cmd": "nasm",
-            "description": "x86/x64 assembler"
+            "description": "Binary Ninja Free reverse engineering platform",
+            "installer": "install_binaryninja"
         }
     ],
     "mod_crypto": [
         {
             "name": "RsaCtfTool",
             "cmd": "RsaCtfTool",
-            "description": "RSA attack automation"
+            "description": "RSA attack automation",
+            "installer": "install_rsactftool"
         },
         {
             "name": "xortool",
             "cmd": "xortool",
-            "description": "XOR cipher analysis"
-        },
-        {
-            "name": "z3-solver",
-            "cmd": "z3-solver",
-            "description": "SMT constraint solver"
-        },
-        {
-            "name": "pycryptodome",
-            "cmd": "pycryptodome",
-            "description": "Python crypto library"
+            "description": "XOR cipher analysis",
+            "installer": "install_xortool"
         },
         {
             "name": "hashid",
             "cmd": "hashid",
-            "description": "Hash type identifier"
+            "description": "Hash type identifier",
+            "installer": "install_hashid"
+        },
+        {
+            "name": "z3-solver",
+            "cmd": "z3-solver",
+            "description": "SMT constraint solver",
+            "installer": "install_z3_solver"
+        },
+        {
+            "name": "pycryptodome",
+            "cmd": "pycryptodome",
+            "description": "Python crypto library",
+            "installer": "install_pycryptodome"
         }
     ],
     "mod_forensics": [
         {
             "name": "volatility3",
             "cmd": "vol",
-            "description": "Memory forensics framework"
-        },
-        {
-            "name": "foremost",
-            "cmd": "foremost",
-            "description": "File carving tool"
+            "description": "Memory forensics framework",
+            "installer": "install_volatility3"
         },
         {
             "name": "exiftool",
             "cmd": "exiftool",
-            "description": "Metadata extraction"
+            "description": "Metadata extraction",
+            "installer": "install_exiftool"
+        },
+        {
+            "name": "foremost",
+            "cmd": "foremost",
+            "description": "File carving tool",
+            "installer": "install_foremost"
         },
         {
             "name": "steghide",
             "cmd": "steghide",
-            "description": "JPEG/BMP steganography"
-        },
-        {
-            "name": "zsteg",
-            "cmd": "zsteg",
-            "description": "PNG/BMP steganography detector"
-        },
-        {
-            "name": "stegseek",
-            "cmd": "stegseek",
-            "description": "Steghide brute-forcer"
+            "description": "JPEG/BMP steganography",
+            "installer": "install_steghide"
         },
         {
             "name": "openstego",
             "cmd": "openstego",
-            "description": "Steganography tool"
+            "description": "Steganography tool",
+            "installer": "install_openstego"
         },
         {
             "name": "jadx",
             "cmd": "jadx",
-            "description": "Android/Java decompiler"
+            "description": "Android/Java decompiler",
+            "installer": "install_jadx"
+        },
+        {
+            "name": "zsteg",
+            "cmd": "zsteg",
+            "description": "PNG/BMP steganography detector",
+            "installer": "install_zsteg"
+        },
+        {
+            "name": "stegseek",
+            "cmd": "stegseek",
+            "description": "Steghide brute-forcer",
+            "installer": "install_stegseek"
         }
     ],
     "mod_wordlists": [
@@ -1433,114 +1786,142 @@
             "name": "seclists",
             "cmd": null,
             "description": "Security wordlists collection",
-            "check_path": "/opt/lists/seclists"
+            "check_path": "/opt/lists/seclists",
+            "installer": "install_seclists"
         },
         {
             "name": "rockyou",
             "cmd": null,
             "description": "Rockyou password list (extracted from seclists)",
-            "check_path": "/opt/lists/rockyou.txt"
+            "check_path": "/opt/lists/rockyou.txt",
+            "installer": "install_seclists"
+        },
+        {
+            "name": "fuzz.txt",
+            "cmd": null,
+            "description": "Web content discovery wordlist",
+            "installer": "install_fuzz_txt",
+            "check_path": "/opt/lists/fuzz.txt"
         },
         {
             "name": "cewl",
             "cmd": "cewl",
-            "description": "Wordlist generator from websites"
+            "description": "Wordlist generator from websites",
+            "installer": "install_cewl"
         },
         {
             "name": "crunch",
             "cmd": "crunch",
-            "description": "Wordlist generator"
+            "description": "Wordlist generator",
+            "installer": "install_crunch"
         },
         {
             "name": "cupp",
             "cmd": "cupp",
-            "description": "Custom user password profiler"
+            "description": "Custom user password profiler",
+            "installer": "install_cupp"
         },
         {
             "name": "username-anarchy",
             "cmd": "username-anarchy",
-            "description": "Username generation from names"
+            "description": "Username generation from names",
+            "installer": "install_username_anarchy"
         }
     ],
     "mod_hunt": [
         {
             "name": "chainsaw",
             "cmd": "chainsaw",
-            "description": "Windows event log threat hunting"
+            "description": "Windows event log threat hunting",
+            "installer": "install_chainsaw"
         },
         {
             "name": "hayabusa",
             "cmd": "hayabusa",
-            "description": "Windows DFIR timeline generator"
+            "description": "Windows DFIR timeline generator",
+            "installer": "install_hayabusa"
         },
         {
             "name": "sigma-cli",
             "cmd": "sigma",
-            "description": "Sigma detection rule CLI"
+            "description": "Sigma detection rule CLI",
+            "installer": "install_sigma_cli"
         },
         {
             "name": "wazuh-cli",
             "cmd": "wazuh-cli",
-            "description": "Wazuh SIEM/XDR management CLI"
+            "description": "Wazuh SIEM/XDR management CLI",
+            "installer": "install_wazuh_cli"
         }
     ],
     "mod_dfir": [
         {
             "name": "yara",
             "cmd": "yara",
-            "description": "Malware pattern matching"
+            "description": "Malware pattern matching",
+            "installer": "install_yara"
         },
         {
             "name": "capa",
             "cmd": "capa",
-            "description": "FLARE malware capability detection"
+            "description": "FLARE malware capability detection",
+            "installer": "install_capa"
         },
         {
             "name": "loki",
             "cmd": "loki",
-            "description": "IOC scanner"
+            "description": "IOC scanner",
+            "installer": "install_loki"
         },
         {
             "name": "sleuthkit",
             "cmd": "fls",
-            "description": "Disk forensics toolkit (The Sleuth Kit)"
+            "description": "Disk forensics toolkit (The Sleuth Kit)",
+            "installer": "install_sleuthkit"
         }
     ],
     "mod_osint": [
         {
             "name": "amass",
             "cmd": "amass",
-            "description": "Subdomain enumeration (OWASP)"
+            "description": "Subdomain enumeration (OWASP)",
+            "installer": "install_amass"
         },
         {
             "name": "recon-ng",
             "cmd": "recon-ng",
-            "description": "Web recon framework"
+            "description": "Web recon framework",
+            "installer": "install_recon_ng"
         },
         {
             "name": "sherlock",
             "cmd": "sherlock",
-            "description": "Username OSINT across platforms"
+            "description": "Username OSINT across platforms",
+            "installer": "install_sherlock"
         },
         {
             "name": "spiderfoot",
             "cmd": "spiderfoot",
-            "description": "Automated OSINT framework"
+            "description": "Automated OSINT framework",
+            "installer": "install_spiderfoot"
         },
         {
             "name": "sublist3r",
             "cmd": "sublist3r",
-            "description": "Subdomain enumeration"
+            "description": "Subdomain enumeration",
+            "installer": "install_sublist3r"
         },
         {
             "name": "theHarvester",
             "cmd": "theHarvester",
-            "description": "Email and domain OSINT"
+            "description": "Email and domain OSINT",
+            "installer": "install_theharvester"
         },
         {
             "name": "mailscout",
             "cmd": "mailscout",
-            "description": "IMAP and POP3 mailbox enumeration"
+            "description": "IMAP and POP3 mailbox enumeration",
+            "installer": "install_mailscout"
         }
     ]
 }

@@ -211,34 +211,9 @@ function install_cross_binutils() {
 # ---------------------------------------------------------------------------
 
 function install_mod_pwn() {
-    colorecho "Installing Pwn red-team tools"
+    install_selected_tools "mod_pwn"
+}
 
-    colorecho "  [pacman] Pwn / reverse tools:"
-    install_radare2
-    install_strace
-    install_ltrace
-    install_cmake
-    install_checksec
-    install_pwndbg
-
-    colorecho "  [git] GDB plugins:"
-    install_peda
-    install_gef
-
-    colorecho "  [pipx] Pwn / exploit tools:"
-    install_pwntools
-    install_ropgadget
-    install_ropper
-    install_glibc_all_in_one
-    install_qemu_user
-    install_cross_binutils
-
-    colorecho "  [cargo] Pwn tools:"
-    install_pwninit
-
-    colorecho "  [gem] Pwn tools:"
-    install_one_gadget
-    install_seccomp_tools
-
-    colorecho "Pwn tools installation finished"
+function install_patchelf() {
+    install_pacman_tool "patchelf"
 }
