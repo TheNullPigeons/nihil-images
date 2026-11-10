@@ -66,7 +66,12 @@ function install_wafw00f() {
 }
 
 function install_badsecrets() {
-    install_pipx_tool "badsecrets" "badsecrets"
+    # badsecrets depends on yara-python, which has no wheel for the base image's
+    # Python 3.14 and fails to build from sdist. Install Arch's python-yara
+    # (built for the current interpreter) and let the pipx venv reuse it via
+    # --system-site-packages instead of compiling yara-python.
+    install_pacman_tool "python-yara"
+    install_pipx_tool "badsecrets" "badsecrets" "" "--system-site-packages"
 }
 
 function install_gopherus() {
