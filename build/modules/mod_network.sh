@@ -211,7 +211,9 @@ function install_tcpdump() {
 }
 
 function install_seth() {
-    install_pacman_tools "dsniff" "iptables" "tcpdump" "openssl" || return 1
+    # openssl omitted on purpose: base already provides the 3.x binary Seth
+    # calls at runtime, and `pacman -S openssl` would pull the breaking 4.x.
+    install_pacman_tools "dsniff" "iptables" "tcpdump" || return 1
     install_git_tool_symlink "/usr/local/share/seth" \
         "https://github.com/SySS-Research/Seth.git" \
         "seth.sh" "seth"

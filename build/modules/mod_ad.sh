@@ -316,7 +316,11 @@ function install_osslsigncode() {
   fi
 
   colorecho "  → Installing osslsigncode from source (CMake build)"
-  install_pacman_tools cmake openssl curl || return 1
+  # Do NOT request the openssl package: base already ships openssl 3.x (with
+  # headers) that pacman itself depends on, and the repos carry openssl 4.x,
+  # so `pacman -S openssl` would force a major upgrade that breaks the
+  # libcrypto.so=3 / libssl.so=3 ABI needed by pacman, sudo, postgresql, rust…
+  install_pacman_tools cmake curl || return 1
 
   install_git_tool "osslsigncode" \
     "https://github.com/mtrojnar/osslsigncode.git" \
