@@ -1316,6 +1316,13 @@
             "installer": "install_snmpwalk"
         },
         {
+            "name": "snmpcheck",
+            "cmd": "snmpcheck",
+            "github_repo": "Goultarde/snmpcheck.py",
+            "description": "SNMP device enumerator",
+            "installer": "install_snmpcheck"
+        },
+        {
             "name": "onesixtyone",
             "cmd": "onesixtyone",
             "github_repo": "trailofbits/onesixtyone",

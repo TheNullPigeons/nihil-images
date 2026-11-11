@@ -270,10 +270,26 @@ function install_snmpwalk() {
     else
         install_pacman_tool "net-snmp"
     fi
-    # snmpcheck ships with net-snmp and imports both optional modules at startup.
-    install_pacman_tools "perl-tk" "perl-term-readkey"
+
     add-aliases "snmpwalk"
     add-history "snmpwalk"
+}
+
+function install_snmpcheck() {
+    if ! command -v snmpwalk >/dev/null 2>&1; then
+        install_pacman_tool "net-snmp"
+    fi
+
+    if pipx list 2>/dev/null | grep -qE '^[[:space:]]+package snmpcheck '; then
+        local pipx_bin_dir
+        pipx_bin_dir="$(pipx environment --value PIPX_BIN_DIR 2>/dev/null || printf '%s\n' /root/.local/bin)"
+        ln -sf "$pipx_bin_dir/snmpcheck" /usr/bin/snmpcheck || return 1
+        add-history "snmpcheck"
+        return 0
+    fi
+
+    rm -f /usr/bin/snmpcheck /usr/sbin/snmpcheck
+    install_pipx_tool_git "snmpcheck" "https://github.com/Goultarde/snmpcheck.py.git" || return 1
 }
 
 function install_onesixtyone() {
