@@ -65,11 +65,30 @@ function package_base() {
     pacman-key --init || return 1
     pacman-key --populate archlinux || return 1
     if ! grep -q "^\[chaotic-aur\]" /etc/pacman.conf; then
-        # Récupérer et signer la clé GPG principale (méthode officielle)
-        retry-command 3 "retrieve Chaotic-AUR signing key" \
-            timeout --kill-after=5s 60s pacman-key --recv-key 3056513887B78AEB \
-            --keyserver hkps://keyserver.ubuntu.com || return 1
-        pacman-key --lsign-key 3056513887B78AEB || return 1
+        # Fetch the upstream export over HTTPS and verify its full primary fingerprint.
+        local chaotic_key fingerprint
+        local expected_fingerprint="EF925EA60F33D0CB85C44AD13056513887B78AEB"
+        chaotic_key=$(mktemp) || return 1
+        if ! retry-command 3 "download Chaotic-AUR signing key" \
+            curl --fail --show-error --location --connect-timeout 10 --max-time 60 \
+            --output "$chaotic_key" \
+            'https://raw.githubusercontent.com/chaotic-aur/keyring/master/master/pedrohlc.asc'; then
+            rm -f "$chaotic_key"
+            return 1
+        fi
+        fingerprint=$(gpg --batch --with-colons --show-keys "$chaotic_key" | \
+            awk -F: '$1 == "pub" { primary = 1 } primary && $1 == "fpr" { print $10; primary = 0 }')
+        if [[ "$fingerprint" != "$expected_fingerprint" ]]; then
+            colorecho "  ✗ Unexpected Chaotic-AUR signing-key fingerprint: $fingerprint"
+            rm -f "$chaotic_key"
+            return 1
+        fi
+        if ! pacman-key --add "$chaotic_key"; then
+            rm -f "$chaotic_key"
+            return 1
+        fi
+        rm -f "$chaotic_key"
+        pacman-key --lsign-key "$expected_fingerprint" || return 1
         
         # Installer chaotic-keyring et chaotic-mirrorlist depuis le CDN officiel
         colorecho "Installing chaotic-keyring and chaotic-mirrorlist"

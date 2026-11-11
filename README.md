@@ -72,5 +72,6 @@ cannot guarantee that a tool is fully functional.
 
 Base setup initializes pacman's local signing key and loads the bundled Arch and
 Chaotic-AUR keys before installing tools. The initial Chaotic-AUR signing-key
-fetch uses HTTPS with three attempts, each limited to 60 seconds plus a 5-second
-termination grace period. Package-manager errors remain visible in build logs.
+fetch downloads the official upstream key export over HTTPS with three attempts,
+each limited to 60 seconds. Its full primary fingerprint is checked before import
+and local signing. Package-manager errors remain visible in build logs.
