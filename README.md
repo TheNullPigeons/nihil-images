@@ -69,3 +69,8 @@ Base system setup, core tools, invalid configuration, and final cleanup remain
 blocking. This replaces the old `NIHIL_AUDIT` behaviour that ignored whole-step
 errors. Some installers already handle errors internally; command/path checks
 cannot guarantee that a tool is fully functional.
+
+Base setup initializes pacman's local signing key and loads the bundled Arch and
+Chaotic-AUR keys before installing tools. The initial Chaotic-AUR signing-key
+fetch uses HTTPS with three attempts, each limited to 60 seconds plus a 5-second
+termination grace period. Package-manager errors remain visible in build logs.

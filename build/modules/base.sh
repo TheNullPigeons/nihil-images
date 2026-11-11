@@ -61,10 +61,15 @@ function package_base() {
 
     # Ajouter Chaotic-AUR repository (méthode officielle)
     colorecho "Adding Chaotic-AUR repository"
+    # Third-party keyrings need the local signing key, absent from fresh images.
+    pacman-key --init || return 1
+    pacman-key --populate archlinux || return 1
     if ! grep -q "^\[chaotic-aur\]" /etc/pacman.conf; then
         # Récupérer et signer la clé GPG principale (méthode officielle)
-        pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com 2>/dev/null || true
-        pacman-key --lsign-key 3056513887B78AEB 2>/dev/null || true
+        retry-command 3 "retrieve Chaotic-AUR signing key" \
+            timeout --kill-after=5s 60s pacman-key --recv-key 3056513887B78AEB \
+            --keyserver hkps://keyserver.ubuntu.com || return 1
+        pacman-key --lsign-key 3056513887B78AEB || return 1
         
         # Installer chaotic-keyring et chaotic-mirrorlist depuis le CDN officiel
         colorecho "Installing chaotic-keyring and chaotic-mirrorlist"
@@ -74,7 +79,8 @@ function package_base() {
         # Télécharger et installer chaotic-keyring
         cd /tmp
         if download-retry 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' chaotic-keyring.pkg.tar.zst; then
-            if pacman -U --noconfirm chaotic-keyring.pkg.tar.zst 2>/dev/null; then
+            if pacman -U --noconfirm chaotic-keyring.pkg.tar.zst; then
+                pacman-key --populate chaotic || return 1
                 keyring_ok=1
                 colorecho "chaotic-keyring installed successfully"
             else
@@ -88,7 +94,7 @@ function package_base() {
         # Télécharger et installer chaotic-mirrorlist
         if [ "$keyring_ok" -eq 1 ]; then
             if download-retry 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' chaotic-mirrorlist.pkg.tar.zst; then
-                if pacman -U --noconfirm chaotic-mirrorlist.pkg.tar.zst 2>/dev/null; then
+                if pacman -U --noconfirm chaotic-mirrorlist.pkg.tar.zst; then
                     mirrorlist_ok=1
                     colorecho "chaotic-mirrorlist installed successfully"
                 else
@@ -113,6 +119,7 @@ function package_base() {
         fi
     else
         colorecho "Chaotic-AUR repository already exists in pacman.conf"
+        pacman-key --populate chaotic || return 1
     fi
 
     mkdir -p /opt/tools/bin

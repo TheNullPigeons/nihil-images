@@ -20,7 +20,7 @@ install_pacman_tool() {
 
     colorecho "  → Installing $pkg_name via pacman"
     retry-command 3 "pacman install $pkg_name" bash -c \
-        'pacman -Sy --noconfirm && pacman -S --noconfirm --needed "$1" 2>/dev/null' \
+        'pacman -Sy --noconfirm && pacman -S --noconfirm --needed "$1"' \
         _ "$pkg_name" || {
         colorecho "  ⟳ Retrying $pkg_name with --overwrite (pip/pacman file conflicts)"
         retry-command 3 "pacman install $pkg_name with --overwrite" \
@@ -46,7 +46,7 @@ install_pacman_tools() {
 
     colorecho "Installing packages via pacman: ${packages[*]}"
     retry-command 3 "pacman install packages" bash -c \
-        'pacman -Sy --noconfirm && pacman -S --noconfirm --needed "$@" 2>/dev/null' \
+        'pacman -Sy --noconfirm && pacman -S --noconfirm --needed "$@"' \
         _ "${packages[@]}" || {
         colorecho "  ⟳ Retrying with --overwrite (pip/pacman file conflicts)"
         retry-command 3 "pacman install packages with --overwrite" \
