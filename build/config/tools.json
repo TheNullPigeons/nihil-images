@@ -3,6 +3,7 @@
         {
             "name": "vim",
             "cmd": "vim",
+            "github_repo": "vim/vim",
             "description": "Text editor",
             "installer": "install_core_environment"
         },
@@ -15,12 +16,14 @@
         {
             "name": "neovim",
             "cmd": "nvim",
+            "github_repo": "neovim/neovim",
             "description": "Text editor",
             "installer": "install_core_environment"
         },
         {
             "name": "tmux",
             "cmd": "tmux",
+            "github_repo": "tmux/tmux",
             "description": "Terminal multiplexer",
             "installer": "install_core_environment"
         },
@@ -33,6 +36,7 @@
         {
             "name": "fzf",
             "cmd": "fzf",
+            "github_repo": "junegunn/fzf",
             "description": "Fuzzy finder",
             "installer": "install_core_environment"
         },
@@ -45,6 +49,7 @@
         {
             "name": "asciinema",
             "cmd": "asciinema",
+            "github_repo": "asciinema/asciinema",
             "description": "Terminal recorder",
             "installer": "install_core_environment"
         },
@@ -57,24 +62,28 @@
         {
             "name": "nihil-history",
             "cmd": "nhi",
+            "github_repo": "TheNullPigeons/nihil-history",
             "description": "Pentest engagement knowledge manager",
             "installer": "install_core_environment"
         },
         {
             "name": "zoxide",
             "cmd": "zoxide",
+            "github_repo": "ajeetdsouza/zoxide",
             "description": "Smart directory navigation (z)",
             "installer": "install_core_environment"
         },
         {
             "name": "yazi",
             "cmd": "yazi",
+            "github_repo": "sxyazi/yazi",
             "description": "TUI file manager (browse and open files, alias: y)",
             "installer": "install_core_environment"
         },
         {
             "name": "nihil-ntp",
             "cmd": "nihil-ntp",
+            "github_repo": "TheNullPigeons/nihil-ntp",
             "description": "Sync the container clock to a target NTP server (DC) for Kerberos",
             "installer": "install_core_environment"
         }
@@ -107,6 +116,7 @@
         {
             "name": "adcheck",
             "cmd": "adcheck",
+            "github_repo": "CobblePot59/ADcheck",
             "description": "Active Directory security posture checker",
             "installer": "install_adcheck"
         },
@@ -131,12 +141,14 @@
         {
             "name": "bloodhound-import",
             "cmd": "bloodhound-import",
+            "github_repo": "Goultarde/bloodhound-import",
             "description": "Import BloodHound JSON/ZIP data into Neo4j",
             "installer": "install_bloodhound_import"
         },
         {
             "name": "bloodhound-quickwin",
             "cmd": "bhqc",
+            "github_repo": "kaluche/bloodhound-quickwin",
             "description": "BloodHound quick win queries",
             "installer": "install_bloodhound_quickwin"
         },
@@ -155,54 +167,63 @@
         {
             "name": "gpp-decrypt",
             "cmd": "gpp-decrypt",
+            "github_repo": "t0thkr1s/gpp-decrypt",
             "description": "Decrypt GPP passwords",
             "installer": "install_gpp_decrypt"
         },
         {
             "name": "netexec",
             "cmd": "netexec",
+            "github_repo": "Pennyw0rth/NetExec",
             "description": "SMB/LDAP/WinRM/SSH exploitation framework",
             "installer": "install_netexec"
         },
         {
             "name": "impacket",
             "cmd": "secretsdump.py",
+            "github_repo": "fortra/impacket",
             "description": "Windows protocol library (Fortra)",
             "installer": "install_impacket"
         },
         {
             "name": "Get-GPPPassword",
             "cmd": "Get-GPPPassword.py",
+            "github_repo": "fortra/impacket",
             "description": "Extract plaintext credentials from GPP (impacket)",
             "installer": "install_impacket"
         },
         {
             "name": "bloodbash",
             "cmd": "bloodbash",
+            "github_repo": "DotNetRussell/BloodBash",
             "description": "BloodHound-based offensive automation",
             "installer": "install_bloodbash"
         },
         {
             "name": "adwsdomaindump",
             "cmd": "adwsdomaindump",
+            "github_repo": "mverschu/adwsdomaindump",
             "description": "Dump Active Directory data through AD Web Services",
             "installer": "install_adwsdomaindump"
         },
         {
             "name": "EVENmonitor",
             "cmd": "EVENmonitor",
+            "github_repo": "NeffIsBack/EVENmonitor",
             "description": "Monitor and filter remote Windows event logs",
             "installer": "install_evenmonitor"
         },
         {
             "name": "gpoParser",
             "cmd": "gpoParser",
+            "github_repo": "synacktiv/gpoParser",
             "description": "Extract and analyze Active Directory Group Policy Objects",
             "installer": "install_gpoparser"
         },
         {
             "name": "pyGoldenGMSA",
             "cmd": "pyGoldenGMSA",
+            "github_repo": "felixbillieres/pyGoldenGMSA",
             "description": "GoldenGMSA attack implementation for gMSA accounts",
             "installer": "install_pygoldengmsa"
         },
@@ -221,6 +242,7 @@
         {
             "name": "SOAPy",
             "cmd": "SOAPy",
+            "github_repo": "logangoins/SOAPy",
             "description": "Interact offensively with AD Web Services through SOCKS5",
             "installer": "install_soapy"
         },
@@ -233,12 +255,14 @@
         {
             "name": "aclpwn",
             "cmd": "aclpwn",
+            "github_repo": "fox-it/aclpwn.py",
             "description": "AD ACL exploitation",
             "installer": "install_aclpwn"
         },
         {
             "name": "abuseACL",
             "cmd": "abuseACL",
+            "github_repo": "AetherBlack/abuseACL",
             "description": "AD ACL abuse and privilege escalation",
             "installer": "install_abuseacl"
         },
@@ -251,6 +275,7 @@
         {
             "name": "donpapi",
             "cmd": "DonPAPI",
+            "github_repo": "login-securite/DonPAPI",
             "description": "DPAPI credential extraction",
             "installer": "install_donpapi"
         },
@@ -269,6 +294,7 @@
         {
             "name": "enum4linux-ng",
             "cmd": "enum4linux-ng",
+            "github_repo": "cddmp/enum4linux-ng",
             "description": "SMB/RPC/LDAP enumeration",
             "installer": "install_enum4linux_ng"
         },
@@ -287,6 +313,7 @@
         {
             "name": "sprayhound",
             "cmd": "sprayhound",
+            "github_repo": "Hackndo/sprayhound",
             "description": "Password spraying with BloodHound",
             "installer": "install_sprayhound"
         },
@@ -341,6 +368,7 @@
         {
             "name": "keepwn",
             "cmd": "KeePwn",
+            "github_repo": "Orange-Cyberdefense/KeePwn",
             "description": "KeePass trigger attack",
             "installer": "install_keepwn"
         },
@@ -353,84 +381,98 @@
         {
             "name": "GPOddity",
             "cmd": "gpoddity",
+            "github_repo": "synacktiv/GPOddity",
             "description": "GPO abuse automation",
             "installer": "install_gpoddity"
         },
         {
             "name": "asrepcatcher",
             "cmd": "ASRepCatcher",
+            "github_repo": "Yaxxine7/ASRepCatcher",
             "description": "AS-REP Roasting listener",
             "installer": "install_asrepcatcher"
         },
         {
             "name": "ldaprelayscan",
             "cmd": "ldaprelayscan",
+            "github_repo": "zyn3rgy/LdapRelayScan",
             "description": "LDAP relay attack scanner",
             "installer": "install_ldaprelayscan"
         },
         {
             "name": "LDAPWordlistHarvester",
             "cmd": "LDAPWordlistHarvester",
+            "github_repo": "p0dalirius/pyLDAPWordlistHarvester",
             "description": "Build wordlists from LDAP",
             "installer": "install_ldapwordlistharvester"
         },
         {
             "name": "PassTheCert",
             "cmd": "passthecert",
+            "github_repo": "AlmondOffSec/PassTheCert",
             "description": "Pass-the-cert LDAP/LDAPS auth",
             "installer": "install_passthecert"
         },
         {
             "name": "PCredz",
             "cmd": "Pcredz",
+            "github_repo": "lgandx/PCredz",
             "description": "Network credential capture",
             "installer": "install_pcredz"
         },
         {
             "name": "pygpoabuse",
             "cmd": "pygpoabuse",
+            "github_repo": "Hackndo/pyGPOAbuse",
             "description": "GPO immediate task abuse",
             "installer": "install_pygpoabuse"
         },
         {
             "name": "sccmhunter",
             "cmd": "sccmhunter",
+            "github_repo": "garrettfoster13/sccmhunter",
             "description": "SCCM attack framework",
             "installer": "install_sccmhunter"
         },
         {
             "name": "teamsphisher",
             "cmd": "teamsphisher",
+            "github_repo": "Octoberfest7/TeamsPhisher",
             "description": "Teams external phishing",
             "installer": "install_teamsphisher"
         },
         {
             "name": "crackhound",
             "cmd": "crackhound",
+            "github_repo": "trustedsec/crackhound",
             "description": "BloodHound + hashcat path cracking",
             "installer": "install_crackhound"
         },
         {
             "name": "pre2k",
             "cmd": "pre2k",
+            "github_repo": "garrettfoster13/pre2k",
             "description": "Pre-Windows 2000 computer account exploitation",
             "installer": "install_pre2k"
         },
         {
             "name": "powerview.py",
             "cmd": "powerview",
+            "github_repo": "aniqfakhrul/powerview.py",
             "description": "Interactive PowerView for Linux (LDAP enum/abuse)",
             "installer": "install_powerview_py"
         },
         {
             "name": "tdo-dump",
             "cmd": "tdo-dump",
+            "github_repo": "Goultarde/tdo_dump",
             "description": "Dump trusted domain objects and secrets via DRS replication",
             "installer": "install_tdo_dump"
         },
         {
             "name": "tombstone",
             "cmd": "tombstone",
+            "github_repo": "Goultarde/Tombstone.py",
             "description": "Query and restore deleted Active Directory objects",
             "installer": "install_tombstone"
         },
@@ -473,6 +515,7 @@
         {
             "name": "bloodhound-legacy",
             "cmd": "bloodhound-legacy",
+            "github_repo": "BloodHoundAD/BloodHound",
             "description": "BloodHound legacy (4.x) desktop client",
             "installer": "install_bloodhound_legacy_desktop"
         },
@@ -563,84 +606,98 @@
         {
             "name": "krbrelayx",
             "cmd": "krbrelayx",
+            "github_repo": "dirkjanm/krbrelayx",
             "description": "Kerberos relay attacks",
             "installer": "install_krbrelayx"
         },
         {
             "name": "gmsadumper",
             "cmd": "gmsadumper",
+            "github_repo": "micahvandeusen/gMSADumper",
             "description": "gMSA credential extraction",
             "installer": "install_gmsadumper"
         },
         {
             "name": "FindUncommonShares",
             "cmd": "FindUncommonShares",
+            "github_repo": "p0dalirius/pyFindUncommonShares",
             "description": "Discover non-standard SMB shares",
             "installer": "install_finduncommonshares"
         },
         {
             "name": "targetedKerberoast",
             "cmd": "targetedKerberoast",
+            "github_repo": "ShutdownRepo/targetedKerberoast",
             "description": "Kerberoast via ACL abuse",
             "installer": "install_targetedkerberoast"
         },
         {
             "name": "PKINITtools",
             "cmd": "gettgtpkinit",
+            "github_repo": "dirkjanm/PKINITtools",
             "description": "PKINIT exploitation (shadow creds, UnPAC-the-hash)",
             "installer": "install_pkinittools"
         },
         {
             "name": "noPac",
             "cmd": "noPac",
+            "github_repo": "Ridter/noPac",
             "description": "CVE-2021-42278/42287 Sam-Account-Name spoofing",
             "installer": "install_nopac"
         },
         {
             "name": "PetitPotam",
             "cmd": "PetitPotam",
+            "github_repo": "topotam/PetitPotam",
             "description": "NTLM relay via EFS (CVE-2021-36942)",
             "installer": "install_petitpotam"
         },
         {
             "name": "zerologon",
             "cmd": "cve-2020-1472-exploit",
+            "github_repo": "dirkjanm/CVE-2020-1472",
             "description": "CVE-2020-1472 Netlogon exploit",
             "installer": "install_zerologon"
         },
         {
             "name": "ShadowCoerce",
             "cmd": "ShadowCoerce",
+            "github_repo": "ShutdownRepo/ShadowCoerce",
             "description": "Coercion via MS-FSRVP",
             "installer": "install_shadowcoerce"
         },
         {
             "name": "DFSCoerce",
             "cmd": "DFSCoerce",
+            "github_repo": "Wh04m1001/DFSCoerce",
             "description": "Coercion via MS-DFSNM",
             "installer": "install_dfscoerce"
         },
         {
             "name": "ntlm_theft",
             "cmd": "ntlm_theft",
+            "github_repo": "Greenwolf/ntlm_theft",
             "description": "Generate files to steal NTLM hashes via UNC paths",
             "installer": "install_ntlm_theft"
         },
         {
             "name": "powershell",
             "cmd": "pwsh",
+            "github_repo": "PowerShell/PowerShell",
             "description": "PowerShell 7",
             "installer": "install_powershell"
         },
         {
             "name": "neo4j",
             "cmd": "neo4j",
+            "github_repo": "neo4j/neo4j",
             "description": "Neo4j graph database (BloodHound CE backend)",
             "installer": "install_neo4j"
         },
         {
             "name": "cypher-shell",
             "cmd": "cypher-shell",
+            "github_repo": "neo4j/neo4j",
             "description": "Neo4j Cypher query shell",
             "installer": "install_neo4j"
         }
@@ -691,24 +748,28 @@
         {
             "name": "wfuzz",
             "cmd": "wfuzz",
+            "github_repo": "xmendez/wfuzz",
             "description": "Web fuzzer",
             "installer": "install_wfuzz"
         },
         {
             "name": "webfuzz",
             "cmd": "webfuzz",
+            "github_repo": "Goultarde/webfuzz",
             "description": "HTTP web fuzzer",
             "installer": "install_webfuzz"
         },
         {
             "name": "wenum",
             "cmd": "wenum",
+            "github_repo": "WebFuzzForge/wenum",
             "description": "Web enumeration and fuzzing tool",
             "installer": "install_wenum"
         },
         {
             "name": "arjun",
             "cmd": "arjun",
+            "github_repo": "s0md3v/Arjun",
             "description": "HTTP parameter discovery",
             "installer": "install_arjun"
         },
@@ -727,18 +788,21 @@
         {
             "name": "gopherus",
             "cmd": "gopherus3",
+            "github_repo": "Esonhugh/Gopherus3",
             "description": "SSRF exploitation via Gopher",
             "installer": "install_gopherus"
         },
         {
             "name": "droopescan",
             "cmd": "droopescan",
+            "github_repo": "SamJoan/droopescan",
             "description": "Drupal/CMS scanner",
             "installer": "install_droopescan"
         },
         {
             "name": "cmsmap",
             "cmd": "cmsmap",
+            "github_repo": "dionach/CMSmap",
             "description": "CMS exploitation",
             "installer": "install_cmsmap"
         },
@@ -751,12 +815,14 @@
         {
             "name": "commix",
             "cmd": "commix",
+            "github_repo": "commixproject/commix",
             "description": "OS command injection exploitation",
             "installer": "install_commix"
         },
         {
             "name": "glpwnme",
             "cmd": "glpwnme",
+            "github_repo": "Orange-Cyberdefense/glpwnme",
             "description": "GLPI exploitation helper",
             "installer": "install_glpwnme"
         },
@@ -781,18 +847,21 @@
         {
             "name": "httpmethods",
             "cmd": "httpmethods",
+            "github_repo": "ShutdownRepo/httpmethods",
             "description": "HTTP method enumeration",
             "installer": "install_httpmethods"
         },
         {
             "name": "linkfinder",
             "cmd": "linkfinder",
+            "github_repo": "GerbenJavado/LinkFinder",
             "description": "Endpoint discovery in JS files",
             "installer": "install_linkfinder"
         },
         {
             "name": "patator",
             "cmd": "patator",
+            "github_repo": "lanjelot/patator",
             "description": "Multi-purpose brute-forcer",
             "installer": "install_patator"
         },
@@ -811,18 +880,21 @@
         {
             "name": "graphqlmap",
             "cmd": "graphqlmap",
+            "github_repo": "swisskyrepo/GraphQLmap",
             "description": "GraphQL exploitation",
             "installer": "install_graphqlmap"
         },
         {
             "name": "graphw00f",
             "cmd": "graphw00f",
+            "github_repo": "dolevf/graphw00f",
             "description": "GraphQL server fingerprinting",
             "installer": "install_graphw00f"
         },
         {
             "name": "graphql-cop",
             "cmd": "graphql-cop",
+            "github_repo": "dolevf/graphql-cop",
             "description": "GraphQL security auditing",
             "installer": "install_graphql_cop"
         },
@@ -925,78 +997,91 @@
         {
             "name": "ssrfmap",
             "cmd": "ssrfmap",
+            "github_repo": "swisskyrepo/SSRFmap",
             "description": "SSRF exploitation framework",
             "installer": "install_ssrfmap"
         },
         {
             "name": "jwt-tool",
             "cmd": "jwt-tool",
+            "github_repo": "ticarpi/jwt_tool",
             "description": "JWT manipulation and attacks",
             "installer": "install_jwt_tool"
         },
         {
             "name": "xsstrike",
             "cmd": "xsstrike",
+            "github_repo": "s0md3v/XSStrike",
             "description": "XSS detection and exploitation",
             "installer": "install_xsstrike"
         },
         {
             "name": "tplmap",
             "cmd": "tplmap",
+            "github_repo": "epinna/tplmap",
             "description": "Server-Side Template Injection",
             "installer": "install_tplmap"
         },
         {
             "name": "nosqlmap",
             "cmd": "nosqlmap",
+            "github_repo": "codingo/NoSQLMap",
             "description": "NoSQL injection exploitation",
             "installer": "install_nosqlmap"
         },
         {
             "name": "odat",
             "cmd": "odat",
+            "github_repo": "quentinhardy/odat",
             "description": "Oracle Database Attacking Tool",
             "installer": "install_odat"
         },
         {
             "name": "corsy",
             "cmd": "corsy",
+            "github_repo": "s0md3v/Corsy",
             "description": "CORS misconfiguration scanner",
             "installer": "install_corsy"
         },
         {
             "name": "whatweb",
             "cmd": "whatweb",
+            "github_repo": "urbanadventurer/WhatWeb",
             "description": "Web technology fingerprinting",
             "installer": "install_whatweb"
         },
         {
             "name": "EyeWitness",
             "cmd": "EyeWitness",
+            "github_repo": "RedSiege/EyeWitness",
             "description": "Web screenshot and service enumeration tool",
             "installer": "install_eyewitness"
         },
         {
             "name": "joomscan",
             "cmd": "joomscan",
+            "github_repo": "OWASP/joomscan",
             "description": "Joomla vulnerability scanner",
             "installer": "install_joomscan"
         },
         {
             "name": "phpggc",
             "cmd": "phpggc",
+            "github_repo": "ambionics/phpggc",
             "description": "PHP gadget chain generator",
             "installer": "install_phpggc"
         },
         {
             "name": "smuggler",
             "cmd": "smuggler",
+            "github_repo": "defparam/smuggler",
             "description": "HTTP request smuggling tester",
             "installer": "install_smuggler"
         },
         {
             "name": "xxeinjector",
             "cmd": "xxeinjector",
+            "github_repo": "enjoiz/XXEinjector",
             "description": "XXE injection automation",
             "installer": "install_xxeinjector"
         },
@@ -1009,12 +1094,14 @@
         {
             "name": "testssl.sh",
             "cmd": "testssl.sh",
+            "github_repo": "testssl/testssl.sh",
             "description": "TLS/SSL configuration testing",
             "installer": "install_testssl"
         },
         {
             "name": "kiterunner",
             "cmd": "kr",
+            "github_repo": "assetnote/kiterunner",
             "description": "API endpoint discovery",
             "installer": "install_kiterunner"
         },
@@ -1039,6 +1126,7 @@
         {
             "name": "ysoserial",
             "cmd": "ysoserial",
+            "github_repo": "frohoff/ysoserial",
             "description": "Java deserialization exploit payloads",
             "installer": "install_ysoserial"
         }
@@ -1095,18 +1183,21 @@
         {
             "name": "zone-dnsenum",
             "cmd": "zone-dnsenum",
+            "github_repo": "Goultarde/Zone-DNSenum",
             "description": "DNS zone enumeration and transfer",
             "installer": "install_zone_dnsenum"
         },
         {
             "name": "dnsrecon",
             "cmd": "dnsrecon",
+            "github_repo": "darkoperator/dnsrecon",
             "description": "DNS enumeration and zone transfer testing",
             "installer": "install_dnsrecon"
         },
         {
             "name": "ligolo-ng",
             "cmd": "ligolo-ng",
+            "github_repo": "nicocha30/ligolo-ng",
             "description": "Tunneling via TUN interface (proxy)",
             "installer": "install_ligolo_ng"
         },
@@ -1131,12 +1222,14 @@
         {
             "name": "netdiscover",
             "cmd": "netdiscover",
+            "github_repo": "netdiscover-scanner/netdiscover",
             "description": "Active/passive network address discovery",
             "installer": "install_netdiscover"
         },
         {
             "name": "nmap-parse-output",
             "cmd": "nmap-parse-output",
+            "github_repo": "ernw/nmap-parse-output",
             "description": "Nmap XML output parser",
             "installer": "install_nmap_parse_output"
         },
@@ -1173,6 +1266,7 @@
         {
             "name": "seth",
             "cmd": "seth",
+            "github_repo": "SySS-Research/Seth",
             "description": "RDP downgrade and credential interception",
             "installer": "install_seth"
         },
@@ -1185,6 +1279,7 @@
         {
             "name": "wifit3",
             "cmd": "wifit3",
+            "github_repo": "derv82/wifit3",
             "description": "USB wireless network auditor",
             "installer": "install_wifit3"
         },
@@ -1209,6 +1304,7 @@
         {
             "name": "dnsenum",
             "cmd": "dnsenum",
+            "github_repo": "fwaeytens/dnsenum",
             "description": "DNS enumeration script",
             "installer": "install_dnsenum"
         },
@@ -1221,18 +1317,21 @@
         {
             "name": "onesixtyone",
             "cmd": "onesixtyone",
+            "github_repo": "trailofbits/onesixtyone",
             "description": "SNMP community string scanner",
             "installer": "install_onesixtyone"
         },
         {
             "name": "beanshooter",
             "cmd": "beanshooter",
+            "github_repo": "qtc-de/beanshooter",
             "description": "JMX enumeration and attack tool",
             "installer": "install_beanshooter"
         },
         {
             "name": "jmxterm",
             "cmd": "jmxterm",
+            "github_repo": "jiaqi/jmxterm",
             "description": "Interactive command-line JMX client",
             "installer": "install_jmxterm"
         }
@@ -1277,6 +1376,7 @@
         {
             "name": "haiti",
             "cmd": "haiti",
+            "github_repo": "noraj/haiti",
             "description": "Hash type identifier",
             "installer": "install_haiti"
         },
@@ -1349,6 +1449,7 @@
         {
             "name": "hashcat",
             "cmd": "hashcat",
+            "github_repo": "hashcat/hashcat",
             "description": "GPU password cracker",
             "installer": "install_hashcat"
         },
@@ -1405,12 +1506,14 @@
         {
             "name": "pwndbg",
             "check_path": "/opt/tools/gdb/pwndbg/gdbinit.py",
+            "github_repo": "pwndbg/pwndbg",
             "description": "GDB plugin for exploit dev",
             "installer": "install_pwndbg"
         },
         {
             "name": "peda",
             "check_path": "/opt/tools/gdb/peda/peda.py",
+            "github_repo": "longld/peda",
             "description": "Python Exploit Development Assistance for GDB",
             "installer": "install_peda"
         },
@@ -1441,6 +1544,7 @@
         {
             "name": "glibc-all-in-one",
             "cmd": "glibc-aio",
+            "github_repo": "matrix1001/glibc-all-in-one",
             "description": "Download and manage glibc versions",
             "installer": "install_glibc_all_in_one"
         },
@@ -1485,6 +1589,7 @@
         {
             "name": "metasploit",
             "cmd": "msfconsole",
+            "github_repo": "rapid7/metasploit-framework",
             "description": "Exploitation framework",
             "installer": "install_metasploit"
         },
@@ -1497,6 +1602,7 @@
         {
             "name": "penelope",
             "cmd": "penelope",
+            "github_repo": "brightio/penelope",
             "description": "Advanced reverse shell handler",
             "installer": "install_penelope"
         },
@@ -1509,6 +1615,7 @@
         {
             "name": "mythic-cli",
             "cmd": "mythic-cli",
+            "github_repo": "its-a-feature/Mythic",
             "description": "Mythic C2 framework management CLI",
             "installer": "install_mythic_cli"
         }
@@ -1529,6 +1636,7 @@
         {
             "name": "CyberChef",
             "cmd": null,
+            "github_repo": "gchq/CyberChef",
             "description": "Data transformation toolkit (offline)",
             "check_path": "/opt/tools/CyberChef",
             "installer": "install_cyberchef"
@@ -1596,12 +1704,14 @@
         {
             "name": "wesng",
             "cmd": "wes",
+            "github_repo": "bitsadmin/wesng",
             "description": "Windows Exploit Suggester NG",
             "installer": "install_wes"
         },
         {
             "name": "gitleaks",
             "cmd": "gitleaks",
+            "github_repo": "gitleaks/gitleaks",
             "description": "Git secrets scanner",
             "installer": "install_gitleaks"
         },
@@ -1620,6 +1730,7 @@
         {
             "name": "tvmux",
             "cmd": "tvmux",
+            "github_repo": "bitplane/tvmux",
             "description": "Record tmux sessions with asciinema",
             "installer": "install_tvmux"
         }
@@ -1664,12 +1775,14 @@
         {
             "name": "pycdc",
             "cmd": "pycdc",
+            "github_repo": "zrax/pycdc",
             "description": "Python bytecode decompiler",
             "installer": "install_pycdc"
         },
         {
             "name": "pycdas",
             "cmd": "pycdas",
+            "github_repo": "zrax/pycdc",
             "description": "Python bytecode disassembler",
             "installer": "install_pycdc"
         },
@@ -1703,6 +1816,7 @@
         {
             "name": "RsaCtfTool",
             "cmd": "RsaCtfTool",
+            "github_repo": "RsaCtfTool/RsaCtfTool",
             "description": "RSA attack automation",
             "installer": "install_rsactftool"
         },
@@ -1741,6 +1855,7 @@
         {
             "name": "exiftool",
             "cmd": "exiftool",
+            "github_repo": "exiftool/exiftool",
             "description": "Metadata extraction",
             "installer": "install_exiftool"
         },
@@ -1777,6 +1892,7 @@
         {
             "name": "stegseek",
             "cmd": "stegseek",
+            "github_repo": "RickdeJager/stegseek",
             "description": "Steghide brute-forcer",
             "installer": "install_stegseek"
         }
@@ -1785,6 +1901,7 @@
         {
             "name": "seclists",
             "cmd": null,
+            "github_repo": "danielmiessler/SecLists",
             "description": "Security wordlists collection",
             "check_path": "/opt/lists/seclists",
             "installer": "install_seclists"
@@ -1806,6 +1923,7 @@
         {
             "name": "cewl",
             "cmd": "cewl",
+            "github_repo": "digininja/CeWL",
             "description": "Wordlist generator from websites",
             "installer": "install_cewl"
         },
@@ -1818,12 +1936,14 @@
         {
             "name": "cupp",
             "cmd": "cupp",
+            "github_repo": "Mebus/cupp",
             "description": "Custom user password profiler",
             "installer": "install_cupp"
         },
         {
             "name": "username-anarchy",
             "cmd": "username-anarchy",
+            "github_repo": "urbanadventurer/username-anarchy",
             "description": "Username generation from names",
             "installer": "install_username_anarchy"
         }
@@ -1832,12 +1952,14 @@
         {
             "name": "chainsaw",
             "cmd": "chainsaw",
+            "github_repo": "WithSecureLabs/chainsaw",
             "description": "Windows event log threat hunting",
             "installer": "install_chainsaw"
         },
         {
             "name": "hayabusa",
             "cmd": "hayabusa",
+            "github_repo": "Yamato-Security/hayabusa",
             "description": "Windows DFIR timeline generator",
             "installer": "install_hayabusa"
         },
@@ -1864,12 +1986,14 @@
         {
             "name": "capa",
             "cmd": "capa",
+            "github_repo": "mandiant/capa",
             "description": "FLARE malware capability detection",
             "installer": "install_capa"
         },
         {
             "name": "loki",
             "cmd": "loki",
+            "github_repo": "Neo23x0/Loki",
             "description": "IOC scanner",
             "installer": "install_loki"
         },
@@ -1890,6 +2014,7 @@
         {
             "name": "recon-ng",
             "cmd": "recon-ng",
+            "github_repo": "lanmaster53/recon-ng",
             "description": "Web recon framework",
             "installer": "install_recon_ng"
         },
@@ -1902,6 +2027,7 @@
         {
             "name": "spiderfoot",
             "cmd": "spiderfoot",
+            "github_repo": "smicallef/spiderfoot",
             "description": "Automated OSINT framework",
             "installer": "install_spiderfoot"
         },
@@ -1914,12 +2040,14 @@
         {
             "name": "theHarvester",
             "cmd": "theHarvester",
+            "github_repo": "laramies/theHarvester",
             "description": "Email and domain OSINT",
             "installer": "install_theharvester"
         },
         {
             "name": "mailscout",
             "cmd": "mailscout",
+            "github_repo": "Goultarde/MailScout",
             "description": "IMAP and POP3 mailbox enumeration",
             "installer": "install_mailscout"
         }
