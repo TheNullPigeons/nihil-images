@@ -1,4 +1,3 @@
-rpcclient-ng -d $DOMAIN -u $USER -p $PASSWORD $TARGET
 rpcclient-ng -d $DOMAIN -u $USER -H $NTHASH $TARGET
 rpcclient-ng -k $TARGET
 rpcclient-ng -N $TARGET
@@ -6,3 +5,4 @@ rpcclient-ng -k -dc-ip $IP $TARGET
 rpcclient-ng -d $DOMAIN -u $USER -p $PASS -c enumdomains $TARGET
 rpcclient-ng -d $DOMAIN -u $USER -p $PASS -c enumdomusers $TARGET
 rpcclient-ng -d $DOMAIN -u $USER -p $PASS -c sweep $TARGET
+rpcclient-ng -d $DOMAIN -u $USER -p $PASSWORD $TARGET

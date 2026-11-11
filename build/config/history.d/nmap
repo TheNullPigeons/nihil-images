@@ -2,7 +2,6 @@ nmap -sn "$IP"/24
 nmap -sn "$CIDR" -oA discovery/hosts
 nmap -Pn -sS --top-ports 100 "$CIDR" -oA discovery/noping
 nmap 10.129.2.0/24 -sn -oA tnet
-nmap -sC -sV -O -T4 -oN scans/initial "$TARGET"
 nmap -p- -sS --min-rate 5000 "$TARGET" -oA scans/alltcp
 nmap -sC -sV -p"$PORTS" "$TARGET" -oA scans/targeted
 nmap -sU --top-ports 100 "$TARGET" -oA scans/udp
@@ -30,3 +29,4 @@ nmap --script http-ntlm-info --script-args http-ntlm-info.root=/ews/ -p 443 mx."
 nmap --script smb-enum-shares -p 139,445 -T4 -Pn "$TARGET"
 nmap --script ldap-search -p 389 "$TARGET"
 nmap -p 5900 --script realvnc-auth-bypass "$TARGET"
+nmap -sC -sV -O -T4 -oN scans/initial "$TARGET"

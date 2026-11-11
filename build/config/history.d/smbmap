@@ -1,4 +1,3 @@
-smbmap -H "$TARGET"
 smbmap -H "$TARGET" -u guest
 smbmap -H "$TARGET" -u "$USER" -p "$PASSWORD"
 smbmap -H "$IP"
@@ -6,3 +5,4 @@ smbmap -u "$USER" -p "$PASSWORD" -H "$IP"
 smbmap -H "$IP" -r "$SHARE"
 smbmap -H "$IP" --download "$SHARE\\$FILE"
 smbmap -H "$IP" --upload "$FILE" "$SHARE\\$FILE"
+smbmap -H "$TARGET"

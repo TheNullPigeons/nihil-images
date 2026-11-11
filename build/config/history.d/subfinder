@@ -1,5 +1,4 @@
 # subfinder — Passive subdomain enumeration
-subfinder -d $DOMAIN -silent
 subfinder -d $DOMAIN -o subdomains.txt
 subfinder -d $DOMAIN -all -silent
 subfinder -dL domains.txt -o subdomains.txt
@@ -12,3 +11,4 @@ subfinder -silent -d "$DOMAIN" | dnsx -silent -cname -resp
 subfinder -silent -d "$DOMAIN" | dnsx -silent -rcode noerror,servfail,refused
 subfinder -silent -d "$DOMAIN" | alterx -enrich | dnsx -a
 subfinder -d "$DOMAIN" -v
+subfinder -d $DOMAIN -silent

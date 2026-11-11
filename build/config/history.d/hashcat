@@ -1,3 +1,4 @@
+hashcat -a 0 -m 31300 hash.txt `fzf-wordlists`
 hashcat --hash-type 1000 --potfile-path "$DOMAIN".ntds.cracked "$DOMAIN".ntds --show --username
 hashcat --hash-type 16800 --attack-mode 0 dump_WPA-PMKID-PBKDF2.hashcat `fzf-wordlists`
 hashcat --hash-type 22000 --attack-mode 0 dump_WPA-PBKDF2-PMKID_EAPOL.hashcat `fzf-wordlists`
@@ -24,7 +25,6 @@ hashcat --stdout `fzf-wordlists` -r custom.rule | sort -u > mutated.txt
 hashcat --left -m 1000 hash.txt --potfile-path domain.pot
 hashcat --show -m 1000 hash.txt
 hashcat --force `fzf-wordlists` -r custom.rule --stdout | sort -u > mut.list
-hashcat -a 0 -m 1000 hash.txt `fzf-wordlists`             # NTLM
 hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/best66.rule
 hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/rockyou-30000.rule
 hashcat -a 0 -m 1000 hash.txt `fzf-wordlists` -r /usr/share/hashcat/rules/d3ad0ne.rule
@@ -44,4 +44,4 @@ hashcat -a 0 -m 16800 dump.hashcat `fzf-wordlists`
 hashcat -a 0 -m 17200 hash.txt `fzf-wordlists`
 hashcat -a 0 -m 18200 hash.txt `fzf-wordlists`
 hashcat -a 0 -m 22000 hash.hccapx `fzf-wordlists`
-hashcat -a 0 -m 31300 hash.txt `fzf-wordlists`
+hashcat -a 0 -m 1000 hash.txt `fzf-wordlists`             # NTLM

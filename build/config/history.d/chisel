@@ -1,4 +1,3 @@
-chisel server -p 8080 --reverse
 chisel client "$(fzf-ip)":8080 R:socks
 chisel client "$(fzf-ip)":8080 R:"$(fzf-port)":127.0.0.1:"$(fzf-port)"
 chisel server -p "$(fzf-port)" --socks5
@@ -10,3 +9,4 @@ chisel server -p "$(fzf-port)" --socks5 --reverse
 chisel client -v "$(fzf-ip)":1234 socks
 chisel client -v "$(fzf-ip)":1234 R:socks
 chisel client "$(fzf-ip)":"$(fzf-lport)" R:"$(fzf-port)":socks
+chisel server -p 8080 --reverse

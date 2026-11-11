@@ -1,2 +1,2 @@
-arjun -u http://"$TARGET"
 arjun -u http://"$TARGET" -m POST
+arjun -u http://"$TARGET"

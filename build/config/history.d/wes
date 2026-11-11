@@ -1,4 +1,4 @@
-wes --update
 wes "$SYSTEMINFO" -o "$OUTPUT".csv
+wes --update
 wes "$SYSTEMINFO" --impact "Elevation of Privilege"
 wes "$SYSTEMINFO" -e

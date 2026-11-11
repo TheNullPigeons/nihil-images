@@ -1,3 +1,11 @@
-kr brute https://"$TARGET"/subapp/ -A=aspx-210328:20000 -x 20 -j 1
-kr scan https://"$TARGET":8443/ -w /opt/tools/kiterunner/routes-large.kite -A=apiroutes-210228:20000 -x 10 --ignore-length=34
-kr scan hosts.txt -A=apiroutes-210328:20000 -x 5 -j 100 --fail-status-codes 400,401,404,403,501,502,426,411
+kr brute https://"$TARGET"/ -w /opt/lists/"$WORDLIST" -x 20 -e json,txt -D
+kr brute https://"$TARGET"/subapp/ -A=aspx-260227:20000 -x 20 -j 1
+kr scan https://"$TARGET":8443/ -w /opt/lists/kiterunner/routes-large.kite -x 10 --ignore-length=34
+kr scan hosts.txt -A=apiroutes-260227:20000 -x 5 -j 100 --fail-status-codes 400,401,404,403,501,502,426,411
+kr wordlist list
+kr wordlist save apiroutes-260227
+kr scan https://"$TARGET"/ -w /opt/lists/kiterunner/routes-large.kite -x 20 -j 1
+kr scan https://"$TARGET"/ -w /opt/lists/kiterunner/routes-large.kite -H "Authorization: Bearer $TOKEN" -x 10
+kr scan hosts.txt -w /opt/lists/kiterunner/routes-large.kite -o json > kiterunner.json
+kr brute https://"$TARGET"/ -w /opt/lists/kiterunner/routes-large.kite -x 20 -d 0
+kr scan https://"$TARGET"/ -A=apiroutes-260227:20000 --fail-status-codes 400,401,403,404

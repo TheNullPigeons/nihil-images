@@ -97,21 +97,6 @@ function install_mailscout() {
 # ---------------------------------------------------------------------------
 
 function install_mod_osint() {
-    colorecho "Installing OSINT red-team tools"
-
-    colorecho "  [pacman] OSINT tools:"
     install_python_lxml
-
-    colorecho "  [go] OSINT tools:"
-    install_amass
-
-    colorecho "  [pipx] OSINT tools:"
-    install_recon_ng
-    install_sherlock
-    install_spiderfoot
-    install_sublist3r
-    install_theharvester
-    install_mailscout
-
-    colorecho "OSINT tools installation finished"
+    install_selected_tools "mod_osint"
 }

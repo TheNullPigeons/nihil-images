@@ -1,5 +1,4 @@
 aws configure
-aws sts get-caller-identity
 aws s3 ls
 aws s3 ls s3://"$BUCKET"
 aws s3 ls s3://"$BUCKET" --no-sign-request
@@ -10,3 +9,4 @@ aws s3api get-bucket-policy --bucket "$BUCKET"
 aws iam list-users
 aws iam list-roles
 aws iam get-user
+aws sts get-caller-identity

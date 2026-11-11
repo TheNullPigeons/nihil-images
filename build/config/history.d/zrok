@@ -1,0 +1,6 @@
+zrok invite
+zrok status
+zrok enable
+zrok share private localhost:8080
+zrok access private "$TOKEN"
+zrok share public localhost:8080

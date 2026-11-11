@@ -1,5 +1,5 @@
+RsaCtfTool --convert_idrsa_pub --publickey HOME/.ssh/id_rsa.pub
 RsaCtfTool -n <modulus> -e <exponent> --uncipher <ciphertext>
-RsaCtfTool --publickey key.pub --uncipherfile flag.enc
 RsaCtfTool --publickey key.pub --private
 RsaCtfTool -n <modulus> -e <exponent> --attack all
 RsaCtfTool --attack partial_d --key $PEM_KEY
@@ -13,4 +13,4 @@ RsaCtfTool --publickey $PUBLIC_KEY --ecmdigits 25 --verbose --private
 RsaCtfTool --publickey $PUBLIC_KEY --private
 RsaCtfTool --publickey $PUBLIC_KEY --uncipherfile ./ciphered_file
 RsaCtfTool --createpub -n "$N" -e 65537
-RsaCtfTool --convert_idrsa_pub --publickey HOME/.ssh/id_rsa.pub
+RsaCtfTool --publickey key.pub --uncipherfile flag.enc

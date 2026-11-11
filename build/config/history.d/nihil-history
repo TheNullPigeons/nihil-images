@@ -1,6 +1,8 @@
+nhi tui
+nhit
+nhitf
 nhi engagement init "client-pentest"
 nhi engagement list
-nhi engagement use "client-pentest"
 nhi creds add -u "admin" -p "P@ssw0rd" -d "corp.local"
 nhi creds add -u "admin" --hash "aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0" -d "corp.local"
 nhi creds list
@@ -18,6 +20,4 @@ nhi env print --shell zsh
 nhi env export --shell zsh
 nhi export json -o report.json
 nhi export markdown -o report.md --include-secrets
-nhi tui
-nhit
-nhitf
+nhi engagement use "client-pentest"

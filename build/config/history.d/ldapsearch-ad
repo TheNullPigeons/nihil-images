@@ -1,5 +1,5 @@
-# ldapsearch-ad — LDAP enumeration wrapper for AD
 ldapsearch-ad -l $DC_IP -d $DOMAIN -u $USER -p $PASSWORD -t info
+# ldapsearch-ad — LDAP enumeration wrapper for AD
 ldapsearch-ad -l $DC_IP -d $DOMAIN -u $USER -p $PASSWORD -t search -s '(&(objectClass=user)(adminCount=1))'
 ldapsearch-ad -l $DC_IP -d $DOMAIN -u $USER -p $PASSWORD -t trusts
 ldapsearch-ad -l $DC_IP -d $DOMAIN -u $USER -p $PASSWORD -t pass-pols
@@ -9,7 +9,7 @@ ldapsearch-ad -l $DC_IP -d $DOMAIN -u $USER -p $PASSWORD -t kerberoast
 ldapsearch-ad -l $DC_IP -d $DOMAIN -u $USER -p $PASSWORD -t unconstrained
 ldapsearch-ad -l $DC_IP -d $DOMAIN -u $USER -p $PASSWORD -t search-spn
 ldapsearch-ad -l $DC_IP -d $DOMAIN -u $USER -p $PASSWORD -t gmsa
-ldapsearch-ad.py --server "$DC_HOST" --domain "$DOMAIN" --username "$USER" --password "$PASSWORD" --type all
 ldapsearch-ad.py --server "$DC_HOST" --type info
 ldapsearch-ad.py --server "$IP" --domain "$DOMAIN" --username "$USER" --password "$PASSWORD" --type all
 ldapsearch-ad.py --server "$IP" --type info
+ldapsearch-ad.py --server "$DC_HOST" --domain "$DOMAIN" --username "$USER" --password "$PASSWORD" --type all

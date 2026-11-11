@@ -8,7 +8,7 @@ nihil::import lib/common
 nihil::import lib/registry/pipx
 nihil::import lib/registry/pacman
 
-function install_core_tools() {
+function install_core_environment() {
     colorecho "Installing core CLI tools (editors, tmux, fzf, etc.)"
 
     install_pacman_tools \
@@ -39,7 +39,7 @@ function install_core_tools() {
     rlwrap \
     bind \
     xcb-util-cursor && \
-    pacman -Scc --noconfirm
+    pacman -Scc --noconfirm || return 1
 
     # D-Bus machine-id: GTK/Qt apps like thunar fail to start in a container
     # without it ("Cannot spawn a message bus without a machine-id").
@@ -114,4 +114,8 @@ function install_nihil_ntp() {
 
     add-history "nihil-ntp"
     colorecho "nihil-ntp installed"
+}
+
+function install_core_tools() {
+    install_selected_tools "core_tools"
 }

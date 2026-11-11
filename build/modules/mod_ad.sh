@@ -316,7 +316,11 @@ function install_osslsigncode() {
   fi
 
   colorecho "  → Installing osslsigncode from source (CMake build)"
-  install_pacman_tools cmake openssl curl || return 1
+  # Do NOT request the openssl package: base already ships openssl 3.x (with
+  # headers) that pacman itself depends on, and the repos carry openssl 4.x,
+  # so `pacman -S openssl` would force a major upgrade that breaks the
+  # libcrypto.so=3 / libssl.so=3 ABI needed by pacman, sudo, postgresql, rust…
+  install_pacman_tools cmake curl || return 1
 
   install_git_tool "osslsigncode" \
     "https://github.com/mtrojnar/osslsigncode.git" \
@@ -680,7 +684,11 @@ function install_relayinformer() {
 }
 
 function install_snaffler_ng() {
-  install_pipx_tool "snaffler" "snaffler-ng[socks]" "snaffler"
+  install_pipx_tool "snaffler" "snaffler-ng[socks]" "snaffler" || return 1
+  # snaffler-ng 1.6.0 uses Typer's click_type parameter, which was removed
+  # from newer Typer releases.
+  retry-command 3 "pin snaffler-ng Typer compatibility" \
+    pipx inject --force snaffler-ng "typer==0.15.4"
 }
 
 function install_soapy() {
@@ -833,114 +841,7 @@ function install_ntlm_theft() {
 # ---------------------------------------------------------------------------
 
 function install_mod_ad() {
-  colorecho "Installing Active Directory red-team tools"
-
-  colorecho "  [pipx] AD tools:"
-  install_bloodhound_python
-  install_bloodhound_ce_python
-  install_ldapdomaindump
-  install_adidnsdump
-  install_adcheck
-  install_certipy
-  install_bloodyad
-  install_bloodhound_import
-  install_bloodhound_quickwin
-  install_evil_winrm_py
-  install_evil_winrm
-  install_gpp_decrypt
-  install_netexec
-  install_impacket
-  install_bloodbash
-  install_adwsdomaindump
-  install_evenmonitor
-  install_gpoparser
-  install_pygoldengmsa
-  install_relayinformer
-  install_snaffler_ng
-  install_soapy
-  install_mitm6
-  install_aclpwn
-  install_abuseacl
-  install_lsassy
-  install_donpapi
-  install_coercer
-  install_pywhisker
-  install_enum4linux_ng
-  install_smbmap
-  install_smbclientng
-  install_sprayhound
-  install_ldapsearch_ad
-  install_pywerview
-  install_masky
-  install_manspider
-  install_smtp_user_enum
-  install_autobloody
-  install_certsync
-  install_goldencopy
-  install_keepwn
-  install_ldeep
-  install_gpoddity
-  install_asrepcatcher
-  install_ldaprelayscan
-  install_ldapwordlistharvester
-  install_passthecert
-  install_pcredz
-  install_pygpoabuse
-  install_sccmhunter
-  install_teamsphisher
-  install_crackhound
-
-  colorecho "  [pipx-git] AD tools:"
-  install_pre2k
-  install_powerview_py
-  install_tdo_dump
-  install_tombstone
-
-  colorecho "  [pacman] AD tools:"
-  install_krb5
-  install_openldap
-  install_cyrus_sasl_gssapi
-  install_smbclient
-  install_python_pcapy
-  install_nbtscan
-
-  colorecho "  [source-build] AD tools:"
-  install_bloodhound_ce_desktop
-  install_bloodhound_legacy_desktop
-  install_osslsigncode
-
-  colorecho "  [AUR] AD tools:"
-  install_responder
-
-  colorecho "  [cargo] AD tools:"
-  install_rusthound_ce
-  install_rusthound
-
-  colorecho "  [go] AD tools:"
-  install_kerbrute
-  install_gofenrir
-  install_rpcclient-ng
-  install_windapsearch
-  install_godap
-  install_goexec
-  install_gosecretsdump
-  install_krbjack
-
-  colorecho "  [git] AD tools:"
-  install_krbrelayx
-  install_gmsadumper
-  install_finduncommonshares
-  install_targetedkerberoast
-  install_pkinittools
-  install_nopac
-  install_petitpotam
-  install_zerologon
-  install_shadowcoerce
-  install_dfscoerce
-  install_ntlm_theft
-
-  colorecho "  [download] AD tools:"
-  install_powershell
-
-  colorecho "Active Directory tools installation finished"
+    install_cyrus_sasl_gssapi
+    install_python_pcapy
+    install_selected_tools "mod_ad"
 }

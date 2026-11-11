@@ -1,5 +1,4 @@
 # nuclei — Template-based vulnerability scanner
-nuclei -u https://$TARGET -as
 nuclei -u https://$TARGET -t cves/
 nuclei -u https://$TARGET -t exposures/
 nuclei -u https://$TARGET -t misconfiguration/
@@ -9,3 +8,4 @@ nuclei -u https://$TARGET -t http/technologies/
 nuclei -update-templates
 nuclei -u http://$TARGET
 nuclei -u http://"$TARGET" -t react2shell.yaml
+nuclei -u https://$TARGET -as

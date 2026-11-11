@@ -103,18 +103,6 @@ function install_username_anarchy() {
 # ---------------------------------------------------------------------------
 
 function install_mod_wordlists() {
-    colorecho "Installing wordlists in /opt/lists"
-
     _ensure_lists_dir
-
-    colorecho "  [git] Wordlists:"
-    install_seclists
-    install_fuzz_txt
-
-    install_cewl
-    install_crunch
-    install_cupp
-    install_username_anarchy
-
-    colorecho "Wordlists installation finished"
+    install_selected_tools "mod_wordlists"
 }

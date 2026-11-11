@@ -45,7 +45,7 @@ function package_base() {
     tree \
     && \
     pacman -Syu --noconfirm && \
-    pacman -Scc --noconfirm
+    pacman -Scc --noconfirm || return 1
     
     colorecho "Adding Nihil repository to pacman.conf"
     # Ajouter le dépôt nihil à pacman.conf
@@ -61,10 +61,34 @@ function package_base() {
 
     # Ajouter Chaotic-AUR repository (méthode officielle)
     colorecho "Adding Chaotic-AUR repository"
+    # Third-party keyrings need the local signing key, absent from fresh images.
+    pacman-key --init || return 1
+    pacman-key --populate archlinux || return 1
     if ! grep -q "^\[chaotic-aur\]" /etc/pacman.conf; then
-        # Récupérer et signer la clé GPG principale (méthode officielle)
-        pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com 2>/dev/null || true
-        pacman-key --lsign-key 3056513887B78AEB 2>/dev/null || true
+        # Fetch the upstream export over HTTPS and verify its full primary fingerprint.
+        local chaotic_key fingerprint
+        local expected_fingerprint="EF925EA60F33D0CB85C44AD13056513887B78AEB"
+        chaotic_key=$(mktemp) || return 1
+        if ! retry-command 3 "download Chaotic-AUR signing key" \
+            curl --fail --show-error --location --connect-timeout 10 --max-time 60 \
+            --output "$chaotic_key" \
+            'https://raw.githubusercontent.com/chaotic-aur/keyring/master/master/pedrohlc.asc'; then
+            rm -f "$chaotic_key"
+            return 1
+        fi
+        fingerprint=$(gpg --batch --with-colons --show-keys "$chaotic_key" | \
+            awk -F: '$1 == "pub" { primary = 1 } primary && $1 == "fpr" { print $10; primary = 0 }')
+        if [[ "$fingerprint" != "$expected_fingerprint" ]]; then
+            colorecho "  ✗ Unexpected Chaotic-AUR signing-key fingerprint: $fingerprint"
+            rm -f "$chaotic_key"
+            return 1
+        fi
+        if ! pacman-key --add "$chaotic_key"; then
+            rm -f "$chaotic_key"
+            return 1
+        fi
+        rm -f "$chaotic_key"
+        pacman-key --lsign-key "$expected_fingerprint" || return 1
         
         # Installer chaotic-keyring et chaotic-mirrorlist depuis le CDN officiel
         colorecho "Installing chaotic-keyring and chaotic-mirrorlist"
@@ -74,7 +98,8 @@ function package_base() {
         # Télécharger et installer chaotic-keyring
         cd /tmp
         if download-retry 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' chaotic-keyring.pkg.tar.zst; then
-            if pacman -U --noconfirm chaotic-keyring.pkg.tar.zst 2>/dev/null; then
+            if pacman -U --noconfirm chaotic-keyring.pkg.tar.zst; then
+                pacman-key --populate chaotic || return 1
                 keyring_ok=1
                 colorecho "chaotic-keyring installed successfully"
             else
@@ -88,7 +113,7 @@ function package_base() {
         # Télécharger et installer chaotic-mirrorlist
         if [ "$keyring_ok" -eq 1 ]; then
             if download-retry 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' chaotic-mirrorlist.pkg.tar.zst; then
-                if pacman -U --noconfirm chaotic-mirrorlist.pkg.tar.zst 2>/dev/null; then
+                if pacman -U --noconfirm chaotic-mirrorlist.pkg.tar.zst; then
                     mirrorlist_ok=1
                     colorecho "chaotic-mirrorlist installed successfully"
                 else
@@ -113,6 +138,7 @@ function package_base() {
         fi
     else
         colorecho "Chaotic-AUR repository already exists in pacman.conf"
+        pacman-key --populate chaotic || return 1
     fi
 
     mkdir -p /opt/tools/bin
@@ -254,24 +280,6 @@ function package_base() {
     colorecho "Synchronizing Nihil repository"
     pacman -Sy --noconfirm
 
-    
-    # Install only packages enabled for this image.
-    colorecho "Listing enabled packages in Nihil repository"
-    # Retrieve the package list from the Nihil repository.
-    nihil_packages=$(pacman -Sl nihil | cut -d' ' -f2)
-    
-    if [ -n "$nihil_packages" ]; then
-        package_list=$(tool_selection_filter_packages $nihil_packages)
-        if [ -n "$package_list" ]; then
-            colorecho "Installing enabled Nihil packages: $package_list"
-            pacman -S --noconfirm --needed $package_list || colorecho "Warning: Failed to install some packages"
-        else
-            colorecho "No enabled Nihil packages found"
-        fi
-    else
-        colorecho "No packages found in Nihil repository"
-    fi
-    
     # Nettoyage final du cache pacman pour réduire la taille
     colorecho "Cleaning pacman cache"
     pacman -Scc --noconfirm

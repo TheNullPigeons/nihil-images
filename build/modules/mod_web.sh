@@ -66,7 +66,12 @@ function install_wafw00f() {
 }
 
 function install_badsecrets() {
-    install_pipx_tool "badsecrets" "badsecrets"
+    # badsecrets depends on yara-python, which has no wheel for the base image's
+    # Python 3.14 and fails to build from sdist. Install Arch's python-yara
+    # (built for the current interpreter) and let the pipx venv reuse it via
+    # --system-site-packages instead of compiling yara-python.
+    install_pacman_tool "python-yara"
+    install_pipx_tool "badsecrets" "badsecrets" "" "--system-site-packages"
 }
 
 function install_gopherus() {
@@ -108,7 +113,17 @@ function install_feroxbuster() {
 }
 
 function install_testssl() {
-    install_download_tool "testssl.sh" "https://raw.githubusercontent.com/drwetter/testssl.sh/v3.2.2/testssl.sh"
+    # Clone the full repo (not just the script): testssl.sh >=3.2 needs its
+    # etc/ data files (cipher mapping, TLS data) found via the script's real
+    # path, so the git wrapper lets it locate TESTSSL_INSTALL_DIR on its own.
+    # Default branch is 3.3dev; releases/latest resolves to the newest stable
+    # tag (prerelease snapshots excluded), so pin that instead of a fixed one.
+    local tag
+    tag=$(retry-command 3 "resolve testssl latest tag" curl -Ls -o /dev/null -w '%{url_effective}' \
+        "https://github.com/testssl/testssl.sh/releases/latest" | sed 's:.*/::' || true)
+    [ -n "$tag" ] || tag="v3.2.5"   # fallback if GitHub is unreachable at build time
+    install_git_tool "testssl.sh" "https://github.com/testssl/testssl.sh.git" "testssl.sh" \
+        "git fetch --depth 1 origin tag $tag && git checkout -q $tag"
 }
 
 # ---------------------------------------------------------------------------
@@ -206,6 +221,37 @@ function install_nosqlmap() {
     /usr/local/share/nosqlmap/venv/bin/python -m fissix -w -n /usr/local/share/nosqlmap/*.py
 }
 
+function install_odat() {
+    # Standalone release: bundles Python + Oracle Instant Client (no cx_Oracle/pip pain).
+    if command -v odat >/dev/null 2>&1; then
+        colorecho "  ✓ odat already installed"
+        add-history "odat"
+        return 0
+    fi
+    [ "$(uname -m)" = "x86_64" ] || { colorecho "  ✗ Warning: odat release is x86_64 only"; return 0; }
+    local tag
+    tag=$(retry-command 3 "resolve odat latest tag" curl -Ls -o /dev/null -w '%{url_effective}' \
+        "https://github.com/quentinhardy/odat/releases/latest" | sed 's:.*/::' || true)
+    [ -n "$tag" ] || { colorecho "  ✗ Warning: Failed to resolve odat latest tag"; return 0; }
+    local url="https://github.com/quentinhardy/odat/releases/download/${tag}/odat-linux-libc2.17-x86_64.tar.gz"
+    local archive="/tmp/odat.tar.gz"
+    rm -rf /opt/tools/odat
+    mkdir -p /opt/tools/odat
+    if ! download-retry "$url" "$archive" || ! tar -xzf "$archive" -C /opt/tools/odat --strip-components=1 2>/dev/null; then
+        rm -f "$archive"; rm -rf /opt/tools/odat
+        colorecho "  ✗ Warning: Failed to download/extract odat"
+        return 0
+    fi
+    rm -f "$archive"
+    printf '%s\n' '#!/bin/sh' \
+        'cd /opt/tools/odat/odat-libc2.17-x86_64 || exit 1' \
+        'exec ./odat-libc2.17-x86_64 "$@"' > /opt/tools/bin/odat
+    chmod +x /opt/tools/bin/odat
+    ln -sf /opt/tools/bin/odat /usr/local/bin/odat
+    add-history "odat"
+    colorecho "  ✓ odat installed (${tag})"
+}
+
 function install_graphqlmap() {
     install_pipx_tool_git "graphqlmap" "https://github.com/swisskyrepo/GraphQLmap.git"
     # GraphQLmap does not declare requests and urllib3 in its package metadata.
@@ -254,6 +300,33 @@ function install_kiterunner() {
         "kr kiterunner" \
         "" \
         "1.0.2"
+
+    local wordlist_dir="/opt/lists/kiterunner"
+    local wordlist_path="${wordlist_dir}/routes-large.kite"
+    if [ ! -f "$wordlist_path" ]; then
+        local wordlist_archive="/tmp/routes-large.kite.tar.gz"
+        mkdir -p "$wordlist_dir"
+        download-retry \
+            "https://wordlists-cdn.assetnote.io/data/kiterunner/routes-large.kite.tar.gz" \
+            "$wordlist_archive" || {
+            rm -f "$wordlist_archive"
+            colorecho "  ✗ Warning: Failed to download Kiterunner wordlist"
+            return 1
+        }
+        tar -xzf "$wordlist_archive" -C "$wordlist_dir" || {
+            rm -f "$wordlist_archive"
+            colorecho "  ✗ Warning: Failed to extract Kiterunner wordlist"
+            return 1
+        }
+        rm -f "$wordlist_archive"
+        [ -s "$wordlist_path" ] || {
+            colorecho "  ✗ Warning: Kiterunner wordlist was not found after extraction"
+            return 1
+        }
+    fi
+
+    mkdir -p /root/.oh-my-zsh/custom/completions
+    kr completion zsh | sed 's/_kite/_kr/g; s/kite/kr/g' > /root/.oh-my-zsh/custom/completions/_kr
 }
 
 function install_httpie() {
@@ -495,8 +568,20 @@ function install_burpsuite() {
     install_pacman_tool "ttf-dejavu"
     install_pacman_tool "freetype2"
     local burp_dir="/opt/tools/BurpSuiteCommunity"
+    local latest_version
+    latest_version=$(curl -fsSL --retry 3 "https://portswigger.net/burp/releases" \
+        | grep -oE 'professional-community-[0-9]+-[0-9]+(-[0-9]+)?' \
+        | head -1 \
+        | sed 's/^professional-community-//; s/-/./g') || {
+        colorecho "  ✗ Failed to determine the latest Burp Suite version"
+        return 1
+    }
+    [[ -n "$latest_version" ]] || {
+        colorecho "  ✗ Burp Suite latest version was empty"
+        return 1
+    }
     mkdir -p "$burp_dir"
-    download-retry "https://portswigger.net/burp/releases/download?product=community&type=Jar" \
+    download-retry "https://portswigger.net/burp/releases/startdownload?product=desktop&version=${latest_version}&type=jar" \
         "${burp_dir}/BurpSuiteCommunity.jar"
     file "${burp_dir}/BurpSuiteCommunity.jar" | grep -q "Java archive" \
         || { colorecho "  ✗ Downloaded file is not a valid JAR"; exit 1; }
@@ -516,12 +601,33 @@ function install_burpsuite() {
     printf '#!/bin/bash\nexec %s -Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true -jar -Xmx4g /opt/tools/BurpSuiteCommunity/BurpSuiteCommunity.jar "$@"\n' "$java_bin" \
         > /opt/tools/bin/burpsuite
     chmod +x /opt/tools/bin/burpsuite
+    if unzip -p "${burp_dir}/BurpSuiteCommunity.jar" resources/Browser/ChromiumExtension/images/BurpSuite-Container-128.png > /tmp/burpsuite.png \
+        && file /tmp/burpsuite.png | grep -q 'PNG image data'; then
+        install -Dm644 /tmp/burpsuite.png /usr/share/icons/hicolor/128x128/apps/burpsuite.png
+    else
+        colorecho "  ✗ Warning: Burp Suite icon was not found in its JAR"
+    fi
+    rm -f /tmp/burpsuite.png
+    cat > /usr/share/applications/burpsuite.desktop <<'DESKTOP'
+[Desktop Entry]
+Type=Application
+Name=Burp Suite Community
+Exec=burpsuite
+Icon=/usr/share/icons/hicolor/128x128/apps/burpsuite.png
+Terminal=false
+Categories=Development;
+StartupWMClass=burp-StartBurp
+DESKTOP
     add-history "burpsuite"
     colorecho "  ✓ Burp Suite Community installed at ${burp_dir}"
 }
 
 function install_bbot() {
-    install_pipx_tool "bbot" "bbot"
+    # bbot hard-depends on yara-python, which has no wheel for the base image's
+    # Python 3.14 and fails to build from sdist. Reuse Arch's python-yara via
+    # --system-site-packages instead of compiling it (same as badsecrets).
+    install_pacman_tool "python-yara"
+    install_pipx_tool "bbot" "bbot" "" "--system-site-packages"
 }
 
 function install_byp4xx() {
@@ -553,15 +659,6 @@ function install_joomscan() {
 
 function install_linkfinder() {
     install_git_tool "linkfinder" "https://github.com/GerbenJavado/LinkFinder.git" "linkfinder.py"
-}
-
-function install_naabu() {
-    install_go_tool "github.com/projectdiscovery/naabu/v2/cmd/naabu@latest"
-}
-
-function install_patator() {
-    # setuptools>=82 removed pkg_resources which patator imports at runtime
-    install_git_tool_venv "patator" "https://github.com/lanjelot/patator.git" "src/patator/patator.py" "setuptools<82 ldap3 paramiko impacket dnspython pyotp requests" "yes"
 }
 
 function install_phpggc() {
@@ -638,88 +735,5 @@ function install_ysoserial() {
 # ---------------------------------------------------------------------------
 
 function install_mod_web() {
-    colorecho "Installing Web red-team tools"
-
-    colorecho "  [pacman] Web scanners / fuzzers:"
-    install_sqlmap
-    install_gobuster
-    install_nikto
-    install_httpie
-    install_swaks
-    install_mail
-    install_sslscan
-
-    colorecho "  [pipx] Web fuzzers / scanners:"
-    install_wfuzz
-    install_webfuzz
-    install_wenum
-    install_arjun
-    install_wafw00f
-    install_badsecrets
-    install_gopherus
-    install_droopescan
-    install_cmsmap
-    install_dirsearch
-    install_commix
-    install_glpwnme
-    install_mitmproxy
-    install_bbot
-    install_git_dumper
-    install_httpmethods
-    install_linkfinder
-    install_patator
-    install_updog
-    install_wsgidav
-
-    colorecho "  [pipx-git] Web scanners:"
-    install_graphqlmap
-    install_graphw00f
-    install_graphql_cop
-
-    colorecho "  [go] Web scanners / discovery:"
-    install_nuclei
-    install_httpx_pd
-    install_subfinder
-    install_dnsx
-    install_alterx
-    install_katana
-    install_ffuf
-    install_hakrawler
-    install_gau
-    install_waybackurls
-    install_crlfuzz
-    install_byp4xx
-    install_gowitness
-    install_naabu
-
-    colorecho "  [gem] CMS scanners:"
-    install_wpscan
-    install_wpprobe
-
-    colorecho "  [git] Scripts (clone + requirements):"
-    install_ssrfmap
-    install_jwt_tool
-    install_xsstrike
-    install_tplmap
-    install_nosqlmap
-    install_corsy
-    install_whatweb
-    install_eyewitness
-    install_joomscan
-    install_phpggc
-    install_smuggler
-    install_xxeinjector
-
-    colorecho "  [cargo] Web fuzzer:"
-    install_feroxbuster
-
-    colorecho "  [curl/download] Web tools:"
-    install_testssl
-    install_kiterunner
-    install_caido
-    install_burpsuite
-
-    install_ysoserial
-
-    colorecho "Web tools installation finished"
+    install_selected_tools "mod_web"
 }

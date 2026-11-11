@@ -3,6 +3,7 @@
 # Each tool has its own install_$TOOL function for easier maintenance.
 
 nihil::import lib/common
+nihil::import modules/mod_credential
 nihil::import lib/registry/pipx
 nihil::import lib/registry/git
 
@@ -74,10 +75,6 @@ EOF
     colorecho "  ✓ RsaCtfTool installed"
 }
 
-function install_xortool() {
-    install_pipx_tool "xortool" "xortool"
-}
-
 function install_z3_solver() {
     colorecho "  → Installing z3-solver"
     if ! python3 -c "import z3" 2>/dev/null; then
@@ -121,18 +118,5 @@ function install_hashid() {
 # ---------------------------------------------------------------------------
 
 function install_mod_crypto() {
-    colorecho "Installing Crypto red-team tools"
-
-    colorecho "  [git] Crypto tools:"
-    install_rsactftool
-
-    colorecho "  [pipx] Crypto tools:"
-    install_xortool
-    install_hashid
-
-    colorecho "  [pip] Crypto libraries:"
-    install_z3_solver
-    install_pycryptodome
-
-    colorecho "Crypto tools installation finished"
+    install_selected_tools "mod_crypto"
 }

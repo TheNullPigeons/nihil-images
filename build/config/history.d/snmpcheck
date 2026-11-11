@@ -1,0 +1,2 @@
+snmpcheck -c "$COMMUNITY" -v 2c "$IP"
+snmpcheck "$IP"

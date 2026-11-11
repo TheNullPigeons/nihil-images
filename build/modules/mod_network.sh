@@ -7,6 +7,7 @@ nihil::import lib/registry/pipx
 nihil::import lib/registry/cargo
 nihil::import lib/registry/pacman
 nihil::import lib/registry/aur
+nihil::import lib/registry/curl
 nihil::import lib/registry/go
 nihil::import lib/registry/git
 
@@ -16,6 +17,10 @@ nihil::import lib/registry/git
 
 function install_nmap() {
     install_pacman_tool "nmap"
+}
+
+function install_naabu() {
+    install_go_tool "github.com/projectdiscovery/naabu/v2/cmd/naabu@latest"
 }
 
 function install_netcat() {
@@ -170,6 +175,25 @@ function install_chisel() {
     install_go_tool "github.com/jpillora/chisel@latest"
 }
 
+function install_zrok() {
+    local tag version
+    if command -v zrok2 >/dev/null 2>&1; then
+        ln -sf "$(command -v zrok2)" "${INSTALL_DIR:-/usr/local/bin}/zrok"
+        add-history "zrok"
+        return 0
+    fi
+    tag=$(retry-command 3 "resolve zrok latest tag" curl -Ls -o /dev/null -w '%{url_effective}' "https://github.com/openziti/zrok/releases/latest" | sed 's:.*/::' || true)
+    if [ -z "$tag" ]; then
+        colorecho "  ✗ Warning: Failed to resolve zrok latest tag"
+        return 1
+    fi
+    version="${tag#v}"
+    install_tar_tool "zrok" \
+        "https://github.com/openziti/zrok/releases/download/v{version}/zrok_{version}_linux_{arch}.tar.gz" \
+        "/opt/tools/zrok/{version}" "zrok2" "zrok2 zrok" \
+        "x86_64:amd64 aarch64:arm64 armv7l:armv7" "$version"
+}
+
 function install_masscan() {
     install_pacman_tool "masscan"
 }
@@ -211,7 +235,9 @@ function install_tcpdump() {
 }
 
 function install_seth() {
-    install_pacman_tools "dsniff" "iptables" "tcpdump" "openssl" || return 1
+    # openssl omitted on purpose: base already provides the 3.x binary Seth
+    # calls at runtime, and `pacman -S openssl` would pull the breaking 4.x.
+    install_pacman_tools "dsniff" "iptables" "tcpdump" || return 1
     install_git_tool_symlink "/usr/local/share/seth" \
         "https://github.com/SySS-Research/Seth.git" \
         "seth.sh" "seth"
@@ -248,10 +274,26 @@ function install_snmpwalk() {
     else
         install_pacman_tool "net-snmp"
     fi
-    # snmpcheck ships with net-snmp and imports both optional modules at startup.
-    install_pacman_tools "perl-tk" "perl-term-readkey"
+
     add-aliases "snmpwalk"
     add-history "snmpwalk"
+}
+
+function install_snmpcheck() {
+    if ! command -v snmpwalk >/dev/null 2>&1; then
+        install_pacman_tool "net-snmp"
+    fi
+
+    if pipx list 2>/dev/null | grep -qE '^[[:space:]]+package snmpcheck '; then
+        local pipx_bin_dir
+        pipx_bin_dir="$(pipx environment --value PIPX_BIN_DIR 2>/dev/null || printf '%s\n' /root/.local/bin)"
+        ln -sf "$pipx_bin_dir/snmpcheck" /usr/bin/snmpcheck || return 1
+        add-history "snmpcheck"
+        return 0
+    fi
+
+    rm -f /usr/bin/snmpcheck /usr/sbin/snmpcheck
+    install_pipx_tool_git "snmpcheck" "https://github.com/Goultarde/snmpcheck.py.git" || return 1
 }
 
 function install_onesixtyone() {
@@ -315,51 +357,6 @@ function install_jmxterm() {
 # ---------------------------------------------------------------------------
 
 function install_mod_network() {
-    colorecho "Installing Network red-team tools"
-
-    colorecho "  [pacman] Network tools:"
-    install_nmap
-    install_netcat
-    install_socat
-    install_wireshark_cli
-    install_wireshark
-    install_bettercap
-    install_fping
-#   install_bettercap_ui
-
-    colorecho "  [go] Network tools:"
-    install_udpx
-
-    colorecho "  [pipx] Network tools:"
-    install_zone_dnsenum
-    install_dnsrecon
-
-    colorecho "  [bin] Tunneling tools:"
-    install_ligolo_ng
-    install_ngrok
-
-    install_chisel
-    install_masscan
-    install_netdiscover
-    install_nmap_parse_output
-    install_proxychains
-    install_rustscan
-    install_ssh_audit
-    install_sshuttle
-    install_tcpdump
-    install_seth
-    install_wifite2
-    install_wifit3
-    install_xfreerdp
-    install_rdesktop
-    install_nfs_utils
-    install_dnsenum
-    install_snmpwalk
-    install_onesixtyone
-    install_beanshooter
-    install_jmxterm
-
+    install_selected_tools "mod_network"
     add-aliases "network"
-
-    colorecho "Network tools installation finished"
 }

@@ -1,4 +1,3 @@
-smbclient --list "$TARGET"
 smbclient --user "$USER" --password "$NT_HASH" --pw-nt-hash --list "$TARGET"
 smbclient --user "$USER" --password "$NT_HASH" --pw-nt-hash "//$TARGET/SYSVOL"
 smbclient --user "$USER" --password "$PASSWORD" --list "$TARGET"
@@ -12,3 +11,4 @@ smbclient -N -L //"$IP"/
 smbclient -L //"$IP"/ -U "$USER%$PASSWORD"
 smbclient //"$IP"/"$SHARE" -U "$USER%$PASSWORD"
 smbclient //"$IP"/"$SHARE" -U "$USER%$PASSWORD" -c "put $FILE"
+smbclient --list "$TARGET"

@@ -29,8 +29,10 @@ nihil::import lib/healthcheck
 nihil::import modules/post_install
 nihil::import lib/tool_selection
 
-# Customization branches may disable individual installers.
-tool_selection_prepare
+# package_base bootstraps Python; it does not install selected tools.
+if [[ "${1:-}" != package_base ]]; then
+    tool_selection_prepare
+fi
 
 if [[ $EUID -ne 0 ]]; then
     criticalecho "This script must be run as root"
@@ -41,14 +43,10 @@ else
                 colorecho "Starting build step: $1"
                 ;;
         esac
-        if [[ "${NIHIL_AUDIT:-0}" == "1" ]]; then
-            # Audit mode: run in a subshell so exit 1 / set -e failures are absorbed.
-            # The build always completes; the healthcheck output reveals all missing tools.
-            ("$@") || true
-            exit 0
-        else
-            "$@"
+        if [[ "$1" == package_base ]]; then
+            : > "${NIHIL_BUILD}/config/build-failures.log"
         fi
+        "$@"
     else
         echo "Unknown function: '$1'" >&2
         exit 1

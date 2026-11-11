@@ -123,25 +123,5 @@ function install_jadx() {
 # ---------------------------------------------------------------------------
 
 function install_mod_forensics() {
-    colorecho "Installing Forensics / Steganography red-team tools"
-
-    colorecho "  [pipx] Forensics tools:"
-    install_volatility3
-
-    colorecho "  [pacman] Forensics tools:"
-    install_exiftool
-
-    colorecho "  [AUR] Forensics / Stego tools:"
-    install_foremost
-    install_steghide
-    install_openstego
-    install_jadx
-
-    colorecho "  [gem] Stego tools:"
-    install_zsteg
-
-    colorecho "  [git] Stego tools:"
-    install_stegseek
-
-    colorecho "Forensics / Steganography tools installation finished"
+    install_selected_tools "mod_forensics"
 }

@@ -12,6 +12,7 @@ function healthcheck() {
     local total=0
     local passed=0
     local failed=0
+    local core_failed=0
     local failed_tools=()
 
     if [ ! -f "$TOOLS_JSON" ]; then
@@ -71,11 +72,14 @@ for tool in module:
                     passed=$((passed + 1))
                 elif [ "$optional" = "1" ]; then
                     echo "  - $name — optional path not found: $check_path"
+                    record_build_failure "Optional tool missing: $module/$name (path: $check_path)"
                 else
                     total=$((total + 1))
                     echo "  ✗ $name — path not found: $check_path"
                     failed=$((failed + 1))
                     failed_tools+=("$name")
+                    if [[ "$module" == core_tools ]]; then core_failed=1; fi
+                    record_build_failure "Missing tool: $module/$name (path: $check_path)"
                 fi
             elif [ -n "$cmd" ]; then
                 # Check by command
@@ -85,11 +89,14 @@ for tool in module:
                     passed=$((passed + 1))
                 elif [ "$optional" = "1" ]; then
                     echo "  - $name — optional command not found: $cmd"
+                    record_build_failure "Optional tool missing: $module/$name (command: $cmd)"
                 else
                     total=$((total + 1))
                     echo "  ✗ $name — command not found: $cmd"
                     failed=$((failed + 1))
                     failed_tools+=("$name")
+                    if [[ "$module" == core_tools ]]; then core_failed=1; fi
+                    record_build_failure "Missing tool: $module/$name (command: $cmd)"
                 fi
             fi
         done <<< "$tools_data"
@@ -99,12 +106,22 @@ for tool in module:
 
     colorecho "Health check results: $passed/$total passed, $failed failed"
 
+    show_build_failures
+
     if [ $failed -gt 0 ]; then
         colorecho "Failed tools: ${failed_tools[*]}"
+        if [[ "${NIHIL_AUDIT:-0}" == 1 && "$core_failed" == 0 ]]; then
+            echo "[NIHIL AUDIT] Continuing with missing tools; review the build report."
+            return 0
+        fi
         return 1
     fi
 
-    colorecho "All tools OK"
+    if [[ "${NIHIL_AUDIT:-0}" == 1 && -s "${NIHIL_BUILD}/config/build-failures.log" ]]; then
+        echo "[NIHIL AUDIT] Healthcheck complete; review the tool failure report."
+    else
+        colorecho "All tools OK"
+    fi
     return 0
 }
 
@@ -114,6 +131,8 @@ function filter_tools_json() {
     local modules=("$@")
     python3 - "$TOOLS_JSON" "${modules[@]}" << 'PYEOF'
 import json, sys
+from pathlib import Path
+
 path = sys.argv[1]
 keep = set(sys.argv[2:])
 with open(path) as f:
@@ -122,6 +141,15 @@ filtered = {k: v for k, v in data.items() if k in keep}
 with open(path, 'w') as f:
     json.dump(filtered, f, indent=4)
     f.write('\n')
+# The next build step reads the filtered catalogue in a new process.
+selection_path = Path(path).with_name('tool-selection.json')
+if selection_path.exists():
+    selection = json.loads(selection_path.read_text())
+    known = {t['name'].lower().replace('_', '-') for tools in filtered.values() for t in tools}
+    for field in ('enabled_tools', 'disabled_tools'):
+        if field in selection:
+            selection[field] = [n for n in selection[field] if n.lower().replace('_', '-') in known]
+    selection_path.write_text(json.dumps(selection, indent=4) + '\n')
 PYEOF
     colorecho "tools.json filtered to: ${modules[*]}"
 }
