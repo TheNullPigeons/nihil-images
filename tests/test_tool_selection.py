@@ -189,7 +189,7 @@ if tool_selection_enabled_name nmap; then exit 1; fi
         # Module preparation is stubbed too: this test checks actual dispatch, not package installs.
         stubs += '\ninstall_cyrus_sasl_gssapi() { :; }\ninstall_python_pcapy() { :; }\n'
         stubs += 'install_python_lxml() { :; }\n_ensure_lists_dir() { :; }\nadd-aliases() { :; }\n'
-        for variant in ('Dockerfile', 'Dockerfile.ad', 'Dockerfile.web', 'Dockerfile.defender'):
+        for variant in ('Dockerfile', 'Dockerfile.ad', 'Dockerfile.web', 'Dockerfile.defender', 'Dockerfile.mobile'):
             modules = re.findall(r'entrypoint.sh (install_core_tools|install_mod_\w+)',
                                  (BUILD.parent / variant).read_text())
             result = self.run_shell(None, stubs + '\n' + '\n'.join(modules))

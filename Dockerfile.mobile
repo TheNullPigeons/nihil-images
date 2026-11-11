@@ -1,0 +1,37 @@
+# Author: Nihil Project
+# Carrier — mobile (Android / iOS) application pentest.
+
+FROM archlinux:latest
+
+ARG TAG="local"
+ARG VERSION="local"
+ARG BUILD_DATE="n/a"
+ARG NIHIL_AUDIT=0
+ENV NIHIL_AUDIT=${NIHIL_AUDIT}
+
+LABEL org.nihil.tag="${TAG}"
+LABEL org.nihil.version="${VERSION}"
+LABEL org.nihil.build_date="${BUILD_DATE}"
+LABEL org.nihil.app="Nihil"
+LABEL org.nihil.variant="mobile"
+
+COPY build /opt/nihil/build/
+COPY runtime /opt/nihil/runtime/
+RUN chmod +x /opt/nihil/runtime/entrypoint.sh /opt/nihil/runtime/load_my_resources.sh /opt/nihil/runtime/browser_ui.sh
+
+WORKDIR /opt/nihil/build
+SHELL ["/bin/bash", "-c"]
+
+RUN chmod +x entrypoint.sh && \
+    ./entrypoint.sh package_base && \
+    ./entrypoint.sh install_core_tools && \
+    ./entrypoint.sh install_mod_mobile && \
+    ./entrypoint.sh install_mod_network && \
+    ./entrypoint.sh install_mod_wordlists && \
+    ./entrypoint.sh healthcheck core_tools mod_mobile mod_network mod_wordlists && \
+    ./entrypoint.sh filter_tools_json core_tools mod_mobile mod_network mod_wordlists && \
+    ./entrypoint.sh post_install
+
+WORKDIR /workspace
+SHELL ["/usr/bin/zsh", "-c"]
+ENTRYPOINT ["/opt/nihil/runtime/entrypoint.sh"]

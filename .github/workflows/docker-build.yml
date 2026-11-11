@@ -324,6 +324,79 @@ jobs:
             BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
             NIHIL_AUDIT=${{ inputs.allow_tool_failures && '1' || '0' }}
 
+  build-mobile:
+    if: (github.event_name != 'push' || github.ref != 'refs/heads/main') && (github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'mobile')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref }}
+
+      - name: Test tool selection
+        run: python3 -B -m unittest discover -s tests -v
+
+      - name: Resolve image source revision
+        id: source
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Free up disk space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: false
+          swap-storage: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/mobile
+          flavor: latest=false
+          tags: |
+            type=ref,event=branch,enable=${{ github.event_name != 'repository_dispatch' }}
+            type=raw,value=dev,enable=${{ github.event_name == 'repository_dispatch' }}
+            type=raw,value=dev-${{ steps.source.outputs.sha }},enable=${{ github.ref == 'refs/heads/dev' || github.event_name == 'repository_dispatch' }}
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha,prefix={{branch}}-,enable=${{ github.event_name != 'repository_dispatch' }}
+            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' }}
+            type=raw,value=carrier,enable=${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' }}
+
+      - name: Build and push Docker image (mobile)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.mobile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          no-cache: true
+          build-args: |
+            TAG=${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref_name }}
+            VERSION=${{ github.event_name == 'repository_dispatch' && 'dev' || github.ref_name }}
+            BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
+            NIHIL_AUDIT=${{ inputs.allow_tool_failures && '1' || '0' }}
+
   promote:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
