@@ -2012,6 +2012,106 @@
             "installer": "install_sleuthkit"
         }
     ],
+    "mod_mobile": [
+        {
+            "name": "android-tools",
+            "cmd": "adb",
+            "description": "Android Debug Bridge (adb/fastboot)",
+            "installer": "install_android_tools"
+        },
+        {
+            "name": "scrcpy",
+            "cmd": "scrcpy",
+            "github_repo": "Genymobile/scrcpy",
+            "description": "Display and control Android devices",
+            "installer": "install_scrcpy"
+        },
+        {
+            "name": "jadx",
+            "cmd": "jadx",
+            "github_repo": "skylot/jadx",
+            "description": "Dex to Java decompiler",
+            "installer": "install_jadx"
+        },
+        {
+            "name": "apktool",
+            "cmd": "apktool",
+            "github_repo": "iBotPeaches/Apktool",
+            "description": "Reverse engineer Android APK files",
+            "optional": true,
+            "installer": "install_apktool"
+        },
+        {
+            "name": "dex2jar",
+            "cmd": "dex2jar",
+            "github_repo": "pxb1988/dex2jar",
+            "description": "Convert Android .dex to Java .jar",
+            "optional": true,
+            "installer": "install_dex2jar"
+        },
+        {
+            "name": "apkleaks",
+            "cmd": "apkleaks",
+            "github_repo": "dwisiswant0/apkleaks",
+            "description": "Scan APKs for URIs, endpoints and secrets",
+            "optional": true,
+            "installer": "install_apkleaks"
+        },
+        {
+            "name": "androguard",
+            "cmd": "androguard",
+            "github_repo": "androguard/androguard",
+            "description": "Android app analysis framework",
+            "optional": true,
+            "installer": "install_androguard"
+        },
+        {
+            "name": "apkeep",
+            "cmd": "apkeep",
+            "github_repo": "EFForg/apkeep",
+            "description": "Download APKs from several stores",
+            "optional": true,
+            "installer": "install_apkeep"
+        },
+        {
+            "name": "frida-tools",
+            "cmd": "frida",
+            "github_repo": "frida/frida",
+            "description": "Dynamic instrumentation toolkit (Android/iOS)",
+            "installer": "install_frida_tools"
+        },
+        {
+            "name": "objection",
+            "cmd": "objection",
+            "github_repo": "sensepost/objection",
+            "description": "Runtime mobile exploration (Frida)",
+            "optional": true,
+            "installer": "install_objection"
+        },
+        {
+            "name": "libimobiledevice",
+            "cmd": "ideviceinfo",
+            "github_repo": "libimobiledevice/libimobiledevice",
+            "description": "Talk to iOS devices (ideviceinfo, idevicebackup2...)",
+            "installer": "install_libimobiledevice"
+        },
+        {
+            "name": "ideviceinstaller",
+            "cmd": "ideviceinstaller",
+            "github_repo": "libimobiledevice/ideviceinstaller",
+            "description": "Manage apps on iOS devices",
+            "optional": true,
+            "installer": "install_ideviceinstaller"
+        },
+        {
+            "name": "libplist",
+            "cmd": "plistutil",
+            "github_repo": "libimobiledevice/libplist",
+            "description": "Handle Apple property list files (plistutil)",
+            "optional": true,
+            "installer": "install_libplist"
+        }
+    ],
     "mod_osint": [
         {
             "name": "amass",
