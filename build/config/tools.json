@@ -127,12 +127,6 @@
             "installer": "install_certipy"
         },
         {
-            "name": "certipy-ad",
-            "cmd": "certipy",
-            "description": "Compatibility alias for Certipy ADCS enumeration and exploitation",
-            "installer": "install_certipy"
-        },
-        {
             "name": "bloodyad",
             "cmd": "bloodyAD",
             "description": "AD privilege escalation framework",
