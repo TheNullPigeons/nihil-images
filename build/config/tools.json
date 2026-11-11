@@ -694,6 +694,21 @@
             "github_repo": "neo4j/neo4j",
             "description": "Neo4j Cypher query shell",
             "installer": "install_neo4j"
+        },
+        {
+            "name": "osslsigncode",
+            "cmd": "osslsigncode",
+            "github_repo": "mtrojnar/osslsigncode",
+            "description": "Authenticode signing of PE/MSI binaries",
+            "optional": true,
+            "installer": "install_osslsigncode"
+        },
+        {
+            "name": "rpcclient-ng",
+            "cmd": "rpcclient-ng",
+            "github_repo": "0xbbuddha/rpcclient-ng",
+            "description": "Modern rpcclient reimplementation",
+            "installer": "install_rpcclient-ng"
         }
     ],
     "mod_web": [
