@@ -1,4 +1,4 @@
-penelope -a
+penelope -i "$(fzf-interface)" -p "$(fzf-lport)"
 penelope -p "$(fzf-port)"
 
 penelope -p "$(fzf-port)" --ssl
@@ -7,4 +7,4 @@ penelope -p "$(fzf-port)" --no-upgrade
 penelope --connect "$IP" "$(fzf-port)"
 penelope --address "$(fzf-ip)" --port "$(fzf-lport)"
 penelope "$(fzf-lport)"
-penelope -i "$(fzf-interface)" -p "$(fzf-lport)"
+penelope -a

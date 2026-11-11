@@ -1,3 +1,4 @@
+pwncat-vl -i id_rsa "$USER"@"$HOST"
 pwncat-vl connect://$HOST:$(fzf-port)
 pwncat-vl $HOST:$(fzf-port)
 pwncat-vl $HOST $(fzf-port)
@@ -14,7 +15,6 @@ pwncat-vl -p $(fzf-port) $USER@$HOST
 pwncat-vl reconnect://$USER@$HOST
 pwncat-vl reconnect://$USER@$SESSION_ID
 pwncat-vl :"$(fzf-lport)"
-pwncat-vl -lp "$(fzf-lport)"
 pwncat-vl "$HOST":"$(fzf-port)"
 pwncat-vl ssh://"$USER":"$PASSWORD"@"$IP"
-pwncat-vl -i id_rsa "$USER"@"$HOST"
+pwncat-vl -lp "$(fzf-lport)"

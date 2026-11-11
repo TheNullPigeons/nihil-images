@@ -1,5 +1,5 @@
-nhi
-nhit
-faketime "$(date -ud @$(($(date +%s)+$(ntpdate -q $DC_IP 2>&1|awk 'NR==1{print int($6)}'))) +%F\ %T)" zsh
 pipx install git+"$GIT_URL"
 pipx install -e .
+nhit
+faketime "$(date -ud @$(($(date +%s)+$(ntpdate -q $DC_IP 2>&1|awk 'NR==1{print int($6)}'))) +%F\ %T)" zsh
+nhi

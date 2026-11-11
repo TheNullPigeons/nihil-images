@@ -1,8 +1,8 @@
+wpscan --url http://"$DOMAIN" --plugins-detection aggressive -v
 wpscan --url http://"$DOMAIN" -e u
 wpscan --url http://"$DOMAIN" -U `fzf-wordlists` -t 20
 wpscan --url http://"$DOMAIN" -P `fzf-wordlists` -t 20
 wpscan --url http://"$DOMAIN" -U `fzf-wordlists` -P `fzf-wordlists` -t 20
-wpscan --url http://"$TARGET" --enumerate u,p,t
 wpscan --url http://"$TARGET" -P `fzf-wordlists` -U "$USER"
 wpscan --api-token "$WPSCAN_API_TOKEN" --url http://"$TARGET" --no-banner --enumerate u1-20
 wpscan --api-token "$WPSCAN_API_TOKEN" --url http://"$TARGET" --no-banner --plugins-detection aggressive
@@ -11,4 +11,4 @@ wpprobe update
 wpprobe update-db
 wpprobe scan -u http://"$TARGET"
 wpprobe scan -f "$TARGET_FILE" -t "$THREADS"
-wpscan --url http://"$DOMAIN" --plugins-detection aggressive -v
+wpscan --url http://"$TARGET" --enumerate u,p,t

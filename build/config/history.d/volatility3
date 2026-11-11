@@ -1,4 +1,4 @@
-vol -f memory.dmp windows.pslist
+vol -f memory.dmp windows.info
 vol -f memory.dmp windows.pstree
 vol -f memory.dmp windows.netscan
 vol -f memory.dmp windows.filescan
@@ -14,4 +14,4 @@ volatility3 -f memory.dmp windows.cmdline
 volatility3 -f memory.dmp windows.dlllist --pid $PID
 volatility3 -f memory.dmp windows.malfind
 volatility3 -f memory.dmp windows.dlllist --pid "$PID"
-vol -f memory.dmp windows.info
+vol -f memory.dmp windows.pslist
