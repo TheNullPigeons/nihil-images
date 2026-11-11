@@ -7,6 +7,7 @@ nihil::import lib/registry/pipx
 nihil::import lib/registry/cargo
 nihil::import lib/registry/pacman
 nihil::import lib/registry/aur
+nihil::import lib/registry/curl
 nihil::import lib/registry/go
 nihil::import lib/registry/git
 
@@ -168,6 +169,25 @@ function install_ngrok() {
 
 function install_chisel() {
     install_go_tool "github.com/jpillora/chisel@latest"
+}
+
+function install_zrok() {
+    local tag version
+    if command -v zrok2 >/dev/null 2>&1; then
+        ln -sf "$(command -v zrok2)" "${INSTALL_DIR:-/usr/local/bin}/zrok"
+        add-history "zrok"
+        return 0
+    fi
+    tag=$(retry-command 3 "resolve zrok latest tag" curl -Ls -o /dev/null -w '%{url_effective}' "https://github.com/openziti/zrok/releases/latest" | sed 's:.*/::' || true)
+    if [ -z "$tag" ]; then
+        colorecho "  ✗ Warning: Failed to resolve zrok latest tag"
+        return 1
+    fi
+    version="${tag#v}"
+    install_tar_tool "zrok" \
+        "https://github.com/openziti/zrok/releases/download/v{version}/zrok_{version}_linux_{arch}.tar.gz" \
+        "/opt/tools/zrok/{version}" "zrok2" "zrok2 zrok" \
+        "x86_64:amd64 aarch64:arm64 armv7l:armv7" "$version"
 }
 
 function install_masscan() {

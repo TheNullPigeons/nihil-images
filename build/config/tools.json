@@ -1214,6 +1214,13 @@
             "installer": "install_chisel"
         },
         {
+            "name": "zrok",
+            "cmd": "zrok2",
+            "github_repo": "openziti/zrok",
+            "description": "Zero-trust sharing and network tunneling",
+            "installer": "install_zrok"
+        },
+        {
             "name": "masscan",
             "cmd": "masscan",
             "description": "Fast port scanner",
