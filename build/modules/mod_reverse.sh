@@ -40,16 +40,27 @@ function install_jd-gui() {
     # (mirrors the burpsuite/ysoserial jar pattern). Needs an X server to display.
     local jar_dir="/opt/tools/jd-gui"
     local jar_file="${jar_dir}/jd-gui.jar"
+    # The AD module installs a headless Java runtime, which may become the
+    # default. JD-GUI requires AWT, so persist a graphical runtime explicitly.
+    install_pacman_tool "jdk-openjdk" || return 1
+    local java_bin
+    java_bin=$(find /usr/lib/jvm -path '*/lib/libawt_xawt.so' -printf '%h\n' 2>/dev/null \
+        | sed 's#/lib$#/bin/java#' | sort -V | tail -1)
+    if [ ! -x "$java_bin" ]; then
+        colorecho "  ✗ Warning: No graphical Java runtime found for jd-gui"
+        return 1
+    fi
     if [ -f "$jar_file" ]; then
         colorecho "  ✓ jd-gui already installed"
+        printf '#!/bin/bash\nexec %q -jar %q "$@"\n' "$java_bin" "$jar_file" \
+            > /opt/tools/bin/jd-gui
+        chmod +x /opt/tools/bin/jd-gui
         return 0
     fi
     colorecho "  → Installing jd-gui (Java decompiler)"
     mkdir -p "$jar_dir"
     if download-retry "https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.jar" "$jar_file"; then
-        local java_bin
-        java_bin=$(command -v java)
-        printf '#!/bin/bash\nexec %s -jar %s "$@"\n' "$java_bin" "$jar_file" \
+        printf '#!/bin/bash\nexec %q -jar %q "$@"\n' "$java_bin" "$jar_file" \
             > /opt/tools/bin/jd-gui
         chmod +x /opt/tools/bin/jd-gui
     else

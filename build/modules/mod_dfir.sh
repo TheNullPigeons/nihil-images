@@ -61,7 +61,24 @@ function install_capa() {
 }
 
 function install_loki() {
-    install_git_tool "loki" "https://github.com/Neo23x0/Loki.git" "loki.py"
+    # yara-python has no Python 3.14 wheel and cannot build against the image's
+    # system YARA reliably. Use Arch's matching bindings, then install Loki's
+    # remaining Python dependencies explicitly so a failed aggregate pip
+    # resolution cannot leave behind a broken launcher.
+    install_pacman_tool "python-yara" || return 1
+    install_git_tool "loki" "https://github.com/Neo23x0/Loki.git" "loki.py" "" \
+        '^yara-python([<=> ].*)?$' || return 1
+
+    local requirements="${GIT_INSTALL_DIR:-/usr/local/share}/loki/requirements.txt"
+    local filtered_requirements
+    filtered_requirements=$(mktemp) || return 1
+    grep -vE '^yara-python([<=> ].*)?$' "$requirements" > "$filtered_requirements"
+    retry-command 3 "install Loki Python dependencies" \
+        python3 -m pip install --break-system-packages --quiet \
+        -r "$filtered_requirements"
+    local status=$?
+    rm -f "$filtered_requirements"
+    return "$status"
 }
 
 # ===========================================================================
