@@ -684,7 +684,11 @@ function install_relayinformer() {
 }
 
 function install_snaffler_ng() {
-  install_pipx_tool "snaffler" "snaffler-ng[socks]" "snaffler"
+  install_pipx_tool "snaffler" "snaffler-ng[socks]" "snaffler" || return 1
+  # snaffler-ng 1.6.0 uses Typer's click_type parameter, which was removed
+  # from newer Typer releases.
+  retry-command 3 "pin snaffler-ng Typer compatibility" \
+    pipx inject --force snaffler-ng "typer==0.15.4"
 }
 
 function install_soapy() {
