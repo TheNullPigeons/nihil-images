@@ -24,11 +24,35 @@ function install_scrcpy() {
 }
 
 function install_apktool() {
-    install_aur_tool "android-apktool" "apktool"
+    # The AUR package pins java-environment=26 + gradle (unresolvable here), so
+    # install the official release jar with a thin wrapper (needs only a JRE).
+    if command -v apktool >/dev/null 2>&1; then
+        colorecho "  ✓ apktool already installed"
+        add-history "apktool"
+        return 0
+    fi
+    command -v java >/dev/null 2>&1 || install_pacman_tools "jre-openjdk-headless" || return 0
+    local tag version
+    tag=$(retry-command 3 "resolve apktool latest tag" curl -Ls -o /dev/null -w '%{url_effective}' \
+        "https://github.com/iBotPeaches/Apktool/releases/latest" | sed 's:.*/::' || true)
+    [ -n "$tag" ] || { colorecho "  ✗ Warning: Failed to resolve apktool latest tag"; return 0; }
+    version="${tag#v}"
+    mkdir -p /opt/tools/apktool
+    download-retry "https://github.com/iBotPeaches/Apktool/releases/download/${tag}/apktool_${version}.jar" \
+        "/opt/tools/apktool/apktool.jar" || {
+        colorecho "  ✗ Warning: Failed to download apktool"
+        return 0
+    }
+    printf '%s\n' '#!/bin/sh' 'exec java -jar /opt/tools/apktool/apktool.jar "$@"' > /opt/tools/bin/apktool
+    chmod +x /opt/tools/bin/apktool
+    ln -sf /opt/tools/bin/apktool /usr/local/bin/apktool
+    add-history "apktool"
+    colorecho "  ✓ apktool installed (${tag})"
 }
 
 function install_dex2jar() {
-    install_aur_tool "dex2jar" "d2j-dex2jar"
+    # AUR package exposes a single `dex2jar` wrapper binary.
+    install_aur_tool "dex2jar" "dex2jar"
 }
 
 function install_apkleaks() {

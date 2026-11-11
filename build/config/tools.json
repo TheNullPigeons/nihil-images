@@ -2043,7 +2043,7 @@
         },
         {
             "name": "dex2jar",
-            "cmd": "d2j-dex2jar",
+            "cmd": "dex2jar",
             "github_repo": "pxb1988/dex2jar",
             "description": "Convert Android .dex to Java .jar",
             "optional": true,
