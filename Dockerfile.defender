@@ -1,5 +1,5 @@
 # Author: Nihil Project
-# Blue team / DFIR. Incident response, threat hunting, forensic analysis.
+# Defender — blue team / DFIR. Incident response, threat hunting, forensic analysis.
 
 FROM archlinux:latest
 
@@ -13,7 +13,7 @@ LABEL org.nihil.tag="${TAG}"
 LABEL org.nihil.version="${VERSION}"
 LABEL org.nihil.build_date="${BUILD_DATE}"
 LABEL org.nihil.app="Nihil"
-LABEL org.nihil.variant="blueteam"
+LABEL org.nihil.variant="defender"
 
 COPY build /opt/nihil/build/
 COPY runtime /opt/nihil/runtime/

@@ -19,7 +19,8 @@ on:
           - full
           - ad
           - web
-          - blueteam
+          - defender
+          - mobile
       allow_tool_failures:
         description: Continue when non-core tools fail and keep a failure report
         type: boolean
@@ -250,8 +251,8 @@ jobs:
             BUILD_DATE=${{ github.event.head_commit.timestamp || github.event.repository.pushed_at }}
             NIHIL_AUDIT=${{ inputs.allow_tool_failures && '1' || '0' }}
 
-  build-blueteam:
-    if: (github.event_name != 'push' || github.ref != 'refs/heads/main') && (github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'blueteam')
+  build-defender:
+    if: (github.event_name != 'push' || github.ref != 'refs/heads/main') && (github.event_name != 'workflow_dispatch' || inputs.variant == 'all' || inputs.variant == 'defender')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -294,7 +295,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/blueteam
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/defender
           flavor: latest=false
           tags: |
             type=ref,event=branch,enable=${{ github.event_name != 'repository_dispatch' }}
@@ -308,11 +309,11 @@ jobs:
             type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' }}
             type=raw,value=coo,enable=${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' }}
 
-      - name: Build and push Docker image (blueteam)
+      - name: Build and push Docker image (defender)
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile.blueteam
+          file: ./Dockerfile.defender
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -344,7 +345,7 @@ jobs:
             git fetch origin dev
             source_sha=$(git rev-parse origin/dev)
           fi
-          git diff --quiet "$source_sha" HEAD -- Dockerfile Dockerfile.ad Dockerfile.web Dockerfile.blueteam build runtime || {
+          git diff --quiet "$source_sha" HEAD -- Dockerfile Dockerfile.ad Dockerfile.web Dockerfile.defender Dockerfile.mobile build runtime || {
             echo 'Main differs from the dev image source; promotion stopped.' >&2
             exit 1
           }
@@ -361,7 +362,7 @@ jobs:
       - name: Verify all dev images exist
         shell: bash
         run: |
-          for variant in full ad web blueteam; do
+          for variant in full ad web defender mobile; do
             image="${{ env.REGISTRY }}/${GITHUB_REPOSITORY_OWNER,,}/$variant"
             docker buildx imagetools inspect "$image:dev-${{ steps.source.outputs.sha }}" >/dev/null
           done
@@ -369,7 +370,7 @@ jobs:
       - name: Promote the already built dev images
         shell: bash
         run: |
-          for pair in full:flock ad:nest web:beak blueteam:coo; do
+          for pair in full:flock ad:nest web:beak defender:coo mobile:carrier; do
             variant=${pair%%:*}
             alias=${pair#*:}
             image="${{ env.REGISTRY }}/${GITHUB_REPOSITORY_OWNER,,}/$variant"
