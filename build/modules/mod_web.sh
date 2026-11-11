@@ -661,15 +661,6 @@ function install_linkfinder() {
     install_git_tool "linkfinder" "https://github.com/GerbenJavado/LinkFinder.git" "linkfinder.py"
 }
 
-function install_naabu() {
-    install_go_tool "github.com/projectdiscovery/naabu/v2/cmd/naabu@latest"
-}
-
-function install_patator() {
-    # setuptools>=82 removed pkg_resources which patator imports at runtime
-    install_git_tool_venv "patator" "https://github.com/lanjelot/patator.git" "src/patator/patator.py" "setuptools<82 ldap3 paramiko impacket dnspython pyotp requests" "yes"
-}
-
 function install_phpggc() {
     install_git_tool_symlink "/opt/tools/phpggc" \
         "https://github.com/ambionics/phpggc.git" \

@@ -853,13 +853,6 @@
             "installer": "install_linkfinder"
         },
         {
-            "name": "patator",
-            "cmd": "patator",
-            "github_repo": "lanjelot/patator",
-            "description": "Multi-purpose brute-forcer",
-            "installer": "install_patator"
-        },
-        {
             "name": "updog",
             "cmd": "updog",
             "description": "HTTP file server with upload (SimpleHTTPServer replacement)",
@@ -969,12 +962,6 @@
             "cmd": "gowitness",
             "description": "Web screenshot tool (Go)",
             "installer": "install_gowitness"
-        },
-        {
-            "name": "naabu",
-            "cmd": "naabu",
-            "description": "Fast port scanner (ProjectDiscovery)",
-            "installer": "install_naabu"
         },
         {
             "name": "wpscan",
@@ -1126,6 +1113,12 @@
         }
     ],
     "mod_network": [
+        {
+            "name": "naabu",
+            "cmd": "naabu",
+            "description": "Fast port scanner (ProjectDiscovery)",
+            "installer": "install_naabu"
+        },
         {
             "name": "nmap",
             "cmd": "nmap",
@@ -1472,6 +1465,13 @@
             "cmd": "hydra",
             "description": "Multi-protocol brute-forcer",
             "installer": "install_hydra"
+        },
+        {
+            "name": "patator",
+            "cmd": "patator",
+            "github_repo": "lanjelot/patator",
+            "description": "Multi-purpose brute-forcer",
+            "installer": "install_patator"
         },
         {
             "name": "pdfcrack",

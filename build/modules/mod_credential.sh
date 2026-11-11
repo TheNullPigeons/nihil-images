@@ -89,6 +89,11 @@ function install_hydra() {
     install_pacman_tool "hydra"
 }
 
+function install_patator() {
+    # setuptools>=82 removed pkg_resources which patator imports at runtime
+    install_git_tool_venv "patator" "https://github.com/lanjelot/patator.git" "src/patator/patator.py" "setuptools<82 ldap3 paramiko impacket dnspython pyotp requests" "yes"
+}
+
 function install_name_that_hash() {
     install_pipx_tool "nth" "name-that-hash"
 }

@@ -19,6 +19,10 @@ function install_nmap() {
     install_pacman_tool "nmap"
 }
 
+function install_naabu() {
+    install_go_tool "github.com/projectdiscovery/naabu/v2/cmd/naabu@latest"
+}
+
 function install_netcat() {
     install_pacman_tool "openbsd-netcat"
     add-history "netcat"
