@@ -61,10 +61,11 @@ function install_neo4j() {
     printf '#!/bin/bash\nexec "%s/bin/%s" "$@"\n' "${neo4j_home}" "${bin}" >"/opt/tools/bin/${bin}"
     chmod +x "/opt/tools/bin/${bin}"
   done
-  # Best-effort pre-seed: only takes effect on a pristine data dir (before the
-  # Neo4j system db is created). Once that db exists this silently no-ops, so the
-  # bloodhound-ce launcher self-heals the password at runtime instead.
-  neo4j-admin set-initial-password fly2own1 >/dev/null 2>&1 || true
+  # Docker build runs non-login Bash, so profile PATH additions are not loaded.
+  /opt/tools/bin/neo4j-admin set-initial-password fly2own1 >/dev/null 2>&1 || {
+    colorecho "  ✗ Failed to set Neo4j's initial password"
+    return 1
+  }
   add-history "neo4j"
 }
 
