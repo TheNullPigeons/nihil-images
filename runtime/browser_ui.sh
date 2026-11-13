@@ -7,7 +7,7 @@ PORT="${NIHIL_BROWSER_UI_PORT:-6901}"
 VNC_PORT="${NIHIL_BROWSER_UI_VNC_PORT:-$((PORT - 1000))}"
 DISPLAY_NUM="${NIHIL_BROWSER_UI_DISPLAY:-$((PORT - 6700))}"
 RESOLUTION="${NIHIL_BROWSER_UI_RESOLUTION:-1280x720}"
-MARKER="/opt/nihil/.browser_ui_installed_v10"
+MARKER="/opt/nihil/.browser_ui_installed_v11"
 STATUS_FILE="/tmp/nihil_browser_ui_status"
 NOVNC_DIR="/opt/nihil/novnc"
 NOVNC_VERSION="v1.6.0"
@@ -54,6 +54,7 @@ install_browser_ui_deps() {
                 firefox \
                 noto-fonts-cjk \
                 dbus \
+                xclip \
                 python-pip || true
             fc-cache -f >/dev/null 2>&1 || true
             rm -f /tmp/pacman_no_chaotic.conf
@@ -362,6 +363,34 @@ INDEXEOF
     });
   }
   setInterval(labelExtraKeys, 500);
+
+  // Seamless clipboard through noVNC's hidden clipboard box.
+  function clipBox() { return document.getElementById("noVNC_clipboard_text"); }
+  var lastSeen = null, pendingOut = null, activeUntil = 0;
+  // Browsers (Firefox especially) only allow writing the OS clipboard within a
+  // transient activation window after a user gesture, so we remember the window
+  // and keep retrying until the copied text has propagated through the VNC link.
+  function markActive() { activeUntil = Date.now() + 4500; }
+  ["keydown", "keyup", "pointerdown", "pointerup", "mousedown", "mouseup", "focus"]
+    .forEach(function (ev) { window.addEventListener(ev, markActive, true); });
+  setInterval(function () {
+    var ta = clipBox();
+    if (ta && ta.value !== lastSeen && ta.value) pendingOut = ta.value;
+    if (pendingOut != null && pendingOut !== lastSeen && Date.now() < activeUntil &&
+        navigator.clipboard && navigator.clipboard.writeText) {
+      var t = pendingOut;
+      navigator.clipboard.writeText(t).then(function () {
+        lastSeen = t; if (pendingOut === t) pendingOut = null;
+      }).catch(function () {});
+    }
+  }, 150);
+  document.addEventListener("paste", function (e) {
+    var data = e.clipboardData || window.clipboardData;
+    var text = data ? data.getData("text") : "";
+    var ta = clipBox(); if (!ta || !text) return;
+    ta.value = text; lastSeen = text; pendingOut = null;
+    ta.dispatchEvent(new Event("change", { bubbles: true }));
+  });
 })();
 NIHILJS
         grep -q "nihil-enhance.js" "$NOVNC_DIR/vnc.html" || \
@@ -373,6 +402,24 @@ NIHILJS
         set_browser_ui_status "Starting XFCE desktop"
         startxfce4 >/tmp/nihil_xfce.log 2>&1 &
         wait_for pgrep -x xfdesktop
+    fi
+
+    # Terminals put selections in the X PRIMARY selection only, which the VNC link
+    # does not forward; mirror PRIMARY into CLIPBOARD so a terminal highlight can
+    # reach the browser (and from there the host) clipboard.
+    if command -v xclip >/dev/null 2>&1 && ! pgrep -f nihil_clipsync.sh >/dev/null 2>&1; then
+        cat > /opt/nihil/.nihil_clipsync.sh <<'CLIPSYNC'
+#!/bin/bash
+export DISPLAY="${1:-:0}"
+last=""
+while sleep 0.4; do
+    cur=$(xclip -o -selection primary -d "$DISPLAY" 2>/dev/null) || continue
+    [ -n "$cur" ] && [ "$cur" != "$last" ] || continue
+    printf '%s' "$cur" | xclip -i -selection clipboard -d "$DISPLAY" 2>/dev/null && last="$cur"
+done
+CLIPSYNC
+        chmod +x /opt/nihil/.nihil_clipsync.sh
+        setsid /opt/nihil/.nihil_clipsync.sh "$DISPLAY" >/tmp/nihil_clipsync.log 2>&1 &
     fi
 
     if command -v websockify >/dev/null 2>&1 && [[ -d "$NOVNC_DIR" ]]; then
