@@ -262,6 +262,17 @@ GTKCSS
 </channel>
 XSETTINGS
 
+    # xfwm4: disable the compositor. Under a VNC framebuffer it causes redraw and
+    # focus glitches (windows only raise on a second click, Alt-Tab misbehaves).
+    cat > "$XFCE_CONF/xfwm4.xml" <<'XFWM4'
+<?xml version="1.0" encoding="UTF-8"?>
+<channel name="xfwm4" version="1.0">
+  <property name="general" type="empty">
+    <property name="use_compositing" type="bool" value="false"/>
+  </property>
+</channel>
+XFWM4
+
     # Le marqueur n'est posé que si tout est en place, sinon on réessaie au prochain démarrage.
     local missing=()
     for cmd in Xvnc vncpasswd startxfce4 websockify; do
