@@ -333,6 +333,39 @@ start_browser_ui() {
 <meta http-equiv="refresh" content="0; url=vnc.html?autoconnect=1&amp;resize=remote">
 </head><body></body></html>
 INDEXEOF
+        # noVNC's extra-keys icons (Ctrl, Alt, Tab, Esc...) are text-based SVGs that
+        # render blank as <input type="image"> in some browsers. Overlay a text label
+        # so the shortcuts panel is usable.
+        cat > "$NOVNC_DIR/nihil-enhance.js" <<'NIHILJS'
+// Nihil noVNC enhancements.
+(function () {
+  "use strict";
+  function labelExtraKeys() {
+    var panel = document.getElementById("noVNC_modifiers");
+    if (!panel) return;
+    panel.querySelectorAll("input.noVNC_button").forEach(function (inp) {
+      if (inp.dataset.nihilLabeled) return;
+      inp.dataset.nihilLabeled = "1";
+      var text = (inp.getAttribute("alt") || inp.getAttribute("title") || "")
+        .replace(/^Toggle\s+/i, "").replace(/^Send\s+/i, "");
+      var wrap = document.createElement("span");
+      wrap.style.cssText = "position:relative;display:inline-block;";
+      inp.parentNode.insertBefore(wrap, inp);
+      wrap.appendChild(inp);
+      var label = document.createElement("span");
+      label.textContent = text === "Ctrl+Alt+Del" ? "CAD" : text;
+      label.title = text;
+      label.style.cssText =
+        "position:absolute;inset:0;display:flex;align-items:center;justify-content:center;" +
+        "font:700 8px/1 sans-serif;color:#fff;pointer-events:none;text-align:center;";
+      wrap.appendChild(label);
+    });
+  }
+  setInterval(labelExtraKeys, 500);
+})();
+NIHILJS
+        grep -q "nihil-enhance.js" "$NOVNC_DIR/vnc.html" || \
+            sed -i 's#</body>#  <script src="nihil-enhance.js"></script>\n</body>#' "$NOVNC_DIR/vnc.html"
     fi
 
     # XFCE4 (panel + docklike): demarrage direct, pas de greeter tk
