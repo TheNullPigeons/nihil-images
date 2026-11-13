@@ -282,6 +282,14 @@ start_browser_ui() {
     export USER=root
     export HOME=/root
     export NO_AT_BRIDGE=1
+    # The XFCE session and its menu/dock launchers must see Nihil's tool wrappers
+    # in /opt/tools/bin. Otherwise e.g. launching Chromium from the menu resolves
+    # to the bare /usr/sbin/chromium, which refuses to run as root without the
+    # --no-sandbox flag that the /opt/tools/bin/chromium wrapper adds.
+    case ":${PATH}:" in
+        *":/opt/tools/bin:"*) ;;
+        *) export PATH="/opt/tools/bin:${PATH}" ;;
+    esac
     # Session D-Bus: évite "Unable to contact settings server"
     export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/tmp/nihil-runtime}"
     mkdir -p "$XDG_RUNTIME_DIR" /tmp/dbus-session
