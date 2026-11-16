@@ -605,6 +605,27 @@
             "installer": "install_krbrelayx"
         },
         {
+            "name": "dnstool",
+            "cmd": "dnstool",
+            "github_repo": "dirkjanm/krbrelayx",
+            "description": "Active Directory DNS record management",
+            "installer": "install_krbrelayx"
+        },
+        {
+            "name": "addspn",
+            "cmd": "addspn",
+            "github_repo": "dirkjanm/krbrelayx",
+            "description": "Active Directory SPN management",
+            "installer": "install_krbrelayx"
+        },
+        {
+            "name": "printerbug",
+            "cmd": "printerbug",
+            "github_repo": "dirkjanm/krbrelayx",
+            "description": "Printer bug coercion tool",
+            "installer": "install_krbrelayx"
+        },
+        {
             "name": "gmsadumper",
             "cmd": "gmsadumper",
             "github_repo": "micahvandeusen/gMSADumper",
