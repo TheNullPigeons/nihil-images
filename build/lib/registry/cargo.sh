@@ -47,27 +47,17 @@ install_cargo_tool() {
     fi
 
     colorecho "  → Installing $tool_name via cargo"
-    if [[ "${2:-}" == "nolocked" ]]; then
-        # Some tools ship a Cargo.lock pinning crates that no longer build on the
-        # current Rust (e.g. rusthound pins time 0.3.30, which fails on Rust >=1.80).
-        # Skip --locked so cargo resolves fresh, compilable dependency versions.
-        retry-command 3 "cargo install $tool_name" \
-            env CARGO_NET_GIT_FETCH_WITH_CLI=true cargo install "$tool_name" || {
-            colorecho "  ✗ Warning: Failed to install $tool_name via cargo"
+    # Utiliser --locked pour éviter les problèmes de versions
+    # et augmenter le timeout pour les gros projets
+    retry-command 3 "cargo install --locked $tool_name" \
+        env CARGO_NET_GIT_FETCH_WITH_CLI=true cargo install --locked "$tool_name" || {
+        colorecho "  ✗ Warning: Failed to install $tool_name via cargo"
+        colorecho "  → Trying without --locked flag..."
+        retry-command 3 "cargo install $tool_name" cargo install "$tool_name" || {
+            colorecho "  ✗ Failed to install $tool_name (both methods failed)"
             return 1
         }
-    else
-        # --locked keeps builds reproducible; fall back to a fresh resolve on failure.
-        retry-command 3 "cargo install --locked $tool_name" \
-            env CARGO_NET_GIT_FETCH_WITH_CLI=true cargo install --locked "$tool_name" || {
-            colorecho "  ✗ Warning: Failed to install $tool_name via cargo"
-            colorecho "  → Trying without --locked flag..."
-            retry-command 3 "cargo install $tool_name" cargo install "$tool_name" || {
-                colorecho "  ✗ Failed to install $tool_name (both methods failed)"
-                return 1
-            }
-        }
-    fi
+    }
 
     # Créer symlink global si nécessaire
     if [ -f "/root/.cargo/bin/$tool_name" ] && [ ! -f "/usr/bin/$tool_name" ]; then

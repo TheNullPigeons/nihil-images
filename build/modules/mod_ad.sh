@@ -621,9 +621,33 @@ function install_rusthound_ce() {
 }
 
 function install_rusthound() {
-  # rusthound pins time 0.3.30 in its Cargo.lock, which no longer compiles on
-  # current Rust; install without --locked so cargo resolves a newer time.
-  install_cargo_tool "rusthound" nolocked
+  # rusthound ships a Cargo.lock pinning time 0.3.30, which no longer compiles on
+  # current Rust and which `cargo install` honours by default. Build from a clone
+  # with the lock removed so cargo resolves a compilable time (0.3.5x+).
+  _ensure_cargo || return 1
+  if command -v rusthound >/dev/null 2>&1; then
+    colorecho "  ✓ rusthound already installed (cargo)"
+    add-aliases "rusthound"; add-history "rusthound"
+    return 0
+  fi
+  local src_dir="/tmp/rusthound-src"
+  rm -rf "$src_dir"
+  colorecho "  → Installing rusthound via cargo (fresh dependency resolve)"
+  if ! git-clone-retry "https://github.com/OPENCYBER-FR/RustHound" "$src_dir" 1 3; then
+    colorecho "  ✗ Warning: Failed to clone rusthound"
+    return 1
+  fi
+  rm -f "$src_dir/Cargo.lock"
+  if ! (cd "$src_dir" && env CARGO_NET_GIT_FETCH_WITH_CLI=true cargo install --path .); then
+    rm -rf "$src_dir"
+    colorecho "  ✗ Warning: Failed to install rusthound"
+    return 1
+  fi
+  rm -rf "$src_dir"
+  if [ -f "/root/.cargo/bin/rusthound" ] && [ ! -f "/usr/bin/rusthound" ]; then
+    ln -sf "/root/.cargo/bin/rusthound" "/usr/bin/rusthound"
+  fi
+  add-aliases "rusthound"; add-history "rusthound"
 }
 
 function install_bloodbash() {
