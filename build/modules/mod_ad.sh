@@ -621,7 +621,9 @@ function install_rusthound_ce() {
 }
 
 function install_rusthound() {
-  install_cargo_tool "rusthound"
+  # rusthound pins time 0.3.30 in its Cargo.lock, which no longer compiles on
+  # current Rust; install without --locked so cargo resolves a newer time.
+  install_cargo_tool "rusthound" nolocked
 }
 
 function install_bloodbash() {
