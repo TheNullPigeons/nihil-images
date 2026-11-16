@@ -738,7 +738,7 @@ function install_rpcclient-ng() {
 }
 
 function install_krbrelayx() {
-  install_git_tool_venv "krbrelayx" "https://github.com/dirkjanm/krbrelayx.git" "krbrelayx.py addspn.py printerbug.py dnstool.py" "setuptools<81 dnspython ldap3 impacket dsinternals" "yes" || return 1
+  install_git_tool_venv "krbrelayx" "https://github.com/dirkjanm/krbrelayx.git" "krbrelayx.py addspn.py printerbug.py dnstool.py" "setuptools<81 dnspython ldap3 ldap3-ad-auth impacket dsinternals" "yes" || return 1
 
   # krbrelayx still calls setAddComputerSMB(), while some Impacket versions no
   # longer expose it on the inherited config class. Keep a no-op compatibility
