@@ -313,7 +313,12 @@ start_browser_ui() {
         pkill -x x11vnc || true
         pkill -x Xvfb || true
     fi
-    if [[ ! -S "/tmp/.X11-unix/X${DISPLAY_NUM}" ]]; then
+    # Docker keeps /tmp across container restarts, so the X socket can outlive the
+    # Xvnc that created it. Trust the running process, not the socket file: if no
+    # Xvnc is alive, clear any stale socket and (re)start it. Otherwise a dead
+    # socket makes XFCE fail with "Cannot open display" and the UI never comes up.
+    if ! pgrep -x Xvnc >/dev/null 2>&1; then
+        rm -f "/tmp/.X11-unix/X${DISPLAY_NUM}"
         PASSWORD="${NIHIL_BROWSER_UI_PASSWORD:-$(openssl rand -base64 12)}"
         (umask 077; echo "$PASSWORD" > /opt/nihil/.session_password)
         (umask 077; printf '%s\n' "$PASSWORD" | vncpasswd -f > /tmp/nihil_vnc_rfbauth)
