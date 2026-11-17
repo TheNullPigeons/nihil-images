@@ -113,6 +113,23 @@ function install_hashid() {
     install_pipx_tool "hashid" "hashid"
 }
 
+function install_bkcrack() {
+    local repo_dir="${GIT_INSTALL_DIR}/bkcrack"
+
+    if command -v bkcrack >/dev/null 2>&1; then
+        add-history "bkcrack"
+        return 0
+    fi
+
+    if [ ! -d "$repo_dir" ]; then
+        git-clone-retry "https://github.com/kimci86/bkcrack.git" "$repo_dir" 1 || return 1
+    fi
+    cmake -S "$repo_dir" -B "$repo_dir/build" -DCMAKE_BUILD_TYPE=Release &&
+        cmake --build "$repo_dir/build" &&
+        install -m 755 "$repo_dir/build/src/cli/bkcrack" /usr/local/bin/bkcrack || return 1
+    add-history "bkcrack"
+}
+
 # ---------------------------------------------------------------------------
 # Module entry point
 # ---------------------------------------------------------------------------

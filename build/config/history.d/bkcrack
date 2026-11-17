@@ -1,0 +1,2 @@
+bkcrack -L archive.zip
+bkcrack -C encrypted.zip -c cipher -P plain.zip -p plain

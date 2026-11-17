@@ -1865,6 +1865,13 @@
     ],
     "mod_crypto": [
         {
+            "name": "bkcrack",
+            "cmd": "bkcrack",
+            "github_repo": "kimci86/bkcrack",
+            "description": "Known-plaintext attack against legacy ZIP encryption",
+            "installer": "install_bkcrack"
+        },
+        {
             "name": "RsaCtfTool",
             "cmd": "RsaCtfTool",
             "github_repo": "RsaCtfTool/RsaCtfTool",
