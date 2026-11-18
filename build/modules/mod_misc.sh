@@ -148,8 +148,46 @@ function install_sqlitebrowser() {
 }
 
 function install_mongosh() {
-    install_pacman_tool "mongosh" || install_pacman_tool "mongodb-mongosh" || \
-        colorecho "  ✗ Warning: mongosh package not available"
+    if ! command -v mongosh >/dev/null 2>&1; then
+        (
+            local arch asset archive url sha tmp
+            case "$(uname -m)" in
+                x86_64) arch=x64 ;;
+                aarch64) arch=arm64 ;;
+                *) echo "Unsupported architecture for mongosh: $(uname -m)" >&2; exit 1 ;;
+            esac
+            tmp=$(mktemp -d) || exit 1
+            trap 'rm -rf -- "$tmp"' EXIT
+            cd "$tmp" || exit 1
+            download-retry "https://api.github.com/repos/mongodb-js/mongosh/releases/latest" release.json || exit 1
+            asset=$(python3 - "$arch" <<'PY'
+import json
+import re
+import sys
+
+with open("release.json") as stream:
+    release = json.load(stream)
+tag = release["tag_name"]
+filename = f"mongosh-{tag.removeprefix('v')}-linux-{sys.argv[1]}.tgz"
+url = f"https://github.com/mongodb-js/mongosh/releases/download/{tag}/{filename}"
+for asset in release["assets"]:
+    digest = asset.get("digest") or ""
+    if asset["browser_download_url"] == url and re.fullmatch(r"sha256:[0-9a-f]{64}", digest):
+        print(filename, url, digest.removeprefix("sha256:"))
+        break
+else:
+    sys.exit(f"No verified mongosh release asset for {sys.argv[1]}")
+PY
+            ) || exit 1
+            read -r archive url sha <<< "$asset"
+            archive=${archive%.tgz}
+            download-retry "$url" "${archive}.tgz" &&
+                printf '%s  %s\n' "$sha" "${archive}.tgz" | sha256sum -c - &&
+                tar -xzf "${archive}.tgz" &&
+                "./${archive}/bin/mongosh" --version &&
+                install -m 755 "${archive}/bin/mongosh" /opt/tools/bin/mongosh
+        ) || return 1
+    fi
     install_pacman_tool "mongodb-tools" || colorecho "  ✗ Warning: mongodb-tools package not available"
     add-aliases "mongosh"
     add-history "mongosh"
