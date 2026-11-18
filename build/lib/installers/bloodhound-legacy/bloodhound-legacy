@@ -20,5 +20,5 @@ for i in $(seq 1 30); do
 done
 
 echo "[nihil] Starting BloodHound (legacy)..."
-echo "[nihil] Neo4j → bolt://localhost:7687 | Login: neo4j / fly2own1"
+echo "[nihil] Neo4j → bolt://localhost:7687 | Login: neo4j / fly2own"
 exec "$BH_BIN" --no-sandbox --disable-dev-shm-usage "$@"

@@ -62,7 +62,7 @@ function install_neo4j() {
     chmod +x "/opt/tools/bin/${bin}"
   done
   # Docker build runs non-login Bash, so profile PATH additions are not loaded.
-  /opt/tools/bin/neo4j-admin set-initial-password fly2own1 >/dev/null 2>&1 || {
+  /opt/tools/bin/neo4j-admin set-initial-password fly2own >/dev/null 2>&1 || {
     colorecho "  ✗ Failed to set Neo4j's initial password"
     return 1
   }
@@ -191,7 +191,7 @@ function install_bloodhound_ce_desktop() {
   fi
   as_postgres pg_ctl -D /var/lib/postgres/data -l /tmp/postgres.log start >/dev/null
   for i in $(seq 1 15); do pg_isready -q 2>/dev/null && break || sleep 1; done
-  cd /tmp && as_postgres psql -c "CREATE USER bloodhound WITH PASSWORD 'nihil4thewin';"
+  cd /tmp && as_postgres psql -c "CREATE USER bloodhound WITH PASSWORD 'fly2own';"
   cd /tmp && as_postgres psql -c "CREATE DATABASE bloodhound;"
   cd /tmp && as_postgres psql -c "ALTER DATABASE bloodhound OWNER TO bloodhound;"
   python3 "${NIHIL_BUILD}/assets/bloodhound-ce-import-queries.py" || true

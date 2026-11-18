@@ -17,5 +17,5 @@ for i in $(seq 1 30); do
 done
 
 echo "[nihil] Wiping BloodHound graph from Neo4j..."
-cypher-shell -a bolt://localhost:7687 -u neo4j -p fly2own1 "MATCH (n) DETACH DELETE n;"
+cypher-shell -a bolt://localhost:7687 -u neo4j -p fly2own "MATCH (n) DETACH DELETE n;"
 echo "[nihil] BloodHound legacy graph reset. Run bloodhound-legacy to start fresh."

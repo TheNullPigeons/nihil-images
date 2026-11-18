@@ -10,6 +10,6 @@
   "databaseInfo": {
     "url": "bolt://localhost:7687",
     "user": "neo4j",
-    "password": "fly2own1"
+    "password": "fly2own"
   }
 }
