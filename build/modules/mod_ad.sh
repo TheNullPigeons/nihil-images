@@ -79,6 +79,8 @@ function install_bloodhound_ce_desktop() {
   local tag_name
 
   if command -v bloodhound-ce >/dev/null 2>&1; then
+    cp "${NIHIL_BUILD}/lib/installers/bloodhound-ce/bloodhound-ce" /opt/tools/bin/bloodhound-ce
+    chmod +x /opt/tools/bin/bloodhound-ce
     colorecho "  ✓ bloodhound-ce already installed"
     add-aliases "bloodhound-ce"
     add-history "bloodhound-ce"

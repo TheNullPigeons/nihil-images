@@ -2,8 +2,32 @@
 
 BHCE_BIN="/opt/tools/BloodHound-CE/bloodhound"
 BHCE_CFG="/opt/tools/BloodHound-CE/bloodhound.config.json"
+verbose=false
+args=()
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --verbose) verbose=true; shift ;;
+        -h|-help|--help)
+            echo "Nihil options: --verbose shows all BloodHound CE logs."
+            exec "$BHCE_BIN" -help
+            ;;
+        -version|--version) exec "$BHCE_BIN" -version ;;
+        -configfile|--configfile)
+            if [ "$#" -lt 2 ]; then
+                echo "[nihil] ERROR: $1 requires a file path." >&2
+                exit 2
+            fi
+            BHCE_CFG="$2"
+            shift 2
+            ;;
+        -configfile=*|--configfile=*) BHCE_CFG="${1#*=}"; shift ;;
+        *) args+=("$1"); shift ;;
+    esac
+done
+
 export BHE_DEFAULT_ADMIN_PASSWORD="${BHE_DEFAULT_ADMIN_PASSWORD:-fly2own}"
 export BHE_DEFAULT_ADMIN_EXPIRE_NOW="${BHE_DEFAULT_ADMIN_EXPIRE_NOW:-false}"
+
 export NEO4J_HOME
 # The neo4j binary in /opt/tools/bin/ is a wrapper script, not a symlink,
 # so readlink -f stays inside /opt/tools. Read the real home from the wrapper.
@@ -117,22 +141,79 @@ if ! pg_isready -q -h /run/postgresql -p "$PG_PORT" 2>/dev/null; then
     fi
 fi
 
-# Neo4j
-if ! neo4j status 2>/dev/null | grep -q "is running"; then
-    echo "[nihil] Starting Neo4j..."
-    neo4j start >/dev/null 2>&1
+# Neo4j can still report running while a previous stop is finishing.
+if ! ss -tlnp 2>/dev/null | grep -q ':7687'; then
     echo "[nihil] Waiting for Neo4j..."
     for i in $(seq 1 60); do
-        neo4j status 2>/dev/null | grep -q "is running" && break || sleep 2
+        ss -tlnp 2>/dev/null | grep -q ':7687' && break
+        if ! neo4j status 2>/dev/null | grep -q "is running"; then
+            echo "[nihil] Starting Neo4j..."
+            if ! neo4j start >/dev/null; then
+                echo "[nihil] ERROR: Neo4j failed to start." >&2
+                exit 1
+            fi
+        fi
+        sleep 2
     done
+    if ! ss -tlnp 2>/dev/null | grep -q ':7687'; then
+        echo "[nihil] ERROR: Neo4j did not become ready on port 7687." >&2
+        tail -30 "$NEO4J_HOME/logs/neo4j.log" >&2
+        exit 1
+    fi
 fi
-for i in $(seq 1 30); do
-    ss -tlnp 2>/dev/null | grep -q ':7687' && break || sleep 2
-done
 
 # Make sure Neo4j accepts the credentials BloodHound is about to use.
 ensure_neo4j_password
 
-echo "[nihil] Starting BloodHound CE..."
-echo "[nihil] UI → http://localhost:1030 | Login: admin (password printed on first run)"
-exec "$BHCE_BIN" -configfile "$BHCE_CFG" "$@"
+ui_url="$(jq -r '.root_url // ("http://" + .bind_addr)' "$BHCE_CFG")"
+if "$verbose"; then
+    echo "[nihil] Starting BloodHound CE..."
+    echo "[nihil] UI → $ui_url | Login: admin (password printed on first run)"
+    exec "$BHCE_BIN" -configfile "$BHCE_CFG" "${args[@]}"
+fi
+
+echo "$ui_url"
+ui_port="$(jq -r '.bind_addr // .root_url // empty' "$BHCE_CFG")"
+ui_port="${ui_port##*:}"
+ui_port="${ui_port%%/*}"
+NIHIL_BHCE_TTY=0
+[[ -t 2 ]] && NIHIL_BHCE_TTY=1
+export NIHIL_BHCE_TTY
+# BloodHound can keep running after SIGINT during graph setup; stop it with the wrapper.
+"$BHCE_BIN" -configfile "$BHCE_CFG" "${args[@]}" > >(awk '
+    password_shown { next }
+    /Initial Password Set To:/ {
+        password = $0
+        sub(/.*Initial Password Set To:[[:space:]]*/, "", password)
+        split(password, fields, /[[:space:]]/)
+        if (ENVIRON["NIHIL_BHCE_TTY"] == 1) printf "\r\033[2K"
+        print "Password: " fields[1]
+        password_shown = 1
+        fflush()
+        next
+    }
+    /^Password has been set from existing config or environment variable$/ {
+        if (ENVIRON["NIHIL_BHCE_TTY"] == 1) printf "\r\033[2K"
+        print "Password: " ENVIRON["BHE_DEFAULT_ADMIN_PASSWORD"]
+        password_shown = 1
+        fflush()
+        next
+    }
+') 2>&1 &
+bhce_pid=$!
+spinner_pid=
+trap 'if [[ -n "$spinner_pid" ]]; then kill "$spinner_pid" 2>/dev/null; wait "$spinner_pid" 2>/dev/null; printf "\r\033[2K" >&2; fi' EXIT
+trap 'kill -KILL "$bhce_pid" 2>/dev/null; wait "$bhce_pid" 2>/dev/null; exit 130' INT
+if [[ "$NIHIL_BHCE_TTY" == 1 && "$ui_port" =~ ^[0-9]+$ ]]; then
+    (
+        frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+        i=0
+        while kill -0 "$bhce_pid" 2>/dev/null && ! ss -tln 2>/dev/null | grep -q ":${ui_port}[[:space:]]"; do
+            printf '\r%s Starting BloodHound CE...' "${frames[i++ % 10]}" >&2
+            sleep 0.25
+        done
+        printf '\r\033[2K' >&2
+    ) &
+    spinner_pid=$!
+fi
+wait "$bhce_pid"

@@ -1,0 +1,3 @@
+bloodhound-ce
+bloodhound-ce --verbose
+bloodhound-ce --help
