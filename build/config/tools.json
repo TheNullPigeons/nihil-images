@@ -1350,6 +1350,13 @@
             "github_repo": "jiaqi/jmxterm",
             "description": "Interactive command-line JMX client",
             "installer": "install_jmxterm"
+        },
+        {
+            "name": "cloudflared",
+            "cmd": "cloudflared",
+            "github_repo": "cloudflare/cloudflared",
+            "description": "Cloudflare Tunnel client (expose local services)",
+            "installer": "install_cloudflared"
         }
     ],
     "mod_credential": [

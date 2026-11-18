@@ -1,0 +1,5 @@
+cloudflared tunnel --url http://localhost:8080
+cloudflared tunnel --url tcp://localhost:3389
+cloudflared tunnel login
+cloudflared tunnel create "$TUNNEL_NAME"
+cloudflared tunnel run "$TUNNEL_NAME"

@@ -194,6 +194,32 @@ function install_zrok() {
         "x86_64:amd64 aarch64:arm64 armv7l:armv7" "$version"
 }
 
+function install_cloudflared() {
+    # Cloudflare ships a single static binary per arch on its releases.
+    if command -v cloudflared >/dev/null 2>&1; then
+        colorecho "  ✓ cloudflared already installed"
+        add-history "cloudflared"
+        return 0
+    fi
+    local arch goarch
+    arch="$(uname -m)"
+    case "$arch" in
+        x86_64)  goarch="amd64" ;;
+        aarch64) goarch="arm64" ;;
+        armv7l)  goarch="arm" ;;
+        *)        colorecho "  ✗ Warning: Unsupported arch $arch for cloudflared"; return 0 ;;
+    esac
+    if ! download-retry \
+        "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${goarch}" \
+        /opt/tools/bin/cloudflared; then
+        colorecho "  ✗ Warning: Failed to download cloudflared"
+        return 0
+    fi
+    chmod +x /opt/tools/bin/cloudflared
+    add-history "cloudflared"
+    colorecho "  ✓ cloudflared installed"
+}
+
 function install_masscan() {
     install_pacman_tool "masscan"
 }
