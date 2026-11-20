@@ -136,6 +136,7 @@ function install_binaryninja() {
 
 function install_angr() {
     install_pipx_tool "angr" "angr"
+    pipx inject angr "fastmcp>=2.3.0" "pydantic-ai>=2.12.0" "mcp>=1.0.0" >/dev/null || return 1
 }
 
 function install_pycdc() {

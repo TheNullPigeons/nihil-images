@@ -493,6 +493,7 @@ function install_impacket() {
     return 1
   }
   pipx inject impacket "setuptools<81" >/dev/null 2>&1 || true
+  pipx inject impacket pyasyncore pcapy-ng >/dev/null 2>&1 || return 1
 
   local pipx_home
   pipx_home="$(pipx environment --value PIPX_HOME 2>/dev/null || printf '%s\n' /root/.local/share/pipx)"
