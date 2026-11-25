@@ -331,8 +331,10 @@ function install_osslsigncode() {
     "cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build -j\$(nproc) && cmake --install build"
 }
 
-function install_ldapdomaindump() {
-  install_pipx_tool "ldapdomaindump" "ldapdomaindump"
+function install_ldapdomaindump_ng() {
+  install_pipx_tool_git "ldapdomaindump-ng" "https://github.com/CobblePot59/ldapdomaindump-ng" || return 1
+  add-symlink "/root/.local/share/pipx/venvs/ldapdomaindump-ng/bin/ldd2bloodhound" "ldd2bloodhound"
+  add-symlink "/root/.local/share/pipx/venvs/ldapdomaindump-ng/bin/ldd2pretty" "ldd2pretty"
 }
 
 function install_adidnsdump() {

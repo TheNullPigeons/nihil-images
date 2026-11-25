@@ -102,10 +102,11 @@
             "installer": "install_bloodhound_ce_python"
         },
         {
-            "name": "ldapdomaindump",
-            "cmd": "ldapdomaindump",
-            "description": "LDAP domain information dumper",
-            "installer": "install_ldapdomaindump"
+            "name": "ldapdomaindump-ng",
+            "cmd": "ldapdomaindump-ng",
+            "github_repo": "CobblePot59/ldapdomaindump-ng",
+            "description": "LDAP domain information dumper with Kerberos, pass-the-hash and channel binding support",
+            "installer": "install_ldapdomaindump_ng"
         },
         {
             "name": "adidnsdump",

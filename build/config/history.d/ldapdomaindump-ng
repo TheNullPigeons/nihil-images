@@ -1,0 +1,4 @@
+ldapdomaindump-ng -u "$DOMAIN\\$USER" -p "$PASSWORD" -o ldapdomaindump "$DC_HOST"
+ldapdomaindump-ng -u "$USER@$DOMAIN" --hashes ":$NT_HASH" -o ldapdomaindump "$DC_HOST"
+KRB5CCNAME="$CCACHE_PATH" ldapdomaindump-ng -u "$USER@$DOMAIN" -k -no-pass -o ldapdomaindump "$DC_HOST"
+ldapdomaindump-ng -u "$USER@$DOMAIN" -p "$PASSWORD" --ldap-channel-binding -o ldapdomaindump "ldaps://$DC_HOST"
