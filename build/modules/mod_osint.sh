@@ -69,11 +69,11 @@ function install_spiderfoot() {
     deactivate
 
     mkdir -p "$GIT_BIN_DIR"
-    cat > "${GIT_BIN_DIR}/spiderfoot" <<EOF
-#!/bin/sh
-cd "${install_dir}" || exit 1
-exec "${venv_dir}/bin/python3" "${install_dir}/sf.py" "\$@"
-EOF
+    cat > "${GIT_BIN_DIR}/spiderfoot" <<-EOF
+	#!/bin/sh
+	cd "${install_dir}" || exit 1
+	exec "${venv_dir}/bin/python3" "${install_dir}/sf.py" "\$@"
+	EOF
     chmod +x "${GIT_BIN_DIR}/spiderfoot"
 
     add-history "spiderfoot"

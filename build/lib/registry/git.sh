@@ -227,11 +227,11 @@ install_git_tool_venv() {
         fi
 
         # Créer le wrapper qui active le venv et exécute le script
-        cat > "$wrapper" <<EOF
-#!/bin/sh
-cd "$repo_dir" || exit 1
-exec "$venv_dir/bin/python" "$full_path" "\$@"
-EOF
+        cat > "$wrapper" <<-EOF
+		#!/bin/sh
+		cd "$repo_dir" || exit 1
+		exec "$venv_dir/bin/python" "$full_path" "\$@"
+		EOF
         chmod +x "$wrapper"
         colorecho "  ✓ Created wrapper: $cmd_name"
     done
@@ -372,11 +372,11 @@ install_git_tool_bundler() {
         # chemin absolu lorsque la commande est lancée depuis /workspace.
         # BUNDLE_GEMFILE lets bundler find its Gemfile without cd-ing away from the caller's CWD,
         # so relative paths passed by the user (e.g. msfvenom -o ./file.exe) resolve correctly.
-        cat > "$wrapper" <<EOF
-#!/bin/sh
-export BUNDLE_GEMFILE="$repo_dir/Gemfile"
-exec bundle exec ruby "$repo_dir/$entrypoint" "\$@"
-EOF
+        cat > "$wrapper" <<-EOF
+		#!/bin/sh
+		export BUNDLE_GEMFILE="$repo_dir/Gemfile"
+		exec bundle exec ruby "$repo_dir/$entrypoint" "\$@"
+		EOF
         chmod +x "$wrapper"
         colorecho "  ✓ Created wrapper: $cmd_name"
     done

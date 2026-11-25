@@ -550,12 +550,12 @@ function install_eyewitness() {
     deactivate
 
     mkdir -p "$GIT_BIN_DIR"
-    cat > "${GIT_BIN_DIR}/EyeWitness" << EOF
-#!/bin/sh
-cd "$repo_dir/Python" || exit 1
-source "$venv_dir/bin/activate"
-exec python3 "$repo_dir/Python/EyeWitness.py" "\$@"
-EOF
+    cat > "${GIT_BIN_DIR}/EyeWitness" <<- EOF
+	#!/bin/sh
+	cd "$repo_dir/Python" || exit 1
+	source "$venv_dir/bin/activate"
+	exec python3 "$repo_dir/Python/EyeWitness.py" "\$@"
+	EOF
     chmod +x "${GIT_BIN_DIR}/EyeWitness"
     add-history "EyeWitness"
     colorecho "  ✓ EyeWitness installed"
@@ -608,16 +608,16 @@ function install_burpsuite() {
         colorecho "  ✗ Warning: Burp Suite icon was not found in its JAR"
     fi
     rm -f /tmp/burpsuite.png
-    cat > /usr/share/applications/burpsuite.desktop <<'DESKTOP'
-[Desktop Entry]
-Type=Application
-Name=Burp Suite Community
-Exec=burpsuite
-Icon=/usr/share/icons/hicolor/128x128/apps/burpsuite.png
-Terminal=false
-Categories=Development;
-StartupWMClass=burp-StartBurp
-DESKTOP
+    cat > /usr/share/applications/burpsuite.desktop <<-'DESKTOP'
+	[Desktop Entry]
+	Type=Application
+	Name=Burp Suite Community
+	Exec=burpsuite
+	Icon=/usr/share/icons/hicolor/128x128/apps/burpsuite.png
+	Terminal=false
+	Categories=Development;
+	StartupWMClass=burp-StartBurp
+	DESKTOP
     add-history "burpsuite"
     colorecho "  ✓ Burp Suite Community installed at ${burp_dir}"
 }
@@ -685,16 +685,16 @@ function install_xxeinjector() {
     # Upstream prints usage with status 1 and has no dedicated help option.
     # Provide conventional successful help without changing real scan exits.
     rm -f "${GIT_BIN_DIR}/xxeinjector"
-    cat > "${GIT_BIN_DIR}/xxeinjector" <<'EOF'
-#!/bin/sh
-case "${1:-}" in
-    -h|--help|--version|version)
-        ruby /opt/tools/XXEinjector/XXEinjector.rb "$@"
-        exit 0
-        ;;
-esac
-exec ruby /opt/tools/XXEinjector/XXEinjector.rb "$@"
-EOF
+    cat > "${GIT_BIN_DIR}/xxeinjector" <<-'EOF'
+	#!/bin/sh
+	case "${1:-}" in
+	    -h|--help|--version|version)
+	        ruby /opt/tools/XXEinjector/XXEinjector.rb "$@"
+	        exit 0
+	        ;;
+	esac
+	exec ruby /opt/tools/XXEinjector/XXEinjector.rb "$@"
+	EOF
     chmod +x "${GIT_BIN_DIR}/xxeinjector"
 }
 

@@ -90,87 +90,87 @@ install_browser_ui_deps() {
     set_browser_ui_status "Configuring XFCE desktop"
     # Panel XFCE: barre en haut (menu + horloge) + barre en bas (docklike uniquement)
     mkdir -p "$XFCE_CONF" "$XFCE_PANEL_CONF"
-    cat > "$XFCE_CONF/xfce4-panel.xml" <<'PANELXML'
-<?xml version="1.0" encoding="UTF-8"?>
-<channel name="xfce4-panel" version="1.0">
-  <property name="configver" type="int" value="2"/>
-  <property name="panels" type="array">
-    <value type="int" value="1"/>
-    <value type="int" value="2"/>
-    <property name="dark-mode" type="bool" value="true"/>
-    <property name="panel-1" type="empty">
-      <property name="position" type="string" value="p=6;x=0;y=0"/>
-      <property name="length" type="uint" value="100"/>
-      <property name="position-locked" type="bool" value="true"/>
-      <property name="size" type="uint" value="28"/>
-      <property name="plugin-ids" type="array">
-        <value type="int" value="1"/>
-        <value type="int" value="3"/>
-        <value type="int" value="4"/>
-        <value type="int" value="13"/>
-        <value type="int" value="12"/>
-      </property>
-      <property name="background-style" type="uint" value="1"/>
-      <property name="background-rgba" type="array">
-        <value type="double" value="0.043"/>
-        <value type="double" value="0.090"/>
-        <value type="double" value="0.188"/>
-        <value type="double" value="0.92"/>
-      </property>
-    </property>
-    <property name="panel-2" type="empty">
-      <property name="position" type="string" value="p=10;x=640;y=672"/>
-      <property name="size" type="uint" value="48"/>
-      <property name="plugin-ids" type="array">
-        <value type="int" value="2"/>
-      </property>
-      <property name="length" type="uint" value="1"/>
-      <property name="position-locked" type="bool" value="true"/>
-      <property name="background-style" type="uint" value="1"/>
-      <property name="background-rgba" type="array">
-        <value type="double" value="0.043"/>
-        <value type="double" value="0.090"/>
-        <value type="double" value="0.188"/>
-        <value type="double" value="0.85"/>
-      </property>
-    </property>
-  </property>
-  <property name="plugins" type="empty">
-    <property name="plugin-1" type="string" value="applicationsmenu">
-      <property name="button-icon" type="string" value="/usr/share/pixmaps/nihil.png"/>
-      <property name="button-title" type="string" value="Nihil"/>
-      <property name="show-button-title" type="bool" value="true"/>
-    </property>
-    <property name="plugin-3" type="string" value="separator">
-      <property name="expand" type="bool" value="true"/>
-    </property>
-    <property name="plugin-4" type="string" value="pager"/>
-    <property name="plugin-12" type="string" value="clock"/>
-    <property name="plugin-13" type="string" value="separator">
-      <property name="expand" type="bool" value="false"/>
-    </property>
-    <property name="plugin-2" type="string" value="docklike"/>
-  </property>
-</channel>
-PANELXML
+    cat > "$XFCE_CONF/xfce4-panel.xml" <<-'PANELXML'
+	<?xml version="1.0" encoding="UTF-8"?>
+	<channel name="xfce4-panel" version="1.0">
+	  <property name="configver" type="int" value="2"/>
+	  <property name="panels" type="array">
+	    <value type="int" value="1"/>
+	    <value type="int" value="2"/>
+	    <property name="dark-mode" type="bool" value="true"/>
+	    <property name="panel-1" type="empty">
+	      <property name="position" type="string" value="p=6;x=0;y=0"/>
+	      <property name="length" type="uint" value="100"/>
+	      <property name="position-locked" type="bool" value="true"/>
+	      <property name="size" type="uint" value="28"/>
+	      <property name="plugin-ids" type="array">
+	        <value type="int" value="1"/>
+	        <value type="int" value="3"/>
+	        <value type="int" value="4"/>
+	        <value type="int" value="13"/>
+	        <value type="int" value="12"/>
+	      </property>
+	      <property name="background-style" type="uint" value="1"/>
+	      <property name="background-rgba" type="array">
+	        <value type="double" value="0.043"/>
+	        <value type="double" value="0.090"/>
+	        <value type="double" value="0.188"/>
+	        <value type="double" value="0.92"/>
+	      </property>
+	    </property>
+	    <property name="panel-2" type="empty">
+	      <property name="position" type="string" value="p=10;x=640;y=672"/>
+	      <property name="size" type="uint" value="48"/>
+	      <property name="plugin-ids" type="array">
+	        <value type="int" value="2"/>
+	      </property>
+	      <property name="length" type="uint" value="1"/>
+	      <property name="position-locked" type="bool" value="true"/>
+	      <property name="background-style" type="uint" value="1"/>
+	      <property name="background-rgba" type="array">
+	        <value type="double" value="0.043"/>
+	        <value type="double" value="0.090"/>
+	        <value type="double" value="0.188"/>
+	        <value type="double" value="0.85"/>
+	      </property>
+	    </property>
+	  </property>
+	  <property name="plugins" type="empty">
+	    <property name="plugin-1" type="string" value="applicationsmenu">
+	      <property name="button-icon" type="string" value="/usr/share/pixmaps/nihil.png"/>
+	      <property name="button-title" type="string" value="Nihil"/>
+	      <property name="show-button-title" type="bool" value="true"/>
+	    </property>
+	    <property name="plugin-3" type="string" value="separator">
+	      <property name="expand" type="bool" value="true"/>
+	    </property>
+	    <property name="plugin-4" type="string" value="pager"/>
+	    <property name="plugin-12" type="string" value="clock"/>
+	    <property name="plugin-13" type="string" value="separator">
+	      <property name="expand" type="bool" value="false"/>
+	    </property>
+	    <property name="plugin-2" type="string" value="docklike"/>
+	  </property>
+	</channel>
+	PANELXML
 
     # Docklike: applis épinglées présentes dans cette variante d'image.
     DOCK_PINNED="/usr/share/applications/xfce4-appfinder.desktop;/usr/share/applications/xfce4-terminal.desktop;/usr/share/applications/thunar.desktop;/usr/share/applications/firefox.desktop;"
     for app in burpsuite codium; do
         [[ -f "/usr/share/applications/${app}.desktop" ]] && DOCK_PINNED+="/usr/share/applications/${app}.desktop;"
     done
-    cat > "$XFCE_PANEL_CONF/docklike-2.rc" <<DOCKRC
-[user]
-indicatorStyle=0
-indicatorColor=rgb(56,189,248)
-pinned=${DOCK_PINNED}
-indicatorOrientation=1
-inactiveIndicatorStyle=0
-inactiveColor=rgb(29,78,216)
-indicatorColorFromTheme=false
-forceIconSize=true
-iconSize=32
-DOCKRC
+    cat > "$XFCE_PANEL_CONF/docklike-2.rc" <<-DOCKRC
+	[user]
+	indicatorStyle=0
+	indicatorColor=rgb(56,189,248)
+	pinned=${DOCK_PINNED}
+	indicatorOrientation=1
+	inactiveIndicatorStyle=0
+	inactiveColor=rgb(29,78,216)
+	indicatorColorFromTheme=false
+	forceIconSize=true
+	iconSize=32
+	DOCKRC
 
     # Wallpaper: xfdesktop ignore xfconf (Failed to get system bus) et charge le fallback
     # xfce-x.svg. On remplace ce fallback par notre image.
@@ -228,50 +228,50 @@ DOCKRC
     cp -f /opt/nihil/runtime/logo.png /usr/share/pixmaps/nihil.png 2>/dev/null || true
 
     # Terminal aux couleurs de TheNullPigeons (fond slate-950, curseur cyan)
-    cat > "$XFCE_CONF/xfce4-terminal.xml" <<'TERMXML'
-<?xml version="1.0" encoding="UTF-8"?>
-<channel name="xfce4-terminal" version="1.0">
-  <property name="color-use-theme" type="bool" value="false"/>
-  <property name="color-background" type="string" value="#020617"/>
-  <property name="color-foreground" type="string" value="#e2e8f0"/>
-  <property name="color-cursor-use-default" type="bool" value="false"/>
-  <property name="color-cursor" type="string" value="#38bdf8"/>
-  <property name="color-selection-use-default" type="bool" value="false"/>
-  <property name="color-selection-background" type="string" value="#1d4ed8"/>
-  <property name="color-palette" type="string" value="#0f172a;#f87171;#4ade80;#facc15;#3b82f6;#c084fc;#22d3ee;#cbd5e1;#475569;#fca5a5;#86efac;#fde047;#60a5fa;#d8b4fe;#67e8f9;#f8fafc"/>
-</channel>
-TERMXML
+    cat > "$XFCE_CONF/xfce4-terminal.xml" <<-'TERMXML'
+	<?xml version="1.0" encoding="UTF-8"?>
+	<channel name="xfce4-terminal" version="1.0">
+	  <property name="color-use-theme" type="bool" value="false"/>
+	  <property name="color-background" type="string" value="#020617"/>
+	  <property name="color-foreground" type="string" value="#e2e8f0"/>
+	  <property name="color-cursor-use-default" type="bool" value="false"/>
+	  <property name="color-cursor" type="string" value="#38bdf8"/>
+	  <property name="color-selection-use-default" type="bool" value="false"/>
+	  <property name="color-selection-background" type="string" value="#1d4ed8"/>
+	  <property name="color-palette" type="string" value="#0f172a;#f87171;#4ade80;#facc15;#3b82f6;#c084fc;#22d3ee;#cbd5e1;#475569;#fca5a5;#86efac;#fde047;#60a5fa;#d8b4fe;#67e8f9;#f8fafc"/>
+	</channel>
+	TERMXML
 
     # Sélection et éléments actifs en bleu dans les applis GTK3
     mkdir -p /root/.config/gtk-3.0
-    cat > /root/.config/gtk-3.0/gtk.css <<'GTKCSS'
-@define-color theme_selected_bg_color #2563eb;
-@define-color theme_selected_fg_color #ffffff;
-GTKCSS
+    cat > /root/.config/gtk-3.0/gtk.css <<-'GTKCSS'
+	@define-color theme_selected_bg_color #2563eb;
+	@define-color theme_selected_fg_color #ffffff;
+	GTKCSS
 
     # Thème GTK sombre (Adwaita-dark est fourni par gtk3, installé avec xfce4)
-    cat > "$XFCE_CONF/xsettings.xml" <<'XSETTINGS'
-<?xml version="1.0" encoding="UTF-8"?>
-<channel name="xsettings" version="1.0">
-  <property name="Net" type="empty">
-    <property name="ThemeName" type="string" value="Adwaita-dark"/>
-  </property>
-  <property name="Gtk" type="empty">
-    <property name="ApplicationPreferDarkTheme" type="bool" value="true"/>
-  </property>
-</channel>
-XSETTINGS
+    cat > "$XFCE_CONF/xsettings.xml" <<-'XSETTINGS'
+	<?xml version="1.0" encoding="UTF-8"?>
+	<channel name="xsettings" version="1.0">
+	  <property name="Net" type="empty">
+	    <property name="ThemeName" type="string" value="Adwaita-dark"/>
+	  </property>
+	  <property name="Gtk" type="empty">
+	    <property name="ApplicationPreferDarkTheme" type="bool" value="true"/>
+	  </property>
+	</channel>
+	XSETTINGS
 
     # xfwm4: disable the compositor. Under a VNC framebuffer it causes redraw and
     # focus glitches (windows only raise on a second click, Alt-Tab misbehaves).
-    cat > "$XFCE_CONF/xfwm4.xml" <<'XFWM4'
-<?xml version="1.0" encoding="UTF-8"?>
-<channel name="xfwm4" version="1.0">
-  <property name="general" type="empty">
-    <property name="use_compositing" type="bool" value="false"/>
-  </property>
-</channel>
-XFWM4
+    cat > "$XFCE_CONF/xfwm4.xml" <<-'XFWM4'
+	<?xml version="1.0" encoding="UTF-8"?>
+	<channel name="xfwm4" version="1.0">
+	  <property name="general" type="empty">
+	    <property name="use_compositing" type="bool" value="false"/>
+	  </property>
+	</channel>
+	XFWM4
 
     # Le marqueur n'est posé que si tout est en place, sinon on réessaie au prochain démarrage.
     local missing=()
@@ -352,71 +352,71 @@ start_browser_ui() {
         cp -f /opt/nihil/runtime/logo.png "$NOVNC_DIR/nihil-favicon.png"
         sed -i '/href="nihil-favicon.png"/d; s#<title>noVNC</title>#<title>Nihil</title>#; s#<link rel="icon" type="image/x-icon" href="app/images/icons/novnc.ico">#<link rel="icon" type="image/png" href="nihil-favicon.png">#' "$NOVNC_DIR/vnc.html"
         sed -i 's/const PAGE_TITLE = "noVNC";/const PAGE_TITLE = "Nihil";/' "$NOVNC_DIR/app/ui.js"
-        cat > "$NOVNC_DIR/index.html" << 'INDEXEOF'
-<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Nihil</title>
-<meta http-equiv="refresh" content="0; url=vnc.html?autoconnect=1&amp;resize=remote">
-</head><body></body></html>
-INDEXEOF
+        cat > "$NOVNC_DIR/index.html" <<- 'INDEXEOF'
+		<!DOCTYPE html>
+		<html><head><meta charset="utf-8"><title>Nihil</title>
+		<meta http-equiv="refresh" content="0; url=vnc.html?autoconnect=1&amp;resize=remote">
+		</head><body></body></html>
+		INDEXEOF
         # noVNC's extra-keys icons (Ctrl, Alt, Tab, Esc...) are text-based SVGs that
         # render blank as <input type="image"> in some browsers. Overlay a text label
         # so the shortcuts panel is usable.
-        cat > "$NOVNC_DIR/nihil-enhance.js" <<'NIHILJS'
-// Nihil noVNC enhancements.
-(function () {
-  "use strict";
-  function labelExtraKeys() {
-    var panel = document.getElementById("noVNC_modifiers");
-    if (!panel) return;
-    panel.querySelectorAll("input.noVNC_button").forEach(function (inp) {
-      if (inp.dataset.nihilLabeled) return;
-      inp.dataset.nihilLabeled = "1";
-      var text = (inp.getAttribute("alt") || inp.getAttribute("title") || "")
-        .replace(/^Toggle\s+/i, "").replace(/^Send\s+/i, "");
-      var wrap = document.createElement("span");
-      wrap.style.cssText = "position:relative;display:inline-block;";
-      inp.parentNode.insertBefore(wrap, inp);
-      wrap.appendChild(inp);
-      var label = document.createElement("span");
-      label.textContent = text === "Ctrl+Alt+Del" ? "CAD" : text;
-      label.title = text;
-      label.style.cssText =
-        "position:absolute;inset:0;display:flex;align-items:center;justify-content:center;" +
-        "font:700 8px/1 sans-serif;color:#fff;pointer-events:none;text-align:center;";
-      wrap.appendChild(label);
-    });
-  }
-  setInterval(labelExtraKeys, 500);
+        cat > "$NOVNC_DIR/nihil-enhance.js" <<-'NIHILJS'
+		// Nihil noVNC enhancements.
+		(function () {
+		  "use strict";
+		  function labelExtraKeys() {
+		    var panel = document.getElementById("noVNC_modifiers");
+		    if (!panel) return;
+		    panel.querySelectorAll("input.noVNC_button").forEach(function (inp) {
+		      if (inp.dataset.nihilLabeled) return;
+		      inp.dataset.nihilLabeled = "1";
+		      var text = (inp.getAttribute("alt") || inp.getAttribute("title") || "")
+		        .replace(/^Toggle\s+/i, "").replace(/^Send\s+/i, "");
+		      var wrap = document.createElement("span");
+		      wrap.style.cssText = "position:relative;display:inline-block;";
+		      inp.parentNode.insertBefore(wrap, inp);
+		      wrap.appendChild(inp);
+		      var label = document.createElement("span");
+		      label.textContent = text === "Ctrl+Alt+Del" ? "CAD" : text;
+		      label.title = text;
+		      label.style.cssText =
+		        "position:absolute;inset:0;display:flex;align-items:center;justify-content:center;" +
+		        "font:700 8px/1 sans-serif;color:#fff;pointer-events:none;text-align:center;";
+		      wrap.appendChild(label);
+		    });
+		  }
+		  setInterval(labelExtraKeys, 500);
 
-  // Seamless clipboard through noVNC's hidden clipboard box.
-  function clipBox() { return document.getElementById("noVNC_clipboard_text"); }
-  var lastSeen = null, pendingOut = null, activeUntil = 0;
-  // Browsers (Firefox especially) only allow writing the OS clipboard within a
-  // transient activation window after a user gesture, so we remember the window
-  // and keep retrying until the copied text has propagated through the VNC link.
-  function markActive() { activeUntil = Date.now() + 4500; }
-  ["keydown", "keyup", "pointerdown", "pointerup", "mousedown", "mouseup", "focus"]
-    .forEach(function (ev) { window.addEventListener(ev, markActive, true); });
-  setInterval(function () {
-    var ta = clipBox();
-    if (ta && ta.value !== lastSeen && ta.value) pendingOut = ta.value;
-    if (pendingOut != null && pendingOut !== lastSeen && Date.now() < activeUntil &&
-        navigator.clipboard && navigator.clipboard.writeText) {
-      var t = pendingOut;
-      navigator.clipboard.writeText(t).then(function () {
-        lastSeen = t; if (pendingOut === t) pendingOut = null;
-      }).catch(function () {});
-    }
-  }, 150);
-  document.addEventListener("paste", function (e) {
-    var data = e.clipboardData || window.clipboardData;
-    var text = data ? data.getData("text") : "";
-    var ta = clipBox(); if (!ta || !text) return;
-    ta.value = text; lastSeen = text; pendingOut = null;
-    ta.dispatchEvent(new Event("change", { bubbles: true }));
-  });
-})();
-NIHILJS
+		  // Seamless clipboard through noVNC's hidden clipboard box.
+		  function clipBox() { return document.getElementById("noVNC_clipboard_text"); }
+		  var lastSeen = null, pendingOut = null, activeUntil = 0;
+		  // Browsers (Firefox especially) only allow writing the OS clipboard within a
+		  // transient activation window after a user gesture, so we remember the window
+		  // and keep retrying until the copied text has propagated through the VNC link.
+		  function markActive() { activeUntil = Date.now() + 4500; }
+		  ["keydown", "keyup", "pointerdown", "pointerup", "mousedown", "mouseup", "focus"]
+		    .forEach(function (ev) { window.addEventListener(ev, markActive, true); });
+		  setInterval(function () {
+		    var ta = clipBox();
+		    if (ta && ta.value !== lastSeen && ta.value) pendingOut = ta.value;
+		    if (pendingOut != null && pendingOut !== lastSeen && Date.now() < activeUntil &&
+		        navigator.clipboard && navigator.clipboard.writeText) {
+		      var t = pendingOut;
+		      navigator.clipboard.writeText(t).then(function () {
+		        lastSeen = t; if (pendingOut === t) pendingOut = null;
+		      }).catch(function () {});
+		    }
+		  }, 150);
+		  document.addEventListener("paste", function (e) {
+		    var data = e.clipboardData || window.clipboardData;
+		    var text = data ? data.getData("text") : "";
+		    var ta = clipBox(); if (!ta || !text) return;
+		    ta.value = text; lastSeen = text; pendingOut = null;
+		    ta.dispatchEvent(new Event("change", { bubbles: true }));
+		  });
+		})();
+		NIHILJS
         grep -q "nihil-enhance.js" "$NOVNC_DIR/vnc.html" || \
             sed -i 's#</body>#  <script src="nihil-enhance.js"></script>\n</body>#' "$NOVNC_DIR/vnc.html"
     fi
@@ -432,16 +432,16 @@ NIHILJS
     # does not forward; mirror PRIMARY into CLIPBOARD so a terminal highlight can
     # reach the browser (and from there the host) clipboard.
     if command -v xclip >/dev/null 2>&1 && ! pgrep -f nihil_clipsync.sh >/dev/null 2>&1; then
-        cat > /opt/nihil/.nihil_clipsync.sh <<'CLIPSYNC'
-#!/bin/bash
-export DISPLAY="${1:-:0}"
-last=""
-while sleep 0.4; do
-    cur=$(xclip -o -selection primary -d "$DISPLAY" 2>/dev/null) || continue
-    [ -n "$cur" ] && [ "$cur" != "$last" ] || continue
-    printf '%s' "$cur" | xclip -i -selection clipboard -d "$DISPLAY" 2>/dev/null && last="$cur"
-done
-CLIPSYNC
+        cat > /opt/nihil/.nihil_clipsync.sh <<-'CLIPSYNC'
+		#!/bin/bash
+		export DISPLAY="${1:-:0}"
+		last=""
+		while sleep 0.4; do
+		    cur=$(xclip -o -selection primary -d "$DISPLAY" 2>/dev/null) || continue
+		    [ -n "$cur" ] && [ "$cur" != "$last" ] || continue
+		    printf '%s' "$cur" | xclip -i -selection clipboard -d "$DISPLAY" 2>/dev/null && last="$cur"
+		done
+		CLIPSYNC
         chmod +x /opt/nihil/.nihil_clipsync.sh
         setsid /opt/nihil/.nihil_clipsync.sh "$DISPLAY" >/tmp/nihil_clipsync.log 2>&1 &
     fi

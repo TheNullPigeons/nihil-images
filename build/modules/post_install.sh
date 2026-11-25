@@ -4,13 +4,13 @@
 nihil::import lib/common
 
 function install_list_tools() {
-    cat > /opt/tools/bin/list-tools << 'EOF'
-#!/bin/bash
-cd /opt/nihil/build
-source lib/loader.sh
-nihil::import lib/healthcheck
-list_tools "$@"
-EOF
+    cat > /opt/tools/bin/list-tools <<- 'EOF'
+	#!/bin/bash
+	cd /opt/nihil/build
+	source lib/loader.sh
+	nihil::import lib/healthcheck
+	list_tools "$@"
+	EOF
     chmod +x /opt/tools/bin/list-tools
 }
 

@@ -69,17 +69,17 @@ function _firefox_seed_foxyproxy() {
     mkdir -p "$profile_dir" /root/.mozilla/firefox
 
     # Create profiles.ini so Firefox picks up the nihil profile on first launch
-    cat > /root/.mozilla/firefox/profiles.ini << 'EOF'
-[Profile0]
-Name=Nihil
-IsRelative=1
-Path=nihil.Nihil
-Default=1
+    cat > /root/.mozilla/firefox/profiles.ini <<- 'EOF'
+	[Profile0]
+	Name=Nihil
+	IsRelative=1
+	Path=nihil.Nihil
+	Default=1
 
-[General]
-StartWithLastProfile=1
-Version=2
-EOF
+	[General]
+	StartWithLastProfile=1
+	Version=2
+	EOF
 
     # Install marionette driver (needed only at build time)
     pip install --quiet --break-system-packages marionette-driver 2>/dev/null || true
@@ -121,13 +121,13 @@ function install_chromium() {
     chmod +x /opt/tools/bin/chromium
     # Force-install extensions via policy (downloaded on first launch)
     mkdir -p /etc/chromium/policies/managed
-    cat > /etc/chromium/policies/managed/extensions.json << 'EOF'
-{
-  "ExtensionInstallForcelist": [
-    "gcknhkkoolaabfmlnjonogaaifnjlfnp;https://clients2.google.com/service/update2/crx"
-  ]
-}
-EOF
+    cat > /etc/chromium/policies/managed/extensions.json <<- 'EOF'
+	{
+	  "ExtensionInstallForcelist": [
+	    "gcknhkkoolaabfmlnjonogaaifnjlfnp;https://clients2.google.com/service/update2/crx"
+	  ]
+	}
+	EOF
 }
 function install_chrony() {
     install_pacman_tool "chrony"
@@ -160,24 +160,24 @@ function install_mongosh() {
             trap 'rm -rf -- "$tmp"' EXIT
             cd "$tmp" || exit 1
             download-retry "https://api.github.com/repos/mongodb-js/mongosh/releases/latest" release.json || exit 1
-            asset=$(python3 - "$arch" <<'PY'
-import json
-import re
-import sys
+            asset=$(python3 - "$arch" <<-'PY'
+			import json
+			import re
+			import sys
 
-with open("release.json") as stream:
-    release = json.load(stream)
-tag = release["tag_name"]
-filename = f"mongosh-{tag.removeprefix('v')}-linux-{sys.argv[1]}.tgz"
-url = f"https://github.com/mongodb-js/mongosh/releases/download/{tag}/{filename}"
-for asset in release["assets"]:
-    digest = asset.get("digest") or ""
-    if asset["browser_download_url"] == url and re.fullmatch(r"sha256:[0-9a-f]{64}", digest):
-        print(filename, url, digest.removeprefix("sha256:"))
-        break
-else:
-    sys.exit(f"No verified mongosh release asset for {sys.argv[1]}")
-PY
+			with open("release.json") as stream:
+			    release = json.load(stream)
+			tag = release["tag_name"]
+			filename = f"mongosh-{tag.removeprefix('v')}-linux-{sys.argv[1]}.tgz"
+			url = f"https://github.com/mongodb-js/mongosh/releases/download/{tag}/{filename}"
+			for asset in release["assets"]:
+			    digest = asset.get("digest") or ""
+			    if asset["browser_download_url"] == url and re.fullmatch(r"sha256:[0-9a-f]{64}", digest):
+			        print(filename, url, digest.removeprefix("sha256:"))
+			        break
+			else:
+			    sys.exit(f"No verified mongosh release asset for {sys.argv[1]}")
+			PY
             ) || exit 1
             read -r archive url sha <<< "$asset"
             archive=${archive%.tgz}

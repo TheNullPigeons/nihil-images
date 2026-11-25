@@ -514,10 +514,10 @@ function install_impacket() {
         continue
         ;;
       esac
-      cat >"${wrapper_dir}/${name}" <<EOF
-#!/bin/sh
-exec "$script" "\$@"
-EOF
+      cat >"${wrapper_dir}/${name}" <<-EOF
+		#!/bin/sh
+		exec "$script" "\$@"
+		EOF
       chmod +x "${wrapper_dir}/${name}"
     done
   done
@@ -599,22 +599,22 @@ function install_python_pcapy() {
 
 function install_responder() {
   install_aur_tool "responder" "responder"
-  cat >/usr/local/bin/responder-http-off <<'EOF'
-#!/bin/sh
-sed -i 's/^HTTP = On/HTTP = Off/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
-EOF
-  cat >/usr/local/bin/responder-http-on <<'EOF'
-#!/bin/sh
-sed -i 's/^HTTP = Off/HTTP = On/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
-EOF
-  cat >/usr/local/bin/responder-smb-off <<'EOF'
-#!/bin/sh
-sed -i 's/^SMB = On/SMB = Off/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
-EOF
-  cat >/usr/local/bin/responder-smb-on <<'EOF'
-#!/bin/sh
-sed -i 's/^SMB = Off/SMB = On/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
-EOF
+  cat >/usr/local/bin/responder-http-off <<-'EOF'
+	#!/bin/sh
+	sed -i 's/^HTTP = On/HTTP = Off/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
+	EOF
+  cat >/usr/local/bin/responder-http-on <<-'EOF'
+	#!/bin/sh
+	sed -i 's/^HTTP = Off/HTTP = On/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
+	EOF
+  cat >/usr/local/bin/responder-smb-off <<-'EOF'
+	#!/bin/sh
+	sed -i 's/^SMB = On/SMB = Off/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
+	EOF
+  cat >/usr/local/bin/responder-smb-on <<-'EOF'
+	#!/bin/sh
+	sed -i 's/^SMB = Off/SMB = On/' /usr/share/responder/Responder.conf /etc/responder/Responder.conf 2>/dev/null || true
+	EOF
   chmod +x /usr/local/bin/responder-http-off /usr/local/bin/responder-http-on /usr/local/bin/responder-smb-off /usr/local/bin/responder-smb-on
 }
 
@@ -747,24 +747,24 @@ function install_krbrelayx() {
   # method so krbrelayx can start with the current Impacket shipped in Nihil.
   local krbrelayx_config="${GIT_INSTALL_DIR:-/usr/local/share}/krbrelayx/lib/utils/config.py"
   if [ -f "$krbrelayx_config" ] && ! grep -q "def setAddComputerSMB" "$krbrelayx_config"; then
-    python3 - "$krbrelayx_config" <<'PY'
-from pathlib import Path
-import sys
+    python3 - "$krbrelayx_config" <<-'PY'
+	from pathlib import Path
+	import sys
 
-path = Path(sys.argv[1])
-text = path.read_text()
-compat = (
-    "    def setAddComputerSMB(self, value):\n"
-    "        self.addComputerSMB = value\n\n"
-)
-if compat not in text:
-    marker = "    def setAuthOptions("
-    index = text.find(marker)
-    if index == -1:
-        raise SystemExit(f"setAuthOptions marker not found in {path}")
-    text = text[:index] + compat + text[index:]
-    path.write_text(text)
-PY
+	path = Path(sys.argv[1])
+	text = path.read_text()
+	compat = (
+	    "    def setAddComputerSMB(self, value):\n"
+	    "        self.addComputerSMB = value\n\n"
+	)
+	if compat not in text:
+	    marker = "    def setAuthOptions("
+	    index = text.find(marker)
+	    if index == -1:
+	        raise SystemExit(f"setAuthOptions marker not found in {path}")
+	    text = text[:index] + compat + text[index:]
+	    path.write_text(text)
+	PY
     colorecho "  ✓ Patched krbrelayx Impacket config compatibility"
   fi
 }

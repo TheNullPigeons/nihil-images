@@ -69,21 +69,21 @@ function install_jd-gui() {
 }
 
 function configure_ida_launcher() {
-    cat >/opt/tools/bin/ida64 <<'EOF'
-#!/usr/bin/env bash
-set -euo pipefail
+    cat >/opt/tools/bin/ida64 <<-'EOF'
+	#!/usr/bin/env bash
+	set -euo pipefail
 
-# Qt refuses Wayland runtime directories that are missing or not private to the
-# current user. Containers often see the host runtime directory with unsuitable
-# ownership/mode, so keep IDA on a clean per-container runtime directory.
-if [ -z "${XDG_RUNTIME_DIR:-}" ] || [ ! -d "$XDG_RUNTIME_DIR" ] || [ "$(stat -c %a "$XDG_RUNTIME_DIR" 2>/dev/null || true)" != "700" ]; then
-    export XDG_RUNTIME_DIR=/tmp/runtime-root
-    mkdir -p "$XDG_RUNTIME_DIR"
-    chmod 700 "$XDG_RUNTIME_DIR"
-fi
+	# Qt refuses Wayland runtime directories that are missing or not private to the
+	# current user. Containers often see the host runtime directory with unsuitable
+	# ownership/mode, so keep IDA on a clean per-container runtime directory.
+	if [ -z "${XDG_RUNTIME_DIR:-}" ] || [ ! -d "$XDG_RUNTIME_DIR" ] || [ "$(stat -c %a "$XDG_RUNTIME_DIR" 2>/dev/null || true)" != "700" ]; then
+	    export XDG_RUNTIME_DIR=/tmp/runtime-root
+	    mkdir -p "$XDG_RUNTIME_DIR"
+	    chmod 700 "$XDG_RUNTIME_DIR"
+	fi
 
-exec /usr/bin/ida64 "$@"
-EOF
+	exec /usr/bin/ida64 "$@"
+	EOF
     chmod +x /opt/tools/bin/ida64
     ln -sf /opt/tools/bin/ida64 /opt/tools/bin/ida
 }

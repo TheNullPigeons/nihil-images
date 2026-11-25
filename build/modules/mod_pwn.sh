@@ -75,20 +75,20 @@ function install_ropper() {
     rm -f "$archive"
 
     # Replace ast.Str (removed in 3.12) with ast.Constant in setup.py.
-    cat > "$tmp_src/setup.py" << 'SETUP'
-from setuptools import setup
-import ast, os
-currentDir = os.path.dirname(os.path.abspath(__file__))
-def extractMetaInfo(src):
-    info = {}
-    for e in ast.parse(src).body:
-        if isinstance(e, ast.Assign) and isinstance(e.value, ast.Constant):
-            info[e.targets[0].id] = e.value.value
-    return info
-with open(currentDir + os.sep + "filebytes" + os.sep + "__init__.py") as f:
-    text = f.read()
-setup(version=extractMetaInfo(text)["VERSION"])
-SETUP
+    cat > "$tmp_src/setup.py" <<- 'SETUP'
+	from setuptools import setup
+	import ast, os
+	currentDir = os.path.dirname(os.path.abspath(__file__))
+	def extractMetaInfo(src):
+	    info = {}
+	    for e in ast.parse(src).body:
+	        if isinstance(e, ast.Assign) and isinstance(e.value, ast.Constant):
+	            info[e.targets[0].id] = e.value.value
+	    return info
+	with open(currentDir + os.sep + "filebytes" + os.sep + "__init__.py") as f:
+	    text = f.read()
+	setup(version=extractMetaInfo(text)["VERSION"])
+	SETUP
 
     mkdir -p "$wheel_dir"
     retry-command 3 "pip wheel filebytes" pip wheel --no-build-isolation "$tmp_src" -w "$wheel_dir" --quiet \

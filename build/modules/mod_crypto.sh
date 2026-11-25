@@ -52,18 +52,18 @@ function install_rsactftool() {
 
     if [ -f "$venv_dir/bin/RsaCtfTool" ]; then
         # Entry point installed by pip
-        cat > "$wrapper" <<EOF
-#!/bin/sh
-exec "$venv_dir/bin/RsaCtfTool" "\$@"
-EOF
+        cat > "$wrapper" <<-EOF
+		#!/bin/sh
+		exec "$venv_dir/bin/RsaCtfTool" "\$@"
+		EOF
     elif [ -f "$repo_dir/RsaCtfTool.py" ]; then
         # Classic .py entrypoint at repo root
-        cat > "$wrapper" <<EOF
-#!/bin/sh
-cd "$repo_dir" || exit 1
-source "$venv_dir/bin/activate"
-exec python3 "$repo_dir/RsaCtfTool.py" "\$@"
-EOF
+        cat > "$wrapper" <<-EOF
+		#!/bin/sh
+		cd "$repo_dir" || exit 1
+		source "$venv_dir/bin/activate"
+		exec python3 "$repo_dir/RsaCtfTool.py" "\$@"
+		EOF
     else
         colorecho "  ✗ Warning: Could not find RsaCtfTool entry point after install"
         return 1
@@ -84,10 +84,10 @@ function install_z3_solver() {
             return 1
         }
     fi
-    cat > /usr/local/bin/z3-solver <<'EOF'
-#!/bin/sh
-exec python3 -c "import z3; print('z3-solver', z3.get_version_string())"
-EOF
+    cat > /usr/local/bin/z3-solver <<-'EOF'
+	#!/bin/sh
+	exec python3 -c "import z3; print('z3-solver', z3.get_version_string())"
+	EOF
     chmod +x /usr/local/bin/z3-solver
     colorecho "  ✓ z3-solver installed"
 }
@@ -101,10 +101,10 @@ function install_pycryptodome() {
             return 1
         }
     fi
-    cat > /usr/local/bin/pycryptodome <<'EOF'
-#!/bin/sh
-exec python3 -c "import Crypto,sys; print(Crypto.__name__)"
-EOF
+    cat > /usr/local/bin/pycryptodome <<-'EOF'
+	#!/bin/sh
+	exec python3 -c "import Crypto,sys; print(Crypto.__name__)"
+	EOF
     chmod +x /usr/local/bin/pycryptodome
     colorecho "  ✓ pycryptodome installed"
 }
