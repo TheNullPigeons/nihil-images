@@ -248,6 +248,13 @@
             "installer": "install_mitm6"
         },
         {
+            "name": "wsuks",
+            "cmd": "wsuks",
+            "github_repo": "NeffIsBack/wsuks",
+            "description": "Automate WSUS machine-in-the-middle attacks",
+            "installer": "install_wsuks"
+        },
+        {
             "name": "aclpwn",
             "cmd": "aclpwn",
             "github_repo": "fox-it/aclpwn.py",

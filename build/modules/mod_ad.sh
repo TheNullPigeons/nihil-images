@@ -532,6 +532,11 @@ function install_mitm6() {
   install_pipx_tool "mitm6" "mitm6"
 }
 
+function install_wsuks() {
+  install_pacman_tool "nftables" || return 1
+  install_pipx_tool "wsuks" "wsuks" "" "--system-site-packages"
+}
+
 function install_aclpwn() {
   install_pipx_tool_git "aclpwn" "https://github.com/fox-it/aclpwn.py"
   # aclpwn uses the legacy neo4j.v1 API and pkg_resources.

