@@ -115,12 +115,12 @@ function download-retry() {
     local dest="$2"
     local attempts="${3:-3}"
 
-    # Authenticate GitHub API calls when a token is present (GITHUB_TOKEN or
-    # GH_TOKEN). Unauthenticated api.github.com is capped at 60 requests/hour per
-    # IP, which breaks release lookups (BloodHound, neo4j...) during repeated
-    # builds. With a token the cap is 5000/hour. No token -> unchanged behaviour.
+    # Use the BuildKit secret for CI release lookups without baking it into an image.
     local -a curl_auth=()
     local gh_token="${GITHUB_TOKEN:-${GH_TOKEN:-}}"
+    if [[ -z "$gh_token" && -r /run/secrets/github_token ]]; then
+        gh_token="$(cat /run/secrets/github_token)"
+    fi
     if [[ -n "$gh_token" && "$url" == https://api.github.com/* ]]; then
         curl_auth=(-H "Authorization: Bearer ${gh_token}")
     fi

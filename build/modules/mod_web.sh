@@ -631,7 +631,8 @@ function install_bbot() {
 }
 
 function install_byp4xx() {
-    install_go_tool "github.com/lobuhi/byp4xx@latest"
+    # shortcut: upstream HEAD does not compile; update the pin when upstream fixes it.
+    install_go_tool "github.com/lobuhi/byp4xx@b337580a3a62"
 }
 
 function install_git_dumper() {

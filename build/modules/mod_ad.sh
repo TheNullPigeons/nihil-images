@@ -157,8 +157,8 @@ function install_bloodhound_ce_desktop() {
   # SharpHound
   local sharphound_url sharphound_name
   download-retry "https://api.github.com/repos/BloodHoundAD/SharpHound/releases/latest" "${curl_tempfile}" || true
-  sharphound_url="$(jq -r '.assets[].browser_download_url | select(contains("debug") | not) | select(contains("sha256") | not)' "${curl_tempfile}")"
-  sharphound_name="$(jq -r '.assets[].name | ascii_downcase | select(contains("debug") | not) | select(contains("sha256") | not)' "${curl_tempfile}")"
+  sharphound_url="$(jq -r '.assets[] | select(.name | endswith("_windows_x86.zip") and (contains("debug") | not)) | .browser_download_url' "${curl_tempfile}")"
+  sharphound_name="$(jq -r '.assets[] | select(.name | endswith("_windows_x86.zip") and (contains("debug") | not)) | .name | ascii_downcase' "${curl_tempfile}")"
   if [ -n "${sharphound_url}" ]; then
     download-retry "${sharphound_url}" "${sharphound_path}/$(basename "${sharphound_url}")" || true
     mv "${sharphound_path}/$(basename "${sharphound_url}")" "${sharphound_path}/${sharphound_name}" 2>/dev/null || true

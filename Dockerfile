@@ -22,7 +22,7 @@ RUN chmod +x /opt/nihil/runtime/entrypoint.sh /opt/nihil/runtime/load_my_resourc
 WORKDIR /opt/nihil/build
 SHELL ["/bin/bash", "-c"]
 
-RUN chmod +x entrypoint.sh && \
+RUN --mount=type=secret,id=github_token chmod +x entrypoint.sh && \
     ./entrypoint.sh package_base && \
     ./entrypoint.sh install_core_tools && \
     ./entrypoint.sh install_mod_ad && \
