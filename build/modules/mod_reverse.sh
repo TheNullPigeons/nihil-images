@@ -89,12 +89,13 @@ function configure_ida_launcher() {
 }
 
 function install_ida() {
-    # IDA Free (proprietary, GUI only, x86_64). The live Hex-Rays direct URL is
-    # no longer reliable for unattended builds; the AUR package pins the archived
-    # 8.4 installer and verifies its checksum.
+    # The current AUR package requires a manual download; the archived 8.4 installer is verified below.
     if [ "$(uname -m)" != "x86_64" ]; then
         colorecho "  ✗ Skipping IDA Free: only supported on x86_64"
         return 0
+    fi
+    if [ -x /opt/tools/idafree/ida64 ]; then
+        ln -sf /opt/tools/idafree/ida64 /usr/bin/ida64
     fi
     if [ -x /usr/bin/ida64 ] || [ -x /opt/ida-free/ida64 ]; then
         colorecho "  ✓ IDA Free already installed"
@@ -104,11 +105,18 @@ function install_ida() {
         return 0
     fi
 
-    colorecho "  → Installing IDA Free via AUR"
-    install_aur_tool "ida-free" "ida64" || {
-        colorecho "  ✗ Warning: Failed to install IDA Free from AUR"
+    local archive=/tmp/idafree84_linux.run
+    colorecho "  → Installing IDA Free 8.4 from the verified archive"
+    download-retry "https://web.archive.org/web/20240921184600if_/https://out7.hex-rays.com/files/idafree84_linux.run" "$archive" || return 1
+    if ! printf '%s  %s\n' '941f228ce489bf0a14268980edad16140be297e0749245d7839a2a3b02070a62' "$archive" | sha256sum -c -; then
+        rm -f "$archive"
         return 1
-    }
+    fi
+    chmod +x "$archive"
+    "$archive" --mode unattended --prefix /opt/tools/idafree --installpassword '' || return 1
+    test -x /opt/tools/idafree/ida64 || return 1
+    rm -f "$archive"
+    ln -sf /opt/tools/idafree/ida64 /usr/bin/ida64
     configure_ida_launcher
     add-aliases "ida"
     add-history "ida"
